@@ -48,7 +48,7 @@ function Home() {
             muted
             loop
             playsInline
-            className="h-[120%] w-full object-cover opacity-60"
+            className="hero-video h-[120%] w-full object-cover opacity-60"
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/30 via-[color:var(--bg-rich)]/40 to-[color:var(--bg-rich)]" />

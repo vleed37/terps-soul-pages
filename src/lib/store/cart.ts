@@ -71,7 +71,7 @@ export const useCart = create<CartState>()(
     {
       name: "terps-cart",
       storage: createJSONStorage(() =>
-        typeof window === "undefined" ? (noopStorage as Storage) : window.localStorage,
+        typeof window === "undefined" ? (noopStorage as unknown as Storage) : window.localStorage,
       ),
       partialize: (s) => ({ items: s.items }) as unknown as CartState,
       onRehydrateStorage: () => (state) => {

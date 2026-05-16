@@ -5,12 +5,12 @@ import { Logo } from "@/components/brand/Logo";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/lib/store/cart";
 
-const TABS = [
+const TABS: ReadonlyArray<{ to: string; label: string; exact?: boolean }> = [
   { to: "/account", label: "OVERVIEW", exact: true },
   { to: "/account/orders", label: "ORDERS" },
   { to: "/account/addresses", label: "ADDRESSES" },
   { to: "/account/settings", label: "SETTINGS" },
-] as const;
+];
 
 export function AccountSidebar({ firstName }: { firstName?: string | null }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
@@ -38,7 +38,7 @@ export function AccountSidebar({ firstName }: { firstName?: string | null }) {
             return (
               <Link
                 key={t.to}
-                to={t.to}
+                to={t.to as any}
                 className="relative meta-xs py-4 transition-colors"
                 style={{
                   color: active ? "var(--text-primary)" : "var(--text-tertiary)",
@@ -72,7 +72,7 @@ export function AccountSidebar({ firstName }: { firstName?: string | null }) {
           return (
             <Link
               key={t.to}
-              to={t.to}
+              to={t.to as any}
               className="meta-xs shrink-0 px-3 py-4"
               style={{
                 color: active ? "var(--accent-gold)" : "var(--text-tertiary)",

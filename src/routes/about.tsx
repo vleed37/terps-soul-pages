@@ -5,7 +5,7 @@ import { MetaLabel } from "@/components/brand/MetaLabel";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { PullQuote } from "@/components/brand/PullQuote";
 import { GoldButton } from "@/components/brand/GoldButton";
-import { getStrainImage } from "@/lib/strain-assets";
+import { getStrainProductImage } from "@/lib/strain-assets";
 import lifestyle1 from "@/assets/lifestyle-1.webp";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
 import lifestyle4 from "@/assets/lifestyle-4.webp";
@@ -133,7 +133,7 @@ function AboutPage() {
             }}
           >
             {strains.slice(0, 4).map((s, i) => {
-              const img = getStrainImage(s.slug);
+              const img = getStrainProductImage(s.slug);
               if (!img) return null;
               return (
                 <Link
@@ -145,8 +145,7 @@ function AboutPage() {
                   <img
                     src={img}
                     alt={s.name}
-                    className="max-h-[280px] w-auto transition-transform duration-500 ease-out group-hover:-translate-y-2 md:max-h-[420px]"
-                    style={{ transform: `rotate(${(i % 2 === 0 ? -1 : 1) * 4}deg)` }}
+                    className="max-h-[280px] w-auto rounded-xl transition-transform duration-500 ease-out group-hover:-translate-y-2 md:max-h-[420px]"
                   />
                 </Link>
               );

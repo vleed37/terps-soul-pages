@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormRegisterReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCart, cartSelectors, computeTotals } from "@/lib/store/cart";
@@ -343,7 +343,7 @@ function MethodRadio({
 }: {
   value: "delivery" | "collect";
   current: string;
-  register: ReturnType<ReturnType<typeof useForm<FormVals>>["register"]>;
+  register: UseFormRegisterReturn;
   label: string;
   hint: string;
 }) {

@@ -9,12 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WholesaleRouteImport } from './routes/wholesale'
+import { Route as StrainsRouteImport } from './routes/strains'
+import { Route as StockistsRouteImport } from './routes/stockists'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
 
+const WholesaleRoute = WholesaleRouteImport.update({
+  id: '/wholesale',
+  path: '/wholesale',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StrainsRoute = StrainsRouteImport.update({
+  id: '/strains',
+  path: '/strains',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StockistsRoute = StockistsRouteImport.update({
+  id: '/stockists',
+  path: '/stockists',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,40 +47,115 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StrainSlugRoute = StrainSlugRouteImport.update({
+  id: '/strain/$slug',
+  path: '/strain/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/shop': typeof ShopRoute
+  '/stockists': typeof StockistsRoute
+  '/strains': typeof StrainsRoute
+  '/wholesale': typeof WholesaleRoute
+  '/strain/$slug': typeof StrainSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/shop': typeof ShopRoute
+  '/stockists': typeof StockistsRoute
+  '/strains': typeof StrainsRoute
+  '/wholesale': typeof WholesaleRoute
+  '/strain/$slug': typeof StrainSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/shop': typeof ShopRoute
+  '/stockists': typeof StockistsRoute
+  '/strains': typeof StrainsRoute
+  '/wholesale': typeof WholesaleRoute
+  '/strain/$slug': typeof StrainSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/shop'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/shop'
+    | '/stockists'
+    | '/strains'
+    | '/wholesale'
+    | '/strain/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/shop'
-  id: '__root__' | '/' | '/shop'
+  to:
+    | '/'
+    | '/about'
+    | '/shop'
+    | '/stockists'
+    | '/strains'
+    | '/wholesale'
+    | '/strain/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/shop'
+    | '/stockists'
+    | '/strains'
+    | '/wholesale'
+    | '/strain/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   ShopRoute: typeof ShopRoute
+  StockistsRoute: typeof StockistsRoute
+  StrainsRoute: typeof StrainsRoute
+  WholesaleRoute: typeof WholesaleRoute
+  StrainSlugRoute: typeof StrainSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wholesale': {
+      id: '/wholesale'
+      path: '/wholesale'
+      fullPath: '/wholesale'
+      preLoaderRoute: typeof WholesaleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/strains': {
+      id: '/strains'
+      path: '/strains'
+      fullPath: '/strains'
+      preLoaderRoute: typeof StrainsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stockists': {
+      id: '/stockists'
+      path: '/stockists'
+      fullPath: '/stockists'
+      preLoaderRoute: typeof StockistsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -65,12 +165,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/strain/$slug': {
+      id: '/strain/$slug'
+      path: '/strain/$slug'
+      fullPath: '/strain/$slug'
+      preLoaderRoute: typeof StrainSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   ShopRoute: ShopRoute,
+  StockistsRoute: StockistsRoute,
+  StrainsRoute: StrainsRoute,
+  WholesaleRoute: WholesaleRoute,
+  StrainSlugRoute: StrainSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

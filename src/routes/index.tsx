@@ -3,7 +3,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { listStrains } from "@/lib/strains.functions";
-import { Logo } from "@/components/brand/Logo";
 import { Hairline } from "@/components/brand/Hairline";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { GhostLink } from "@/components/brand/GhostLink";
@@ -16,6 +15,7 @@ import lifestyle1 from "@/assets/lifestyle-1.webp";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
 import lifestyle4 from "@/assets/lifestyle-4.webp";
 import greenCrack from "@/assets/strain-green-crack.webp";
+import { getStrainProductImage } from "@/lib/strain-assets";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
 
@@ -52,14 +52,7 @@ function Home() {
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/30 via-[color:var(--bg-rich)]/40 to-[color:var(--bg-rich)]" />
-        <div className="absolute right-6 top-28 z-10 flex items-center gap-2 md:right-12">
-          <span className="block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--accent-gold)]" />
-          <MetaLabel gold>Batch No. 04 · Active</MetaLabel>
-        </div>
-
         <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6 md:px-12">
-          <MetaLabel gold className="mb-6">Premium infused pre-rolls · South Africa</MetaLabel>
-          <Logo height={120} className="mb-8 md:!h-[180px]" />
           <Hairline w="120px" className="mb-8" />
           <h1 className="max-w-3xl font-display text-[2.75rem] font-normal leading-[1.05] md:text-[5rem]">
             The depth of the inhale.<br />
@@ -72,15 +65,6 @@ function Home() {
             <a href="/shop"><GoldButton>Discover the collection</GoldButton></a>
             <a href="/about"><GoldButton variant="tertiary">Our story</GoldButton></a>
           </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-center">
-          <MetaLabel className="block">Scroll</MetaLabel>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="mx-auto mt-2 h-8 w-px bg-[color:var(--accent-gold)]"
-          />
         </div>
       </section>
 
@@ -96,7 +80,7 @@ function Home() {
               Every Terps strain is selected for its terpene profile, slow-cured, and hand-infused with live hash rosin. No shortcuts. No fillers.
             </p>
           </ScrollReveal>
-          <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-20 grid max-w-[900px] grid-cols-1 gap-8 sm:grid-cols-2">
             {list.map((s, i) => (
               <ScrollReveal key={s.id} delay={i * 0.08}>
                 <StrainCard strain={s} />
@@ -129,7 +113,7 @@ function Home() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.15} className="hidden md:col-span-2 md:block">
-              <img src={greenCrack} alt={featured.name} className="mx-auto max-h-[520px] w-auto drop-shadow-[0_28px_60px_rgba(0,0,0,0.8)]" style={{ transform: "rotate(8deg)" }} />
+              <img src={getStrainProductImage(featured.slug) ?? greenCrack} alt={featured.name} className="mx-auto max-h-[520px] w-auto rounded-xl drop-shadow-[0_28px_60px_rgba(0,0,0,0.8)]" />
             </ScrollReveal>
           </div>
         </section>

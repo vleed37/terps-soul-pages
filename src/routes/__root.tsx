@@ -79,23 +79,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const router = useRouter();
-  const qc = useQueryClient();
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
-        // Defer so the auth attacher has the new session before next call
-        setTimeout(() => { void syncCartOnSignIn(); }, 0);
-      }
-      router.invalidate();
-      qc.invalidateQueries();
-    });
-    return () => subscription.unsubscribe();
-  }, [router, qc]);
-
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthSync />
       <Header />
       <main className="relative z-0 pt-[88px]">
         <Outlet />
@@ -105,4 +91,20 @@ function RootComponent() {
       <Toaster theme="dark" position="bottom-center" />
     </QueryClientProvider>
   );
+}
+
+function AuthSync() {
+  const router = useRouter();
+  const qc = useQueryClient();
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+        setTimeout(() => { void syncCartOnSignIn(); }, 0);
+      }
+      router.invalidate();
+      qc.invalidateQueries();
+    });
+    return () => subscription.unsubscribe();
+  }, [router, qc]);
+  return null;
 }

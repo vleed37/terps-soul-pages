@@ -40,8 +40,8 @@ const FormSchema = z
     province: z.string().optional(),
     postalCode: z.string().optional(),
     notes: z.string().max(1000).optional(),
-    acceptTerms: z.literal(true, { message: "Please accept the terms" } as never),
-    confirmAge: z.literal(true, { message: "You must confirm you're 18+" } as never),
+    acceptTerms: z.boolean().refine((v) => v === true, { message: "Please accept the terms" }),
+    confirmAge: z.boolean().refine((v) => v === true, { message: "You must confirm you're 18+" }),
   })
   .superRefine((v, ctx) => {
     if (v.deliveryMethod === "delivery") {

@@ -44,6 +44,7 @@ function Home() {
         <motion.div style={{ y: bgY }} className="absolute inset-0">
           <video
             src="/hero.mp4"
+            poster="/hero-poster.jpg"
             autoPlay
             muted
             loop

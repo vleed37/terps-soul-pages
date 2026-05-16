@@ -37,6 +37,8 @@ function StrainDetail() {
   if (!s) return null;
   const img = getStrainProductImage(s.slug);
   const bgImg = getStrainImage(s.slug);
+  const videoSrc = `/strains/${s.slug}.mp4`;
+  const posterSrc = `/strains/${s.slug}-poster.jpg`;
   const soldOut = s.stock_quantity <= 0;
   const handleAdd = () => {
     if (soldOut) return;
@@ -60,7 +62,15 @@ function StrainDetail() {
     <>
       {/* HERO */}
       <section className="relative h-[70vh] overflow-hidden">
-        {bgImg && <img src={bgImg} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />}
+        <video
+          src={videoSrc}
+          poster={posterSrc}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="hero-video absolute inset-0 h-full w-full object-cover opacity-50"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[color:var(--bg-rich)]/60 to-[color:var(--bg-rich)]" />
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-end px-6 pb-16 md:px-12">
           <Link to="/shop" className="ghost-link self-start">← The collection</Link>

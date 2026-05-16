@@ -1,8 +1,9 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, Search, User, ShoppingBag, X } from "lucide-react";
+import { Menu, Search, User, ShoppingBag, X, Sun, Moon } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { useCart, cartSelectors } from "@/lib/store/cart";
+import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -19,6 +20,7 @@ export function Header() {
   const openCart = useCart((s) => s.openDrawer);
   const itemCount = useCart(cartSelectors.itemCount);
   const hydrated = useCart((s) => s.hydrated);
+  const { theme, toggle, mounted } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -58,6 +60,15 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-5">
+            <button
+              aria-label="Toggle theme"
+              onClick={toggle}
+              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
+            >
+              {mounted && theme === "light"
+                ? <Moon strokeWidth={1.5} className="h-5 w-5" />
+                : <Sun strokeWidth={1.5} className="h-5 w-5" />}
+            </button>
             <button aria-label="Search" className="hidden text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:block">
               <Search strokeWidth={1.5} className="h-5 w-5" />
             </button>

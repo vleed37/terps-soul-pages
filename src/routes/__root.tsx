@@ -1,12 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scripts } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AgeGate } from "@/components/layout/AgeGate";
-import { CartDrawer } from "@/components/cart/CartDrawer";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -39,10 +36,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Terps — Premium Infused Pre-Rolls. Flavour First." },
       { name: "description", content: "South African–bred, hand-infused premium pre-rolls. Live rosin. Lab verified. Flavour first." },
-      { property: "og:title", content: "Terps — Flavour First." },
-      { property: "og:description", content: "South African–bred premium infused pre-rolls." },
+      { property: "og:title", content: "Terps — Premium Infused Pre-Rolls. Flavour First." },
+      { property: "og:description", content: "South African–bred, hand-infused premium pre-rolls. Live rosin. Lab verified. Flavour first." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Terps — Premium Infused Pre-Rolls. Flavour First." },
+      { name: "twitter:description", content: "South African–bred, hand-infused premium pre-rolls. Live rosin. Lab verified. Flavour first." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a3a16341-8f70-463a-b71a-a45e3f8f7eca/id-preview-3b63e6bb--77dbbbc2-96d2-4989-b854-9425b6231f32.lovable.app-1778929627130.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a3a16341-8f70-463a-b71a-a45e3f8f7eca/id-preview-3b63e6bb--77dbbbc2-96d2-4989-b854-9425b6231f32.lovable.app-1778929627130.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -74,14 +75,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const router = useRouter();
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      router.invalidate();
-      queryClient.invalidateQueries();
-    });
-    return () => subscription.unsubscribe();
-  }, [router, queryClient]);
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
@@ -90,7 +83,6 @@ function RootComponent() {
       </main>
       <Footer />
       <AgeGate />
-      <CartDrawer />
       <Toaster theme="dark" position="bottom-center" />
     </QueryClientProvider>
   );

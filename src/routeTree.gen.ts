@@ -26,6 +26,7 @@ import { Route as AccountForgotPasswordRouteImport } from './routes/account.forg
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
 import { Route as AuthenticatedAccountOrdersRouteImport } from './routes/_authenticated/account.orders'
+import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
 
 const WholesaleRoute = WholesaleRouteImport.update({
   id: '/wholesale',
@@ -112,6 +113,12 @@ const AuthenticatedAccountOrdersRoute =
     path: '/orders',
     getParentRoute: () => AuthenticatedAccountRoute,
   } as any)
+const AuthenticatedAccountOrdersOrderNumberRoute =
+  AuthenticatedAccountOrdersOrderNumberRouteImport.update({
+    id: '/$orderNumber',
+    path: '/$orderNumber',
+    getParentRoute: () => AuthenticatedAccountOrdersRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -128,8 +135,9 @@ export interface FileRoutesByFullPath {
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
-  '/account/orders': typeof AuthenticatedAccountOrdersRoute
+  '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -146,8 +154,9 @@ export interface FileRoutesByTo {
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
-  '/account/orders': typeof AuthenticatedAccountOrdersRoute
+  '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -166,8 +175,9 @@ export interface FileRoutesById {
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
-  '/_authenticated/account/orders': typeof AuthenticatedAccountOrdersRoute
+  '/_authenticated/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/_authenticated/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/account/orders'
     | '/api/public/bobpay-webhook'
+    | '/account/orders/$orderNumber'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -206,6 +217,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/account/orders'
     | '/api/public/bobpay-webhook'
+    | '/account/orders/$orderNumber'
   id:
     | '__root__'
     | '/'
@@ -225,6 +237,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/_authenticated/account/orders'
     | '/api/public/bobpay-webhook'
+    | '/_authenticated/account/orders/$orderNumber'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -366,15 +379,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountOrdersRouteImport
       parentRoute: typeof AuthenticatedAccountRoute
     }
+    '/_authenticated/account/orders/$orderNumber': {
+      id: '/_authenticated/account/orders/$orderNumber'
+      path: '/$orderNumber'
+      fullPath: '/account/orders/$orderNumber'
+      preLoaderRoute: typeof AuthenticatedAccountOrdersOrderNumberRouteImport
+      parentRoute: typeof AuthenticatedAccountOrdersRoute
+    }
   }
 }
 
+interface AuthenticatedAccountOrdersRouteChildren {
+  AuthenticatedAccountOrdersOrderNumberRoute: typeof AuthenticatedAccountOrdersOrderNumberRoute
+}
+
+const AuthenticatedAccountOrdersRouteChildren: AuthenticatedAccountOrdersRouteChildren =
+  {
+    AuthenticatedAccountOrdersOrderNumberRoute:
+      AuthenticatedAccountOrdersOrderNumberRoute,
+  }
+
+const AuthenticatedAccountOrdersRouteWithChildren =
+  AuthenticatedAccountOrdersRoute._addFileChildren(
+    AuthenticatedAccountOrdersRouteChildren,
+  )
+
 interface AuthenticatedAccountRouteChildren {
-  AuthenticatedAccountOrdersRoute: typeof AuthenticatedAccountOrdersRoute
+  AuthenticatedAccountOrdersRoute: typeof AuthenticatedAccountOrdersRouteWithChildren
 }
 
 const AuthenticatedAccountRouteChildren: AuthenticatedAccountRouteChildren = {
-  AuthenticatedAccountOrdersRoute: AuthenticatedAccountOrdersRoute,
+  AuthenticatedAccountOrdersRoute: AuthenticatedAccountOrdersRouteWithChildren,
 }
 
 const AuthenticatedAccountRouteWithChildren =

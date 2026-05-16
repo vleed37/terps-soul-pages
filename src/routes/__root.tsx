@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AgeGate } from "@/components/layout/AgeGate";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -79,6 +80,7 @@ function RootComponent() {
       </main>
       <Footer />
       <AgeGate />
+      <CartDrawer />
       <Toaster theme="dark" position="bottom-center" />
     </QueryClientProvider>
   );

@@ -7,7 +7,7 @@ import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { EffectChip, FlavorChip } from "@/components/brand/Chips";
 import { QuantityStepper } from "@/components/brand/QuantityStepper";
-import { cartLaunchingSoon } from "@/lib/cart-toast";
+import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
 
@@ -33,8 +33,27 @@ function StrainDetail() {
   const { data } = useSuspenseQuery({ queryKey: ["strain", slug], queryFn: () => getStrainBySlug({ data: { slug } }) });
   const s = data as unknown as Strain | null;
   const [qty, setQty] = useState(1);
+  const addItem = useCart((st) => st.addItem);
   if (!s) return null;
   const img = getStrainImage(s.slug);
+  const soldOut = s.stock_quantity <= 0;
+  const handleAdd = () => {
+    if (soldOut) return;
+    addItem(
+      {
+        strainId: s.id,
+        slug: s.slug,
+        name: s.name,
+        priceZar: Number(s.price_zar),
+        weightGrams: Number(s.weight_grams ?? 0.75),
+        imageUrl: img,
+        accentPrimary: s.accent_color_primary ?? undefined,
+        accentAccent: s.accent_color_accent ?? undefined,
+        maxStock: s.stock_quantity,
+      },
+      qty,
+    );
+  };
 
   return (
     <>
@@ -69,7 +88,9 @@ function StrainDetail() {
             <p className="meta-xs mt-4 text-gold">{s.stock_quantity} in stock · Limited</p>
             <Hairline className="my-8" />
             <div className="mb-6"><QuantityStepper value={qty} onChange={setQty} /></div>
-            <GoldButton onClick={cartLaunchingSoon} className="w-full">Add to cart</GoldButton>
+            <GoldButton onClick={handleAdd} disabled={soldOut} className="w-full">
+              {soldOut ? "Sold Out" : "Add to Cart"}
+            </GoldButton>
             <p className="mt-4 text-center text-sm">
               <a href="https://instagram.com/terps.official_" className="ghost-link">Or message us on Instagram</a>
             </p>

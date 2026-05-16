@@ -17,6 +17,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
+import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
 import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
 
 const WholesaleRoute = WholesaleRouteImport.update({
@@ -59,6 +60,11 @@ const StrainSlugRoute = StrainSlugRouteImport.update({
   path: '/strain/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
+  id: '/order/$orderNumber',
+  path: '/order/$orderNumber',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicBobpayWebhookRoute = ApiPublicBobpayWebhookRouteImport.update({
   id: '/api/public/bobpay-webhook',
   path: '/api/public/bobpay-webhook',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/wholesale': typeof WholesaleRoute
+  '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/wholesale': typeof WholesaleRoute
+  '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/wholesale': typeof WholesaleRoute
+  '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/stockists'
     | '/strains'
     | '/wholesale'
+    | '/order/$orderNumber'
     | '/strain/$slug'
     | '/api/public/bobpay-webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/stockists'
     | '/strains'
     | '/wholesale'
+    | '/order/$orderNumber'
     | '/strain/$slug'
     | '/api/public/bobpay-webhook'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/stockists'
     | '/strains'
     | '/wholesale'
+    | '/order/$orderNumber'
     | '/strain/$slug'
     | '/api/public/bobpay-webhook'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   StockistsRoute: typeof StockistsRoute
   StrainsRoute: typeof StrainsRoute
   WholesaleRoute: typeof WholesaleRoute
+  OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   StrainSlugRoute: typeof StrainSlugRoute
   ApiPublicBobpayWebhookRoute: typeof ApiPublicBobpayWebhookRoute
 }
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StrainSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/order/$orderNumber': {
+      id: '/order/$orderNumber'
+      path: '/order/$orderNumber'
+      fullPath: '/order/$orderNumber'
+      preLoaderRoute: typeof OrderOrderNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/bobpay-webhook': {
       id: '/api/public/bobpay-webhook'
       path: '/api/public/bobpay-webhook'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   StockistsRoute: StockistsRoute,
   StrainsRoute: StrainsRoute,
   WholesaleRoute: WholesaleRoute,
+  OrderOrderNumberRoute: OrderOrderNumberRoute,
   StrainSlugRoute: StrainSlugRoute,
   ApiPublicBobpayWebhookRoute: ApiPublicBobpayWebhookRoute,
 }

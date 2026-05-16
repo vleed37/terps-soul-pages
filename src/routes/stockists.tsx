@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { lazy, Suspense, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { MapPin, Phone } from "lucide-react";
 import { listStockists } from "@/lib/stockists.functions";
 import { listStrains } from "@/lib/strains.functions";
@@ -89,6 +89,8 @@ function StockistsPage() {
   const [userLoc, setUserLoc] = useState<[number, number] | null>(null);
   const [focused, setFocused] = useState<Stockist | null>(null);
   const [showMap, setShowMap] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const provinces = useMemo(
     () => Array.from(new Set(stockists.map((s) => s.province))).sort(),
@@ -295,6 +297,7 @@ function StockistsPage() {
           {/* MAP */}
           <div className={`md:col-span-2 ${showMap ? "block" : "hidden md:block"}`}>
             <div className="sticky top-24 h-[50vh] overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] md:h-[70vh]">
+              {mounted ? (
               <Suspense
                 fallback={
                   <div className="flex h-full items-center justify-center text-sm text-[color:var(--text-tertiary)]">
@@ -312,6 +315,11 @@ function StockistsPage() {
                   }}
                 />
               </Suspense>
+              ) : (
+                <div className="flex h-full items-center justify-center text-sm text-[color:var(--text-tertiary)]">
+                  Loading map…
+                </div>
+              )}
             </div>
           </div>
         </div>

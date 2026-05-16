@@ -1,13 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useForm, type UseFormRegisterReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useQuery } from "@tanstack/react-query";
 import { useCart, cartSelectors, computeTotals } from "@/lib/store/cart";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { initiateBobpayPayment } from "@/lib/checkout.functions";
+import { getMyCustomer, listMyAddresses, createAddress } from "@/lib/account.functions";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/checkout")({
@@ -33,18 +36,20 @@ const FormSchema = z
     email: z.string().email("Valid email required"),
     phone: z.string().min(6, "Required"),
     deliveryMethod: z.enum(["delivery", "collect"]),
+    savedAddressId: z.string().optional(), // "" = new address
     line1: z.string().optional(),
     line2: z.string().optional(),
     suburb: z.string().optional(),
     city: z.string().optional(),
     province: z.string().optional(),
     postalCode: z.string().optional(),
+    saveAddress: z.boolean().optional(),
     notes: z.string().max(1000).optional(),
     acceptTerms: z.boolean().refine((v) => v === true, { message: "Please accept the terms" }),
     confirmAge: z.boolean().refine((v) => v === true, { message: "You must confirm you're 18+" }),
   })
   .superRefine((v, ctx) => {
-    if (v.deliveryMethod === "delivery") {
+    if (v.deliveryMethod === "delivery" && !v.savedAddressId) {
       const req = ["line1", "suburb", "city", "province", "postalCode"] as const;
       for (const k of req) {
         if (!v[k] || String(v[k]).trim() === "") {
@@ -62,20 +67,60 @@ function CheckoutPage() {
   const hydrated = useCart((s) => s.hydrated);
   const clear = useCart((s) => s.clear);
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [submitting, setSubmitting] = useState(false);
+
+  const customerQ = useQuery({
+    queryKey: ["my-customer"],
+    queryFn: () => getMyCustomer(),
+    enabled: !!user,
+  });
+  const addressesQ = useQuery({
+    queryKey: ["my-addresses"],
+    queryFn: () => listMyAddresses(),
+    enabled: !!user,
+  });
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
+    setValue,
     formState: { errors },
   } = useForm<FormVals>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { deliveryMethod: "delivery" },
+    defaultValues: { deliveryMethod: "delivery", savedAddressId: "" },
   });
 
   const method = watch("deliveryMethod");
+  const savedAddressId = watch("savedAddressId");
   const totals = computeTotals(subtotal, method);
+
+  // Prefill from customer + email when signed in
+  useEffect(() => {
+    if (!user) return;
+    const c = customerQ.data;
+    const addrs = addressesQ.data ?? [];
+    const defaultAddr = addrs.find((a) => a.is_default) ?? addrs[0];
+    reset({
+      fullName: c?.full_name ?? user.user_metadata?.full_name ?? "",
+      email: user.email ?? "",
+      phone: c?.phone ?? "",
+      deliveryMethod: "delivery",
+      savedAddressId: defaultAddr?.id ?? "",
+      line1: "",
+      line2: "",
+      suburb: "",
+      city: "",
+      province: "",
+      postalCode: "",
+      saveAddress: false,
+      notes: "",
+      acceptTerms: false,
+      confirmAge: false,
+    });
+  }, [user, customerQ.data, addressesQ.data, reset]);
 
   useEffect(() => {
     if (hydrated && items.length === 0) {
@@ -83,9 +128,63 @@ function CheckoutPage() {
     }
   }, [hydrated, items.length, navigate]);
 
+  const selectedSavedAddr = useMemo(
+    () => (addressesQ.data ?? []).find((a) => a.id === savedAddressId),
+    [addressesQ.data, savedAddressId],
+  );
+
   const onSubmit = async (values: FormVals) => {
     setSubmitting(true);
     try {
+      // Resolve delivery address: saved or new
+      const addr =
+        values.deliveryMethod === "delivery"
+          ? selectedSavedAddr
+            ? {
+                line1: selectedSavedAddr.street_address,
+                line2: selectedSavedAddr.unit ?? null,
+                suburb: selectedSavedAddr.suburb ?? "",
+                city: selectedSavedAddr.city,
+                province: selectedSavedAddr.province,
+                postalCode: selectedSavedAddr.postal_code ?? "",
+              }
+            : {
+                line1: values.line1!,
+                line2: values.line2 || null,
+                suburb: values.suburb!,
+                city: values.city!,
+                province: values.province!,
+                postalCode: values.postalCode!,
+              }
+          : null;
+
+      // Save new address if requested
+      if (
+        user &&
+        values.deliveryMethod === "delivery" &&
+        !selectedSavedAddr &&
+        values.saveAddress
+      ) {
+        try {
+          await createAddress({
+            data: {
+              full_name: values.fullName,
+              phone: values.phone,
+              street_address: values.line1!,
+              unit: values.line2 || null,
+              suburb: values.suburb!,
+              city: values.city!,
+              province: values.province!,
+              postal_code: values.postalCode!,
+              country: "South Africa",
+              is_default: (addressesQ.data ?? []).length === 0,
+            },
+          });
+        } catch (e) {
+          console.warn("Could not save address", e);
+        }
+      }
+
       const res = await initiateBobpayPayment({
         data: {
           items: items.map((i) => ({
@@ -102,17 +201,7 @@ function CheckoutPage() {
             phone: values.phone,
           },
           deliveryMethod: values.deliveryMethod,
-          address:
-            values.deliveryMethod === "delivery"
-              ? {
-                  line1: values.line1!,
-                  line2: values.line2 || null,
-                  suburb: values.suburb!,
-                  city: values.city!,
-                  province: values.province!,
-                  postalCode: values.postalCode!,
-                }
-              : null,
+          address: addr,
           collectStockistId: null,
           notes: values.notes || null,
         },
@@ -139,9 +228,11 @@ function CheckoutPage() {
     }
   };
 
-  if (!hydrated) {
+  if (!hydrated || authLoading) {
     return <div className="px-6 py-32 text-center text-[color:var(--text-tertiary)]">Loading…</div>;
   }
+
+  const savedAddresses = addressesQ.data ?? [];
 
   return (
     <section className="px-6 py-16 md:px-12 md:py-24">
@@ -151,6 +242,22 @@ function CheckoutPage() {
           <MetaLabel gold>Checkout</MetaLabel>
           <h1 className="mt-4 font-display text-5xl md:text-6xl">Complete your order.</h1>
         </div>
+
+        {/* Sign-in banner for guests */}
+        {!user && (
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-[4px] border border-[color:var(--accent-gold)]/40 bg-[color:var(--accent-gold-muted)] px-6 py-4">
+            <p className="text-sm text-[color:var(--text-secondary)]">
+              <span className="text-gold">Have an account?</span> Sign in for faster checkout with saved addresses.
+            </p>
+            <Link
+              to="/account/login"
+              search={{ redirect: "/checkout" } as never}
+              className="ghost-link"
+            >
+              Sign in →
+            </Link>
+          </div>
+        )}
 
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -192,35 +299,66 @@ function CheckoutPage() {
 
               {method === "delivery" && (
                 <div className="mt-6 space-y-6">
-                  <Field label="Street Address" error={errors.line1?.message}>
-                    <input className={inputCls} {...register("line1")} />
-                  </Field>
-                  <Field label="Apartment, suite, etc. (optional)">
-                    <input className={inputCls} {...register("line2")} />
-                  </Field>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <Field label="Suburb" error={errors.suburb?.message}>
-                      <input className={inputCls} {...register("suburb")} />
-                    </Field>
-                    <Field label="City" error={errors.city?.message}>
-                      <input className={inputCls} {...register("city")} />
-                    </Field>
-                  </div>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <Field label="Province" error={errors.province?.message}>
-                      <select className={inputCls} {...register("province")}>
-                        <option value="">Select province</option>
-                        {PROVINCES.map((p) => (
-                          <option key={p} value={p}>
-                            {p}
+                  {user && savedAddresses.length > 0 && (
+                    <Field label="Saved address">
+                      <select
+                        className={inputCls}
+                        value={savedAddressId ?? ""}
+                        onChange={(e) => setValue("savedAddressId", e.target.value)}
+                      >
+                        {savedAddresses.map((a) => (
+                          <option key={a.id} value={a.id}>
+                            {a.label ? `${a.label} — ` : ""}
+                            {a.street_address}, {a.suburb ? `${a.suburb}, ` : ""}{a.city}
                           </option>
                         ))}
+                        <option value="">+ Use a new address</option>
                       </select>
                     </Field>
-                    <Field label="Postal Code" error={errors.postalCode?.message}>
-                      <input className={inputCls} {...register("postalCode")} />
-                    </Field>
-                  </div>
+                  )}
+
+                  {(!user || savedAddresses.length === 0 || !savedAddressId) && (
+                    <>
+                      <Field label="Street Address" error={errors.line1?.message}>
+                        <input className={inputCls} {...register("line1")} />
+                      </Field>
+                      <Field label="Apartment, suite, etc. (optional)">
+                        <input className={inputCls} {...register("line2")} />
+                      </Field>
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <Field label="Suburb" error={errors.suburb?.message}>
+                          <input className={inputCls} {...register("suburb")} />
+                        </Field>
+                        <Field label="City" error={errors.city?.message}>
+                          <input className={inputCls} {...register("city")} />
+                        </Field>
+                      </div>
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <Field label="Province" error={errors.province?.message}>
+                          <select className={inputCls} {...register("province")}>
+                            <option value="">Select province</option>
+                            {PROVINCES.map((p) => (
+                              <option key={p} value={p}>{p}</option>
+                            ))}
+                          </select>
+                        </Field>
+                        <Field label="Postal Code" error={errors.postalCode?.message}>
+                          <input className={inputCls} {...register("postalCode")} />
+                        </Field>
+                      </div>
+
+                      {user && (
+                        <label className="flex items-center gap-3 text-sm text-[color:var(--text-secondary)]">
+                          <input
+                            type="checkbox"
+                            className="accent-[color:var(--accent-gold)]"
+                            {...register("saveAddress")}
+                          />
+                          Save this address to my account
+                        </label>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
             </Section>

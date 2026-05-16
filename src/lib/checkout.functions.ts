@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { getRequest } from "@tanstack/react-start/server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const CartItemSchema = z.object({
@@ -36,6 +37,21 @@ const CheckoutInputSchema = z.object({
 export const initiateBobpayPayment = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => CheckoutInputSchema.parse(input))
   .handler(async ({ data }) => {
+    // Optional auth: if the caller is signed in, attach customer_id to the order.
+    let customerId: string | null = null;
+    try {
+      const req = getRequest();
+      const authHeader = req?.headers.get("authorization");
+      if (authHeader?.startsWith("Bearer ")) {
+        const token = authHeader.slice(7);
+        const { data: claims } = await supabaseAdmin.auth.getClaims(token);
+        if (claims?.claims?.sub) customerId = claims.claims.sub as string;
+      }
+    } catch (e) {
+      // Non-fatal — proceed as guest.
+      console.warn("[checkout] optional auth read failed", e);
+    }
+
     // 1) Re-fetch live strain data and verify stock + price server-side
     const ids = data.items.map((i) => i.strainId);
     const { data: strains, error: sErr } = await supabaseAdmin
@@ -90,6 +106,7 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
       .from("orders")
       .insert({
         order_number: orderNumber,
+        customer_id: customerId,
         guest_name: data.contact.fullName,
         guest_email: data.contact.email,
         guest_phone: data.contact.phone,

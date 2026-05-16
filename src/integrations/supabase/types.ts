@@ -14,6 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          city: string
+          country: string | null
+          created_at: string | null
+          customer_id: string
+          full_name: string | null
+          id: string
+          is_default: boolean | null
+          label: string | null
+          phone: string | null
+          postal_code: string | null
+          province: string
+          street_address: string
+          suburb: string | null
+          unit: string | null
+        }
+        Insert: {
+          city: string
+          country?: string | null
+          created_at?: string | null
+          customer_id: string
+          full_name?: string | null
+          id?: string
+          is_default?: boolean | null
+          label?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          province: string
+          street_address: string
+          suburb?: string | null
+          unit?: string | null
+        }
+        Update: {
+          city?: string
+          country?: string | null
+          created_at?: string | null
+          customer_id?: string
+          full_name?: string | null
+          id?: string
+          is_default?: boolean | null
+          label?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          province?: string
+          street_address?: string
+          suburb?: string | null
+          unit?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "addresses_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cart_items: {
         Row: {
           added_at: string | null
@@ -73,6 +132,39 @@ export type Database = {
           customer_id?: string | null
           id?: string
           session_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      customers: {
+        Row: {
+          birthdate: string | null
+          created_at: string | null
+          customer_type: string
+          full_name: string | null
+          id: string
+          marketing_opt_in: boolean | null
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          birthdate?: string | null
+          created_at?: string | null
+          customer_type?: string
+          full_name?: string | null
+          id: string
+          marketing_opt_in?: boolean | null
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          birthdate?: string | null
+          created_at?: string | null
+          customer_type?: string
+          full_name?: string | null
+          id?: string
+          marketing_opt_in?: boolean | null
+          phone?: string | null
           updated_at?: string | null
         }
         Relationships: []

@@ -14,7 +14,296 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      restock_notifications: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          notified: boolean | null
+          strain_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          notified?: boolean | null
+          strain_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          notified?: boolean | null
+          strain_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restock_notifications_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: false
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stockists: {
+        Row: {
+          address: string
+          carried_strain_ids: string[] | null
+          city: string
+          created_at: string | null
+          email: string | null
+          hours_json: Json | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          latitude: number | null
+          longitude: number | null
+          name: string
+          phone: string | null
+          postal_code: string | null
+          province: string
+          slug: string
+          suburb: string | null
+          unit: string | null
+          website: string | null
+        }
+        Insert: {
+          address: string
+          carried_strain_ids?: string[] | null
+          city: string
+          created_at?: string | null
+          email?: string | null
+          hours_json?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          phone?: string | null
+          postal_code?: string | null
+          province: string
+          slug: string
+          suburb?: string | null
+          unit?: string | null
+          website?: string | null
+        }
+        Update: {
+          address?: string
+          carried_strain_ids?: string[] | null
+          city?: string
+          created_at?: string | null
+          email?: string | null
+          hours_json?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          phone?: string | null
+          postal_code?: string | null
+          province?: string
+          slug?: string
+          suburb?: string | null
+          unit?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      strains: {
+        Row: {
+          accent_color_accent: string | null
+          accent_color_primary: string | null
+          batch_number: string | null
+          cbd_percentage: number | null
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          effect_category: string | null
+          flavor_tags: string[] | null
+          gallery_image_urls: string[] | null
+          hero_image_url: string | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          is_limited: boolean | null
+          lab_name: string | null
+          name: string
+          price_zar: number
+          product_image_url: string | null
+          slug: string
+          stock_quantity: number
+          story: string | null
+          tagline: string | null
+          terpene_breakdown: Json | null
+          test_date: string | null
+          thc_percentage: number | null
+          total_terpenes_percentage: number | null
+          updated_at: string | null
+          weight_grams: number | null
+          wholesale_price_zar: number | null
+        }
+        Insert: {
+          accent_color_accent?: string | null
+          accent_color_primary?: string | null
+          batch_number?: string | null
+          cbd_percentage?: number | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          effect_category?: string | null
+          flavor_tags?: string[] | null
+          gallery_image_urls?: string[] | null
+          hero_image_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          is_limited?: boolean | null
+          lab_name?: string | null
+          name: string
+          price_zar?: number
+          product_image_url?: string | null
+          slug: string
+          stock_quantity?: number
+          story?: string | null
+          tagline?: string | null
+          terpene_breakdown?: Json | null
+          test_date?: string | null
+          thc_percentage?: number | null
+          total_terpenes_percentage?: number | null
+          updated_at?: string | null
+          weight_grams?: number | null
+          wholesale_price_zar?: number | null
+        }
+        Update: {
+          accent_color_accent?: string | null
+          accent_color_primary?: string | null
+          batch_number?: string | null
+          cbd_percentage?: number | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          effect_category?: string | null
+          flavor_tags?: string[] | null
+          gallery_image_urls?: string[] | null
+          hero_image_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          is_limited?: boolean | null
+          lab_name?: string | null
+          name?: string
+          price_zar?: number
+          product_image_url?: string | null
+          slug?: string
+          stock_quantity?: number
+          story?: string | null
+          tagline?: string | null
+          terpene_breakdown?: Json | null
+          test_date?: string | null
+          thc_percentage?: number | null
+          total_terpenes_percentage?: number | null
+          updated_at?: string | null
+          weight_grams?: number | null
+          wholesale_price_zar?: number | null
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          is_active: boolean | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          is_active?: boolean | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          source?: string | null
+        }
+        Relationships: []
+      }
+      terpenes: {
+        Row: {
+          display_order: number | null
+          flavor_icon_url: string | null
+          found_in_strain_slugs: string[] | null
+          id: string
+          long_description: string | null
+          name: string
+          short_descriptor: string | null
+          slug: string
+          tastes_like: string | null
+        }
+        Insert: {
+          display_order?: number | null
+          flavor_icon_url?: string | null
+          found_in_strain_slugs?: string[] | null
+          id?: string
+          long_description?: string | null
+          name: string
+          short_descriptor?: string | null
+          slug: string
+          tastes_like?: string | null
+        }
+        Update: {
+          display_order?: number | null
+          flavor_icon_url?: string | null
+          found_in_strain_slugs?: string[] | null
+          id?: string
+          long_description?: string | null
+          name?: string
+          short_descriptor?: string | null
+          slug?: string
+          tastes_like?: string | null
+        }
+        Relationships: []
+      }
+      wholesale_inquiries: {
+        Row: {
+          business_name: string | null
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          message: string | null
+          phone: string | null
+          status: string | null
+        }
+        Insert: {
+          business_name?: string | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          message?: string | null
+          phone?: string | null
+          status?: string | null
+        }
+        Update: {
+          business_name?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string | null
+          phone?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

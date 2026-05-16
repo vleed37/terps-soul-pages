@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { getStrainImage } from "@/lib/strain-assets";
 import { EffectChip, StatusBadge } from "./Chips";
-import { Hairline } from "./Hairline";
 import type { Strain } from "@/lib/types";
 
 const EFFECT_LABEL: Record<string, string> = {
@@ -14,74 +13,79 @@ const EFFECT_LABEL: Record<string, string> = {
 export function StrainCard({ strain }: { strain: Strain }) {
   const img = getStrainImage(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
-  const primary = strain.accent_color_primary ?? "#1F3A2A";
   const accent = strain.accent_color_accent ?? "#6CC840";
+  const batch = strain.batch_number ?? "Batch 04";
 
   return (
     <Link
       to="/strain/$slug"
       params={{ slug: strain.slug }}
-      className="group relative block overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]"
+      className="group relative block overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-[color:var(--accent-gold)]/40 hover:shadow-[0_18px_50px_-12px_rgba(201,168,76,0.25)]"
     >
-      <motion.div
-        whileHover={{ y: -2 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative aspect-[4/5] w-full"
-      >
-        {/* radial accent glow */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse 70% 50% at 50% 35%, ${accent}22, ${primary}11 45%, transparent 75%), linear-gradient(180deg, ${primary}10, var(--bg-rich) 80%)`,
-          }}
-        />
-        {/* top-left batch + top-right effect */}
-        <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-5">
-          <span className="meta-xs text-gold opacity-60">Batch 04</span>
-          {soldOut ? (
-            <StatusBadge kind="soldout" />
-          ) : (
-            strain.effect_category && <EffectChip>{EFFECT_LABEL[strain.effect_category]}</EffectChip>
+      <div className="flex aspect-[4/5] w-full flex-col">
+        {/* Zone 1 — product hero (60%) */}
+        <div className="relative flex-[3] overflow-hidden">
+          {/* subtle dark gradient + accent glow upper area */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 60% 40% at 50% 25%, ${accent}18, transparent 70%), linear-gradient(180deg, rgba(255,255,255,0.02), var(--bg-rich) 90%)`,
+            }}
+          />
+          {/* corner meta */}
+          <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between px-5 pt-5">
+            <span className="meta-xs text-gold opacity-60">{batch}</span>
+            {soldOut ? (
+              <StatusBadge kind="soldout" />
+            ) : (
+              strain.effect_category && <EffectChip>{EFFECT_LABEL[strain.effect_category]}</EffectChip>
+            )}
+          </div>
+          {/* product image — centered, subtle tilt, no overlapping text */}
+          {img && (
+            <motion.img
+              src={img}
+              alt={strain.name}
+              className="absolute left-1/2 top-1/2 max-h-[82%] w-auto -translate-x-1/2 -translate-y-1/2 select-none drop-shadow-[0_22px_40px_rgba(0,0,0,0.65)] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              style={{ rotate: "5deg" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: soldOut ? 0.55 : 1 }}
+              transition={{ duration: 0.6 }}
+              draggable={false}
+            />
           )}
         </div>
-        {/* product image */}
-        {img && (
-          <motion.img
-            src={img}
-            alt={strain.name}
-            className="absolute left-1/2 top-1/2 max-h-[78%] w-auto -translate-x-1/2 -translate-y-1/2 select-none drop-shadow-[0_18px_36px_rgba(0,0,0,0.6)]"
-            style={{ rotate: "5deg" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: soldOut ? 0.6 : 1 }}
-            transition={{ duration: 0.6 }}
-            whileHover={{ scale: 1.02 }}
-            draggable={false}
-          />
-        )}
-        {/* bottom content */}
-        <div className="absolute inset-x-0 bottom-0 z-10 p-6">
-          <Hairline className="mb-4 w-full" />
-          <h3 className="font-display text-[1.75rem] font-normal leading-none text-[color:var(--text-primary)]">
-            {strain.name}
-          </h3>
-          {strain.tagline && (
-            <p className="mt-2 font-display text-base italic text-[color:var(--text-secondary)]">
-              {strain.tagline}
-            </p>
-          )}
-          <div className="mt-4 flex items-baseline justify-between">
-            <span className="font-body text-lg font-bold">R{Number(strain.price_zar).toFixed(0)}</span>
-            <span className="meta-xs text-[color:var(--text-tertiary)]">
-              {strain.weight_grams ?? 0.75}g · Live rosin
-            </span>
+
+        {/* gold hairline divider */}
+        <div className="h-px w-full bg-[color:var(--accent-gold)]/40" />
+
+        {/* Zone 2 — info band (40%) */}
+        <div className="flex flex-[2] flex-col justify-between bg-[color:var(--bg-surface)] p-5">
+          <div>
+            <h3 className="font-display text-[1.75rem] font-normal leading-none text-[color:var(--text-primary)]">
+              {strain.name}
+            </h3>
+            {strain.tagline && (
+              <p className="mt-2 font-display text-[0.95rem] italic text-[color:var(--text-secondary)]">
+                {strain.tagline}
+              </p>
+            )}
           </div>
-          <div className="mt-3 flex items-center justify-end">
-            <span className="font-display text-sm italic text-[color:var(--accent-gold)] transition-transform duration-400 group-hover:translate-x-1">
+          <div className="mt-4 flex items-end justify-between gap-3">
+            <div className="flex flex-col gap-1.5">
+              <span className="font-body text-[1.125rem] font-bold leading-none text-[color:var(--text-primary)]">
+                R{Number(strain.price_zar).toFixed(0)}
+              </span>
+              <span className="meta-xs text-[color:var(--text-tertiary)]">
+                {strain.weight_grams ?? 0.75}g · Live rosin
+              </span>
+            </div>
+            <span className="font-display text-sm italic text-[color:var(--accent-gold)] transition-transform duration-400 ease-out group-hover:translate-x-1">
               {soldOut ? "Join waitlist →" : "Discover →"}
             </span>
           </div>
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 }

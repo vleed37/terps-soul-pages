@@ -14,6 +14,215 @@ export type Database = {
   }
   public: {
     Tables: {
+      cart_items: {
+        Row: {
+          added_at: string | null
+          cart_id: string | null
+          id: string
+          quantity: number
+          strain_id: string | null
+        }
+        Insert: {
+          added_at?: string | null
+          cart_id?: string | null
+          id?: string
+          quantity: number
+          strain_id?: string | null
+        }
+        Update: {
+          added_at?: string | null
+          cart_id?: string | null
+          id?: string
+          quantity?: number
+          strain_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_cart_id_fkey"
+            columns: ["cart_id"]
+            isOneToOne: false
+            referencedRelation: "carts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cart_items_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: false
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      carts: {
+        Row: {
+          created_at: string | null
+          customer_id: string | null
+          id: string
+          session_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          session_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          session_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          id: string
+          line_total: number
+          order_id: string | null
+          quantity: number
+          strain_id: string | null
+          strain_name: string
+          strain_slug: string
+          unit_price: number
+        }
+        Insert: {
+          id?: string
+          line_total: number
+          order_id?: string | null
+          quantity: number
+          strain_id?: string | null
+          strain_name: string
+          strain_slug: string
+          unit_price: number
+        }
+        Update: {
+          id?: string
+          line_total?: number
+          order_id?: string | null
+          quantity?: number
+          strain_id?: string | null
+          strain_name?: string
+          strain_slug?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: false
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          bobpay_reference: string | null
+          bobpay_transaction_id: string | null
+          collect_stockist_id: string | null
+          created_at: string | null
+          customer_id: string | null
+          delivery_address: Json | null
+          delivery_fee: number
+          delivery_method: string | null
+          discount: number
+          estimated_delivery_date: string | null
+          guest_email: string | null
+          guest_name: string | null
+          guest_phone: string | null
+          id: string
+          ip_address: string | null
+          notes: string | null
+          order_number: string
+          payment_completed_at: string | null
+          payment_method: string | null
+          payment_status: string
+          status: string
+          subtotal: number
+          total: number
+          tracking_number: string | null
+          tracking_url: string | null
+          updated_at: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          bobpay_reference?: string | null
+          bobpay_transaction_id?: string | null
+          collect_stockist_id?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          delivery_address?: Json | null
+          delivery_fee?: number
+          delivery_method?: string | null
+          discount?: number
+          estimated_delivery_date?: string | null
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
+          id?: string
+          ip_address?: string | null
+          notes?: string | null
+          order_number: string
+          payment_completed_at?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          status?: string
+          subtotal: number
+          total: number
+          tracking_number?: string | null
+          tracking_url?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          bobpay_reference?: string | null
+          bobpay_transaction_id?: string | null
+          collect_stockist_id?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          delivery_address?: Json | null
+          delivery_fee?: number
+          delivery_method?: string | null
+          discount?: number
+          estimated_delivery_date?: string | null
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
+          id?: string
+          ip_address?: string | null
+          notes?: string | null
+          order_number?: string
+          payment_completed_at?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          status?: string
+          subtotal?: number
+          total?: number
+          tracking_number?: string | null
+          tracking_url?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_collect_stockist_id_fkey"
+            columns: ["collect_stockist_id"]
+            isOneToOne: false
+            referencedRelation: "stockists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restock_notifications: {
         Row: {
           created_at: string | null
@@ -309,7 +518,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      decrement_stock: {
+        Args: { p_qty: number; p_strain_id: string }
+        Returns: undefined
+      }
+      generate_order_number: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never

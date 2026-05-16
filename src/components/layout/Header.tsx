@@ -2,7 +2,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, Search, User, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
-import { cartLaunchingSoon } from "@/lib/cart-toast";
+import { useCart, cartSelectors } from "@/lib/store/cart";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -16,6 +16,9 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const loc = useLocation();
+  const openCart = useCart((s) => s.openDrawer);
+  const itemCount = useCart(cartSelectors.itemCount);
+  const hydrated = useCart((s) => s.hydrated);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -63,10 +66,15 @@ export function Header() {
             </button>
             <button
               aria-label="Cart"
-              onClick={cartLaunchingSoon}
-              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
+              onClick={openCart}
+              className="relative text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
             >
               <ShoppingBag strokeWidth={1.5} className="h-5 w-5" />
+              {hydrated && itemCount > 0 && (
+                <span className="absolute -right-2 -top-2 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[color:var(--accent-gold)] px-1 text-[10px] font-bold text-[color:var(--bg-rich)]">
+                  {itemCount}
+                </span>
+              )}
             </button>
             <button
               aria-label="Open menu"

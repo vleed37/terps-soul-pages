@@ -15,10 +15,17 @@ import { Route as StockistsRouteImport } from './routes/stockists'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
+import { Route as AccountResetPasswordRouteImport } from './routes/account.reset-password'
+import { Route as AccountRegisterRouteImport } from './routes/account.register'
+import { Route as AccountLoginRouteImport } from './routes/account.login'
+import { Route as AccountForgotPasswordRouteImport } from './routes/account.forgot-password'
+import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
+import { Route as AuthenticatedAccountOrdersRouteImport } from './routes/_authenticated/account.orders'
 
 const WholesaleRoute = WholesaleRouteImport.update({
   id: '/wholesale',
@@ -50,6 +57,10 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -65,11 +76,42 @@ const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
   path: '/order/$orderNumber',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
+  id: '/account/reset-password',
+  path: '/account/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRegisterRoute = AccountRegisterRouteImport.update({
+  id: '/account/register',
+  path: '/account/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountLoginRoute = AccountLoginRouteImport.update({
+  id: '/account/login',
+  path: '/account/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
+  id: '/account/forgot-password',
+  path: '/account/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const ApiPublicBobpayWebhookRoute = ApiPublicBobpayWebhookRouteImport.update({
   id: '/api/public/bobpay-webhook',
   path: '/api/public/bobpay-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAccountOrdersRoute =
+  AuthenticatedAccountOrdersRouteImport.update({
+    id: '/orders',
+    path: '/orders',
+    getParentRoute: () => AuthenticatedAccountRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -79,8 +121,14 @@ export interface FileRoutesByFullPath {
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/wholesale': typeof WholesaleRoute
+  '/account': typeof AuthenticatedAccountRouteWithChildren
+  '/account/forgot-password': typeof AccountForgotPasswordRoute
+  '/account/login': typeof AccountLoginRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/reset-password': typeof AccountResetPasswordRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
+  '/account/orders': typeof AuthenticatedAccountOrdersRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -91,21 +139,34 @@ export interface FileRoutesByTo {
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/wholesale': typeof WholesaleRoute
+  '/account': typeof AuthenticatedAccountRouteWithChildren
+  '/account/forgot-password': typeof AccountForgotPasswordRoute
+  '/account/login': typeof AccountLoginRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/reset-password': typeof AccountResetPasswordRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
+  '/account/orders': typeof AuthenticatedAccountOrdersRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/shop': typeof ShopRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/wholesale': typeof WholesaleRoute
+  '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
+  '/account/forgot-password': typeof AccountForgotPasswordRoute
+  '/account/login': typeof AccountLoginRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/reset-password': typeof AccountResetPasswordRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
+  '/_authenticated/account/orders': typeof AuthenticatedAccountOrdersRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
 }
 export interface FileRouteTypes {
@@ -118,8 +179,14 @@ export interface FileRouteTypes {
     | '/stockists'
     | '/strains'
     | '/wholesale'
+    | '/account'
+    | '/account/forgot-password'
+    | '/account/login'
+    | '/account/register'
+    | '/account/reset-password'
     | '/order/$orderNumber'
     | '/strain/$slug'
+    | '/account/orders'
     | '/api/public/bobpay-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -130,31 +197,49 @@ export interface FileRouteTypes {
     | '/stockists'
     | '/strains'
     | '/wholesale'
+    | '/account'
+    | '/account/forgot-password'
+    | '/account/login'
+    | '/account/register'
+    | '/account/reset-password'
     | '/order/$orderNumber'
     | '/strain/$slug'
+    | '/account/orders'
     | '/api/public/bobpay-webhook'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/checkout'
     | '/shop'
     | '/stockists'
     | '/strains'
     | '/wholesale'
+    | '/_authenticated/account'
+    | '/account/forgot-password'
+    | '/account/login'
+    | '/account/register'
+    | '/account/reset-password'
     | '/order/$orderNumber'
     | '/strain/$slug'
+    | '/_authenticated/account/orders'
     | '/api/public/bobpay-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
   CheckoutRoute: typeof CheckoutRoute
   ShopRoute: typeof ShopRoute
   StockistsRoute: typeof StockistsRoute
   StrainsRoute: typeof StrainsRoute
   WholesaleRoute: typeof WholesaleRoute
+  AccountForgotPasswordRoute: typeof AccountForgotPasswordRoute
+  AccountLoginRoute: typeof AccountLoginRoute
+  AccountRegisterRoute: typeof AccountRegisterRoute
+  AccountResetPasswordRoute: typeof AccountResetPasswordRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   StrainSlugRoute: typeof StrainSlugRoute
   ApiPublicBobpayWebhookRoute: typeof ApiPublicBobpayWebhookRoute
@@ -204,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -225,6 +317,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderOrderNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/reset-password': {
+      id: '/account/reset-password'
+      path: '/account/reset-password'
+      fullPath: '/account/reset-password'
+      preLoaderRoute: typeof AccountResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/register': {
+      id: '/account/register'
+      path: '/account/register'
+      fullPath: '/account/register'
+      preLoaderRoute: typeof AccountRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/login': {
+      id: '/account/login'
+      path: '/account/login'
+      fullPath: '/account/login'
+      preLoaderRoute: typeof AccountLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/forgot-password': {
+      id: '/account/forgot-password'
+      path: '/account/forgot-password'
+      fullPath: '/account/forgot-password'
+      preLoaderRoute: typeof AccountForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/api/public/bobpay-webhook': {
       id: '/api/public/bobpay-webhook'
       path: '/api/public/bobpay-webhook'
@@ -232,17 +359,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicBobpayWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/account/orders': {
+      id: '/_authenticated/account/orders'
+      path: '/orders'
+      fullPath: '/account/orders'
+      preLoaderRoute: typeof AuthenticatedAccountOrdersRouteImport
+      parentRoute: typeof AuthenticatedAccountRoute
+    }
   }
 }
 
+interface AuthenticatedAccountRouteChildren {
+  AuthenticatedAccountOrdersRoute: typeof AuthenticatedAccountOrdersRoute
+}
+
+const AuthenticatedAccountRouteChildren: AuthenticatedAccountRouteChildren = {
+  AuthenticatedAccountOrdersRoute: AuthenticatedAccountOrdersRoute,
+}
+
+const AuthenticatedAccountRouteWithChildren =
+  AuthenticatedAccountRoute._addFileChildren(AuthenticatedAccountRouteChildren)
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRouteWithChildren
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRouteWithChildren,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   CheckoutRoute: CheckoutRoute,
   ShopRoute: ShopRoute,
   StockistsRoute: StockistsRoute,
   StrainsRoute: StrainsRoute,
   WholesaleRoute: WholesaleRoute,
+  AccountForgotPasswordRoute: AccountForgotPasswordRoute,
+  AccountLoginRoute: AccountLoginRoute,
+  AccountRegisterRoute: AccountRegisterRoute,
+  AccountResetPasswordRoute: AccountResetPasswordRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
   StrainSlugRoute: StrainSlugRoute,
   ApiPublicBobpayWebhookRoute: ApiPublicBobpayWebhookRoute,
@@ -250,3 +412,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage } from "@/lib/strain-assets";
+import { getStrainImage, getStrainProductImage } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -35,7 +35,8 @@ function StrainDetail() {
   const [qty, setQty] = useState(1);
   const addItem = useCart((st) => st.addItem);
   if (!s) return null;
-  const img = getStrainImage(s.slug);
+  const img = getStrainProductImage(s.slug);
+  const bgImg = getStrainImage(s.slug);
   const soldOut = s.stock_quantity <= 0;
   const handleAdd = () => {
     if (soldOut) return;
@@ -59,7 +60,7 @@ function StrainDetail() {
     <>
       {/* HERO */}
       <section className="relative h-[70vh] overflow-hidden">
-        {img && <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />}
+        {bgImg && <img src={bgImg} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[color:var(--bg-rich)]/60 to-[color:var(--bg-rich)]" />
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-end px-6 pb-16 md:px-12">
           <Link to="/shop" className="ghost-link self-start">← The collection</Link>
@@ -79,7 +80,7 @@ function StrainDetail() {
       <section className="px-6 py-24 md:px-12">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 md:grid-cols-2">
           <div className="rounded-lg bg-[color:var(--bg-surface)] p-12">
-            {img && <img src={img} alt={s.name} className="mx-auto max-h-[520px]" />}
+            {img && <img src={img} alt={s.name} className="mx-auto max-h-[520px] rounded-xl" />}
           </div>
           <div>
             <h2 className="font-display text-4xl md:text-5xl">{s.name}</h2>

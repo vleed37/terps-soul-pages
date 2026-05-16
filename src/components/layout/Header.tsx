@@ -41,7 +41,7 @@ export function Header() {
       >
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-8">
           <Link to="/" className="flex items-center">
-            <Logo height={scrolled ? 24 : 32} />
+            <Logo height={scrolled ? 48 : 64} />
           </Link>
 
           <nav className="hidden items-center gap-10 md:flex">
@@ -91,7 +91,7 @@ export function Header() {
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col bg-[color:var(--bg-rich)] md:hidden">
           <div className="flex h-[88px] items-center justify-between px-6">
-            <Logo height={28} />
+            <Logo height={56} />
             <button aria-label="Close menu" onClick={() => setOpen(false)} className="text-[color:var(--text-primary)]">
               <X strokeWidth={1.5} className="h-6 w-6" />
             </button>

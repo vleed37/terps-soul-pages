@@ -42,7 +42,14 @@ function Home() {
       {/* 1. HERO */}
       <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
         <motion.div style={{ y: bgY }} className="absolute inset-0">
-          <img src={lifestyle1} alt="" className="h-[120%] w-full object-cover opacity-50" />
+          <video
+            src="/hero.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="h-[120%] w-full object-cover opacity-60"
+          />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/30 via-[color:var(--bg-rich)]/40 to-[color:var(--bg-rich)]" />
         <div className="absolute right-6 top-28 z-10 flex items-center gap-2 md:right-12">

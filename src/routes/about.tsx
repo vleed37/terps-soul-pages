@@ -132,7 +132,7 @@ function AboutPage() {
                 "radial-gradient(ellipse at 50% 100%, rgba(201,168,76,0.12), transparent 70%), linear-gradient(180deg, var(--bg-surface), var(--bg-rich))",
             }}
           >
-            {strains.slice(0, 4).map((s, i) => {
+            {strains.slice(0, 4).map((s) => {
               const img = getStrainProductImage(s.slug);
               if (!img) return null;
               return (

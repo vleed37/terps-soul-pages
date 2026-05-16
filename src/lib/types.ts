@@ -40,13 +40,18 @@ export type Stockist = {
   slug: string;
   name: string;
   address: string;
+  unit: string | null;
   suburb: string | null;
   city: string;
   province: string;
+  postal_code: string | null;
   latitude: number | null;
   longitude: number | null;
   phone: string | null;
+  email: string | null;
+  website: string | null;
   hours_json: Record<string, { open: string; close: string }> | null;
+  carried_strain_ids: string[] | null;
   is_featured: boolean | null;
 };
 

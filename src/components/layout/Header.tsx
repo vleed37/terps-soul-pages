@@ -61,9 +61,9 @@ export function Header() {
             <button aria-label="Search" className="hidden text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:block">
               <Search strokeWidth={1.5} className="h-5 w-5" />
             </button>
-            <button aria-label="Account" className="hidden text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:block">
+            <Link to="/account" aria-label="Account" className="hidden text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:block">
               <User strokeWidth={1.5} className="h-5 w-5" />
-            </button>
+            </Link>
             <button
               aria-label="Cart"
               onClick={openCart}

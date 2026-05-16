@@ -1,26 +1,19 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { getStrainImage } from "@/lib/strain-assets";
-import { EffectChip, StatusBadge } from "./Chips";
+import { getStrainProductImage } from "@/lib/strain-assets";
+import { StatusBadge } from "./Chips";
 import type { Strain } from "@/lib/types";
 
-const EFFECT_LABEL: Record<string, string> = {
-  daytime: "Daytime",
-  balanced: "Balanced",
-  nighttime: "Nighttime",
-};
-
 export function StrainCard({ strain }: { strain: Strain }) {
-  const img = getStrainImage(strain.slug);
+  const img = getStrainProductImage(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
   const accent = strain.accent_color_accent ?? "#6CC840";
-  const batch = strain.batch_number ?? "Batch 04";
 
   return (
     <Link
       to="/strain/$slug"
       params={{ slug: strain.slug }}
-      className="group relative block overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-[color:var(--accent-gold)]/40 hover:shadow-[0_18px_50px_-12px_rgba(201,168,76,0.25)]"
+      className="group relative block overflow-hidden rounded-xl border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-[color:var(--accent-gold)]/40 hover:shadow-[0_18px_50px_-12px_rgba(201,168,76,0.25)]"
     >
       <div className="flex aspect-[4/5] w-full flex-col">
         {/* Zone 1 — product hero (60%) */}
@@ -32,22 +25,17 @@ export function StrainCard({ strain }: { strain: Strain }) {
               background: `radial-gradient(ellipse 60% 40% at 50% 25%, ${accent}18, transparent 70%), linear-gradient(180deg, rgba(255,255,255,0.02), var(--bg-rich) 90%)`,
             }}
           />
-          {/* corner meta */}
-          <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between px-5 pt-5">
-            <span className="meta-xs text-gold opacity-60">{batch}</span>
-            {soldOut ? (
+          {soldOut && (
+            <div className="absolute right-5 top-5 z-10">
               <StatusBadge kind="soldout" />
-            ) : (
-              strain.effect_category && <EffectChip>{EFFECT_LABEL[strain.effect_category]}</EffectChip>
-            )}
-          </div>
-          {/* product image — centered, subtle tilt, no overlapping text */}
+            </div>
+          )}
+          {/* product image — centered, upright */}
           {img && (
             <motion.img
               src={img}
               alt={strain.name}
-              className="absolute left-1/2 top-1/2 max-h-[82%] w-auto -translate-x-1/2 -translate-y-1/2 select-none drop-shadow-[0_22px_40px_rgba(0,0,0,0.65)] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-              style={{ rotate: "5deg" }}
+              className="absolute left-1/2 top-1/2 max-h-[88%] w-auto -translate-x-1/2 -translate-y-1/2 select-none rounded-xl drop-shadow-[0_22px_40px_rgba(0,0,0,0.65)] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               initial={{ opacity: 0 }}
               animate={{ opacity: soldOut ? 0.55 : 1 }}
               transition={{ duration: 0.6 }}

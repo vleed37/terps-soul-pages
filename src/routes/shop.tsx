@@ -71,7 +71,7 @@ function ShopPage() {
   const sort = search.sort ?? "featured";
 
   const setSearch = (partial: Partial<typeof search>) =>
-    navigate({ search: (prev) => ({ ...prev, ...partial }) });
+    navigate({ search: (prev: typeof search) => ({ ...prev, ...partial }) });
 
   const toggleArr = <T extends string>(arr: T[], v: T): T[] =>
     arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
@@ -82,7 +82,7 @@ function ShopPage() {
         return false;
       if (flavor.length) {
         const tags = (s.flavor_tags ?? []).map((t) => t.toLowerCase());
-        if (!flavor.some((f) => tags.some((t) => t.includes(f)))) return false;
+        if (!flavor.some((f: string) => tags.some((t) => t.includes(f)))) return false;
       }
       if (avail.length) {
         const isSold = s.stock_quantity <= 0;

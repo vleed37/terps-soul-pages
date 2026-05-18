@@ -52,7 +52,7 @@ function Home() {
             className="hero-video h-[120%] w-full object-cover opacity-60"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/30 via-[color:var(--bg-rich)]/40 to-[color:var(--bg-rich)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/50 via-[color:var(--bg-rich)]/65 to-[color:var(--bg-rich)]" />
         <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6 md:px-12">
           <Hairline w="120px" className="mb-8" />
           <h1 className="max-w-3xl font-display text-[2.75rem] font-normal leading-[1.05] md:text-[5rem]">
@@ -98,8 +98,16 @@ function Home() {
       {featured && (
         <section className="relative overflow-hidden">
           <div className="absolute inset-0">
-            <img src={greenCrack} alt="" className="h-full w-full object-cover opacity-30" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--bg-rich)] via-[color:var(--bg-rich)]/85 to-transparent" />
+            <img src={greenCrack} alt="" className="h-full w-full object-cover opacity-15" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--bg-rich)] via-[color:var(--bg-rich)]/92 to-[color:var(--bg-rich)]/70" />
+            {/* soft sage gradient blob behind product */}
+            <div
+              className="absolute right-[8%] top-1/2 hidden h-[420px] w-[420px] -translate-y-1/2 rounded-full md:block"
+              style={{
+                background: "radial-gradient(circle, rgba(164,178,133,0.12), transparent 70%)",
+                filter: "blur(20px)",
+              }}
+            />
           </div>
           <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-12 px-6 py-32 md:grid-cols-5 md:py-48">
             <ScrollReveal className="md:col-span-3">
@@ -109,9 +117,6 @@ function Home() {
               <p className="mt-8 max-w-lg font-body text-lg leading-relaxed text-[color:var(--text-primary)]">
                 {featured.story}
               </p>
-              <div className="mt-10">
-                <GhostLink to="/strain/$slug" >{`Discover ${featured.name}`}</GhostLink>
-              </div>
             </ScrollReveal>
             <ScrollReveal delay={0.15} className="hidden md:col-span-2 md:block">
               <img src={getStrainProductImage(featured.slug) ?? greenCrack} alt={featured.name} className="mx-auto max-h-[520px] w-auto rounded-xl drop-shadow-[0_28px_60px_rgba(0,0,0,0.8)]" />
@@ -127,7 +132,7 @@ function Home() {
             <MetaLabel gold>The Craft</MetaLabel>
             <h2 className="mt-6 font-display text-4xl leading-tight md:text-5xl">Built slowly. <em className="text-[color:var(--accent-gold)]">Built once.</em></h2>
           </ScrollReveal>
-          <div className="mt-20 grid grid-cols-1 gap-px bg-[color:var(--border-luxe)] md:grid-cols-3">
+          <div className="mt-20 grid grid-cols-1 gap-px bg-[color:var(--border-subtle)] md:grid-cols-3">
             {[
               { t: "Selected Strains", d: "Hand-picked for terpene profile. Only the cultivars that earn their flavor." },
               { t: "Extended Curing", d: "Slow-cured to lock in the depth and the body. Patience over volume, every batch." },
@@ -145,8 +150,8 @@ function Home() {
 
       {/* 5. LIFESTYLE QUOTE */}
       <section className="relative h-[80vh] overflow-hidden">
-        <img src={lifestyle3} alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
-        <div className="absolute inset-0 bg-[color:var(--bg-rich)]/50" />
+        <img src={lifestyle3} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
+        <div className="absolute inset-0 bg-[color:var(--bg-rich)]/65" />
         <div className="relative mx-auto flex h-full max-w-3xl items-center justify-center px-6">
           <PullQuote attribution="Terps">We don't chase hype. We chase flavor.</PullQuote>
         </div>
@@ -186,8 +191,8 @@ function Home() {
 
       {/* 8. CLOSING */}
       <section className="relative overflow-hidden px-6 py-32 md:py-48">
-        <img src={lifestyle4} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
-        <div className="absolute inset-0 bg-[color:var(--bg-rich)]/70" />
+        <img src={lifestyle4} alt="" className="absolute inset-0 h-full w-full object-cover opacity-15" />
+        <div className="absolute inset-0 bg-[color:var(--bg-rich)]/80" />
         <div className="relative mx-auto max-w-3xl text-center">
           <p className="font-display text-5xl italic leading-tight md:text-7xl">
             Flavour first. <em className="text-[color:var(--accent-gold)]">Always.</em>

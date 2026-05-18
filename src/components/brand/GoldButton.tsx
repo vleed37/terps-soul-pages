@@ -25,7 +25,7 @@ const variants: Record<Variant, string> = {
   secondary:
     "bg-transparent border border-[color:var(--accent-gold)] text-[color:var(--accent-gold)] hover:bg-[color:var(--accent-gold-muted)]",
   tertiary:
-    "bg-transparent border border-[color:var(--text-primary)] text-[color:var(--text-primary)] hover:bg-white/5",
+    "bg-transparent border border-[color:var(--text-primary)] text-[color:var(--text-primary)] hover:bg-[color:var(--accent-gold-muted)]",
 };
 
 export const GoldButton = forwardRef<HTMLButtonElement, Props>(

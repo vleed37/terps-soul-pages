@@ -69,9 +69,9 @@ function StrainDetail() {
           muted
           loop
           playsInline
-          className="hero-video absolute inset-0 h-full w-full object-cover opacity-50"
+          className="hero-video absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[color:var(--bg-rich)]/60 to-[color:var(--bg-rich)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/30 via-[color:var(--bg-rich)]/70 to-[color:var(--bg-rich)]" />
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-end px-6 pb-16 md:px-12">
           <Link to="/shop" className="ghost-link self-start">← The collection</Link>
           <div className="mt-8">

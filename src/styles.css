@@ -61,56 +61,64 @@
 }
 
 :root {
-  --bg-base: oklch(0.08 0.005 60);
-  --bg-surface: oklch(0.12 0.005 60);
-  --bg-elevated: oklch(0.15 0.006 60);
-  --bg-rich: oklch(0.04 0.003 60);
+  /* Dark mode (default) — deep forest */
+  --bg-base: #111B10;
+  --bg-surface: #1A251A;
+  --bg-elevated: #232E22;
+  --bg-rich: #0B130B;
+  --bg-contrast: #FBFDFD;
 
-  --text-primary: oklch(0.94 0.015 85);
-  --text-secondary: oklch(0.66 0.013 80);
-  --text-tertiary: oklch(0.42 0.012 70);
+  --text-primary: #FBFDFD;
+  --text-secondary: #ADB7A5;
+  --text-tertiary: #7C8478;
+  --text-on-dark: #111B10;
 
-  --accent-gold: oklch(0.72 0.115 80);
-  --accent-gold-hover: oklch(0.77 0.125 82);
-  --accent-gold-muted: oklch(0.72 0.115 80 / 0.15);
-  --accent-gold-deep: oklch(0.52 0.1 80);
+  /* Olive sage accent — replaces gold across the brand */
+  --accent-gold: #A4B285;
+  --accent-gold-hover: #B6C29A;
+  --accent-gold-muted: rgba(164, 178, 133, 0.18);
+  --accent-gold-deep: #6B7559;
 
-  --border-subtle: oklch(0.17 0.006 60);
-  --border-strong: oklch(0.24 0.008 60);
-  --border-luxe: oklch(0.72 0.115 80 / 0.22);
+  --border-subtle: #283526;
+  --border-strong: #3D4F3A;
+  --border-luxe: rgba(164, 178, 133, 0.40);
 
-  --status-success: oklch(0.7 0.12 150);
-  --status-error: oklch(0.6 0.15 25);
+  --status-success: #6B8E5A;
+  --status-warning: #C9A24B;
+  --status-error: #B85555;
 
   --shadow-card: 0 8px 24px rgba(0,0,0,0.3);
   --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.5);
   --shadow-modal: 0 24px 80px rgba(0,0,0,0.7);
-  --on-gold: #0a0a0a;
+  --on-gold: #111B10;
 }
 
 html.light {
-  --bg-base: #FFF8EA;
-  --bg-surface: #F5EDD8;
-  --bg-elevated: #EFE4C8;
-  --bg-rich: #FAF1DC;
+  /* Light mode — Luna cream */
+  --bg-base: #FBFDFD;
+  --bg-surface: #F2F4F0;
+  --bg-elevated: #E8EBE2;
+  --bg-rich: #FFFFFF;
+  --bg-contrast: #111B10;
 
-  --text-primary: #1A1408;
-  --text-secondary: #5C4A2E;
-  --text-tertiary: #8A7550;
+  --text-primary: #111B10;
+  --text-secondary: #4A5547;
+  --text-tertiary: #7C8478;
+  --text-on-dark: #FBFDFD;
 
-  --accent-gold: #8B6914;
-  --accent-gold-hover: #A07E1F;
-  --accent-gold-muted: rgba(139, 105, 20, 0.12);
-  --accent-gold-deep: #6B500F;
+  --accent-gold: #A4B285;
+  --accent-gold-hover: #B6C29A;
+  --accent-gold-muted: rgba(164, 178, 133, 0.18);
+  --accent-gold-deep: #6B7559;
 
-  --border-subtle: #E8DCC0;
-  --border-strong: #D4C39A;
-  --border-luxe: rgba(139, 105, 20, 0.30);
+  --border-subtle: #DDE0D6;
+  --border-strong: #B8BDAE;
+  --border-luxe: rgba(164, 178, 133, 0.40);
 
-  --shadow-card: 0 8px 24px rgba(60, 40, 10, 0.10);
-  --shadow-card-hover: 0 16px 48px rgba(60, 40, 10, 0.18);
-  --shadow-modal: 0 24px 80px rgba(60, 40, 10, 0.25);
-  --on-gold: #FFF8EA;
+  --shadow-card: 0 8px 24px rgba(40, 60, 40, 0.08);
+  --shadow-card-hover: 0 16px 48px rgba(40, 60, 40, 0.14);
+  --shadow-modal: 0 24px 80px rgba(40, 60, 40, 0.22);
+  --on-gold: #FBFDFD;
 }
 
 html.light body::before {
@@ -118,10 +126,13 @@ html.light body::before {
   mix-blend-mode: multiply;
 }
 
-/* In light mode, blend the hero video into the cream bg instead of dark hole */
+/* Hero video — atmospheric, never in-your-face */
+.hero-video {
+  opacity: 0.55;
+}
 html.light .hero-video {
   mix-blend-mode: multiply;
-  opacity: 0.85;
+  opacity: 0.7;
 }
 
 @layer base {
@@ -132,6 +143,7 @@ html.light .hero-video {
     color: var(--text-primary);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    transition: background-color 300ms ease, color 300ms ease;
   }
 
   body {

@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { getStrainProductImage } from "@/lib/strain-assets";
+import { getStrainProductImage, getStrainPalette } from "@/lib/strain-assets";
 import { StatusBadge } from "./Chips";
 import type { Strain } from "@/lib/types";
 
 export function StrainCard({ strain }: { strain: Strain }) {
   const img = getStrainProductImage(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
-  const accent = strain.accent_color_accent ?? "#6CC840";
+  const { accent } = getStrainPalette(strain.slug);
 
   return (
     <Link
@@ -22,7 +22,7 @@ export function StrainCard({ strain }: { strain: Strain }) {
           <div
             className="absolute inset-0"
             style={{
-              background: `radial-gradient(ellipse 60% 40% at 50% 25%, ${accent}18, transparent 70%), linear-gradient(180deg, rgba(255,255,255,0.02), var(--bg-rich) 90%)`,
+              background: `radial-gradient(ellipse 55% 38% at 50% 28%, ${accent}0F, transparent 75%), linear-gradient(180deg, rgba(255,255,255,0.015), var(--bg-rich) 85%)`,
             }}
           />
           {soldOut && (

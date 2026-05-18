@@ -63,11 +63,11 @@ export function Header() {
             <button
               aria-label="Toggle theme"
               onClick={toggle}
-              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
+              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] transition-transform duration-300 hover:scale-105 hover:rotate-12"
             >
               {mounted && theme === "light"
-                ? <Moon strokeWidth={1.5} className="h-5 w-5" />
-                : <Sun strokeWidth={1.5} className="h-5 w-5" />}
+                ? <Moon strokeWidth={1.5} className="h-[18px] w-[18px]" />
+                : <Sun strokeWidth={1.5} className="h-[18px] w-[18px]" />}
             </button>
             <button aria-label="Search" className="hidden text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:block">
               <Search strokeWidth={1.5} className="h-5 w-5" />

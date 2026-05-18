@@ -41,9 +41,14 @@ export function Header() {
             : "h-[88px] bg-transparent",
         )}
       >
-        {/* Desktop: 3-column grid with centered wordmark */}
-        <div className="mx-auto hidden h-full max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 md:grid md:px-8">
-          <nav className="flex items-center gap-8">
+        {/* Desktop: logo-left, nav + utilities on the right */}
+        <div className="mx-auto hidden h-full max-w-[1400px] items-center justify-between px-6 md:flex md:px-8">
+          <Link to="/" className="flex items-center">
+            <Logo height={scrolled ? 36 : 48} />
+          </Link>
+
+          <div className="flex items-center gap-8">
+            <nav className="flex items-center gap-8">
             {NAV.map((item) => (
               <Link
                 key={item.to}
@@ -54,13 +59,8 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-          </nav>
-
-          <Link to="/" className="flex items-center justify-center">
-            <Logo height={scrolled ? 36 : 48} />
-          </Link>
-
-          <div className="flex items-center justify-end gap-5">
+            </nav>
+            <div className="flex items-center gap-5 border-l border-[color:var(--border-subtle)] pl-8">
             <button
               aria-label="Toggle theme"
               onClick={toggle}
@@ -88,6 +88,7 @@ export function Header() {
                 </span>
               )}
             </button>
+            </div>
           </div>
         </div>
 

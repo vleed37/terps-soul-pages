@@ -37,16 +37,13 @@ export function Header() {
         className={cn(
           "fixed inset-x-0 top-0 z-40 transition-all duration-500",
           scrolled
-            ? "h-[60px] bg-[color:var(--bg-base)]/85 backdrop-blur-xl border-b border-[color:var(--border-subtle)]"
+            ? "h-[64px] bg-[color:var(--bg-base)]/85 backdrop-blur-xl border-b border-[color:var(--border-subtle)]"
             : "h-[88px] bg-transparent",
         )}
       >
-        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-8">
-          <Link to="/" className="flex items-center">
-            <Logo height={scrolled ? 48 : 64} />
-          </Link>
-
-          <nav className="hidden items-center gap-10 md:flex">
+        {/* Desktop: 3-column grid with centered wordmark */}
+        <div className="mx-auto hidden h-full max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 md:grid md:px-8">
+          <nav className="flex items-center gap-8">
             {NAV.map((item) => (
               <Link
                 key={item.to}
@@ -59,7 +56,11 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-5">
+          <Link to="/" className="flex items-center justify-center">
+            <Logo height={scrolled ? 36 : 48} />
+          </Link>
+
+          <div className="flex items-center justify-end gap-5">
             <button
               aria-label="Toggle theme"
               onClick={toggle}
@@ -69,10 +70,10 @@ export function Header() {
                 ? <Moon strokeWidth={1.5} className="h-[18px] w-[18px]" />
                 : <Sun strokeWidth={1.5} className="h-[18px] w-[18px]" />}
             </button>
-            <button aria-label="Search" className="hidden text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:block">
+            <button aria-label="Search" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
               <Search strokeWidth={1.5} className="h-5 w-5" />
             </button>
-            <Link to="/account" aria-label="Account" className="hidden text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:block">
+            <Link to="/account" aria-label="Account" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
               <User strokeWidth={1.5} className="h-5 w-5" />
             </Link>
             <button
@@ -82,17 +83,47 @@ export function Header() {
             >
               <ShoppingBag strokeWidth={1.5} className="h-5 w-5" />
               {hydrated && itemCount > 0 && (
-                <span className="absolute -right-2 -top-2 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[color:var(--accent-gold)] px-1 text-[10px] font-bold text-[color:var(--bg-rich)]">
+                <span className="absolute -right-2 -top-2 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[color:var(--accent-gold)] px-1 text-[10px] font-bold text-[color:var(--on-gold)]">
                   {itemCount}
                 </span>
               )}
             </button>
+          </div>
+        </div>
+
+        {/* Mobile: menu-left, centered wordmark, cart-right */}
+        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:hidden">
+          <button
+            aria-label="Open menu"
+            onClick={() => setOpen(true)}
+            className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
+          >
+            <Menu strokeWidth={1.5} className="h-5 w-5" />
+          </button>
+          <Link to="/" className="flex items-center">
+            <Logo height={scrolled ? 32 : 40} />
+          </Link>
+          <div className="flex items-center gap-4">
             <button
-              aria-label="Open menu"
-              onClick={() => setOpen(true)}
-              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] md:hidden"
+              aria-label="Toggle theme"
+              onClick={toggle}
+              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
             >
-              <Menu strokeWidth={1.5} className="h-5 w-5" />
+              {mounted && theme === "light"
+                ? <Moon strokeWidth={1.5} className="h-[18px] w-[18px]" />
+                : <Sun strokeWidth={1.5} className="h-[18px] w-[18px]" />}
+            </button>
+            <button
+              aria-label="Cart"
+              onClick={openCart}
+              className="relative text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
+            >
+              <ShoppingBag strokeWidth={1.5} className="h-5 w-5" />
+              {hydrated && itemCount > 0 && (
+                <span className="absolute -right-2 -top-2 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[color:var(--accent-gold)] px-1 text-[10px] font-bold text-[color:var(--on-gold)]">
+                  {itemCount}
+                </span>
+              )}
             </button>
           </div>
         </div>

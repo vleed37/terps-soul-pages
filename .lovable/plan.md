@@ -1,119 +1,106 @@
-## Terps — Palette + Saturation Refinement
+## Terps — Luna Composition Pass
 
-Scope: tokens, accent color, strain palettes, button styling, mode toggle, and a few homepage saturation/CTA trims. **No typography changes. No structural/page changes. No functional changes.**
-
----
-
-### 1. `src/styles.css` — rewrite the token layer
-
-Replace the existing `:root` (dark default) and `html.light` blocks with the Luna palette, but keep the project's pattern of "dark = `:root`, light = `html.light` class" so the existing `useTheme()` hook keeps working (rather than introducing `[data-theme="dark"]`).
-
-- `:root` → dark mode (deep forest):
-  - `--bg-base: #111B10`, `--bg-surface: #1A251A`, `--bg-elevated: #232E22`, `--bg-rich: #0B130B`
-  - `--bg-contrast: #FBFDFD`
-  - `--text-primary: #FBFDFD`, `--text-secondary: #ADB7A5`, `--text-tertiary: #7C8478`
-  - `--border-subtle: #283526`, `--border-strong: #3D4F3A`, `--border-luxe: rgba(164,178,133,0.40)`
-  - `--on-gold: #111B10` (now "on-accent")
-- `html.light` → cream-off-white:
-  - `--bg-base: #FBFDFD`, `--bg-surface: #F2F4F0`, `--bg-elevated: #E8EBE2`, `--bg-rich: #FFFFFF`
-  - `--bg-contrast: #111B10`
-  - `--text-primary: #111B10`, `--text-secondary: #4A5547`, `--text-tertiary: #7C8478`
-  - `--border-subtle: #DDE0D6`, `--border-strong: #B8BDAE`, `--border-luxe: rgba(164,178,133,0.40)`
-  - `--on-gold: #FBFDFD`
-- Shared accent (same on both modes):
-  - `--accent-gold: #A4B285` (kept under the same variable name to avoid renaming every consumer)
-  - `--accent-gold-hover: #B6C29A`
-  - `--accent-gold-deep: #6B7559`
-  - `--accent-gold-muted: rgba(164,178,133,0.18)`
-- Status: `--status-success: #6B8E5A`, `--status-error: #B85555`, plus a new `--status-warning: #C9A24B` (only place gold survives).
-- Reduce `.hero-video` light-mode `opacity` from `0.85` to `0.7` and add a similar dark-mode `.hero-video { opacity: 0.55; }` so hero feels more atmospheric.
-- Body grain stays at 0.03 (unchanged).
-
-Note: we keep variable *names* like `--accent-gold` so the dozens of `text-[color:var(--accent-gold)]` usages across the codebase automatically inherit the new sage color. Renaming would be a huge mechanical churn for no visual gain.
+Four targeted composition moves to bring the site closer to the Luna reference. **No palette changes, no typography swaps, no functional changes.** The Sansita Swashed wordmark stays (per earlier scope), but its placement and layout shift.
 
 ---
 
-### 2. Strain palette overrides — `src/lib/strain-assets.ts` (or wherever accent_color_accent is sourced)
+### 1. Centered wordmark header with split nav — `src/components/layout/Header.tsx`
 
-Audit how `strain.accent_color_accent` is set. If it's stored in the DB, override at render time in `StrainCard.tsx` and `strain.$slug.tsx` via a small slug→palette map:
+Restructure the header into a three-column grid:
 
 ```
-green-crack       → primary #283526, accent #A4B285
-blue-dream        → primary #2B3D52, accent #B8C5D2
-mango-sapphire    → primary #8B5A2F, accent #D4A87C
-girl-scout-cookie → primary #3D2E1F, accent #B89870
+[ SHOP   ABOUT   JOURNAL ]   [ WORDMARK ]   [ THEME · SEARCH · ACCOUNT · CART ]
+       left nav                   center               right utility cluster
 ```
 
-In `StrainCard`, reduce the radial accent glow alpha from `18` (hex `18` = ~9%) to `0F` (~6%), and fade the gradient further into the base color at the edges. In `strain.$slug.tsx` hero, do the same on the colored background wash and bump the bottom gradient opacity for atmosphere.
+- Desktop layout: CSS grid `grid-cols-[1fr_auto_1fr]`, `items-center`.
+- Left nav: 3 primary links — "The Collection" (/shop), "Strains" (/strains), "Our Story" (/about). Move "Stockists" into the right cluster as a small text link or keep it in the left nav as a 4th item (we'll keep 4 to avoid hiding a primary route).
+- Center: the existing `<Logo>` becomes the centered wordmark. Slightly smaller default height (56px → 48px when scrolled to 36px) so the centered placement reads refined, not heavy.
+- Right cluster: theme toggle · search · account · cart — order unchanged.
+- Mobile: unchanged hamburger pattern, but wordmark moves to true center using `justify-between` with menu-left, logo-center, cart-right.
+- Scrolled state: keep the existing background/blur behavior; only the layout grid changes.
 
 ---
 
-### 3. `src/components/brand/GoldButton.tsx`
+### 2. Solid sage feature band — new component, used on home + product pages
 
-No structural changes — only token usage. Because we kept the `--accent-gold` / `--on-gold` variable names, `primary` already becomes olive-sage with correct contrast text (`#111B10` in light, `#FBFDFD` in dark) automatically. Verify `secondary` and `tertiary` variants still read correctly on cream and forest; tweak the tertiary `hover:bg-white/5` to `hover:bg-[color:var(--accent-gold-muted)]` so it works in light mode too.
+Create `src/components/brand/FeatureBand.tsx`: a full-bleed horizontal band with background `var(--accent-gold)` (olive sage), containing 4 icon + meta-label pairs.
 
----
+Default content:
+- Premium Flower · Hand-Infused · Lab Verified · Bred in SA
 
-### 4. Mode toggle refinement — `src/components/layout/Header.tsx`
+Styling:
+- Background: `bg-[color:var(--accent-gold)]`
+- Text + icons: `text-[color:var(--on-gold)]` (auto-themed — dark forest in light mode, cream in dark mode)
+- Icons: Lucide `Leaf`, `Droplet`, `ShieldCheck`, `MapPin` at strokeWidth 1.5, 18px
+- Layout: 4 evenly distributed items, py-5, meta-xs caps labels
+- Mobile: 2x2 grid, py-6
 
-- Position: already in the utility cluster; move it to be the **first** item before search/account/cart.
-- Icon: Lucide `Sun` / `Moon` at `strokeWidth={1.5}`, size 18.
-- Hover: `transition-transform duration-300 hover:scale-105 hover:rotate-12`.
-- Smooth mode transition: add `transition-colors duration-300` to `html, body` in `styles.css` so the whole site fades between modes rather than snapping.
-
----
-
-### 5. Gold removal sweep
-
-Grep for hardcoded gold hexes (`D4A52A`, `C9A24B`, any `oklch(... 80)` gold leftovers) and any literal "gold" copy in class strings. Replace with token references. Specific spots to verify:
-- "BATCH NO. 04 · ACTIVE" badge → `text-[color:var(--accent-gold)]` (now sage) or `text-secondary` per spec.
-- Meta XS labels using `gold` prop in `MetaLabel` → unchanged (auto-themed via token).
-- Strain card "BATCH 04" marker → wrap in `opacity-60`.
-- Hairlines via `.hairline-gold` and `border-gold-luxe` → already token-driven, will auto-shift to sage.
-- Pulsing dots / glows → token-driven; verify visually.
+Placement:
+- Homepage (`src/routes/index.tsx`): inserted directly after the hero, before "The Collection" section
+- Strain detail page (`src/routes/strain.$slug.tsx`): below the buy zone, above the story section
+- Shop page: below the shop hero/title
 
 ---
 
-### 6. Homepage saturation + CTA trim — `src/routes/index.tsx`
+### 3. Strain card restyle — white tile + thin-outline CTA — `src/components/brand/StrainCard.tsx`
 
-- Hero wordmark radial glow: reduce from current alpha to `0.10` and switch to sage.
-- Featured strain angled card: shrink + drop opacity ~40%, or swap for a soft circular sage gradient blob behind the product.
-- Marquee strip: tighten height/padding if present; remove if it's already minimal noise.
-- Hero bottom gradient: increase opacity for atmosphere.
-- Remove mid-section CTAs. Keep CTAs only in:
-  1. Hero (2 buttons)
-  2. End of The Collection grid
-  3. End of strain library teaser
-  4. Closing band
-- Editorial lifestyle photo overlays: add darker gradient overlay (`from-[color:var(--bg-base)]/60`).
+Replace the current gradient-washed card with a Luna-style tile:
+
+- Card surface: `bg-[color:var(--bg-rich)]` (true white in light mode, deep forest-black in dark mode)
+- Border: `border border-[color:var(--border-subtle)]`, no shadow at rest, soft shadow on hover (`var(--shadow-card)`)
+- Border radius: 8px (down from 12px) for a sharper editorial feel
+- Layout: product image on a clean neutral upper block (no radial accent glow — drop it entirely), info band below
+- Image area: aspect-[4/5] split into ~70% image / 30% info. Background of image area = `bg-[color:var(--bg-surface)]` (off-white cream / deeper forest). No gradient, no glow.
+- Info band:
+  - Product name: Fraunces serif, smaller (1.5rem instead of 1.75rem)
+  - Tiny meta-xs caps line: "INFUSED · 0.75G"
+  - Price: bold body, no italic tagline
+  - CTA: thin-outline pill button "ADD TO CART" or "VIEW STRAIN" (uses GoldButton `secondary` variant which is already outline). Sold-out variant shows "JOIN WAITLIST".
+- Remove the italic tagline + "Discover →" link — Luna cards are quieter.
+
+This affects every page that renders `<StrainCard>` (home grid, shop grid, related on strain detail).
+
+---
+
+### 4. Final black contrast band — `src/routes/index.tsx`
+
+Replace section 8 (closing) with a hard contrast slab matching Luna's "Elevate intentionally." block:
+
+- Section background: `bg-[color:var(--bg-contrast)]` (always near-black `#111B10`, regardless of mode — provides the same visual punch in both modes)
+- Text: `text-[color:var(--text-on-dark)]` (always cream)
+- Content: oversized Fraunces serif statement aligned left, padding `py-32 md:py-40`, max-width contained
+- Copy: keep "Flavour first. Always." or simplify to a single sentence
+- Optional small circular sage moon/leaf glyph aligned right (mirrors Luna's circular badge) — can use a simple SVG circle with the sage accent at low opacity
+- No CTA inside this band — let it close silently like Luna's "Elevate intentionally."
+- Remove the `lifestyle4` background image + overlay; this is a pure type-on-dark composition
+
+Footer continues below as-is.
 
 ---
 
-### 7. Files touched
+### Files touched
 
-- `src/styles.css` — token rewrite, hero-video opacities, global color transition
-- `src/lib/strain-assets.ts` — new muted strain palette map (or new helper file imported by StrainCard + strain.$slug.tsx)
-- `src/components/brand/StrainCard.tsx` — pull from new palette map, lower glow alpha
-- `src/components/brand/GoldButton.tsx` — minor tertiary hover tweak
-- `src/components/layout/Header.tsx` — toggle position, icon refinement, hover animation
-- `src/routes/index.tsx` — saturation reductions + CTA trim
-- `src/routes/strain.$slug.tsx` — hero wash opacity, palette source
+- `src/components/layout/Header.tsx` — three-column grid, centered wordmark
+- `src/components/brand/FeatureBand.tsx` — **new**
+- `src/components/brand/StrainCard.tsx` — Luna-style tile rewrite
+- `src/routes/index.tsx` — insert FeatureBand after hero, replace closing section with contrast band
+- `src/routes/strain.$slug.tsx` — insert FeatureBand below buy zone
+- `src/routes/shop.tsx` — insert FeatureBand below shop title
 
-### 8. Out of scope (per brief)
+### Out of scope
 
-- No font changes, no structural reflow, no route changes
-- No cart/checkout/auth/BobPay changes
-- No new copy
-- No DB migrations (strain accents overridden client-side via slug map)
-
----
+- Colors, tokens, typography, fonts — all unchanged
+- Hero composition (the user opted to keep the dark video hero — that was move #2 in the gap list, deliberately skipped here)
+- Wordmark glyph swap (Sansita Swashed stays — only its placement changes)
+- Editorial photography swaps (move #6 — skipped)
+- Section count / "fewer blocks" restraint (move #8 — already trimmed earlier; not re-touched)
+- Functionality, routes, cart, checkout, auth — untouched
 
 ### Acceptance
 
-1. Light mode: off-white `#FBFDFD`, near-black `#111B10` text, sage `#A4B285` accents.
-2. Dark mode: deep forest `#111B10`, cream text, same sage accents.
-3. No gold anywhere except optional `warning` status.
-4. Strain cards use the four muted palettes from the table.
-5. All buttons use sage primary with 4px radius, typography untouched.
-6. Toggle is first in header cluster, smooth 300ms cross-mode fade.
-7. Homepage reads calmer — fewer mid-section CTAs, softer featured card, softer glows.
+1. Header reads as centered wordmark with split nav, like Luna.
+2. A solid olive-sage band sits below the hero, on shop, and on strain detail pages.
+3. Strain cards look like quiet white/forest tiles with a thin-outline CTA — no glow, no italic tagline.
+4. Homepage closes on a hard near-black band with a serif statement, no photo behind it.
+5. All four changes work in both light and dark modes via existing tokens.

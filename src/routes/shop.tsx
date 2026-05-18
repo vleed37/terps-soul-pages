@@ -8,6 +8,7 @@ import { StrainCard } from "@/components/brand/StrainCard";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
+import { FeatureBand } from "@/components/brand/FeatureBand";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -197,6 +198,13 @@ function ShopPage() {
           </p>
         </ScrollReveal>
 
+      </div>
+
+      <div className="-mx-6 mt-16 md:-mx-12">
+        <FeatureBand />
+      </div>
+
+      <div className="mx-auto max-w-[1400px]">
         {/* Sticky filter + sort bar */}
         <div className="sticky top-20 z-30 mt-16 -mx-6 bg-[color:var(--bg-base)]/95 px-6 backdrop-blur md:-mx-12 md:px-12">
           <Hairline />

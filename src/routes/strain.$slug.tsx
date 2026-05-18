@@ -5,6 +5,7 @@ import { getStrainImage, getStrainProductImage } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
+import { FeatureBand } from "@/components/brand/FeatureBand";
 import { EffectChip, FlavorChip } from "@/components/brand/Chips";
 import { QuantityStepper } from "@/components/brand/QuantityStepper";
 import { useCart } from "@/lib/store/cart";
@@ -114,6 +115,8 @@ function StrainDetail() {
           </div>
         </div>
       </section>
+
+      <FeatureBand />
 
       {/* STORY */}
       {s.story && (

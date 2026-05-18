@@ -10,6 +10,7 @@ import { MetaLabel } from "@/components/brand/MetaLabel";
 import { StrainCard } from "@/components/brand/StrainCard";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { PullQuote } from "@/components/brand/PullQuote";
+import { FeatureBand } from "@/components/brand/FeatureBand";
 import { subscribeEmail } from "@/lib/forms.functions";
 import lifestyle1 from "@/assets/lifestyle-1.webp";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
@@ -68,6 +69,9 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Sage feature band */}
+      <FeatureBand />
 
       {/* 2. THE COLLECTION */}
       <section className="px-6 py-32 md:py-40">
@@ -190,14 +194,20 @@ function Home() {
       <DropAlerts />
 
       {/* 8. CLOSING */}
-      <section className="relative overflow-hidden px-6 py-32 md:py-48">
-        <img src={lifestyle4} alt="" className="absolute inset-0 h-full w-full object-cover opacity-15" />
-        <div className="absolute inset-0 bg-[color:var(--bg-rich)]/80" />
-        <div className="relative mx-auto max-w-3xl text-center">
-          <p className="font-display text-5xl italic leading-tight md:text-7xl">
-            Flavour first. <em className="text-[color:var(--accent-gold)]">Always.</em>
+      <section className="relative overflow-hidden bg-[color:var(--bg-contrast)] px-6 py-32 md:px-12 md:py-40">
+        <div className="relative mx-auto flex max-w-[1400px] items-center justify-between gap-8">
+          <p className="font-display text-5xl leading-[1.05] text-[color:var(--text-on-dark)] md:text-7xl lg:text-8xl">
+            Flavour first.<br />
+            <em className="not-italic text-[color:var(--accent-gold)]">Always.</em>
           </p>
-          <div className="mt-10"><GhostLink to="/shop">Explore the collection</GhostLink></div>
+          <svg
+            viewBox="0 0 100 100"
+            className="hidden h-24 w-24 shrink-0 text-[color:var(--accent-gold)] opacity-70 md:block lg:h-32 lg:w-32"
+            aria-hidden="true"
+          >
+            <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="1" />
+            <circle cx="50" cy="50" r="20" fill="currentColor" opacity="0.6" />
+          </svg>
         </div>
       </section>
     </>

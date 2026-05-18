@@ -92,15 +92,8 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile: menu-left, centered wordmark, cart-right */}
+        {/* Mobile: logo-left, utilities right */}
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:hidden">
-          <button
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-            className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
-          >
-            <Menu strokeWidth={1.5} className="h-5 w-5" />
-          </button>
           <Link to="/" className="flex items-center">
             <Logo height={scrolled ? 32 : 40} />
           </Link>
@@ -125,6 +118,13 @@ export function Header() {
                   {itemCount}
                 </span>
               )}
+            </button>
+            <button
+              aria-label="Open menu"
+              onClick={() => setOpen(true)}
+              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
+            >
+              <Menu strokeWidth={1.5} className="h-5 w-5" />
             </button>
           </div>
         </div>

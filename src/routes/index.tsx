@@ -17,6 +17,7 @@ import lifestyle3 from "@/assets/lifestyle-3.webp";
 import lifestyle4 from "@/assets/lifestyle-4.webp";
 import greenCrack from "@/assets/strain-green-crack.webp";
 import stockistDisplay from "@/assets/stockist-display.jpg";
+import heroImage from "@/assets/hero-mindspark.jpg";
 import { getStrainProductImage } from "@/lib/strain-assets";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
@@ -46,14 +47,10 @@ function Home() {
       {/* 1. HERO */}
       <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
         <motion.div style={{ y: bgY }} className="absolute inset-0">
-          <video
-            src="/hero.mp4"
-            poster="/hero-poster.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="hero-video h-[120%] w-full object-cover opacity-60"
+          <img
+            src={heroImage}
+            alt="Terps Mindspark premium infused preroll"
+            className="h-[120%] w-full object-cover"
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/50 via-[color:var(--bg-rich)]/65 to-[color:var(--bg-rich)]" />

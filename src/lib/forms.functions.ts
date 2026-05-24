@@ -36,15 +36,23 @@ export const submitWholesaleInquiry = createServerFn({ method: "POST" })
       email: emailSchema,
       phone: z.string().trim().max(30).optional().or(z.literal("")),
       message: z.string().trim().max(2000).optional().or(z.literal("")),
+      location: z.string().trim().max(200).optional().or(z.literal("")),
+      business_type: z.string().trim().max(60).optional().or(z.literal("")),
+      volume: z.string().trim().max(60).optional().or(z.literal("")),
     }).parse(d),
   )
   .handler(async ({ data }) => {
+    const extras: string[] = [];
+    if (data.location) extras.push(`Location: ${data.location}`);
+    if (data.business_type) extras.push(`Business type: ${data.business_type}`);
+    if (data.volume) extras.push(`Monthly volume: ${data.volume}`);
+    const composedMessage = [extras.join(" · "), data.message].filter(Boolean).join("\n\n");
     const { error } = await supabaseAdmin.from("wholesale_inquiries").insert({
       full_name: data.full_name,
       business_name: data.business_name || null,
       email: data.email,
       phone: data.phone || null,
-      message: data.message || null,
+      message: composedMessage || null,
     });
     if (error) throw new Error(error.message);
     return { ok: true };

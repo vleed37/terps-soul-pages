@@ -22,6 +22,10 @@ export type Strain = {
   is_featured: boolean | null;
   is_limited: boolean | null;
   display_order: number | null;
+  product_line: "pre_roll" | "caviar_stix";
+  product_tier: "standard" | "premium";
+  strain_type: "sativa" | "hybrid" | "indica" | null;
+  infusion_components: string[] | null;
 };
 
 export type Terpene = {

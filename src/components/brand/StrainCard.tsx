@@ -2,9 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { getStrainProductImage } from "@/lib/strain-assets";
 import { StatusBadge } from "./Chips";
+import { CaviarStixCard } from "./CaviarStixCard";
 import type { Strain } from "@/lib/types";
 
 export function StrainCard({ strain }: { strain: Strain }) {
+  if (strain.product_tier === "premium" || strain.product_line === "caviar_stix") {
+    return <CaviarStixCard strain={strain} />;
+  }
   const img = getStrainProductImage(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
 

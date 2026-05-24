@@ -16,6 +16,7 @@ import lifestyle1 from "@/assets/lifestyle-1.webp";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
 import lifestyle4 from "@/assets/lifestyle-4.webp";
 import greenCrack from "@/assets/strain-green-crack.webp";
+import stockistDisplay from "@/assets/stockist-display.jpg";
 import { getStrainProductImage } from "@/lib/strain-assets";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
@@ -32,7 +33,9 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { data: strains } = useSuspenseQuery({ queryKey: ["strains"], queryFn: () => listStrains() });
   const list = (strains ?? []) as unknown as Strain[];
-  const featured = list.find((s) => s.slug === "green-crack") ?? list[0];
+  const preRolls = list.filter((s) => s.product_line === "pre_roll");
+  const caviarStix = list.filter((s) => s.product_line === "caviar_stix");
+  const featured = list.find((s) => s.slug === "green-crack") ?? preRolls[0] ?? list[0];
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -77,7 +80,7 @@ function Home() {
       <section className="px-6 py-32 md:py-40">
         <div className="mx-auto max-w-[1400px]">
           <ScrollReveal className="text-center">
-            <MetaLabel gold>The Collection</MetaLabel>
+            <MetaLabel gold>✦ Infused Pre-Rolls</MetaLabel>
             <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl leading-[1.05] md:text-6xl">
               Four drops. Four flavors. <em className="text-[color:var(--accent-gold)]">One standard.</em>
             </h2>
@@ -86,7 +89,7 @@ function Home() {
             </p>
           </ScrollReveal>
           <div className="mx-auto mt-20 grid max-w-[900px] grid-cols-1 gap-8 sm:grid-cols-2">
-            {list.map((s, i) => (
+            {preRolls.map((s, i) => (
               <ScrollReveal key={s.id} delay={i * 0.08}>
                 <StrainCard strain={s} />
               </ScrollReveal>
@@ -97,6 +100,54 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* 2b. CAVIAR STIX — premium tier */}
+      {caviarStix.length > 0 && (
+        <section className="relative overflow-hidden px-6 py-40 md:py-48"
+          style={{ background: "linear-gradient(180deg, var(--bg-base) 0%, var(--bg-surface) 100%)" }}
+        >
+          <div className="mx-auto max-w-[1400px]">
+            <ScrollReveal className="text-center">
+              <svg
+                viewBox="0 0 60 24"
+                className="mx-auto h-5 w-16 text-[color:var(--accent-gold)] opacity-70"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                aria-hidden="true"
+              >
+                <path d="M2 12 L25 12 M35 12 L58 12" />
+                <circle cx="30" cy="12" r="3" />
+                <path d="M30 4 L30 8 M30 16 L30 20" />
+              </svg>
+              <MetaLabel gold className="mt-6 block">✦ The Premium Tier</MetaLabel>
+              <h2 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">
+                Caviar Stix.
+              </h2>
+              <p className="mx-auto mt-5 font-display text-2xl italic text-[color:var(--text-secondary)] md:text-3xl">
+                The cream of the crop.
+              </p>
+              <p className="mx-auto mt-8 max-w-[600px] font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
+                Premium indoor flower, layered with hash, crumble, and live rosin. Three variants. One standard of craft.
+              </p>
+            </ScrollReveal>
+
+            <div className="mt-20 grid grid-cols-1 gap-8 md:grid-cols-3">
+              {caviarStix.map((s, i) => (
+                <ScrollReveal key={s.id} delay={i * 0.1}>
+                  <StrainCard strain={s} />
+                </ScrollReveal>
+              ))}
+            </div>
+
+            <div className="mt-16 text-center">
+              <a href="/shop?line=caviar_stix">
+                <GoldButton>Discover Caviar Stix →</GoldButton>
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 3. FEATURED — Green Crack */}
       {featured && (
@@ -191,6 +242,51 @@ function Home() {
       </section>
 
       {/* 7. DROP ALERTS */}
+      {/* 6b. BECOME A STOCKIST */}
+      <section className="relative overflow-hidden bg-[color:var(--bg-contrast)] px-6 py-32 md:py-40">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-16 md:grid-cols-5">
+          <div className="md:col-span-3">
+            <ScrollReveal>
+              <p className="meta-xs text-[color:var(--accent-gold)]">✦ Stockist Program</p>
+              <h2 className="mt-6 font-display text-5xl leading-[1.05] text-[color:var(--text-on-dark)] md:text-6xl lg:text-7xl">
+                Stock Terps in your store.
+              </h2>
+              <p className="mt-8 max-w-xl font-body text-lg leading-relaxed text-[color:var(--text-on-dark)] opacity-80">
+                Working with curated dispensaries across South Africa. Premium pre-rolls, exclusive Caviar Stix access, marketing support, and direct line to the source.
+              </p>
+              <ul className="mt-10 space-y-3">
+                {[
+                  "Wholesale pricing on the full collection",
+                  "Early access to Caviar Stix limited drops",
+                  "Marketing materials and brand support",
+                  "Direct partnership with the Terps team",
+                ].map((b) => (
+                  <li
+                    key={b}
+                    className="font-display text-xl italic text-[color:var(--text-on-dark)] opacity-90 md:text-2xl"
+                  >
+                    — {b}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-12">
+                <a href="/wholesale">
+                  <GoldButton>Become a Stockist →</GoldButton>
+                </a>
+              </div>
+            </ScrollReveal>
+          </div>
+          <ScrollReveal delay={0.15} className="md:col-span-2">
+            <img
+              src={stockistDisplay}
+              alt="Curated Terps retail display"
+              loading="lazy"
+              className="aspect-[4/5] w-full rounded-lg object-cover shadow-[var(--shadow-card-hover)]"
+            />
+          </ScrollReveal>
+        </div>
+      </section>
+
       <DropAlerts />
 
       {/* 8. CLOSING */}

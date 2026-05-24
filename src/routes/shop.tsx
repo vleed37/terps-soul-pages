@@ -33,11 +33,13 @@ const strainsQuery = queryOptions({
 const EFFECTS = ["daytime", "balanced", "nighttime"] as const;
 const FLAVORS = ["citrus", "berry", "earthy", "sweet", "tropical", "pine", "floral"] as const;
 const SORT = ["featured", "price-asc", "price-desc", "name"] as const;
+const LINES = ["pre_roll", "caviar_stix"] as const;
 
 const searchSchema = z.object({
   effect: z.array(z.enum(EFFECTS)).optional(),
   flavor: z.array(z.enum(FLAVORS)).optional(),
   avail: z.array(z.enum(["in", "limited", "soldout"])).optional(),
+  line: z.enum(["all", ...LINES]).optional(),
   min: z.coerce.number().min(0).max(500).optional(),
   max: z.coerce.number().min(0).max(500).optional(),
   sort: z.enum(SORT).optional(),
@@ -67,6 +69,7 @@ function ShopPage() {
   const effect = search.effect ?? [];
   const flavor = search.flavor ?? [];
   const avail = search.avail ?? [];
+  const line = search.line ?? "all";
   const min = search.min ?? 0;
   const max = search.max ?? 500;
   const sort = search.sort ?? "featured";
@@ -79,6 +82,7 @@ function ShopPage() {
 
   const filtered = useMemo(() => {
     let list = strains.filter((s) => {
+      if (line !== "all" && s.product_line !== line) return false;
       if (effect.length && (!s.effect_category || !effect.includes(s.effect_category)))
         return false;
       if (flavor.length) {
@@ -111,7 +115,10 @@ function ShopPage() {
       return (a.display_order ?? 0) - (b.display_order ?? 0);
     });
     return list;
-  }, [strains, effect, flavor, avail, min, max, sort]);
+  }, [strains, effect, flavor, avail, line, min, max, sort]);
+
+  const preRollCount = strains.filter((s) => s.product_line === "pre_roll").length;
+  const caviarCount = strains.filter((s) => s.product_line === "caviar_stix").length;
 
   const reset = () =>
     navigate({ search: {} });
@@ -194,7 +201,7 @@ function ShopPage() {
             Every drop. <em className="text-[color:var(--accent-gold)]">Every flavor.</em>
           </h1>
           <p className="mx-auto mt-6 max-w-[500px] text-base text-[color:var(--text-secondary)] md:text-lg">
-            Four strains. Each lab-verified. Each hand-infused with live rosin.
+            Pre-rolls and premium stix. Every craft, every effect.
           </p>
         </ScrollReveal>
 
@@ -205,8 +212,35 @@ function ShopPage() {
       </div>
 
       <div className="mx-auto max-w-[1400px]">
+        {/* Tier toggle tabs */}
+        <div className="mt-16 flex items-center justify-center gap-8 border-b border-[color:var(--border-subtle)] pb-4">
+          {[
+            { v: "all" as const, l: "All", c: strains.length },
+            { v: "pre_roll" as const, l: "Pre-Rolls", c: preRollCount },
+            { v: "caviar_stix" as const, l: "Caviar Stix", c: caviarCount },
+          ].map((tab) => {
+            const active = line === tab.v;
+            return (
+              <button
+                key={tab.v}
+                onClick={() => setSearch({ line: tab.v })}
+                className={`relative pb-3 text-xs font-semibold uppercase tracking-[0.18em] transition-colors duration-300 ${
+                  active
+                    ? "text-[color:var(--accent-gold)]"
+                    : "text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)]"
+                }`}
+              >
+                {tab.l} <span className="ml-1 opacity-60">· {tab.c}</span>
+                {active && (
+                  <span className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-[color:var(--accent-gold)]" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
         {/* Sticky filter + sort bar */}
-        <div className="sticky top-20 z-30 mt-16 -mx-6 bg-[color:var(--bg-base)]/95 px-6 backdrop-blur md:-mx-12 md:px-12">
+        <div className="sticky top-20 z-30 mt-8 -mx-6 bg-[color:var(--bg-base)]/95 px-6 backdrop-blur md:-mx-12 md:px-12">
           <Hairline />
           <Collapsible open={open} onOpenChange={setOpen}>
             <div className="flex items-center justify-between py-4">

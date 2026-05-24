@@ -41,6 +41,7 @@ function StrainDetail() {
   const videoSrc = `/strains/${s.slug}.mp4`;
   const posterSrc = `/strains/${s.slug}-poster.jpg`;
   const soldOut = s.stock_quantity <= 0;
+  const isPremium = s.product_tier === "premium" || s.product_line === "caviar_stix";
   const handleAdd = () => {
     if (soldOut) return;
     addItem(
@@ -76,6 +77,9 @@ function StrainDetail() {
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-end px-6 pb-16 md:px-12">
           <Link to="/shop" className="ghost-link self-start">← The collection</Link>
           <div className="mt-8">
+            {isPremium && (
+              <MetaLabel gold className="mb-3 block">✦ Premium Tier</MetaLabel>
+            )}
             {s.effect_category && <MetaLabel gold className="capitalize">{s.effect_category} strain</MetaLabel>}
             <h1 className="mt-4 font-display text-6xl leading-none md:text-8xl">{s.name}</h1>
             <Hairline w="120px" className="my-6" />
@@ -94,10 +98,30 @@ function StrainDetail() {
             {img && <img src={img} alt={s.name} className="mx-auto max-h-[520px] rounded-xl" />}
           </div>
           <div>
+            {isPremium && (
+              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-[color:var(--accent-gold-muted)] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--accent-gold)]">
+                ✦ Premium
+              </span>
+            )}
             <h2 className="font-display text-4xl md:text-5xl">{s.name}</h2>
             <p className="mt-4 font-body text-3xl font-bold">R{Number(s.price_zar).toFixed(0)}</p>
             <p className="mt-2 text-sm text-[color:var(--text-secondary)]">Free delivery on orders over R500</p>
             <p className="meta-xs mt-4 text-gold">{s.stock_quantity} in stock · Limited</p>
+            {isPremium && s.infusion_components && s.infusion_components.length > 0 && (
+              <div className="mt-6">
+                <p className="meta-xs text-[color:var(--text-tertiary)]">Infusion Components</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {s.infusion_components.map((c) => (
+                    <span
+                      key={c}
+                      className="inline-block rounded-full border border-[color:var(--accent-gold)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-[color:var(--accent-gold)]"
+                    >
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
             <Hairline className="my-8" />
             <div className="mb-6"><QuantityStepper value={qty} onChange={setQty} /></div>
             <GoldButton onClick={handleAdd} disabled={soldOut} className="w-full">
@@ -139,7 +163,11 @@ function StrainDetail() {
 
       {/* PROFILE + LAB */}
       <section className="px-6 py-24 md:px-12">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-px bg-[color:var(--border-luxe)] md:grid-cols-3">
+        <div
+          className={`mx-auto grid max-w-[1200px] grid-cols-1 gap-px bg-[color:var(--border-luxe)] ${
+            isPremium ? "md:grid-cols-4" : "md:grid-cols-3"
+          }`}
+        >
           <div className="bg-[color:var(--bg-surface)] p-10">
             <MetaLabel gold>Effect</MetaLabel>
             <h4 className="mt-4 font-display text-2xl capitalize">{s.effect_category}</h4>
@@ -162,6 +190,17 @@ function StrainDetail() {
               ))}
             </div>
           </div>
+          {isPremium && (
+            <div className="bg-[color:var(--bg-surface)] p-10">
+              <MetaLabel gold>Strain Type</MetaLabel>
+              <h4 className="mt-4 font-display text-2xl capitalize">{s.strain_type ?? "Hybrid"}</h4>
+              <p className="mt-3 text-sm text-[color:var(--text-secondary)]">
+                {s.strain_type === "sativa" && "Lifted energy. Sharp clarity. For the morning, the studio, the start."}
+                {s.strain_type === "indica" && "Slow, deep, profound. For the after-dinner sit-down."}
+                {s.strain_type === "hybrid" && "Balanced and versatile. For any moment, any session."}
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="mx-auto mt-16 max-w-[1200px]">

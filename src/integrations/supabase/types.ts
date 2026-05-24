@@ -427,6 +427,7 @@ export type Database = {
           gallery_image_urls: string[] | null
           hero_image_url: string | null
           id: string
+          infusion_components: string[] | null
           is_active: boolean | null
           is_featured: boolean | null
           is_limited: boolean | null
@@ -434,9 +435,12 @@ export type Database = {
           name: string
           price_zar: number
           product_image_url: string | null
+          product_line: string
+          product_tier: string
           slug: string
           stock_quantity: number
           story: string | null
+          strain_type: string | null
           tagline: string | null
           terpene_breakdown: Json | null
           test_date: string | null
@@ -459,6 +463,7 @@ export type Database = {
           gallery_image_urls?: string[] | null
           hero_image_url?: string | null
           id?: string
+          infusion_components?: string[] | null
           is_active?: boolean | null
           is_featured?: boolean | null
           is_limited?: boolean | null
@@ -466,9 +471,12 @@ export type Database = {
           name: string
           price_zar?: number
           product_image_url?: string | null
+          product_line?: string
+          product_tier?: string
           slug: string
           stock_quantity?: number
           story?: string | null
+          strain_type?: string | null
           tagline?: string | null
           terpene_breakdown?: Json | null
           test_date?: string | null
@@ -491,6 +499,7 @@ export type Database = {
           gallery_image_urls?: string[] | null
           hero_image_url?: string | null
           id?: string
+          infusion_components?: string[] | null
           is_active?: boolean | null
           is_featured?: boolean | null
           is_limited?: boolean | null
@@ -498,9 +507,12 @@ export type Database = {
           name?: string
           price_zar?: number
           product_image_url?: string | null
+          product_line?: string
+          product_tier?: string
           slug?: string
           stock_quantity?: number
           story?: string | null
+          strain_type?: string | null
           tagline?: string | null
           terpene_breakdown?: Json | null
           test_date?: string | null

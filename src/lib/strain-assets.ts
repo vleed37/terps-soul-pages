@@ -6,6 +6,9 @@ import productGreenCrack from "@/assets/product-green-crack.png";
 import productBlueDream from "@/assets/product-blue-dream.jpg";
 import productMangoSapphire from "@/assets/product-mango-sapphire.jpg";
 import productGirlScoutCookie from "@/assets/product-girl-scout-cookie.jpg";
+import productCaviarSativa from "@/assets/product-caviar-stix-sativa.jpg";
+import productCaviarHybrid from "@/assets/product-caviar-stix-hybrid.jpg";
+import productCaviarIndica from "@/assets/product-caviar-stix-indica.jpg";
 
 export const STRAIN_IMAGE: Record<string, string> = {
   "green-crack": greenCrack,
@@ -19,6 +22,9 @@ export const STRAIN_PRODUCT_IMAGE: Record<string, string> = {
   "blue-dream": productBlueDream,
   "mango-sapphire": productMangoSapphire,
   "girl-scout-cookie": productGirlScoutCookie,
+  "caviar-stix-sativa": productCaviarSativa,
+  "caviar-stix-hybrid": productCaviarHybrid,
+  "caviar-stix-indica": productCaviarIndica,
 };
 
 export function getStrainImage(slug: string): string | undefined {
@@ -38,6 +44,9 @@ export const STRAIN_PALETTE: Record<string, { primary: string; accent: string }>
   "blue-dream":        { primary: "#2B3D52", accent: "#B8C5D2" },
   "mango-sapphire":    { primary: "#8B5A2F", accent: "#D4A87C" },
   "girl-scout-cookie": { primary: "#3D2E1F", accent: "#B89870" },
+  "caviar-stix-sativa": { primary: "#283526", accent: "#A4B285" },
+  "caviar-stix-hybrid": { primary: "#2B3D52", accent: "#B8C5D2" },
+  "caviar-stix-indica": { primary: "#3D2A52", accent: "#B89AC9" },
 };
 
 export function getStrainPalette(slug: string): { primary: string; accent: string } {

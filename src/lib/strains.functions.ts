@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-const SELECT = "id,slug,name,tagline,description,story,effect_category,flavor_tags,thc_percentage,cbd_percentage,total_terpenes_percentage,batch_number,test_date,lab_name,terpene_breakdown,price_zar,stock_quantity,weight_grams,accent_color_primary,accent_color_accent,is_featured,is_limited,display_order";
+const SELECT = "id,slug,name,tagline,description,story,effect_category,flavor_tags,thc_percentage,cbd_percentage,total_terpenes_percentage,batch_number,test_date,lab_name,terpene_breakdown,price_zar,stock_quantity,weight_grams,accent_color_primary,accent_color_accent,is_featured,is_limited,display_order,product_line,product_tier,strain_type,infusion_components";
 
 export const listStrains = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await supabaseAdmin

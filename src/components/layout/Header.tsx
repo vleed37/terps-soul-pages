@@ -112,7 +112,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-[color:var(--bg-rich)] md:hidden">
+        <div className="fixed inset-0 z-[60] flex flex-col bg-[color:var(--bg-base)] md:hidden">
           <div className="flex h-[88px] items-center justify-between px-6">
             <Logo height={56} />
             <button aria-label="Close menu" onClick={() => setOpen(false)} className="text-[color:var(--text-primary)]">

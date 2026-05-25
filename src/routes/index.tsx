@@ -11,6 +11,7 @@ import { StrainCard } from "@/components/brand/StrainCard";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { PullQuote } from "@/components/brand/PullQuote";
 import { FeatureBand } from "@/components/brand/FeatureBand";
+import { CaviarStixComingSoon } from "@/components/brand/CaviarStixComingSoon";
 import { subscribeEmail } from "@/lib/forms.functions";
 import lifestyle1 from "@/assets/lifestyle-1.webp";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
@@ -35,7 +36,6 @@ function Home() {
   const { data: strains } = useSuspenseQuery({ queryKey: ["strains"], queryFn: () => listStrains() });
   const list = (strains ?? []) as unknown as Strain[];
   const preRolls = list.filter((s) => s.product_line === "pre_roll");
-  const caviarStix = list.filter((s) => s.product_line === "caviar_stix");
   const featured = list.find((s) => s.slug === "green-crack") ?? preRolls[0] ?? list[0];
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -98,53 +98,8 @@ function Home() {
         </div>
       </section>
 
-      {/* 2b. CAVIAR STIX — premium tier */}
-      {caviarStix.length > 0 && (
-        <section className="relative overflow-hidden px-6 py-40 md:py-48"
-          style={{ background: "linear-gradient(180deg, var(--bg-base) 0%, var(--bg-surface) 100%)" }}
-        >
-          <div className="mx-auto max-w-[1400px]">
-            <ScrollReveal className="text-center">
-              <svg
-                viewBox="0 0 60 24"
-                className="mx-auto h-5 w-16 text-[color:var(--accent-gold)] opacity-70"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-                aria-hidden="true"
-              >
-                <path d="M2 12 L25 12 M35 12 L58 12" />
-                <circle cx="30" cy="12" r="3" />
-                <path d="M30 4 L30 8 M30 16 L30 20" />
-              </svg>
-              <MetaLabel gold className="mt-6 block">✦ The Premium Tier</MetaLabel>
-              <h2 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">
-                Caviar Stix.
-              </h2>
-              <p className="mx-auto mt-5 font-display text-2xl italic text-[color:var(--text-secondary)] md:text-3xl">
-                The cream of the crop.
-              </p>
-              <p className="mx-auto mt-8 max-w-[600px] font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
-                Premium indoor flower, layered with hash, crumble, and live rosin. Three variants. One standard of craft.
-              </p>
-            </ScrollReveal>
-
-            <div className="mt-20 grid grid-cols-1 gap-8 md:grid-cols-3">
-              {caviarStix.map((s, i) => (
-                <ScrollReveal key={s.id} delay={i * 0.1}>
-                  <StrainCard strain={s} />
-                </ScrollReveal>
-              ))}
-            </div>
-
-            <div className="mt-16 text-center">
-              <a href="/shop?line=caviar_stix">
-                <GoldButton>Discover Caviar Stix →</GoldButton>
-              </a>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* 2b. CAVIAR STIX — Coming Soon teaser */}
+      <CaviarStixComingSoon />
 
       {/* 3. FEATURED — Green Crack */}
       {featured && (

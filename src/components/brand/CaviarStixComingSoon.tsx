@@ -26,7 +26,7 @@ export function CaviarStixComingSoon() {
   }
 
   return (
-    <section className="relative overflow-hidden px-6 py-40 md:py-48">
+    <section className="tone-dark relative overflow-hidden px-6 py-40 md:py-48">
       {/* sage glow */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2"
@@ -71,7 +71,7 @@ export function CaviarStixComingSoon() {
                 placeholder="your@email.com"
                 className="flex-1 rounded-[4px] border border-[color:var(--border-strong)] bg-[color:var(--bg-surface)] px-5 py-4 text-sm outline-none focus:border-[color:var(--accent-gold)]"
               />
-              <GoldButton type="submit" disabled={busy}>
+              <GoldButton type="submit" variant="cream" disabled={busy}>
                 {busy ? "Sending…" : "Notify me"}
               </GoldButton>
             </form>

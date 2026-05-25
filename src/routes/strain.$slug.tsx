@@ -66,7 +66,7 @@ function StrainDetail() {
   return (
     <>
       {/* HERO */}
-      <section className="relative h-[70vh] overflow-hidden">
+      <section className="tone-dark relative h-[70vh] overflow-hidden">
         <video
           src={videoSrc}
           poster={posterSrc}
@@ -76,7 +76,7 @@ function StrainDetail() {
           playsInline
           className="hero-video absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/30 via-[color:var(--bg-rich)]/70 to-[color:var(--bg-rich)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0A08]/30 via-[#0B0A08]/70 to-[#0B0A08]" />
         <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-end px-6 pb-16 md:px-12">
           <Link to="/shop" className="ghost-link self-start">← The collection</Link>
           <div className="mt-8">

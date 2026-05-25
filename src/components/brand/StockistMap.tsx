@@ -4,12 +4,12 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Stockist } from "@/lib/types";
 
-// Gold pin icon as inline SVG
+// Sage pin icon as inline SVG
 const goldPin = L.divIcon({
   className: "",
   html: `<svg width="28" height="38" viewBox="0 0 28 38" xmlns="http://www.w3.org/2000/svg">
-    <path d="M14 0C6.27 0 0 6.27 0 14c0 10.5 14 24 14 24s14-13.5 14-24C28 6.27 21.73 0 14 0z" fill="#C9A84C"/>
-    <circle cx="14" cy="14" r="5" fill="#0A0A0A"/>
+    <path d="M14 0C6.27 0 0 6.27 0 14c0 10.5 14 24 14 24s14-13.5 14-24C28 6.27 21.73 0 14 0z" fill="#5C6650"/>
+    <circle cx="14" cy="14" r="5" fill="#F5F1E8"/>
   </svg>`,
   iconSize: [28, 38],
   iconAnchor: [14, 38],
@@ -51,15 +51,15 @@ export function StockistMap({
       zoom={6}
       scrollWheelZoom={false}
       className="h-full w-full"
-      style={{ background: "#0A0A0A" }}
+      style={{ background: "#EBE6D8" }}
     >
-      {/* Dark luxury tiles via CARTO */}
+      {/* Light editorial tiles via CARTO (Positron) */}
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+        url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
       />
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png"
+        url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png"
       />
       {withCoords.map((s) => (
         <Marker
@@ -70,7 +70,7 @@ export function StockistMap({
         >
           <Popup className="terps-popup">
             <div className="font-display text-base mb-1">{s.name}</div>
-            <div className="text-xs text-neutral-300">{s.address}</div>
+            <div className="text-xs text-neutral-600">{s.address}</div>
           </Popup>
         </Marker>
       ))}

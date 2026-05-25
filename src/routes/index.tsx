@@ -45,7 +45,7 @@ function Home() {
   return (
     <>
       {/* 1. HERO */}
-      <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
+      <section ref={heroRef} className="tone-dark relative h-screen w-full overflow-hidden">
         <motion.div style={{ y: bgY }} className="absolute inset-0">
           <img
             src={heroImage}
@@ -53,7 +53,7 @@ function Home() {
             className="h-[120%] w-full object-cover"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/50 via-[color:var(--bg-rich)]/65 to-[color:var(--bg-rich)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0A08]/50 via-[#0B0A08]/65 to-[#0B0A08]" />
         <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6 md:px-12">
           <Hairline w="120px" className="mb-8" />
           <h1 className="max-w-3xl font-display text-[2.75rem] font-normal leading-[1.05] md:text-[5rem]">
@@ -64,7 +64,7 @@ function Home() {
             South African–bred. Hand-infused with live hash rosin. Built for the moment, not the noise.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <a href="/shop"><GoldButton>Discover the collection</GoldButton></a>
+            <a href="/shop"><GoldButton variant="cream">Discover the collection</GoldButton></a>
             <a href="/about"><GoldButton variant="tertiary">Our story</GoldButton></a>
           </div>
         </div>
@@ -105,13 +105,13 @@ function Home() {
       {featured && (
         <section className="relative overflow-hidden">
           <div className="absolute inset-0">
-            <img src={greenCrack} alt="" className="h-full w-full object-cover opacity-15" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--bg-rich)] via-[color:var(--bg-rich)]/92 to-[color:var(--bg-rich)]/70" />
+            <img src={greenCrack} alt="" className="h-full w-full object-cover opacity-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--bg-base)] via-[color:var(--bg-base)]/92 to-[color:var(--bg-base)]/70" />
             {/* soft sage gradient blob behind product */}
             <div
               className="absolute right-[8%] top-1/2 hidden h-[420px] w-[420px] -translate-y-1/2 rounded-full md:block"
               style={{
-                background: "radial-gradient(circle, rgba(164,178,133,0.12), transparent 70%)",
+                background: "radial-gradient(circle, rgba(92,102,80,0.18), transparent 70%)",
                 filter: "blur(20px)",
               }}
             />
@@ -126,7 +126,7 @@ function Home() {
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.15} className="hidden md:col-span-2 md:block">
-              <img src={getStrainProductImage(featured.slug) ?? greenCrack} alt={featured.name} className="mx-auto max-h-[520px] w-auto rounded-xl drop-shadow-[0_28px_60px_rgba(0,0,0,0.8)]" />
+              <img src={getStrainProductImage(featured.slug) ?? greenCrack} alt={featured.name} className="mx-auto max-h-[520px] w-auto rounded-xl drop-shadow-[0_28px_60px_rgba(40,60,40,0.25)]" />
             </ScrollReveal>
           </div>
         </section>
@@ -156,9 +156,9 @@ function Home() {
       </section>
 
       {/* 5. LIFESTYLE QUOTE */}
-      <section className="relative h-[80vh] overflow-hidden">
+      <section className="tone-dark relative h-[80vh] overflow-hidden">
         <img src={lifestyle3} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
-        <div className="absolute inset-0 bg-[color:var(--bg-rich)]/65" />
+        <div className="absolute inset-0 bg-[#0B0A08]/65" />
         <div className="relative mx-auto flex h-full max-w-3xl items-center justify-center px-6">
           <PullQuote attribution="Terps">We don't chase hype. We chase flavor.</PullQuote>
         </div>

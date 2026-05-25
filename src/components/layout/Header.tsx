@@ -33,7 +33,7 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-40 transition-all duration-500",
+          "fixed inset-x-0 top-[28px] z-40 transition-all duration-500",
           scrolled
             ? "h-[64px] bg-[color:var(--bg-base)]/85 backdrop-blur-xl border-b border-[color:var(--border-subtle)]"
             : "h-[88px] bg-transparent",

@@ -180,10 +180,6 @@ function StrainsPage() {
         </div>
       </section>
 
-      {/* SECTION 2 — EFFECT CATEGORIES */}
-      <section className="mx-auto mt-32 max-w-3xl">
-      </section>
-
       {/* SECTION 1b — BY STRAIN TYPE */}
       <section className="mx-auto mt-32 max-w-[1200px]">
         <ScrollReveal className="text-center">
@@ -242,7 +238,7 @@ function StrainsPage() {
         </div>
       </section>
 
-      {/* SECTION 2 (continued) — EFFECT CATEGORIES */}
+      {/* SECTION 2 — EFFECT CATEGORIES */}
       <section className="mx-auto mt-32 max-w-3xl">
         {(["daytime", "balanced", "nighttime"] as const).map((eff, i) => {
           const copy = EFFECT_COPY[eff];

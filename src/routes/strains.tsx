@@ -281,7 +281,10 @@ function StrainsPage() {
           <h2 className="mt-4 font-display text-4xl md:text-5xl">Every detail is on the tube.</h2>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
-          <div className="relative mt-16 grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+          <div
+            className="tone-sage relative mt-16 grid grid-cols-1 items-center gap-12 rounded-2xl p-8 md:grid-cols-2 md:p-16"
+            style={{ backgroundColor: "var(--bg-sage)" }}
+          >
             <div className="relative mx-auto">
               {(() => {
                 const img = getStrainImage("green-crack");
@@ -289,7 +292,7 @@ function StrainsPage() {
                   <img
                     src={img}
                     alt="Terps tube"
-                    className="max-h-[480px] drop-shadow-[0_28px_60px_rgba(0,0,0,0.7)]"
+                    className="max-h-[480px] drop-shadow-[0_24px_40px_rgba(40,60,40,0.25)]"
                   />
                 ) : null;
               })()}
@@ -304,9 +307,10 @@ function StrainsPage() {
               ].map((c) => (
                 <span
                   key={c.t}
-                  className="absolute font-display italic text-sm text-[color:var(--accent-gold)] whitespace-nowrap"
+                  className="absolute font-display italic text-sm whitespace-nowrap"
                   style={{
                     top: c.top,
+                    color: "rgba(11,10,8,0.7)",
                     ...(c.side === "left" ? { right: "calc(100% + 12px)" } : { left: "calc(100% + 12px)" }),
                   }}
                 >
@@ -317,7 +321,7 @@ function StrainsPage() {
               ))}
             </div>
             <div>
-              <p className="text-base leading-[1.8] text-[color:var(--text-secondary)] md:text-lg">
+              <p className="text-base leading-[1.8] md:text-lg" style={{ color: "rgba(11,10,8,0.8)" }}>
                 Terps tubes carry the same data we publish online — strain, batch, lab-verified
                 cannabinoids, and a QR code that links to the exact certificate of analysis for what
                 you're holding. No mystery.

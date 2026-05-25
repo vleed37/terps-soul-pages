@@ -125,13 +125,7 @@ function AboutPage() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <div
-            className="relative mt-16 flex items-end justify-center gap-4 overflow-hidden rounded-xl px-6 py-12 md:gap-12 md:px-12 md:py-20"
-            style={{
-              background:
-                "radial-gradient(ellipse at 50% 100%, rgba(201,168,76,0.12), transparent 70%), linear-gradient(180deg, var(--bg-surface), var(--bg-rich))",
-            }}
-          >
+          <div className="relative mt-16 flex items-end justify-center gap-4 px-2 py-12 md:gap-12 md:px-6 md:py-16">
             {strains.slice(0, 4).map((s) => {
               const img = getStrainProductImage(s.slug);
               if (!img) return null;

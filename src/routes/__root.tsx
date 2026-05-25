@@ -90,7 +90,7 @@ function RootComponent() {
         </p>
       </div>
       <Header />
-      <main className="relative z-0 pt-[28px]">
+      <main className="relative z-0 pt-[116px]">
         <Outlet />
       </main>
       <Footer />

@@ -48,7 +48,7 @@ export function NotifyMeModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-[480px] gap-0 rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] p-10"
+        className="tone-dark max-w-[480px] gap-0 rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-dark)] p-10"
       >
         {done ? (
           <div className="py-10 text-center">
@@ -85,7 +85,7 @@ export function NotifyMeModal({
                 Also send me drop announcements for new strains.
               </label>
               {err && <p className="text-sm text-[color:var(--status-error)]">{err}</p>}
-              <GoldButton type="submit" disabled={busy} className="w-full">
+              <GoldButton type="submit" variant="cream" disabled={busy} className="w-full">
                 {busy ? "Sending…" : "Notify me"}
               </GoldButton>
               <button

@@ -22,11 +22,11 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-[color:var(--border-subtle)] bg-[color:var(--bg-rich)] pt-24 pb-10">
+    <footer className="tone-dark border-t border-[color:var(--border-on-dark)] pt-24 pb-10">
       <div className="mx-auto max-w-[1400px] px-6 md:px-8">
         <div className="grid grid-cols-1 gap-16 md:grid-cols-3">
           <div>
-            <Logo height={64} />
+            <Logo height={64} onTone="dark" />
             <p className="mt-6 font-display text-2xl italic text-[color:var(--text-primary)]">Flavour First.</p>
           </div>
           <div>

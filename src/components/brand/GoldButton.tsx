@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 
-type Variant = "primary" | "secondary" | "tertiary";
+type Variant = "primary" | "secondary" | "tertiary" | "cream";
 type Size = "default" | "lg" | "sm";
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -20,8 +20,12 @@ const sizes: Record<Size, string> = {
 };
 
 const variants: Record<Variant, string> = {
+  // primary = dark filled pill on cream surfaces (default site-wide)
   primary:
-    "bg-[color:var(--accent-gold)] text-[color:var(--on-gold)] hover:bg-[color:var(--accent-gold-hover)] hover:-translate-y-px hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)]",
+    "bg-[color:var(--text-primary)] text-[color:var(--bg-base)] hover:bg-[color:var(--accent-gold)] hover:text-[color:var(--bg-base)] hover:-translate-y-px hover:shadow-[0_12px_32px_rgba(40,60,40,0.18)]",
+  // cream = cream filled pill on dark surfaces (use inside .tone-dark sections / modals)
+  cream:
+    "bg-[#F5F1E8] text-[#0B0A08] hover:bg-[#FFFFFF] hover:-translate-y-px hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)]",
   secondary:
     "bg-transparent border border-[color:var(--accent-gold)] text-[color:var(--accent-gold)] hover:bg-[color:var(--accent-gold-muted)]",
   tertiary:

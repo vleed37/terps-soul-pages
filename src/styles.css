@@ -61,44 +61,105 @@
 }
 
 :root {
-  /* Single mode — Luna-aligned neutral warm-dark */
-  --bg-base: #0B0A08;
-  --bg-surface: #131210;
-  --bg-elevated: #1D1B17;
-  --bg-rich: #0B0A08;
-  --bg-contrast: #F5F1E8;
+  /* Wave 1B — Luna full pivot: cream base, dark as punctuation */
 
-  --text-primary: #F5F1E8;
-  --text-secondary: #B5AFA1;
-  --text-tertiary: #6B665A;
-  --text-on-dark: #0B0A08;
+  /* Primary canvas — cream */
+  --bg-base: #F5F1E8;
+  --bg-surface: #FAF7F0;
+  --bg-elevated: #EBE6D8;
 
-  /* Sage accent — restrained, used sparingly */
-  --accent-gold: #8B9577;
-  --accent-gold-hover: #9CA589;
-  --accent-gold-muted: rgba(139, 149, 119, 0.12);
-  --accent-gold-deep: #5C6650;
+  /* Strategic dark layer */
+  --bg-dark: #0B0A08;
+  --bg-dark-surface: #131210;
+  --bg-dark-elevated: #1D1B17;
+  --bg-rich: #0B0A08;        /* legacy alias — still dark for hero/footer overlays */
+  --bg-contrast: #F5F1E8;    /* legacy alias — cream-toned section bg */
 
-  /* Strain-type colors */
-  --strain-sativa: #7AB360;
-  --strain-sativa-bg: rgba(122, 179, 96, 0.10);
-  --strain-hybrid: #6F94BD;
-  --strain-hybrid-bg: rgba(111, 148, 189, 0.10);
-  --strain-indica: #9683B5;
-  --strain-indica-bg: rgba(150, 131, 181, 0.10);
+  /* Sage layer (Luna's mid tone) */
+  --bg-sage: #C5CDB5;
+  --bg-sage-deep: #6B7559;
 
-  --border-subtle: #1D1B17;
-  --border-strong: #2A2722;
-  --border-luxe: rgba(245, 241, 232, 0.08);
+  /* Text on cream */
+  --text-primary: #0B0A08;
+  --text-secondary: #5C5852;
+  --text-tertiary: #8A8479;
+  --text-on-dark: #0B0A08;   /* legacy alias kept for stockist/closing cream sections */
+
+  /* Text on dark */
+  --text-on-dark-fg: #F5F1E8;
+  --text-on-dark-secondary: #B5AFA1;
+  --text-on-dark-tertiary: #6B665A;
+
+  /* Sage accent — deeper for cream readability */
+  --accent-gold: #5C6650;
+  --accent-gold-hover: #4B5440;
+  --accent-gold-muted: rgba(92, 102, 80, 0.10);
+  --accent-gold-deep: #3D4434;
+  --accent-on-dark: #8B9577;
+  --accent-on-dark-hover: #9CA589;
+
+  /* Strain-type colors — adjusted for cream */
+  --strain-sativa: #5A7D3A;
+  --strain-sativa-bg: rgba(90, 125, 58, 0.10);
+  --strain-hybrid: #3A6A99;
+  --strain-hybrid-bg: rgba(58, 106, 153, 0.10);
+  --strain-indica: #6B4E97;
+  --strain-indica-bg: rgba(107, 78, 151, 0.10);
+
+  /* Borders */
+  --border-subtle: #E6E1D2;
+  --border-strong: #C8C1AE;
+  --border-luxe: rgba(11, 10, 8, 0.08);
+  --border-on-dark: rgba(245, 241, 232, 0.12);
 
   --status-success: #6B8E5A;
   --status-warning: #C9A24B;
   --status-error: #B85555;
 
-  --shadow-card: 0 8px 24px rgba(0,0,0,0.35);
-  --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.55);
-  --shadow-modal: 0 24px 80px rgba(0,0,0,0.75);
-  --on-gold: #0B0A08;
+  --shadow-card: 0 8px 24px rgba(40, 60, 40, 0.08);
+  --shadow-card-hover: 0 16px 48px rgba(40, 60, 40, 0.14);
+  --shadow-modal: 0 24px 80px rgba(40, 60, 40, 0.22);
+  --on-gold: #F5F1E8;
+}
+
+/* ============================================================
+   TONE WRAPPERS
+   Drop any section in .tone-dark / .tone-sage and every nested
+   token-driven component re-skins automatically.
+   ============================================================ */
+.tone-dark {
+  background-color: var(--bg-dark);
+  color: var(--text-on-dark-fg);
+  --bg-base: var(--bg-dark);
+  --bg-surface: var(--bg-dark-surface);
+  --bg-elevated: var(--bg-dark-elevated);
+  --bg-rich: var(--bg-dark);
+  --bg-contrast: var(--bg-dark);
+  --text-primary: var(--text-on-dark-fg);
+  --text-secondary: var(--text-on-dark-secondary);
+  --text-tertiary: var(--text-on-dark-tertiary);
+  --text-on-dark: var(--text-on-dark-fg);
+  --accent-gold: var(--accent-on-dark);
+  --accent-gold-hover: var(--accent-on-dark-hover);
+  --accent-gold-muted: rgba(139, 149, 119, 0.14);
+  --border-subtle: var(--border-on-dark);
+  --border-strong: rgba(245, 241, 232, 0.22);
+  --border-luxe: var(--border-on-dark);
+  --on-gold: var(--bg-dark);
+}
+
+.tone-sage {
+  background-color: var(--bg-sage);
+  color: #0B0A08;
+  --bg-base: var(--bg-sage);
+  --bg-surface: var(--bg-sage);
+  --bg-elevated: #B5BFA4;
+  --text-primary: #0B0A08;
+  --text-secondary: rgba(11, 10, 8, 0.70);
+  --text-tertiary: rgba(11, 10, 8, 0.50);
+  --accent-gold: var(--bg-sage-deep);
+  --border-subtle: rgba(11, 10, 8, 0.10);
+  --border-luxe: rgba(11, 10, 8, 0.10);
 }
 
 /* Light mode tokens — kept for future use, currently inactive
@@ -158,9 +219,9 @@ html.light body::before {
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.03;
+    opacity: 0.015;
     background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    mix-blend-mode: overlay;
+    mix-blend-mode: multiply;
   }
 
   h1, h2, h3, h4, h5, h6 {

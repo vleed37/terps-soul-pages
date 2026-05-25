@@ -15,7 +15,7 @@ import { listStrains } from "@/lib/strains.functions";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { getStrainImage } from "@/lib/strain-assets";
+import { getStrainProductImage } from "@/lib/strain-assets";
 import {
   Accordion,
   AccordionContent,
@@ -287,7 +287,7 @@ function StrainsPage() {
           >
             <div className="relative mx-auto">
               {(() => {
-                const img = getStrainImage("green-crack");
+                const img = getStrainProductImage("green-crack");
                 return img ? (
                   <img
                     src={img}
@@ -296,7 +296,7 @@ function StrainsPage() {
                   />
                 ) : null;
               })()}
-              {/* Callouts */}
+              {/* Callouts — desktop only */}
               {[
                 { t: "Strain name", top: "18%", side: "right" },
                 { t: "Batch number", top: "34%", side: "left" },
@@ -307,7 +307,7 @@ function StrainsPage() {
               ].map((c) => (
                 <span
                   key={c.t}
-                  className="absolute font-display italic text-sm whitespace-nowrap"
+                  className="absolute hidden font-display italic text-sm whitespace-nowrap md:inline-block"
                   style={{
                     top: c.top,
                     color: "rgba(11,10,8,0.7)",

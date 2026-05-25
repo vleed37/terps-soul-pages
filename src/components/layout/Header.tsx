@@ -1,9 +1,8 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, Search, User, ShoppingBag, X, Sun, Moon } from "lucide-react";
+import { Menu, Search, User, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { useCart, cartSelectors } from "@/lib/store/cart";
-import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -20,7 +19,6 @@ export function Header() {
   const openCart = useCart((s) => s.openDrawer);
   const itemCount = useCart(cartSelectors.itemCount);
   const hydrated = useCart((s) => s.hydrated);
-  const { theme, toggle, mounted } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -61,15 +59,6 @@ export function Header() {
             ))}
             </nav>
             <div className="flex items-center gap-5 border-l border-[color:var(--border-subtle)] pl-8">
-            <button
-              aria-label="Toggle theme"
-              onClick={toggle}
-              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] transition-transform duration-300 hover:scale-105 hover:rotate-12"
-            >
-              {mounted && theme === "light"
-                ? <Moon strokeWidth={1.5} className="h-[18px] w-[18px]" />
-                : <Sun strokeWidth={1.5} className="h-[18px] w-[18px]" />}
-            </button>
             <button aria-label="Search" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
               <Search strokeWidth={1.5} className="h-5 w-5" />
             </button>
@@ -98,15 +87,6 @@ export function Header() {
             <Logo height={scrolled ? 32 : 40} />
           </Link>
           <div className="flex items-center gap-4">
-            <button
-              aria-label="Toggle theme"
-              onClick={toggle}
-              className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
-            >
-              {mounted && theme === "light"
-                ? <Moon strokeWidth={1.5} className="h-[18px] w-[18px]" />
-                : <Sun strokeWidth={1.5} className="h-[18px] w-[18px]" />}
-            </button>
             <button
               aria-label="Cart"
               onClick={openCart}

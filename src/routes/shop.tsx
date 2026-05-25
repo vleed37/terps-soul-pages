@@ -11,6 +11,7 @@ import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { FeatureBand } from "@/components/brand/FeatureBand";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import { StrainTypeDot } from "@/components/brand/StrainTypePill";
 import {
   Select,
   SelectContent,
@@ -34,12 +35,14 @@ const EFFECTS = ["daytime", "balanced", "nighttime"] as const;
 const FLAVORS = ["citrus", "berry", "earthy", "sweet", "tropical", "pine", "floral"] as const;
 const SORT = ["featured", "price-asc", "price-desc", "name"] as const;
 const LINES = ["pre_roll", "caviar_stix"] as const;
+const STRAIN_TYPES = ["sativa", "hybrid", "indica"] as const;
 
 const searchSchema = z.object({
   effect: z.array(z.enum(EFFECTS)).optional(),
   flavor: z.array(z.enum(FLAVORS)).optional(),
   avail: z.array(z.enum(["in", "limited", "soldout"])).optional(),
   line: z.enum(["all", ...LINES]).optional(),
+  strain_type: z.array(z.enum(STRAIN_TYPES)).optional(),
   min: z.coerce.number().min(0).max(500).optional(),
   max: z.coerce.number().min(0).max(500).optional(),
   sort: z.enum(SORT).optional(),
@@ -70,6 +73,7 @@ function ShopPage() {
   const flavor = search.flavor ?? [];
   const avail = search.avail ?? [];
   const line = search.line ?? "all";
+  const strainType = search.strain_type ?? [];
   const min = search.min ?? 0;
   const max = search.max ?? 500;
   const sort = search.sort ?? "featured";
@@ -83,6 +87,8 @@ function ShopPage() {
   const filtered = useMemo(() => {
     let list = strains.filter((s) => {
       if (line !== "all" && s.product_line !== line) return false;
+      if (strainType.length && (!s.strain_type || !strainType.includes(s.strain_type)))
+        return false;
       if (effect.length && (!s.effect_category || !effect.includes(s.effect_category)))
         return false;
       if (flavor.length) {
@@ -115,7 +121,7 @@ function ShopPage() {
       return (a.display_order ?? 0) - (b.display_order ?? 0);
     });
     return list;
-  }, [strains, effect, flavor, avail, line, min, max, sort]);
+  }, [strains, effect, flavor, avail, line, strainType, min, max, sort]);
 
   const preRollCount = strains.filter((s) => s.product_line === "pre_roll").length;
   const caviarCount = strains.filter((s) => s.product_line === "caviar_stix").length;
@@ -124,7 +130,22 @@ function ShopPage() {
     navigate({ search: {} });
 
   const FilterPanel = (
-    <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-5">
+      <div>
+        <MetaLabel gold>Strain type</MetaLabel>
+        <div className="mt-4 flex flex-col gap-3">
+          {STRAIN_TYPES.map((t) => (
+            <label key={t} className="flex items-center gap-3 text-sm capitalize cursor-pointer">
+              <Checkbox
+                checked={strainType.includes(t)}
+                onCheckedChange={() => setSearch({ strain_type: toggleArr(strainType, t) })}
+              />
+              <StrainTypeDot type={t} />
+              {t}
+            </label>
+          ))}
+        </div>
+      </div>
       <div>
         <MetaLabel gold>Effect</MetaLabel>
         <div className="mt-4 flex flex-col gap-3">

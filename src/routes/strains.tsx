@@ -180,6 +180,64 @@ function StrainsPage() {
         </div>
       </section>
 
+      {/* SECTION 1b — BY STRAIN TYPE */}
+      <section className="mx-auto mt-32 max-w-[1200px]">
+        <ScrollReveal className="text-center">
+          <MetaLabel gold>✦ By Strain Type</MetaLabel>
+          <h2 className="mt-4 font-display text-4xl md:text-5xl">Three lineages. One craft.</h2>
+        </ScrollReveal>
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {([
+            {
+              type: "sativa" as const,
+              title: "Sativa",
+              body: "Lifted energy. Sharp clarity. For the morning, the studio, the start.",
+            },
+            {
+              type: "hybrid" as const,
+              title: "Hybrid",
+              body: "Balanced and versatile. For any moment, any session.",
+            },
+            {
+              type: "indica" as const,
+              title: "Indica",
+              body: "Slow, deep, profound. For the after-dinner sit-down.",
+            },
+          ]).map((panel, i) => (
+            <ScrollReveal key={panel.type} delay={i * 0.08}>
+              <Link
+                to="/shop"
+                search={{ strain_type: [panel.type] }}
+                className="group block h-full rounded-lg border border-[color:var(--border-luxe)] p-10 transition-all duration-500 hover:-translate-y-1"
+                style={{ backgroundColor: `var(--strain-${panel.type}-bg)` }}
+              >
+                <p
+                  className="meta-xs"
+                  style={{ color: `var(--strain-${panel.type})` }}
+                >
+                  {panel.title}
+                </p>
+                <h3
+                  className="mt-4 font-display text-4xl"
+                  style={{ color: `var(--strain-${panel.type})` }}
+                >
+                  {panel.title}
+                </h3>
+                <p className="mt-4 text-sm leading-[1.65] text-[color:var(--text-secondary)]">
+                  {panel.body}
+                </p>
+                <p
+                  className="mt-8 font-display italic"
+                  style={{ color: `var(--strain-${panel.type})` }}
+                >
+                  Explore {panel.title.toLowerCase()} strains →
+                </p>
+              </Link>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+
       {/* SECTION 2 — EFFECT CATEGORIES */}
       <section className="mx-auto mt-32 max-w-3xl">
         {(["daytime", "balanced", "nighttime"] as const).map((eff, i) => {

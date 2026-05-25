@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { getStrainProductImage } from "@/lib/strain-assets";
-import { StatusBadge } from "./Chips";
 import { CaviarStixCard } from "./CaviarStixCard";
+import { StrainTypePill } from "./StrainTypePill";
 import type { Strain } from "@/lib/types";
 
 export function StrainCard({ strain }: { strain: Strain }) {
@@ -11,19 +11,27 @@ export function StrainCard({ strain }: { strain: Strain }) {
   }
   const img = getStrainProductImage(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
+  const isLimited = !!strain.is_limited && !soldOut;
 
   return (
     <Link
       to="/strain/$slug"
       params={{ slug: strain.slug }}
-      className="group relative block overflow-hidden rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-rich)] transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[var(--shadow-card)]"
+      className="group relative block overflow-hidden rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[var(--shadow-card)]"
     >
       <div className="flex aspect-[4/5] w-full flex-col">
         {/* Product area — clean neutral surface, no gradients */}
-        <div className="relative flex-[7] overflow-hidden bg-[color:var(--bg-surface)]">
-          {soldOut && (
+        <div className="relative flex-[7] overflow-hidden bg-[color:var(--bg-elevated)]">
+          {strain.strain_type && (
+            <div className="absolute left-4 top-4 z-10">
+              <StrainTypePill type={strain.strain_type} />
+            </div>
+          )}
+          {isLimited && (
             <div className="absolute right-4 top-4 z-10">
-              <StatusBadge kind="soldout" />
+              <span className="inline-block rounded-[4px] border border-[color:var(--accent-gold)] px-2 py-[3px] text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--accent-gold)]">
+                Limited
+              </span>
             </div>
           )}
           {img && (
@@ -53,7 +61,7 @@ export function StrainCard({ strain }: { strain: Strain }) {
             </p>
           </div>
           <span className="inline-flex w-full items-center justify-center rounded-[4px] border border-[color:var(--text-primary)] px-4 py-2.5 font-body text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-primary)] transition-colors duration-300 group-hover:bg-[color:var(--accent-gold-muted)]">
-            {soldOut ? "Join Waitlist" : "View Strain"}
+            {soldOut ? "Notify me when back" : "View strain"}
           </span>
         </div>
       </div>

@@ -61,78 +61,78 @@
 }
 
 :root {
-  /* Dark mode (default) — deep forest */
-  --bg-base: #111B10;
-  --bg-surface: #1A251A;
-  --bg-elevated: #232E22;
-  --bg-rich: #0B130B;
-  --bg-contrast: #FBFDFD;
+  /* Single mode — Luna-aligned neutral warm-dark */
+  --bg-base: #0B0A08;
+  --bg-surface: #131210;
+  --bg-elevated: #1D1B17;
+  --bg-rich: #0B0A08;
+  --bg-contrast: #F5F1E8;
 
-  --text-primary: #FBFDFD;
-  --text-secondary: #ADB7A5;
-  --text-tertiary: #7C8478;
-  --text-on-dark: #111B10;
+  --text-primary: #F5F1E8;
+  --text-secondary: #B5AFA1;
+  --text-tertiary: #6B665A;
+  --text-on-dark: #0B0A08;
 
-  /* Olive sage accent — replaces gold across the brand */
-  --accent-gold: #A4B285;
-  --accent-gold-hover: #B6C29A;
-  --accent-gold-muted: rgba(164, 178, 133, 0.18);
-  --accent-gold-deep: #6B7559;
+  /* Sage accent — restrained, used sparingly */
+  --accent-gold: #8B9577;
+  --accent-gold-hover: #9CA589;
+  --accent-gold-muted: rgba(139, 149, 119, 0.12);
+  --accent-gold-deep: #5C6650;
 
-  --border-subtle: #283526;
-  --border-strong: #3D4F3A;
-  --border-luxe: rgba(164, 178, 133, 0.40);
+  /* Strain-type colors */
+  --strain-sativa: #7AB360;
+  --strain-sativa-bg: rgba(122, 179, 96, 0.10);
+  --strain-hybrid: #6F94BD;
+  --strain-hybrid-bg: rgba(111, 148, 189, 0.10);
+  --strain-indica: #9683B5;
+  --strain-indica-bg: rgba(150, 131, 181, 0.10);
+
+  --border-subtle: #1D1B17;
+  --border-strong: #2A2722;
+  --border-luxe: rgba(245, 241, 232, 0.08);
 
   --status-success: #6B8E5A;
   --status-warning: #C9A24B;
   --status-error: #B85555;
 
-  --shadow-card: 0 8px 24px rgba(0,0,0,0.3);
-  --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.5);
-  --shadow-modal: 0 24px 80px rgba(0,0,0,0.7);
-  --on-gold: #111B10;
+  --shadow-card: 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.55);
+  --shadow-modal: 0 24px 80px rgba(0,0,0,0.75);
+  --on-gold: #0B0A08;
 }
 
+/* Light mode tokens — kept for future use, currently inactive
 html.light {
-  /* Light mode — Luna cream */
   --bg-base: #FBFDFD;
   --bg-surface: #F2F4F0;
   --bg-elevated: #E8EBE2;
   --bg-rich: #FFFFFF;
   --bg-contrast: #111B10;
-
   --text-primary: #111B10;
   --text-secondary: #4A5547;
   --text-tertiary: #7C8478;
   --text-on-dark: #FBFDFD;
-
   --accent-gold: #A4B285;
   --accent-gold-hover: #B6C29A;
   --accent-gold-muted: rgba(164, 178, 133, 0.18);
   --accent-gold-deep: #6B7559;
-
   --border-subtle: #DDE0D6;
   --border-strong: #B8BDAE;
   --border-luxe: rgba(164, 178, 133, 0.40);
-
   --shadow-card: 0 8px 24px rgba(40, 60, 40, 0.08);
   --shadow-card-hover: 0 16px 48px rgba(40, 60, 40, 0.14);
   --shadow-modal: 0 24px 80px rgba(40, 60, 40, 0.22);
   --on-gold: #FBFDFD;
 }
-
 html.light body::before {
   opacity: 0.015;
   mix-blend-mode: multiply;
 }
+*/
 
 /* Hero video — atmospheric, never in-your-face */
 .hero-video {
   opacity: 0.55;
-}
-html.light .hero-video {
-  mix-blend-mode: multiply;
-  opacity: 0.7;
 }
 
 @layer base {
@@ -143,7 +143,7 @@ html.light .hero-video {
     color: var(--text-primary);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
-    transition: background-color 300ms ease, color 300ms ease;
+    line-height: 1.65;
   }
 
   body {
@@ -167,6 +167,7 @@ html.light .hero-video {
     font-family: var(--font-display);
     font-weight: 400;
     color: var(--text-primary);
+    letter-spacing: -0.02em;
   }
 }
 
@@ -179,7 +180,7 @@ html.light .hero-video {
     font-family: var(--font-body);
     font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
   }
 

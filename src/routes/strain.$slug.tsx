@@ -8,6 +8,8 @@ import { MetaLabel } from "@/components/brand/MetaLabel";
 import { FeatureBand } from "@/components/brand/FeatureBand";
 import { EffectChip, FlavorChip } from "@/components/brand/Chips";
 import { QuantityStepper } from "@/components/brand/QuantityStepper";
+import { StrainTypePill } from "@/components/brand/StrainTypePill";
+import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
@@ -34,6 +36,7 @@ function StrainDetail() {
   const { data } = useSuspenseQuery({ queryKey: ["strain", slug], queryFn: () => getStrainBySlug({ data: { slug } }) });
   const s = data as unknown as Strain | null;
   const [qty, setQty] = useState(1);
+  const [notifyOpen, setNotifyOpen] = useState(false);
   const addItem = useCart((st) => st.addItem);
   if (!s) return null;
   const img = getStrainProductImage(s.slug);
@@ -84,9 +87,15 @@ function StrainDetail() {
             <h1 className="mt-4 font-display text-6xl leading-none md:text-8xl">{s.name}</h1>
             <Hairline w="120px" className="my-6" />
             <p className="font-display text-2xl italic text-[color:var(--text-secondary)]">{s.tagline}</p>
-            <p className="meta-xs mt-6 text-[color:var(--text-tertiary)]">
-              {s.weight_grams ?? 0.75}G · Live Rosin Infused · Lab Verified · Batch {s.batch_number}
-            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <span className="meta-xs text-[color:var(--text-tertiary)]">
+                {s.weight_grams ?? 0.75}G
+              </span>
+              {s.strain_type && <StrainTypePill type={s.strain_type} />}
+              <span className="meta-xs text-[color:var(--text-tertiary)]">
+                Live Rosin Infused · Lab Verified · Batch {s.batch_number}
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -106,7 +115,12 @@ function StrainDetail() {
             <h2 className="font-display text-4xl md:text-5xl">{s.name}</h2>
             <p className="mt-4 font-body text-3xl font-bold">R{Number(s.price_zar).toFixed(0)}</p>
             <p className="mt-2 text-sm text-[color:var(--text-secondary)]">Free delivery on orders over R500</p>
-            <p className="meta-xs mt-4 text-gold">{s.stock_quantity} in stock · Limited</p>
+            {s.is_limited && !soldOut && (
+              <p className="meta-xs mt-4 text-gold">Limited release</p>
+            )}
+            {soldOut && (
+              <p className="meta-xs mt-4 text-[color:var(--text-secondary)]">Currently out of stock</p>
+            )}
             {isPremium && s.infusion_components && s.infusion_components.length > 0 && (
               <div className="mt-6">
                 <p className="meta-xs text-[color:var(--text-tertiary)]">Infusion Components</p>
@@ -123,10 +137,24 @@ function StrainDetail() {
               </div>
             )}
             <Hairline className="my-8" />
-            <div className="mb-6"><QuantityStepper value={qty} onChange={setQty} /></div>
-            <GoldButton onClick={handleAdd} disabled={soldOut} className="w-full">
-              {soldOut ? "Sold Out" : "Add to Cart"}
-            </GoldButton>
+            {!soldOut && (
+              <div className="mb-6"><QuantityStepper value={qty} onChange={setQty} /></div>
+            )}
+            {soldOut ? (
+              <GoldButton onClick={() => setNotifyOpen(true)} className="w-full">
+                Notify me when back
+              </GoldButton>
+            ) : (
+              <GoldButton onClick={handleAdd} className="w-full">
+                Add to Cart
+              </GoldButton>
+            )}
+            <NotifyMeModal
+              open={notifyOpen}
+              onOpenChange={setNotifyOpen}
+              strainId={s.id}
+              strainName={s.name}
+            />
             <p className="mt-4 text-center text-sm">
               <a href="https://instagram.com/terps.official_" className="ghost-link">Or message us on Instagram</a>
             </p>

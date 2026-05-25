@@ -279,7 +279,7 @@ function DropAlerts() {
   }
 
   return (
-    <section className="px-6 py-32 md:py-40">
+    <section className="tone-dark px-6 py-32 md:py-40">
       <div className="mx-auto max-w-2xl text-center">
         <ScrollReveal>
           <MetaLabel gold>Stay Close</MetaLabel>
@@ -299,7 +299,7 @@ function DropAlerts() {
                 placeholder="your@email.com"
                 className="flex-1 rounded-[4px] border border-[color:var(--border-strong)] bg-[color:var(--bg-surface)] px-5 py-4 text-sm outline-none focus:border-[color:var(--accent-gold)]"
               />
-              <GoldButton type="submit">Notify me</GoldButton>
+              <GoldButton type="submit" variant="cream">Notify me</GoldButton>
             </form>
           )}
           {err && <p className="mt-3 text-sm text-[color:var(--status-error)]">{err}</p>}

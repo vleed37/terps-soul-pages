@@ -326,28 +326,19 @@ function StockistsPage() {
       </div>
 
       {/* BOTTOM CTA */}
-      <section className="relative mx-auto mt-32 overflow-hidden rounded-lg">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.15), transparent 60%), var(--bg-rich)",
-          }}
-        />
-        <div className="relative px-6 py-20 text-center md:py-28">
-          <ScrollReveal>
-            <MetaLabel gold>✦ For retailers</MetaLabel>
-            <h2 className="mt-4 font-display text-4xl md:text-5xl">
-              Stock Terps in your store.
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-base text-[color:var(--text-secondary)] md:text-lg">
-              Interested in carrying Terps as a retailer? We work with curated dispensaries across SA.
-            </p>
-            <Link to="/wholesale" className="mt-10 inline-block">
-              <GoldButton>Become a stockist</GoldButton>
-            </Link>
-          </ScrollReveal>
-        </div>
+      <section className="mx-auto mt-32 px-6 py-20 text-center md:py-28">
+        <ScrollReveal>
+          <MetaLabel gold>✦ For retailers</MetaLabel>
+          <h2 className="mt-4 font-display text-4xl md:text-5xl">
+            Stock Terps in your store.
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-base text-[color:var(--text-secondary)] md:text-lg">
+            Interested in carrying Terps as a retailer? We work with curated dispensaries across SA.
+          </p>
+          <Link to="/wholesale" className="mt-10 inline-block">
+            <GoldButton>Become a stockist</GoldButton>
+          </Link>
+        </ScrollReveal>
       </section>
     </div>
   );

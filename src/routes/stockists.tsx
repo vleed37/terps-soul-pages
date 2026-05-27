@@ -272,7 +272,8 @@ function StockistsPage() {
                           type="button"
                           onClick={() => {
                             setFocused(s);
-                            setShowMap(true);
+                            const el = document.getElementById(`stockist-map`);
+                            el?.scrollIntoView({ behavior: "smooth", block: "start" });
                           }}
                           className="ghost-link"
                         >

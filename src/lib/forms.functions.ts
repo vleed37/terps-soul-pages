@@ -57,3 +57,23 @@ export const submitWholesaleInquiry = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+export const submitStockistRequest = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z.object({
+      email: emailSchema,
+      city_or_suburb: z.string().trim().min(1).max(200),
+      province: z.string().trim().max(60).optional().or(z.literal("")),
+      notes: z.string().trim().max(1000).optional().or(z.literal("")),
+    }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    const { error } = await supabaseAdmin.from("stockist_requests").insert({
+      email: data.email,
+      city_or_suburb: data.city_or_suburb,
+      province: data.province || null,
+      notes: data.notes || null,
+    });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });

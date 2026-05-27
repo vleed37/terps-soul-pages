@@ -10,6 +10,8 @@ import { EffectChip, FlavorChip } from "@/components/brand/Chips";
 import { QuantityStepper } from "@/components/brand/QuantityStepper";
 import { StrainTypePill } from "@/components/brand/StrainTypePill";
 import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
+import { FindClosestStockistModal } from "@/components/brand/FindClosestStockistModal";
+import { MapPin } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
@@ -37,6 +39,7 @@ function StrainDetail() {
   const s = data as unknown as Strain | null;
   const [qty, setQty] = useState(1);
   const [notifyOpen, setNotifyOpen] = useState(false);
+  const [stockistOpen, setStockistOpen] = useState(false);
   const addItem = useCart((st) => st.addItem);
   if (!s) return null;
   const img = getStrainProductImage(s.slug);
@@ -149,9 +152,33 @@ function StrainDetail() {
                 Add to Cart
               </GoldButton>
             )}
+            {soldOut ? (
+              <GoldButton
+                onClick={() => setStockistOpen(true)}
+                className="mt-1.5 w-full"
+              >
+                <MapPin className="h-4 w-4" strokeWidth={1.5} />
+                Find closest stockist
+              </GoldButton>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setStockistOpen(true)}
+                className="mt-1.5 flex w-full items-center justify-center gap-2 rounded-[4px] border border-[color:var(--border-strong)] bg-transparent px-8 py-4 font-body text-[0.8125rem] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-primary)] transition-all duration-300 hover:border-[color:var(--accent-sage,#7d9b76)] hover:text-[color:var(--accent-sage,#7d9b76)]"
+              >
+                <MapPin className="h-4 w-4" strokeWidth={1.5} />
+                Find closest stockist
+              </button>
+            )}
             <NotifyMeModal
               open={notifyOpen}
               onOpenChange={setNotifyOpen}
+              strainId={s.id}
+              strainName={s.name}
+            />
+            <FindClosestStockistModal
+              open={stockistOpen}
+              onOpenChange={setStockistOpen}
               strainId={s.id}
               strainName={s.name}
             />

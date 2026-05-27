@@ -347,8 +347,36 @@ export type Database = {
           },
         ]
       }
+      stockist_requests: {
+        Row: {
+          city_or_suburb: string
+          created_at: string | null
+          email: string
+          id: string
+          notes: string | null
+          province: string | null
+        }
+        Insert: {
+          city_or_suburb: string
+          created_at?: string | null
+          email: string
+          id?: string
+          notes?: string | null
+          province?: string | null
+        }
+        Update: {
+          city_or_suburb?: string
+          created_at?: string | null
+          email?: string
+          id?: string
+          notes?: string | null
+          province?: string | null
+        }
+        Relationships: []
+      }
       stockists: {
         Row: {
+          accepts_online_orders: boolean | null
           address: string
           carried_strain_ids: string[] | null
           city: string
@@ -363,6 +391,7 @@ export type Database = {
           name: string
           phone: string | null
           postal_code: string | null
+          product_listing_urls: Json | null
           province: string
           slug: string
           suburb: string | null
@@ -370,6 +399,7 @@ export type Database = {
           website: string | null
         }
         Insert: {
+          accepts_online_orders?: boolean | null
           address: string
           carried_strain_ids?: string[] | null
           city: string
@@ -384,6 +414,7 @@ export type Database = {
           name: string
           phone?: string | null
           postal_code?: string | null
+          product_listing_urls?: Json | null
           province: string
           slug: string
           suburb?: string | null
@@ -391,6 +422,7 @@ export type Database = {
           website?: string | null
         }
         Update: {
+          accepts_online_orders?: boolean | null
           address?: string
           carried_strain_ids?: string[] | null
           city?: string
@@ -405,6 +437,7 @@ export type Database = {
           name?: string
           phone?: string | null
           postal_code?: string | null
+          product_listing_urls?: Json | null
           province?: string
           slug?: string
           suburb?: string | null

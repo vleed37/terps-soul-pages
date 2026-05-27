@@ -57,6 +57,8 @@ export type Stockist = {
   hours_json: Record<string, { open: string; close: string }> | null;
   carried_strain_ids: string[] | null;
   is_featured: boolean | null;
+  product_listing_urls?: Record<string, string> | null;
+  accepts_online_orders?: boolean | null;
 };
 
 export const STRAIN_IMAGES: Record<string, { product: string; hero?: string }> = {};

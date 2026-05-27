@@ -214,11 +214,11 @@ function ShopPage() {
   );
 
   return (
-    <section className="px-6 py-20 md:px-12 md:py-28">
+    <section className="px-6 py-10 md:px-12 md:py-28">
       <div className="mx-auto max-w-[1400px]">
         <ScrollReveal className="text-center">
           <MetaLabel gold>✦ The Collection</MetaLabel>
-          <h1 className="mx-auto mt-5 font-display text-5xl leading-[1.05] md:text-7xl">
+          <h1 className="mx-auto mt-5 font-display text-[2.75rem] leading-[1.05] md:text-7xl">
             Every drop. <em className="text-[color:var(--accent-gold)]">Every flavor.</em>
           </h1>
           <p className="mx-auto mt-6 max-w-[500px] text-base text-[color:var(--text-secondary)] md:text-lg">
@@ -228,7 +228,7 @@ function ShopPage() {
 
       </div>
 
-      <div className="-mx-6 mt-16 md:-mx-12">
+      <div className="-mx-6 mt-10 md:-mx-12 md:mt-16">
         <FeatureBand />
       </div>
 

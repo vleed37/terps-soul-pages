@@ -88,7 +88,6 @@ function StockistsPage() {
   const [openOnly, setOpenOnly] = useState(false);
   const [userLoc, setUserLoc] = useState<[number, number] | null>(null);
   const [focused, setFocused] = useState<Stockist | null>(null);
-  const [showMap, setShowMap] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -196,18 +195,11 @@ function StockistsPage() {
           <span className="ml-auto text-xs text-[color:var(--text-tertiary)] uppercase tracking-[0.15em]">
             {filtered.length} {filtered.length === 1 ? "stockist" : "stockists"}
           </span>
-          <button
-            type="button"
-            onClick={() => setShowMap((v) => !v)}
-            className="ghost-link md:hidden"
-          >
-            {showMap ? "Hide map" : "Show map"} →
-          </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
+        <div className="flex flex-col gap-8 md:grid md:grid-cols-5">
           {/* LIST */}
-          <div className="md:col-span-3">
+          <div className="order-2 md:order-1 md:col-span-3">
             <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]">
               {filtered.length === 0 ? (
                 <p className="px-6 py-20 text-center font-display italic text-2xl text-[color:var(--text-secondary)]">
@@ -280,7 +272,8 @@ function StockistsPage() {
                           type="button"
                           onClick={() => {
                             setFocused(s);
-                            setShowMap(true);
+                            const el = document.getElementById(`stockist-map`);
+                            el?.scrollIntoView({ behavior: "smooth", block: "start" });
                           }}
                           className="ghost-link"
                         >
@@ -295,8 +288,8 @@ function StockistsPage() {
           </div>
 
           {/* MAP */}
-          <div className={`md:col-span-2 ${showMap ? "block" : "hidden md:block"}`}>
-            <div className="sticky top-24 h-[50vh] overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] md:h-[70vh]">
+          <div id="stockist-map" className="order-1 md:order-2 md:col-span-2">
+            <div className="h-[300px] overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] md:sticky md:top-24 md:h-[70vh]">
               {mounted ? (
               <Suspense
                 fallback={

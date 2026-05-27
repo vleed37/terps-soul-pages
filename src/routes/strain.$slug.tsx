@@ -84,7 +84,7 @@ function StrainDetail() {
               <MetaLabel gold className="mb-3 block">✦ Premium Tier</MetaLabel>
             )}
             {s.effect_category && <MetaLabel gold className="capitalize">{s.effect_category} strain</MetaLabel>}
-            <h1 className="mt-4 font-display text-6xl leading-none md:text-8xl">{s.name}</h1>
+            <h1 className="mt-4 font-display text-[2.75rem] leading-none tracking-tight sm:text-6xl md:text-8xl md:tracking-normal">{s.name}</h1>
             <Hairline w="120px" className="my-6" />
             <p className="font-display text-2xl italic text-[color:var(--text-secondary)]">{s.tagline}</p>
             <div className="mt-6 flex flex-wrap items-center gap-3">

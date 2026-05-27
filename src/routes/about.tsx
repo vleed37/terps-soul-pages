@@ -125,7 +125,7 @@ function AboutPage() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <div className="relative mt-16 flex items-end justify-center gap-4 px-2 py-12 md:gap-12 md:px-6 md:py-16">
+          <div className="relative mt-16 grid grid-cols-2 items-end justify-items-center gap-6 px-2 py-12 md:flex md:gap-12 md:px-6 md:py-16">
             {strains.slice(0, 4).map((s) => {
               const img = getStrainProductImage(s.slug);
               if (!img) return null;
@@ -139,7 +139,7 @@ function AboutPage() {
                   <img
                     src={img}
                     alt={s.name}
-                    className="max-h-[280px] w-auto rounded-xl transition-transform duration-500 ease-out group-hover:-translate-y-2 md:max-h-[420px]"
+                    className="max-h-[200px] w-auto rounded-xl transition-transform duration-500 ease-out group-hover:-translate-y-2 sm:max-h-[280px] md:max-h-[420px]"
                   />
                 </Link>
               );

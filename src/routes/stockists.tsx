@@ -288,7 +288,7 @@ function StockistsPage() {
           </div>
 
           {/* MAP */}
-          <div className="order-1 md:order-2 md:col-span-2">
+          <div id="stockist-map" className="order-1 md:order-2 md:col-span-2">
             <div className="h-[300px] overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] md:sticky md:top-24 md:h-[70vh]">
               {mounted ? (
               <Suspense

@@ -1,0 +1,5 @@
+ALTER TABLE public.strains
+  ADD COLUMN IF NOT EXISTS effects JSONB DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS helps_with JSONB DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS negatives JSONB DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS lineage TEXT;

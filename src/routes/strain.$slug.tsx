@@ -11,6 +11,7 @@ import { QuantityStepper } from "@/components/brand/QuantityStepper";
 import { StrainTypePill } from "@/components/brand/StrainTypePill";
 import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
 import { FindClosestStockistModal } from "@/components/brand/FindClosestStockistModal";
+import { StrainInformation } from "@/components/brand/StrainInformation";
 import { MapPin } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
@@ -293,6 +294,8 @@ function StrainDetail() {
           </div>
         </div>
       </section>
+
+      <StrainInformation strain={s} />
     </>
   );
 }

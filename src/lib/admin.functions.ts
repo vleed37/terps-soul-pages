@@ -73,7 +73,7 @@ Tone: editorial cannabis-magazine. Warm, knowledgeable, never clinical. No medic
     const text: string | undefined = payload.choices?.[0]?.message?.content;
     if (!text) throw new Error("Empty AI response");
 
-    let parsed: Record<string, unknown>;
+    let parsed: any;
     try {
       parsed = JSON.parse(text);
     } catch {
@@ -82,7 +82,16 @@ Tone: editorial cannabis-magazine. Warm, knowledgeable, never clinical. No medic
       parsed = JSON.parse(m[0]);
     }
 
-    return parsed;
+    return parsed as {
+      effects?: string[];
+      flavors?: string[];
+      helps_with?: string[];
+      negatives?: string[];
+      lineage?: string;
+      story?: string;
+      terpenes?: Array<{ name: string; percentage: number; descriptor: string }>;
+      strain_unknown?: boolean;
+    };
   });
 
 const StrainUpdateSchema = z.object({

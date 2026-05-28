@@ -28,6 +28,7 @@ import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/
 import { Route as AuthenticatedAccountSettingsRouteImport } from './routes/_authenticated/account.settings'
 import { Route as AuthenticatedAccountOrdersRouteImport } from './routes/_authenticated/account.orders'
 import { Route as AuthenticatedAccountAddressesRouteImport } from './routes/_authenticated/account.addresses'
+import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
 import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
 
 const WholesaleRoute = WholesaleRouteImport.update({
@@ -127,6 +128,11 @@ const AuthenticatedAccountAddressesRoute =
     path: '/addresses',
     getParentRoute: () => AuthenticatedAccountRoute,
   } as any)
+const AdminStrainsIdEditRoute = AdminStrainsIdEditRouteImport.update({
+  id: '/admin/strains/$id/edit',
+  path: '/admin/strains/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAccountOrdersOrderNumberRoute =
   AuthenticatedAccountOrdersOrderNumberRouteImport.update({
     id: '/$orderNumber',
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
+  '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
+  '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -198,6 +206,7 @@ export interface FileRoutesById {
   '/_authenticated/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
   '/_authenticated/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
+  '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/account/settings'
     | '/api/public/bobpay-webhook'
     | '/account/orders/$orderNumber'
+    | '/admin/strains/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -242,6 +252,7 @@ export interface FileRouteTypes {
     | '/account/settings'
     | '/api/public/bobpay-webhook'
     | '/account/orders/$orderNumber'
+    | '/admin/strains/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/_authenticated/account/settings'
     | '/api/public/bobpay-webhook'
     | '/_authenticated/account/orders/$orderNumber'
+    | '/admin/strains/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -282,6 +294,7 @@ export interface RootRouteChildren {
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   StrainSlugRoute: typeof StrainSlugRoute
   ApiPublicBobpayWebhookRoute: typeof ApiPublicBobpayWebhookRoute
+  AdminStrainsIdEditRoute: typeof AdminStrainsIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -419,6 +432,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountAddressesRouteImport
       parentRoute: typeof AuthenticatedAccountRoute
     }
+    '/admin/strains/$id/edit': {
+      id: '/admin/strains/$id/edit'
+      path: '/admin/strains/$id/edit'
+      fullPath: '/admin/strains/$id/edit'
+      preLoaderRoute: typeof AdminStrainsIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/account/orders/$orderNumber': {
       id: '/_authenticated/account/orders/$orderNumber'
       path: '/$orderNumber'
@@ -487,6 +507,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrderOrderNumberRoute: OrderOrderNumberRoute,
   StrainSlugRoute: StrainSlugRoute,
   ApiPublicBobpayWebhookRoute: ApiPublicBobpayWebhookRoute,
+  AdminStrainsIdEditRoute: AdminStrainsIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

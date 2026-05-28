@@ -456,8 +456,10 @@ export type Database = {
           description: string | null
           display_order: number | null
           effect_category: string | null
+          effects: Json | null
           flavor_tags: string[] | null
           gallery_image_urls: string[] | null
+          helps_with: Json | null
           hero_image_url: string | null
           id: string
           infusion_components: string[] | null
@@ -465,7 +467,9 @@ export type Database = {
           is_featured: boolean | null
           is_limited: boolean | null
           lab_name: string | null
+          lineage: string | null
           name: string
+          negatives: Json | null
           price_zar: number
           product_image_url: string | null
           product_line: string
@@ -492,8 +496,10 @@ export type Database = {
           description?: string | null
           display_order?: number | null
           effect_category?: string | null
+          effects?: Json | null
           flavor_tags?: string[] | null
           gallery_image_urls?: string[] | null
+          helps_with?: Json | null
           hero_image_url?: string | null
           id?: string
           infusion_components?: string[] | null
@@ -501,7 +507,9 @@ export type Database = {
           is_featured?: boolean | null
           is_limited?: boolean | null
           lab_name?: string | null
+          lineage?: string | null
           name: string
+          negatives?: Json | null
           price_zar?: number
           product_image_url?: string | null
           product_line?: string
@@ -528,8 +536,10 @@ export type Database = {
           description?: string | null
           display_order?: number | null
           effect_category?: string | null
+          effects?: Json | null
           flavor_tags?: string[] | null
           gallery_image_urls?: string[] | null
+          helps_with?: Json | null
           hero_image_url?: string | null
           id?: string
           infusion_components?: string[] | null
@@ -537,7 +547,9 @@ export type Database = {
           is_featured?: boolean | null
           is_limited?: boolean | null
           lab_name?: string | null
+          lineage?: string | null
           name?: string
+          negatives?: Json | null
           price_zar?: number
           product_image_url?: string | null
           product_line?: string

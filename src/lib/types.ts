@@ -26,6 +26,10 @@ export type Strain = {
   product_tier: "standard" | "premium";
   strain_type: "sativa" | "hybrid" | "indica" | null;
   infusion_components: string[] | null;
+  effects?: string[] | null;
+  helps_with?: string[] | null;
+  negatives?: string[] | null;
+  lineage?: string | null;
 };
 
 export type Terpene = {

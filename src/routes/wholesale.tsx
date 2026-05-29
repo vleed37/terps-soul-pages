@@ -39,7 +39,7 @@ function WholesalePage() {
           <h1 className="mx-auto mt-6 font-display text-5xl leading-[1.05] text-[color:var(--text-on-dark,#F5EFE2)] md:text-7xl lg:text-[5.5rem]">
             Become a Terps stockist.
           </h1>
-          <p className="mx-auto mt-8 max-w-xl font-display text-2xl italic text-[color:var(--text-secondary)] md:text-3xl">
+          <p className="mx-auto mt-8 max-w-xl font-display text-2xl italic text-[color:var(--text-on-dark,#F5EFE2)]/85 md:text-3xl">
             Premium pre-rolls and exclusive Caviar Stix access for curated retailers.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -179,8 +179,15 @@ function ApplyFlow() {
       password: s1.password,
       options: { emailRedirectTo: `${window.location.origin}/wholesale` },
     });
+    if (error) {
+      setSubmitting(false);
+      return toast.error(error.message);
+    }
+    // Try to immediately establish a session so the application can be submitted
+    // in the same flow. If email confirmation is required, this will fail silently —
+    // we'll surface a clear message at submit time.
+    await supabase.auth.signInWithPassword({ email: s1.email, password: s1.password }).catch(() => {});
     setSubmitting(false);
-    if (error) return toast.error(error.message);
     setS3((s) => ({ ...s, primary_contact_email: s1.email }));
     setStep(2);
   }
@@ -195,6 +202,12 @@ function ApplyFlow() {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) {
+        toast.error("Please confirm your email, then sign in to submit your application.");
+        setSubmitting(false);
+        return;
+      }
       const res = await apply({
         data: {
           business_name: s2.business_name,

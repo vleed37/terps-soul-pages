@@ -451,6 +451,7 @@ export type Database = {
           accent_color_accent: string | null
           accent_color_primary: string | null
           batch_number: string | null
+          box_quantity: number | null
           cbd_percentage: number | null
           created_at: string | null
           description: string | null
@@ -485,12 +486,16 @@ export type Database = {
           total_terpenes_percentage: number | null
           updated_at: string | null
           weight_grams: number | null
+          wholesale_available: boolean | null
+          wholesale_box_price_zar: number | null
+          wholesale_minimum_boxes: number | null
           wholesale_price_zar: number | null
         }
         Insert: {
           accent_color_accent?: string | null
           accent_color_primary?: string | null
           batch_number?: string | null
+          box_quantity?: number | null
           cbd_percentage?: number | null
           created_at?: string | null
           description?: string | null
@@ -525,12 +530,16 @@ export type Database = {
           total_terpenes_percentage?: number | null
           updated_at?: string | null
           weight_grams?: number | null
+          wholesale_available?: boolean | null
+          wholesale_box_price_zar?: number | null
+          wholesale_minimum_boxes?: number | null
           wholesale_price_zar?: number | null
         }
         Update: {
           accent_color_accent?: string | null
           accent_color_primary?: string | null
           batch_number?: string | null
+          box_quantity?: number | null
           cbd_percentage?: number | null
           created_at?: string | null
           description?: string | null
@@ -565,6 +574,9 @@ export type Database = {
           total_terpenes_percentage?: number | null
           updated_at?: string | null
           weight_grams?: number | null
+          wholesale_available?: boolean | null
+          wholesale_box_price_zar?: number | null
+          wholesale_minimum_boxes?: number | null
           wholesale_price_zar?: number | null
         }
         Relationships: []
@@ -629,6 +641,87 @@ export type Database = {
         }
         Relationships: []
       }
+      wholesale_accounts: {
+        Row: {
+          approval_status: string
+          approved_at: string | null
+          approved_by: string | null
+          business_address_line_1: string
+          business_address_line_2: string | null
+          business_city: string
+          business_country: string
+          business_name: string
+          business_postal_code: string | null
+          business_province: string
+          business_type: string
+          cipc_registration_number: string | null
+          created_at: string
+          estimated_monthly_volume: string
+          id: string
+          internal_notes: string | null
+          primary_contact_email: string
+          primary_contact_name: string
+          primary_contact_phone: string
+          rejection_reason: string | null
+          trading_as: string | null
+          updated_at: string
+          user_id: string
+          vat_number: string | null
+        }
+        Insert: {
+          approval_status?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          business_address_line_1: string
+          business_address_line_2?: string | null
+          business_city: string
+          business_country?: string
+          business_name: string
+          business_postal_code?: string | null
+          business_province: string
+          business_type: string
+          cipc_registration_number?: string | null
+          created_at?: string
+          estimated_monthly_volume: string
+          id?: string
+          internal_notes?: string | null
+          primary_contact_email: string
+          primary_contact_name: string
+          primary_contact_phone: string
+          rejection_reason?: string | null
+          trading_as?: string | null
+          updated_at?: string
+          user_id: string
+          vat_number?: string | null
+        }
+        Update: {
+          approval_status?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          business_address_line_1?: string
+          business_address_line_2?: string | null
+          business_city?: string
+          business_country?: string
+          business_name?: string
+          business_postal_code?: string | null
+          business_province?: string
+          business_type?: string
+          cipc_registration_number?: string | null
+          created_at?: string
+          estimated_monthly_volume?: string
+          id?: string
+          internal_notes?: string | null
+          primary_contact_email?: string
+          primary_contact_name?: string
+          primary_contact_phone?: string
+          rejection_reason?: string | null
+          trading_as?: string | null
+          updated_at?: string
+          user_id?: string
+          vat_number?: string | null
+        }
+        Relationships: []
+      }
       wholesale_inquiries: {
         Row: {
           business_name: string | null
@@ -662,6 +755,134 @@ export type Database = {
         }
         Relationships: []
       }
+      wholesale_order_items: {
+        Row: {
+          box_price_zar: number
+          box_quantity_per_unit: number
+          boxes_ordered: number
+          created_at: string
+          id: string
+          line_total_zar: number
+          strain_id: string
+          strain_name: string
+          total_units: number
+          unit_price_zar: number
+          wholesale_order_id: string
+        }
+        Insert: {
+          box_price_zar: number
+          box_quantity_per_unit: number
+          boxes_ordered: number
+          created_at?: string
+          id?: string
+          line_total_zar: number
+          strain_id: string
+          strain_name: string
+          total_units: number
+          unit_price_zar: number
+          wholesale_order_id: string
+        }
+        Update: {
+          box_price_zar?: number
+          box_quantity_per_unit?: number
+          boxes_ordered?: number
+          created_at?: string
+          id?: string
+          line_total_zar?: number
+          strain_id?: string
+          strain_name?: string
+          total_units?: number
+          unit_price_zar?: number
+          wholesale_order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wholesale_order_items_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: false
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wholesale_order_items_wholesale_order_id_fkey"
+            columns: ["wholesale_order_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wholesale_orders: {
+        Row: {
+          admin_notes: string | null
+          bobpay_transaction_id: string | null
+          created_at: string
+          customer_notes: string | null
+          fulfillment_status: string
+          id: string
+          order_number: string
+          paid_at: string | null
+          payment_status: string
+          shipping_address: Json
+          shipping_zar: number
+          subtotal_zar: number
+          total_zar: number
+          tracking_number: string | null
+          updated_at: string
+          user_id: string
+          vat_zar: number
+          wholesale_account_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          bobpay_transaction_id?: string | null
+          created_at?: string
+          customer_notes?: string | null
+          fulfillment_status?: string
+          id?: string
+          order_number: string
+          paid_at?: string | null
+          payment_status?: string
+          shipping_address: Json
+          shipping_zar?: number
+          subtotal_zar: number
+          total_zar: number
+          tracking_number?: string | null
+          updated_at?: string
+          user_id: string
+          vat_zar?: number
+          wholesale_account_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          bobpay_transaction_id?: string | null
+          created_at?: string
+          customer_notes?: string | null
+          fulfillment_status?: string
+          id?: string
+          order_number?: string
+          paid_at?: string | null
+          payment_status?: string
+          shipping_address?: Json
+          shipping_zar?: number
+          subtotal_zar?: number
+          total_zar?: number
+          tracking_number?: string | null
+          updated_at?: string
+          user_id?: string
+          vat_zar?: number
+          wholesale_account_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wholesale_orders_wholesale_account_id_fkey"
+            columns: ["wholesale_account_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -672,6 +893,7 @@ export type Database = {
         Returns: undefined
       }
       generate_order_number: { Args: never; Returns: string }
+      generate_wholesale_order_number: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never

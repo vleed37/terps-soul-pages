@@ -27,7 +27,7 @@ function OrdersPage() {
         <div className="rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] p-12 text-center">
           <p className="text-sm text-[color:var(--text-tertiary)]">No orders yet.</p>
           <div className="mt-6">
-            <Link to="/wholesale/dashboard/catalog"><GoldButton>Browse Catalog</GoldButton></Link>
+            <Link to="/wholesale/dashboard/catalog" className="ghost-link">Browse Catalog →</Link>
           </div>
         </div>
       ) : (

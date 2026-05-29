@@ -66,3 +66,80 @@ export type Stockist = {
 };
 
 export const STRAIN_IMAGES: Record<string, { product: string; hero?: string }> = {};
+
+export type WholesaleAccount = {
+  id: string;
+  user_id: string;
+  business_name: string;
+  trading_as: string | null;
+  vat_number: string | null;
+  cipc_registration_number: string | null;
+  business_type: "dispensary" | "lounge" | "specialty_retailer" | "other";
+  estimated_monthly_volume: "under_50" | "50_to_200" | "200_to_500" | "500_plus";
+  primary_contact_name: string;
+  primary_contact_email: string;
+  primary_contact_phone: string;
+  business_address_line_1: string;
+  business_address_line_2: string | null;
+  business_city: string;
+  business_province: string;
+  business_postal_code: string | null;
+  business_country: string;
+  approval_status: "pending" | "approved" | "rejected" | "suspended";
+  approved_at: string | null;
+  rejection_reason: string | null;
+  created_at: string;
+};
+
+export type WholesaleStrain = {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string | null;
+  strain_type: "sativa" | "hybrid" | "indica" | null;
+  product_line: "pre_roll" | "caviar_stix";
+  product_image_url: string | null;
+  accent_color_primary: string | null;
+  box_quantity: number;
+  wholesale_box_price_zar: number;
+  wholesale_minimum_boxes: number;
+  wholesale_available: boolean;
+  weight_grams: number | null;
+};
+
+export type WholesaleOrderItem = {
+  id: string;
+  strain_id: string;
+  strain_name: string;
+  box_quantity_per_unit: number;
+  boxes_ordered: number;
+  total_units: number;
+  unit_price_zar: number;
+  box_price_zar: number;
+  line_total_zar: number;
+};
+
+export type WholesaleOrder = {
+  id: string;
+  order_number: string;
+  subtotal_zar: number;
+  vat_zar: number;
+  shipping_zar: number;
+  total_zar: number;
+  payment_status: "pending" | "paid" | "failed" | "refunded";
+  fulfillment_status: "pending" | "preparing" | "shipped" | "delivered" | "cancelled";
+  shipping_address: {
+    line1: string;
+    line2?: string | null;
+    city: string;
+    province: string;
+    postal_code?: string | null;
+    country: string;
+  };
+  customer_notes: string | null;
+  tracking_number: string | null;
+  bobpay_transaction_id: string | null;
+  paid_at: string | null;
+  created_at: string;
+  items?: WholesaleOrderItem[];
+};

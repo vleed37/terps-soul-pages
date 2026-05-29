@@ -136,7 +136,7 @@ export function UpdateAccountModal({ open, onOpenChange, account }: Props) {
             >
               Cancel
             </button>
-            <GoldButton type="submit" variant="dark" disabled={saving}>
+            <GoldButton type="submit" variant="primary" disabled={saving}>
               {saving ? "Saving…" : "Save Changes"}
             </GoldButton>
           </div>

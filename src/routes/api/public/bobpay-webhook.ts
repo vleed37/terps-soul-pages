@@ -36,13 +36,43 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
         const reference = payload.reference;
         if (!reference) return new Response("Missing reference", { status: 400 });
 
+        // Try retail orders first
         const { data: order, error } = await supabaseAdmin
           .from("orders")
           .select("id, order_number, payment_status, status")
           .eq("order_number", reference)
           .maybeSingle();
         if (error) return new Response(error.message, { status: 500 });
-        if (!order) return new Response("Order not found", { status: 404 });
+        if (!order) {
+          // Fallback: wholesale order
+          const { data: wOrder } = await supabaseAdmin
+            .from("wholesale_orders")
+            .select("id, order_number, payment_status")
+            .eq("order_number", reference)
+            .maybeSingle();
+          if (!wOrder) return new Response("Order not found", { status: 404 });
+          if (wOrder.payment_status === "paid") return new Response("ok");
+          const wStatus = (payload.status || payload.event || "").toLowerCase();
+          const wPaid = ["paid", "success", "successful", "completed"].includes(wStatus);
+          const wFailed = ["failed", "declined", "cancelled", "canceled"].includes(wStatus);
+          if (wPaid) {
+            await supabaseAdmin
+              .from("wholesale_orders")
+              .update({
+                payment_status: "paid",
+                fulfillment_status: "preparing",
+                paid_at: new Date().toISOString(),
+                bobpay_transaction_id: payload.transaction_id ?? null,
+              })
+              .eq("id", wOrder.id);
+          } else if (wFailed) {
+            await supabaseAdmin
+              .from("wholesale_orders")
+              .update({ payment_status: "failed" })
+              .eq("id", wOrder.id);
+          }
+          return new Response("ok");
+        }
 
         // Idempotent — if already paid, just ack
         if (order.payment_status === "paid") return new Response("ok");

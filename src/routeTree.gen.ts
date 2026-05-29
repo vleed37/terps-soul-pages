@@ -29,6 +29,7 @@ import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticate
 import { Route as WholesaleDashboardIndexRouteImport } from './routes/wholesale.dashboard.index'
 import { Route as WholesaleDashboardCheckoutRouteImport } from './routes/wholesale.dashboard.checkout'
 import { Route as WholesaleDashboardCatalogRouteImport } from './routes/wholesale.dashboard.catalog'
+import { Route as ApiPublicWholesaleApprovalEmailRouteImport } from './routes/api/public/wholesale-approval-email'
 import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
 import { Route as AuthenticatedAccountSettingsRouteImport } from './routes/_authenticated/account.settings'
 import { Route as AuthenticatedAccountOrdersRouteImport } from './routes/_authenticated/account.orders'
@@ -139,6 +140,12 @@ const WholesaleDashboardCatalogRoute =
     path: '/catalog',
     getParentRoute: () => WholesaleDashboardRoute,
   } as any)
+const ApiPublicWholesaleApprovalEmailRoute =
+  ApiPublicWholesaleApprovalEmailRouteImport.update({
+    id: '/api/public/wholesale-approval-email',
+    path: '/api/public/wholesale-approval-email',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicBobpayWebhookRoute = ApiPublicBobpayWebhookRouteImport.update({
   id: '/api/public/bobpay-webhook',
   path: '/api/public/bobpay-webhook',
@@ -207,6 +214,7 @@ export interface FileRoutesByFullPath {
   '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/api/public/wholesale-approval-email': typeof ApiPublicWholesaleApprovalEmailRoute
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
@@ -235,6 +243,7 @@ export interface FileRoutesByTo {
   '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/api/public/wholesale-approval-email': typeof ApiPublicWholesaleApprovalEmailRoute
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/wholesale/dashboard': typeof WholesaleDashboardIndexRoute
@@ -266,6 +275,7 @@ export interface FileRoutesById {
   '/_authenticated/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/_authenticated/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/api/public/wholesale-approval-email': typeof ApiPublicWholesaleApprovalEmailRoute
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
@@ -297,6 +307,7 @@ export interface FileRouteTypes {
     | '/account/orders'
     | '/account/settings'
     | '/api/public/bobpay-webhook'
+    | '/api/public/wholesale-approval-email'
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
     | '/wholesale/dashboard/'
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
     | '/account/orders'
     | '/account/settings'
     | '/api/public/bobpay-webhook'
+    | '/api/public/wholesale-approval-email'
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
     | '/wholesale/dashboard'
@@ -355,6 +367,7 @@ export interface FileRouteTypes {
     | '/_authenticated/account/orders'
     | '/_authenticated/account/settings'
     | '/api/public/bobpay-webhook'
+    | '/api/public/wholesale-approval-email'
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
     | '/wholesale/dashboard/'
@@ -380,6 +393,7 @@ export interface RootRouteChildren {
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   StrainSlugRoute: typeof StrainSlugRoute
   ApiPublicBobpayWebhookRoute: typeof ApiPublicBobpayWebhookRoute
+  ApiPublicWholesaleApprovalEmailRoute: typeof ApiPublicWholesaleApprovalEmailRoute
   AdminStrainsIdEditRoute: typeof AdminStrainsIdEditRoute
 }
 
@@ -524,6 +538,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/wholesale/dashboard/catalog'
       preLoaderRoute: typeof WholesaleDashboardCatalogRouteImport
       parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/api/public/wholesale-approval-email': {
+      id: '/api/public/wholesale-approval-email'
+      path: '/api/public/wholesale-approval-email'
+      fullPath: '/api/public/wholesale-approval-email'
+      preLoaderRoute: typeof ApiPublicWholesaleApprovalEmailRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/bobpay-webhook': {
       id: '/api/public/bobpay-webhook'
@@ -675,8 +696,19 @@ const rootRouteChildren: RootRouteChildren = {
   OrderOrderNumberRoute: OrderOrderNumberRoute,
   StrainSlugRoute: StrainSlugRoute,
   ApiPublicBobpayWebhookRoute: ApiPublicBobpayWebhookRoute,
+  ApiPublicWholesaleApprovalEmailRoute: ApiPublicWholesaleApprovalEmailRoute,
   AdminStrainsIdEditRoute: AdminStrainsIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

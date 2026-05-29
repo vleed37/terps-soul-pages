@@ -79,14 +79,14 @@ const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const WholesaleLoginRoute = WholesaleLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => WholesaleRoute,
+  id: '/wholesale/login',
+  path: '/wholesale/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const WholesaleDashboardRoute = WholesaleDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => WholesaleRoute,
+  id: '/wholesale/dashboard',
+  path: '/wholesale/dashboard',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const StrainSlugRoute = StrainSlugRouteImport.update({
   id: '/strain/$slug',
@@ -391,6 +391,8 @@ export interface RootRouteChildren {
   AccountResetPasswordRoute: typeof AccountResetPasswordRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   StrainSlugRoute: typeof StrainSlugRoute
+  WholesaleDashboardRoute: typeof WholesaleDashboardRouteWithChildren
+  WholesaleLoginRoute: typeof WholesaleLoginRoute
   WholesaleIndexRoute: typeof WholesaleIndexRoute
   ApiPublicBobpayWebhookRoute: typeof ApiPublicBobpayWebhookRoute
   ApiPublicWholesaleApprovalEmailRoute: typeof ApiPublicWholesaleApprovalEmailRoute
@@ -457,17 +459,17 @@ declare module '@tanstack/react-router' {
     }
     '/wholesale/login': {
       id: '/wholesale/login'
-      path: '/login'
+      path: '/wholesale/login'
       fullPath: '/wholesale/login'
       preLoaderRoute: typeof WholesaleLoginRouteImport
-      parentRoute: typeof WholesaleRoute
+      parentRoute: typeof rootRouteImport
     }
     '/wholesale/dashboard': {
       id: '/wholesale/dashboard'
-      path: '/dashboard'
+      path: '/wholesale/dashboard'
       fullPath: '/wholesale/dashboard'
       preLoaderRoute: typeof WholesaleDashboardRouteImport
-      parentRoute: typeof WholesaleRoute
+      parentRoute: typeof rootRouteImport
     }
     '/strain/$slug': {
       id: '/strain/$slug'
@@ -647,6 +649,25 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface WholesaleDashboardRouteChildren {
+  WholesaleDashboardCatalogRoute: typeof WholesaleDashboardCatalogRoute
+  WholesaleDashboardCheckoutRoute: typeof WholesaleDashboardCheckoutRoute
+  WholesaleDashboardIndexRoute: typeof WholesaleDashboardIndexRoute
+  WholesaleDashboardOrdersIdRoute: typeof WholesaleDashboardOrdersIdRoute
+  WholesaleDashboardOrdersIndexRoute: typeof WholesaleDashboardOrdersIndexRoute
+}
+
+const WholesaleDashboardRouteChildren: WholesaleDashboardRouteChildren = {
+  WholesaleDashboardCatalogRoute: WholesaleDashboardCatalogRoute,
+  WholesaleDashboardCheckoutRoute: WholesaleDashboardCheckoutRoute,
+  WholesaleDashboardIndexRoute: WholesaleDashboardIndexRoute,
+  WholesaleDashboardOrdersIdRoute: WholesaleDashboardOrdersIdRoute,
+  WholesaleDashboardOrdersIndexRoute: WholesaleDashboardOrdersIndexRoute,
+}
+
+const WholesaleDashboardRouteWithChildren =
+  WholesaleDashboardRoute._addFileChildren(WholesaleDashboardRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
@@ -661,6 +682,8 @@ const rootRouteChildren: RootRouteChildren = {
   AccountResetPasswordRoute: AccountResetPasswordRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
   StrainSlugRoute: StrainSlugRoute,
+  WholesaleDashboardRoute: WholesaleDashboardRouteWithChildren,
+  WholesaleLoginRoute: WholesaleLoginRoute,
   WholesaleIndexRoute: WholesaleIndexRoute,
   ApiPublicBobpayWebhookRoute: ApiPublicBobpayWebhookRoute,
   ApiPublicWholesaleApprovalEmailRoute: ApiPublicWholesaleApprovalEmailRoute,

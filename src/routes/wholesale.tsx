@@ -36,7 +36,7 @@ function WholesalePage() {
         </div>
         <div className="relative mx-auto max-w-3xl px-6 py-32 text-center md:py-44">
           <MetaLabel gold>✦ Stockist Program</MetaLabel>
-          <h1 className="mx-auto mt-6 font-display text-5xl leading-[1.05] md:text-7xl lg:text-[5.5rem]">
+          <h1 className="mx-auto mt-6 font-display text-5xl leading-[1.05] text-[color:var(--text-on-dark,#F5EFE2)] md:text-7xl lg:text-[5.5rem]">
             Become a Terps stockist.
           </h1>
           <p className="mx-auto mt-8 max-w-xl font-display text-2xl italic text-[color:var(--text-secondary)] md:text-3xl">

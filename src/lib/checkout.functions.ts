@@ -139,7 +139,7 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
       return {
         ok: false as const,
         error:
-          "Payments are not yet configured. Please contact sales@terpsnation.co.za to complete this order.",
+          "Payments are not yet configured. Please contact sales@terpnation.co.za to complete this order.",
         orderNumber: order.order_number,
       };
     }

@@ -42,7 +42,7 @@ export function Footer() {
             <h4 className="meta-xs mb-6 text-gold">Connect</h4>
             <ul className="space-y-3 font-body text-sm">
               <li><a href="https://instagram.com/terps.official_" className="hover:text-[color:var(--accent-gold)]">@terps.official_</a></li>
-              <li><a href="mailto:sales@terpsnation.co.za" className="hover:text-[color:var(--accent-gold)]">sales@terpsnation.co.za</a></li>
+              <li><a href="mailto:sales@terpnation.co.za" className="hover:text-[color:var(--accent-gold)]">sales@terpnation.co.za</a></li>
             </ul>
             {done ? (
               <p className="mt-8 font-display italic text-[color:var(--accent-gold)]">You're on the list.</p>

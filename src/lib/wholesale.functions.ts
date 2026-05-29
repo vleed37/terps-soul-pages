@@ -70,7 +70,7 @@ export const createWholesaleAccount = createServerFn({ method: "POST" })
 async function maybeNotifyAdmin(data: z.infer<typeof ApplicationSchema>) {
   const apiKey = process.env.RESEND_API_KEY;
   const adminEmail = process.env.WHOLESALE_ADMIN_EMAIL;
-  const from = process.env.RESEND_FROM_EMAIL || "Terps <orders@terpsnation.co.za>";
+  const from = process.env.RESEND_FROM_EMAIL || "Terps <orders@terpnation.co.za>";
   if (!apiKey || !adminEmail) return;
   try {
     await fetch("https://api.resend.com/emails", {
@@ -291,7 +291,7 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     if (!merchantId || !apiKey || !apiUrl) {
       return {
         ok: false as const,
-        error: "Payments not yet configured. Contact sales@terpsnation.co.za to complete this order.",
+        error: "Payments not yet configured. Contact sales@terpnation.co.za to complete this order.",
         orderNumber: order.order_number,
       };
     }

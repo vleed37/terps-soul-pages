@@ -75,8 +75,8 @@ function WholesaleDashboardLayout() {
     };
     const msgMap: Record<string, string> = {
       pending: "We'll be in touch within 48 hours. You'll receive an email once your stockist account is approved.",
-      rejected: acct.rejection_reason || "Please contact sales@terpsnation.co.za for next steps.",
-      suspended: "Your account is temporarily suspended. Contact sales@terpsnation.co.za.",
+      rejected: acct.rejection_reason || "Please contact sales@terpnation.co.za for next steps.",
+      suspended: "Your account is temporarily suspended. Contact sales@terpnation.co.za.",
     };
     return (
       <Gated>

@@ -243,7 +243,7 @@ function ApplyFlow() {
         ) : status === "rejected" ? (
           <>
             <p className="font-display text-3xl italic md:text-4xl">Application declined.</p>
-            <p className="mt-4 text-[color:var(--text-secondary)]">Contact <a className="ghost-link" href="mailto:sales@terpsnation.co.za">sales@terpsnation.co.za</a> for next steps.</p>
+            <p className="mt-4 text-[color:var(--text-secondary)]">Contact <a className="ghost-link" href="mailto:sales@terpnation.co.za">sales@terpnation.co.za</a> for next steps.</p>
           </>
         ) : (
           <>

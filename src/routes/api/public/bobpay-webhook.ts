@@ -123,7 +123,7 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
 
 async function maybeSendConfirmationEmail(orderNumber: string) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL || "Terps <orders@terpsnation.co.za>";
+  const from = process.env.RESEND_FROM_EMAIL || "Terps <orders@terpnation.co.za>";
   if (!apiKey) {
     console.warn(`RESEND_API_KEY not set — skipping confirmation email for ${orderNumber}`);
     return;

@@ -86,7 +86,7 @@ function DashboardHome() {
 
       <div className="rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-elevated)] p-8 text-center">
         <p className="text-sm text-[color:var(--text-secondary)]">
-          Need help? Email <a className="ghost-link" href="mailto:sales@terpsnation.co.za">sales@terpsnation.co.za</a> or WhatsApp +27 ··· ····.
+          Need help? Email <a className="ghost-link" href="mailto:sales@terpnation.co.za">sales@terpnation.co.za</a> or WhatsApp +27 ··· ····.
         </p>
       </div>
 

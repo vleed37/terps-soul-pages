@@ -108,17 +108,6 @@ function DashboardHome() {
     </div>
   );
 }
-        <p className="text-sm text-[color:var(--text-secondary)]">
-          Need help? Email <a className="ghost-link" href="mailto:sales@terpnation.co.za">sales@terpnation.co.za</a> or WhatsApp +27 ··· ····.
-        </p>
-      </div>
-
-      <div className="hidden md:block">
-        <GoldButton variant="secondary" className="opacity-0 pointer-events-none">spacer</GoldButton>
-      </div>
-    </div>
-  );
-}
 
 function StatCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (

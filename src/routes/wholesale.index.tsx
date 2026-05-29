@@ -250,7 +250,7 @@ function ApplyFlow() {
             <p className="font-display text-3xl italic text-[color:var(--accent-gold)] md:text-4xl">You're approved.</p>
             <p className="mt-4 text-[color:var(--text-secondary)]">Head to your stockist portal to start ordering.</p>
             <div className="mt-8">
-              <Link to="/wholesale/dashboard"><GoldButton>Go to Portal</GoldButton></Link>
+              <GoldButton onClick={() => navigate({ to: "/wholesale/dashboard" })}>Go to Portal</GoldButton>
             </div>
           </>
         ) : status === "rejected" ? (

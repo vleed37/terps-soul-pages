@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AgeGate } from "@/components/layout/AgeGate";
+import { StockistContextBanner } from "@/components/brand/StockistContextBanner";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -90,6 +91,7 @@ function RootComponent() {
         </p>
       </div>
       <Header />
+      <StockistContextBanner />
       <main className="relative z-0 pt-[116px]">
         <Outlet />
       </main>

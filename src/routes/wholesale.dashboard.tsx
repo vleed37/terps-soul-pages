@@ -60,8 +60,8 @@ function WholesaleDashboardLayout() {
           You're signed in but haven't applied to become a stockist yet.
         </p>
         <div className="mt-8 flex justify-center gap-4">
-          <Link to="/wholesale"><GoldButton>Apply Now</GoldButton></Link>
-          <button onClick={signOut}><GoldButton variant="secondary">Sign Out</GoldButton></button>
+          <GoldButton onClick={() => navigate({ to: "/wholesale" })}>Apply Now</GoldButton>
+          <GoldButton variant="secondary" onClick={signOut}>Sign Out</GoldButton>
         </div>
       </Gated>
     );

@@ -28,7 +28,11 @@ function OrderDetailPage() {
     );
   }
   const o = data;
-  const addr = o.shipping_address;
+  const addr = o.shipping_address as {
+    line1: string; line2?: string | null;
+    city: string; province: string;
+    postal_code?: string | null; country: string;
+  } | null;
 
   return (
     <div className="space-y-10">

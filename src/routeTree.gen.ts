@@ -27,10 +27,14 @@ import { Route as AccountLoginRouteImport } from './routes/account.login'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account.forgot-password'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as WholesaleDashboardIndexRouteImport } from './routes/wholesale.dashboard.index'
+import { Route as WholesaleDashboardCheckoutRouteImport } from './routes/wholesale.dashboard.checkout'
+import { Route as WholesaleDashboardCatalogRouteImport } from './routes/wholesale.dashboard.catalog'
 import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
 import { Route as AuthenticatedAccountSettingsRouteImport } from './routes/_authenticated/account.settings'
 import { Route as AuthenticatedAccountOrdersRouteImport } from './routes/_authenticated/account.orders'
 import { Route as AuthenticatedAccountAddressesRouteImport } from './routes/_authenticated/account.addresses'
+import { Route as WholesaleDashboardOrdersIndexRouteImport } from './routes/wholesale.dashboard.orders.index'
+import { Route as WholesaleDashboardOrdersIdRouteImport } from './routes/wholesale.dashboard.orders.$id'
 import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
 import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
 
@@ -123,6 +127,18 @@ const WholesaleDashboardIndexRoute = WholesaleDashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => WholesaleDashboardRoute,
 } as any)
+const WholesaleDashboardCheckoutRoute =
+  WholesaleDashboardCheckoutRouteImport.update({
+    id: '/checkout',
+    path: '/checkout',
+    getParentRoute: () => WholesaleDashboardRoute,
+  } as any)
+const WholesaleDashboardCatalogRoute =
+  WholesaleDashboardCatalogRouteImport.update({
+    id: '/catalog',
+    path: '/catalog',
+    getParentRoute: () => WholesaleDashboardRoute,
+  } as any)
 const ApiPublicBobpayWebhookRoute = ApiPublicBobpayWebhookRouteImport.update({
   id: '/api/public/bobpay-webhook',
   path: '/api/public/bobpay-webhook',
@@ -145,6 +161,18 @@ const AuthenticatedAccountAddressesRoute =
     id: '/addresses',
     path: '/addresses',
     getParentRoute: () => AuthenticatedAccountRoute,
+  } as any)
+const WholesaleDashboardOrdersIndexRoute =
+  WholesaleDashboardOrdersIndexRouteImport.update({
+    id: '/orders/',
+    path: '/orders/',
+    getParentRoute: () => WholesaleDashboardRoute,
+  } as any)
+const WholesaleDashboardOrdersIdRoute =
+  WholesaleDashboardOrdersIdRouteImport.update({
+    id: '/orders/$id',
+    path: '/orders/$id',
+    getParentRoute: () => WholesaleDashboardRoute,
   } as any)
 const AdminStrainsIdEditRoute = AdminStrainsIdEditRouteImport.update({
   id: '/admin/strains/$id/edit',
@@ -179,9 +207,13 @@ export interface FileRoutesByFullPath {
   '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
+  '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
+  '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
+  '/wholesale/dashboard/orders/': typeof WholesaleDashboardOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -203,9 +235,13 @@ export interface FileRoutesByTo {
   '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
+  '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/wholesale/dashboard': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
+  '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
+  '/wholesale/dashboard/orders': typeof WholesaleDashboardOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -230,9 +266,13 @@ export interface FileRoutesById {
   '/_authenticated/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/_authenticated/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
+  '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
+  '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/_authenticated/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
+  '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
+  '/wholesale/dashboard/orders/': typeof WholesaleDashboardOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -257,9 +297,13 @@ export interface FileRouteTypes {
     | '/account/orders'
     | '/account/settings'
     | '/api/public/bobpay-webhook'
+    | '/wholesale/dashboard/catalog'
+    | '/wholesale/dashboard/checkout'
     | '/wholesale/dashboard/'
     | '/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
+    | '/wholesale/dashboard/orders/$id'
+    | '/wholesale/dashboard/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -281,9 +325,13 @@ export interface FileRouteTypes {
     | '/account/orders'
     | '/account/settings'
     | '/api/public/bobpay-webhook'
+    | '/wholesale/dashboard/catalog'
+    | '/wholesale/dashboard/checkout'
     | '/wholesale/dashboard'
     | '/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
+    | '/wholesale/dashboard/orders/$id'
+    | '/wholesale/dashboard/orders'
   id:
     | '__root__'
     | '/'
@@ -307,9 +355,13 @@ export interface FileRouteTypes {
     | '/_authenticated/account/orders'
     | '/_authenticated/account/settings'
     | '/api/public/bobpay-webhook'
+    | '/wholesale/dashboard/catalog'
+    | '/wholesale/dashboard/checkout'
     | '/wholesale/dashboard/'
     | '/_authenticated/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
+    | '/wholesale/dashboard/orders/$id'
+    | '/wholesale/dashboard/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -459,6 +511,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WholesaleDashboardIndexRouteImport
       parentRoute: typeof WholesaleDashboardRoute
     }
+    '/wholesale/dashboard/checkout': {
+      id: '/wholesale/dashboard/checkout'
+      path: '/checkout'
+      fullPath: '/wholesale/dashboard/checkout'
+      preLoaderRoute: typeof WholesaleDashboardCheckoutRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/wholesale/dashboard/catalog': {
+      id: '/wholesale/dashboard/catalog'
+      path: '/catalog'
+      fullPath: '/wholesale/dashboard/catalog'
+      preLoaderRoute: typeof WholesaleDashboardCatalogRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
+    }
     '/api/public/bobpay-webhook': {
       id: '/api/public/bobpay-webhook'
       path: '/api/public/bobpay-webhook'
@@ -486,6 +552,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/addresses'
       preLoaderRoute: typeof AuthenticatedAccountAddressesRouteImport
       parentRoute: typeof AuthenticatedAccountRoute
+    }
+    '/wholesale/dashboard/orders/': {
+      id: '/wholesale/dashboard/orders/'
+      path: '/orders'
+      fullPath: '/wholesale/dashboard/orders/'
+      preLoaderRoute: typeof WholesaleDashboardOrdersIndexRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/wholesale/dashboard/orders/$id': {
+      id: '/wholesale/dashboard/orders/$id'
+      path: '/orders/$id'
+      fullPath: '/wholesale/dashboard/orders/$id'
+      preLoaderRoute: typeof WholesaleDashboardOrdersIdRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
     }
     '/admin/strains/$id/edit': {
       id: '/admin/strains/$id/edit'
@@ -547,11 +627,19 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface WholesaleDashboardRouteChildren {
+  WholesaleDashboardCatalogRoute: typeof WholesaleDashboardCatalogRoute
+  WholesaleDashboardCheckoutRoute: typeof WholesaleDashboardCheckoutRoute
   WholesaleDashboardIndexRoute: typeof WholesaleDashboardIndexRoute
+  WholesaleDashboardOrdersIdRoute: typeof WholesaleDashboardOrdersIdRoute
+  WholesaleDashboardOrdersIndexRoute: typeof WholesaleDashboardOrdersIndexRoute
 }
 
 const WholesaleDashboardRouteChildren: WholesaleDashboardRouteChildren = {
+  WholesaleDashboardCatalogRoute: WholesaleDashboardCatalogRoute,
+  WholesaleDashboardCheckoutRoute: WholesaleDashboardCheckoutRoute,
   WholesaleDashboardIndexRoute: WholesaleDashboardIndexRoute,
+  WholesaleDashboardOrdersIdRoute: WholesaleDashboardOrdersIdRoute,
+  WholesaleDashboardOrdersIndexRoute: WholesaleDashboardOrdersIndexRoute,
 }
 
 const WholesaleDashboardRouteWithChildren =

@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
 import { getMyWholesaleAccount, listMyWholesaleOrders } from "@/lib/wholesale.functions";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
+import { UpdateAccountModal } from "@/components/brand/UpdateAccountModal";
 
 export const Route = createFileRoute("/wholesale/dashboard/")({
   head: () => ({ meta: [{ title: "Terps — Stockist Dashboard" }] }),
@@ -16,6 +18,7 @@ function DashboardHome() {
   const listOrders = useServerFn(listMyWholesaleOrders);
   const accountQ = useQuery({ queryKey: ["wholesale-account"], queryFn: () => getAccount() });
   const ordersQ = useQuery({ queryKey: ["wholesale-orders"], queryFn: () => listOrders() });
+  const [editOpen, setEditOpen] = useState(false);
 
   const acct = accountQ.data;
   const orders = ordersQ.data ?? [];
@@ -85,6 +88,26 @@ function DashboardHome() {
       </div>
 
       <div className="rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-elevated)] p-8 text-center">
+        <button
+          type="button"
+          onClick={() => setEditOpen(true)}
+          className="ghost-link text-sm"
+        >
+          Update details →
+        </button>
+        <p className="mt-4 text-sm text-[color:var(--text-secondary)]">
+          Need help? Email <a className="ghost-link" href="mailto:sales@terpnation.co.za">sales@terpnation.co.za</a> or WhatsApp +27 ··· ····.
+        </p>
+      </div>
+
+      <UpdateAccountModal open={editOpen} onOpenChange={setEditOpen} account={acct} />
+
+      <div className="hidden md:block">
+        <GoldButton variant="secondary" className="opacity-0 pointer-events-none">spacer</GoldButton>
+      </div>
+    </div>
+  );
+}
         <p className="text-sm text-[color:var(--text-secondary)]">
           Need help? Email <a className="ghost-link" href="mailto:sales@terpnation.co.za">sales@terpnation.co.za</a> or WhatsApp +27 ··· ····.
         </p>

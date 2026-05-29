@@ -25,8 +25,8 @@ export const Route = createFileRoute("/wholesale/dashboard")({
 
 const NAV = [
   { to: "/wholesale/dashboard", label: "Dashboard", exact: true },
-  { to: "/wholesale/dashboard/catalog", label: "Catalog" },
-  { to: "/wholesale/dashboard/orders", label: "Orders" },
+  { to: "/wholesale/dashboard/catalog", label: "Catalog", exact: false },
+  { to: "/wholesale/dashboard/orders", label: "Orders", exact: false },
 ] as const;
 
 function WholesaleDashboardLayout() {

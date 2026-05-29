@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WholesaleRouteImport } from './routes/wholesale'
 import { Route as StrainsRouteImport } from './routes/strains'
 import { Route as StockistsRouteImport } from './routes/stockists'
 import { Route as ShopRouteImport } from './routes/shop'
@@ -17,6 +16,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
 import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
 import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
@@ -39,11 +39,6 @@ import { Route as WholesaleDashboardOrdersIdRouteImport } from './routes/wholesa
 import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
 import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
 
-const WholesaleRoute = WholesaleRouteImport.update({
-  id: '/wholesale',
-  path: '/wholesale',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const StrainsRoute = StrainsRouteImport.update({
   id: '/strains',
   path: '/strains',
@@ -76,6 +71,11 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
+  id: '/wholesale/',
+  path: '/wholesale/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WholesaleLoginRoute = WholesaleLoginRouteImport.update({
@@ -200,7 +200,6 @@ export interface FileRoutesByFullPath {
   '/shop': typeof ShopRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
-  '/wholesale': typeof WholesaleRouteWithChildren
   '/account': typeof AuthenticatedAccountRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
@@ -210,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/wholesale/': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -230,7 +230,6 @@ export interface FileRoutesByTo {
   '/shop': typeof ShopRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
-  '/wholesale': typeof WholesaleRouteWithChildren
   '/account': typeof AuthenticatedAccountRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
@@ -239,6 +238,7 @@ export interface FileRoutesByTo {
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/wholesale': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -261,7 +261,6 @@ export interface FileRoutesById {
   '/shop': typeof ShopRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
-  '/wholesale': typeof WholesaleRouteWithChildren
   '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
@@ -271,6 +270,7 @@ export interface FileRoutesById {
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/_authenticated/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/_authenticated/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -293,7 +293,6 @@ export interface FileRouteTypes {
     | '/shop'
     | '/stockists'
     | '/strains'
-    | '/wholesale'
     | '/account'
     | '/account/forgot-password'
     | '/account/login'
@@ -303,6 +302,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
+    | '/wholesale/'
     | '/account/addresses'
     | '/account/orders'
     | '/account/settings'
@@ -323,7 +323,6 @@ export interface FileRouteTypes {
     | '/shop'
     | '/stockists'
     | '/strains'
-    | '/wholesale'
     | '/account'
     | '/account/forgot-password'
     | '/account/login'
@@ -332,6 +331,7 @@ export interface FileRouteTypes {
     | '/order/$orderNumber'
     | '/strain/$slug'
     | '/wholesale/login'
+    | '/wholesale'
     | '/account/addresses'
     | '/account/orders'
     | '/account/settings'
@@ -353,7 +353,6 @@ export interface FileRouteTypes {
     | '/shop'
     | '/stockists'
     | '/strains'
-    | '/wholesale'
     | '/_authenticated/account'
     | '/account/forgot-password'
     | '/account/login'
@@ -363,6 +362,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
+    | '/wholesale/'
     | '/_authenticated/account/addresses'
     | '/_authenticated/account/orders'
     | '/_authenticated/account/settings'
@@ -385,13 +385,13 @@ export interface RootRouteChildren {
   ShopRoute: typeof ShopRoute
   StockistsRoute: typeof StockistsRoute
   StrainsRoute: typeof StrainsRoute
-  WholesaleRoute: typeof WholesaleRouteWithChildren
   AccountForgotPasswordRoute: typeof AccountForgotPasswordRoute
   AccountLoginRoute: typeof AccountLoginRoute
   AccountRegisterRoute: typeof AccountRegisterRoute
   AccountResetPasswordRoute: typeof AccountResetPasswordRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   StrainSlugRoute: typeof StrainSlugRoute
+  WholesaleIndexRoute: typeof WholesaleIndexRoute
   ApiPublicBobpayWebhookRoute: typeof ApiPublicBobpayWebhookRoute
   ApiPublicWholesaleApprovalEmailRoute: typeof ApiPublicWholesaleApprovalEmailRoute
   AdminStrainsIdEditRoute: typeof AdminStrainsIdEditRoute
@@ -399,13 +399,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/wholesale': {
-      id: '/wholesale'
-      path: '/wholesale'
-      fullPath: '/wholesale'
-      preLoaderRoute: typeof WholesaleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/strains': {
       id: '/strains'
       path: '/strains'
@@ -453,6 +446,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wholesale/': {
+      id: '/wholesale/'
+      path: '/wholesale'
+      fullPath: '/wholesale/'
+      preLoaderRoute: typeof WholesaleIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wholesale/login': {
@@ -647,39 +647,6 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-interface WholesaleDashboardRouteChildren {
-  WholesaleDashboardCatalogRoute: typeof WholesaleDashboardCatalogRoute
-  WholesaleDashboardCheckoutRoute: typeof WholesaleDashboardCheckoutRoute
-  WholesaleDashboardIndexRoute: typeof WholesaleDashboardIndexRoute
-  WholesaleDashboardOrdersIdRoute: typeof WholesaleDashboardOrdersIdRoute
-  WholesaleDashboardOrdersIndexRoute: typeof WholesaleDashboardOrdersIndexRoute
-}
-
-const WholesaleDashboardRouteChildren: WholesaleDashboardRouteChildren = {
-  WholesaleDashboardCatalogRoute: WholesaleDashboardCatalogRoute,
-  WholesaleDashboardCheckoutRoute: WholesaleDashboardCheckoutRoute,
-  WholesaleDashboardIndexRoute: WholesaleDashboardIndexRoute,
-  WholesaleDashboardOrdersIdRoute: WholesaleDashboardOrdersIdRoute,
-  WholesaleDashboardOrdersIndexRoute: WholesaleDashboardOrdersIndexRoute,
-}
-
-const WholesaleDashboardRouteWithChildren =
-  WholesaleDashboardRoute._addFileChildren(WholesaleDashboardRouteChildren)
-
-interface WholesaleRouteChildren {
-  WholesaleDashboardRoute: typeof WholesaleDashboardRouteWithChildren
-  WholesaleLoginRoute: typeof WholesaleLoginRoute
-}
-
-const WholesaleRouteChildren: WholesaleRouteChildren = {
-  WholesaleDashboardRoute: WholesaleDashboardRouteWithChildren,
-  WholesaleLoginRoute: WholesaleLoginRoute,
-}
-
-const WholesaleRouteWithChildren = WholesaleRoute._addFileChildren(
-  WholesaleRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
@@ -688,13 +655,13 @@ const rootRouteChildren: RootRouteChildren = {
   ShopRoute: ShopRoute,
   StockistsRoute: StockistsRoute,
   StrainsRoute: StrainsRoute,
-  WholesaleRoute: WholesaleRouteWithChildren,
   AccountForgotPasswordRoute: AccountForgotPasswordRoute,
   AccountLoginRoute: AccountLoginRoute,
   AccountRegisterRoute: AccountRegisterRoute,
   AccountResetPasswordRoute: AccountResetPasswordRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
   StrainSlugRoute: StrainSlugRoute,
+  WholesaleIndexRoute: WholesaleIndexRoute,
   ApiPublicBobpayWebhookRoute: ApiPublicBobpayWebhookRoute,
   ApiPublicWholesaleApprovalEmailRoute: ApiPublicWholesaleApprovalEmailRoute,
   AdminStrainsIdEditRoute: AdminStrainsIdEditRoute,
@@ -702,3 +669,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

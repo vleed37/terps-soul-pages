@@ -12,7 +12,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { createWholesaleAccount, getMyWholesaleAccount } from "@/lib/wholesale.functions";
 import stockistDisplay from "@/assets/stockist-display.jpg";
 
-export const Route = createFileRoute("/wholesale")({
+export const Route = createFileRoute("/wholesale/")({
   head: () => ({
     meta: [
       { title: "Become a Stockist — Terps" },

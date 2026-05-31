@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { timingSafeEqual } from "crypto";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 export const Route = createFileRoute("/api/public/wholesale-approval-email")({
@@ -11,7 +12,9 @@ export const Route = createFileRoute("/api/public/wholesale-approval-email")({
           return new Response("Server misconfigured", { status: 500 });
         }
         const provided = request.headers.get("x-webhook-secret") || "";
-        if (provided !== secret) {
+        const a = Buffer.from(provided);
+        const b = Buffer.from(secret);
+        if (a.length !== b.length || !timingSafeEqual(a, b)) {
           return new Response("Unauthorized", { status: 401 });
         }
 

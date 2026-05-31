@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /account/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /wholesale/dashboard/
+Sitemap: https://terps2.carbonmediasolutions.com/sitemap.xml

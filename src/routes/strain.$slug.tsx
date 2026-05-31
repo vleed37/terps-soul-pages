@@ -40,7 +40,8 @@ export const Route = createFileRoute("/strain/$slug")({
       .slice(0, 3)
       .join(", ");
     const description = `${s.tagline ?? s.name}. ${s.thc_percentage ?? "—"}% THC${terpenes ? ` · ${terpenes}` : ""}.`;
-    const image = s.hero_image_url || s.product_image_url || DEFAULT_OG_IMAGE;
+    const localImg = getStrainImage(s.slug) || getStrainProductImage(s.slug);
+    const image = localImg || DEFAULT_OG_IMAGE;
     const title = `${s.name} · Terps`;
     return {
       meta: seoMeta({

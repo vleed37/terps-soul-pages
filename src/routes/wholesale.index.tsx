@@ -11,16 +11,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { createWholesaleAccount, getMyWholesaleAccount } from "@/lib/wholesale.functions";
 import stockistDisplay from "@/assets/stockist-display.jpg";
+import { seoMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/wholesale/")({
   head: () => ({
-    meta: [
-      { title: "Become a Stockist — Terps" },
-      { name: "description", content: "Premium pre-rolls and exclusive Caviar Stix access for curated South African retailers. Apply to stock Terps." },
-      { property: "og:title", content: "Become a Stockist — Terps" },
-      { property: "og:description", content: "Premium pre-rolls and exclusive Caviar Stix access for curated retailers." },
-      { property: "og:image", content: stockistDisplay },
-    ],
+    meta: seoMeta({
+      title: "Become a Terps Stockist · Terps",
+      description:
+        "Apply to stock Terps at your dispensary or lounge. Wholesale pricing, early access to drops, brand support.",
+      path: "/wholesale",
+    }),
   }),
   component: WholesalePage,
 });

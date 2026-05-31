@@ -22,8 +22,17 @@ import heroImage from "@/assets/hero-mindspark.jpg";
 import { getStrainProductImage } from "@/lib/strain-assets";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
+import { seoMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: seoMeta({
+      title: "Terps · Flavour-First Infused Pre-Rolls",
+      description:
+        "Premium infused pre-rolls bred in South Africa. Four signature strains, lab-tested, available at select stockists nationwide.",
+      path: "/",
+    }),
+  }),
   loader: ({ context }) =>
     context.queryClient.ensureQueryData({
       queryKey: ["strains"],

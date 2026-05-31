@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/collapsible";
 import type { Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+import { GridSkeleton } from "@/components/layout/PageSkeletons";
 
 const strainsQuery = queryOptions({
   queryKey: ["strains", "all"],
@@ -60,6 +61,8 @@ export const Route = createFileRoute("/shop")({
   }),
   validateSearch: searchSchema,
   loader: ({ context }) => context.queryClient.ensureQueryData(strainsQuery),
+  pendingComponent: () => <GridSkeleton count={8} />,
+  pendingMs: 0,
   component: ShopPage,
 });
 

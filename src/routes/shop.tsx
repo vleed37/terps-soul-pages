@@ -25,6 +25,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import type { Strain } from "@/lib/types";
+import { seoMeta } from "@/lib/seo";
 
 const strainsQuery = queryOptions({
   queryKey: ["strains", "all"],
@@ -50,12 +51,12 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
-    meta: [
-      { title: "The Collection — Terps" },
-      { name: "description", content: "Four lab-verified, hand-infused live rosin pre-rolls. Filter by effect, flavor, and price." },
-      { property: "og:title", content: "The Collection — Terps" },
-      { property: "og:description", content: "Four lab-verified, hand-infused live rosin pre-rolls. Browse the full Terps collection." },
-    ],
+    meta: seoMeta({
+      title: "Shop · Terps",
+      description:
+        "The full Terps collection — sativa, hybrid, and indica infused pre-rolls. Order online or find your closest stockist.",
+      path: "/shop",
+    }),
   }),
   validateSearch: searchSchema,
   loader: ({ context }) => context.queryClient.ensureQueryData(strainsQuery),

@@ -16,6 +16,7 @@ import { MapPin } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
+import { PUBLIC_SITE_URL, seoMeta, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const Route = createFileRoute("/strain/$slug")({
   loader: ({ context, params }) =>
@@ -23,7 +24,60 @@ export const Route = createFileRoute("/strain/$slug")({
       queryKey: ["strain", params.slug],
       queryFn: () => getStrainBySlug({ data: { slug: params.slug } }),
     }),
-  head: ({ params }) => ({ meta: [{ title: `Terps — ${params.slug}` }] }),
+  head: ({ params, loaderData }) => {
+    const s = loaderData as unknown as Strain | null;
+    if (!s) {
+      return {
+        meta: seoMeta({
+          title: "Strain · Terps",
+          description: "Explore the Terps strain library — flavour-first infused pre-rolls bred in South Africa.",
+          path: `/strain/${params.slug}`,
+        }),
+      };
+    }
+    const terpenes = (s.terpene_breakdown ?? [])
+      .map((t) => t.name)
+      .slice(0, 3)
+      .join(", ");
+    const description = `${s.tagline ?? s.name}. ${s.thc_percentage ?? "—"}% THC${terpenes ? ` · ${terpenes}` : ""}.`;
+    const localImg = getStrainImage(s.slug) || getStrainProductImage(s.slug);
+    const image = localImg || DEFAULT_OG_IMAGE;
+    const title = `${s.name} · Terps`;
+    return {
+      meta: seoMeta({
+        title,
+        description,
+        path: `/strain/${params.slug}`,
+        ogType: "product",
+        image,
+      }),
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: s.name,
+            description: s.description ?? s.tagline ?? "",
+            image: image.startsWith("http") ? image : `${PUBLIC_SITE_URL}${image}`,
+            sku: s.slug,
+            brand: { "@type": "Brand", name: "Terps" },
+            category: s.product_line === "caviar_stix" ? "Caviar Stix" : "Infused Pre-Roll",
+            offers: {
+              "@type": "Offer",
+              url: `${PUBLIC_SITE_URL}/strain/${s.slug}`,
+              priceCurrency: "ZAR",
+              price: Number(s.price_zar).toFixed(2),
+              availability:
+                (s.stock_quantity ?? 0) > 0
+                  ? "https://schema.org/InStock"
+                  : "https://schema.org/OutOfStock",
+            },
+          }),
+        },
+      ],
+    };
+  },
   component: StrainDetail,
   notFoundComponent: () => (
     <div className="mx-auto max-w-xl py-40 text-center">

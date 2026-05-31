@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StrainsRouteImport } from './routes/strains'
 import { Route as StockistsRouteImport } from './routes/stockists'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AboutRouteImport } from './routes/about'
@@ -21,6 +22,11 @@ import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
 import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
+import { Route as LegalTermsRouteImport } from './routes/legal.terms'
+import { Route as LegalShippingRouteImport } from './routes/legal.shipping'
+import { Route as LegalRefundsRouteImport } from './routes/legal.refunds'
+import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
+import { Route as LegalCannabisDisclaimerRouteImport } from './routes/legal.cannabis-disclaimer'
 import { Route as AccountResetPasswordRouteImport } from './routes/account.reset-password'
 import { Route as AccountRegisterRouteImport } from './routes/account.register'
 import { Route as AccountLoginRouteImport } from './routes/account.login'
@@ -47,6 +53,11 @@ const StrainsRoute = StrainsRouteImport.update({
 const StockistsRoute = StockistsRouteImport.update({
   id: '/stockists',
   path: '/stockists',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -96,6 +107,31 @@ const StrainSlugRoute = StrainSlugRouteImport.update({
 const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
   id: '/order/$orderNumber',
   path: '/order/$orderNumber',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTermsRoute = LegalTermsRouteImport.update({
+  id: '/legal/terms',
+  path: '/legal/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalShippingRoute = LegalShippingRouteImport.update({
+  id: '/legal/shipping',
+  path: '/legal/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalRefundsRoute = LegalRefundsRouteImport.update({
+  id: '/legal/refunds',
+  path: '/legal/refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
+  id: '/legal/privacy',
+  path: '/legal/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalCannabisDisclaimerRoute = LegalCannabisDisclaimerRouteImport.update({
+  id: '/legal/cannabis-disclaimer',
+  path: '/legal/cannabis-disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
@@ -198,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/account': typeof AuthenticatedAccountRouteWithChildren
@@ -205,6 +242,11 @@ export interface FileRoutesByFullPath {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/refunds': typeof LegalRefundsRoute
+  '/legal/shipping': typeof LegalShippingRoute
+  '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
@@ -228,6 +270,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/account': typeof AuthenticatedAccountRouteWithChildren
@@ -235,6 +278,11 @@ export interface FileRoutesByTo {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/refunds': typeof LegalRefundsRoute
+  '/legal/shipping': typeof LegalShippingRoute
+  '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/login': typeof WholesaleLoginRoute
@@ -259,6 +307,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
@@ -266,6 +315,11 @@ export interface FileRoutesById {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/refunds': typeof LegalRefundsRoute
+  '/legal/shipping': typeof LegalShippingRoute
+  '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
@@ -291,6 +345,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/shop'
+    | '/sitemap.xml'
     | '/stockists'
     | '/strains'
     | '/account'
@@ -298,6 +353,11 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/legal/cannabis-disclaimer'
+    | '/legal/privacy'
+    | '/legal/refunds'
+    | '/legal/shipping'
+    | '/legal/terms'
     | '/order/$orderNumber'
     | '/strain/$slug'
     | '/wholesale/dashboard'
@@ -321,6 +381,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/shop'
+    | '/sitemap.xml'
     | '/stockists'
     | '/strains'
     | '/account'
@@ -328,6 +389,11 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/legal/cannabis-disclaimer'
+    | '/legal/privacy'
+    | '/legal/refunds'
+    | '/legal/shipping'
+    | '/legal/terms'
     | '/order/$orderNumber'
     | '/strain/$slug'
     | '/wholesale/login'
@@ -351,6 +417,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/shop'
+    | '/sitemap.xml'
     | '/stockists'
     | '/strains'
     | '/_authenticated/account'
@@ -358,6 +425,11 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/legal/cannabis-disclaimer'
+    | '/legal/privacy'
+    | '/legal/refunds'
+    | '/legal/shipping'
+    | '/legal/terms'
     | '/order/$orderNumber'
     | '/strain/$slug'
     | '/wholesale/dashboard'
@@ -383,12 +455,18 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CheckoutRoute: typeof CheckoutRoute
   ShopRoute: typeof ShopRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StockistsRoute: typeof StockistsRoute
   StrainsRoute: typeof StrainsRoute
   AccountForgotPasswordRoute: typeof AccountForgotPasswordRoute
   AccountLoginRoute: typeof AccountLoginRoute
   AccountRegisterRoute: typeof AccountRegisterRoute
   AccountResetPasswordRoute: typeof AccountResetPasswordRoute
+  LegalCannabisDisclaimerRoute: typeof LegalCannabisDisclaimerRoute
+  LegalPrivacyRoute: typeof LegalPrivacyRoute
+  LegalRefundsRoute: typeof LegalRefundsRoute
+  LegalShippingRoute: typeof LegalShippingRoute
+  LegalTermsRoute: typeof LegalTermsRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   StrainSlugRoute: typeof StrainSlugRoute
   WholesaleDashboardRoute: typeof WholesaleDashboardRouteWithChildren
@@ -413,6 +491,13 @@ declare module '@tanstack/react-router' {
       path: '/stockists'
       fullPath: '/stockists'
       preLoaderRoute: typeof StockistsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -483,6 +568,41 @@ declare module '@tanstack/react-router' {
       path: '/order/$orderNumber'
       fullPath: '/order/$orderNumber'
       preLoaderRoute: typeof OrderOrderNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/terms': {
+      id: '/legal/terms'
+      path: '/legal/terms'
+      fullPath: '/legal/terms'
+      preLoaderRoute: typeof LegalTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/shipping': {
+      id: '/legal/shipping'
+      path: '/legal/shipping'
+      fullPath: '/legal/shipping'
+      preLoaderRoute: typeof LegalShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/refunds': {
+      id: '/legal/refunds'
+      path: '/legal/refunds'
+      fullPath: '/legal/refunds'
+      preLoaderRoute: typeof LegalRefundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacy': {
+      id: '/legal/privacy'
+      path: '/legal/privacy'
+      fullPath: '/legal/privacy'
+      preLoaderRoute: typeof LegalPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/cannabis-disclaimer': {
+      id: '/legal/cannabis-disclaimer'
+      path: '/legal/cannabis-disclaimer'
+      fullPath: '/legal/cannabis-disclaimer'
+      preLoaderRoute: typeof LegalCannabisDisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/reset-password': {
@@ -674,12 +794,18 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CheckoutRoute: CheckoutRoute,
   ShopRoute: ShopRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StockistsRoute: StockistsRoute,
   StrainsRoute: StrainsRoute,
   AccountForgotPasswordRoute: AccountForgotPasswordRoute,
   AccountLoginRoute: AccountLoginRoute,
   AccountRegisterRoute: AccountRegisterRoute,
   AccountResetPasswordRoute: AccountResetPasswordRoute,
+  LegalCannabisDisclaimerRoute: LegalCannabisDisclaimerRoute,
+  LegalPrivacyRoute: LegalPrivacyRoute,
+  LegalRefundsRoute: LegalRefundsRoute,
+  LegalShippingRoute: LegalShippingRoute,
+  LegalTermsRoute: LegalTermsRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
   StrainSlugRoute: StrainSlugRoute,
   WholesaleDashboardRoute: WholesaleDashboardRouteWithChildren,
@@ -692,13 +818,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -1,0 +1,13 @@
+{
+  "name": "Terps",
+  "short_name": "Terps",
+  "description": "Flavour-first infused pre-rolls. Bred in South Africa.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F1E8",
+  "theme_color": "#5C6650",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

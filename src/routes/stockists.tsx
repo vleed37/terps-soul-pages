@@ -18,6 +18,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import type { Stockist, Strain } from "@/lib/types";
+import { seoMeta } from "@/lib/seo";
 
 const StockistMap = lazy(() =>
   import("@/components/brand/StockistMap").then((m) => ({ default: m.StockistMap })),
@@ -34,12 +35,12 @@ const strainsQuery = queryOptions({
 
 export const Route = createFileRoute("/stockists")({
   head: () => ({
-    meta: [
-      { title: "Stockists — Terps" },
-      { name: "description", content: "Find Terps at premium retailers across South Africa. Locate the nearest stockist." },
-      { property: "og:title", content: "Stockists — Terps" },
-      { property: "og:description", content: "Stocked at premium retailers across South Africa. Find one near you." },
-    ],
+    meta: seoMeta({
+      title: "Stockists · Terps",
+      description:
+        "Find Terps at premium dispensaries and lounges across South Africa. Online ordering and store details.",
+      path: "/stockists",
+    }),
   }),
   loader: async ({ context }) => {
     await Promise.all([

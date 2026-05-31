@@ -10,6 +10,7 @@ import lifestyle1 from "@/assets/lifestyle-1.webp";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
 import lifestyle4 from "@/assets/lifestyle-4.webp";
 import type { Strain } from "@/lib/types";
+import { seoMeta } from "@/lib/seo";
 
 const strainsQuery = queryOptions({
   queryKey: ["strains", "all"],
@@ -18,12 +19,12 @@ const strainsQuery = queryOptions({
 
 export const Route = createFileRoute("/about")({
   head: () => ({
-    meta: [
-      { title: "Our Story — Terps" },
-      { name: "description", content: "Flavor first. Always. The story behind Terps — South African–bred, hand-infused with live hash rosin." },
-      { property: "og:title", content: "Our Story — Terps" },
-      { property: "og:description", content: "The story behind Terps — South African–bred, slow-cured, hand-infused with live hash rosin." },
-    ],
+    meta: seoMeta({
+      title: "Our Story · Terps",
+      description:
+        "The people, the process, and the philosophy behind Terps. Flavour-first, bred in South Africa.",
+      path: "/about",
+    }),
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(strainsQuery),
   component: AboutPage,

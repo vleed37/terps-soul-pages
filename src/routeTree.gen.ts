@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StrainsRouteImport } from './routes/strains'
 import { Route as StockistsRouteImport } from './routes/stockists'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AboutRouteImport } from './routes/about'
@@ -47,6 +48,11 @@ const StrainsRoute = StrainsRouteImport.update({
 const StockistsRoute = StockistsRouteImport.update({
   id: '/stockists',
   path: '/stockists',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -198,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/account': typeof AuthenticatedAccountRouteWithChildren
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/account': typeof AuthenticatedAccountRouteWithChildren
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
   '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
@@ -291,6 +300,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/shop'
+    | '/sitemap.xml'
     | '/stockists'
     | '/strains'
     | '/account'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/shop'
+    | '/sitemap.xml'
     | '/stockists'
     | '/strains'
     | '/account'
@@ -351,6 +362,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/checkout'
     | '/shop'
+    | '/sitemap.xml'
     | '/stockists'
     | '/strains'
     | '/_authenticated/account'
@@ -383,6 +395,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CheckoutRoute: typeof CheckoutRoute
   ShopRoute: typeof ShopRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StockistsRoute: typeof StockistsRoute
   StrainsRoute: typeof StrainsRoute
   AccountForgotPasswordRoute: typeof AccountForgotPasswordRoute
@@ -413,6 +426,13 @@ declare module '@tanstack/react-router' {
       path: '/stockists'
       fullPath: '/stockists'
       preLoaderRoute: typeof StockistsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -674,6 +694,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CheckoutRoute: CheckoutRoute,
   ShopRoute: ShopRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StockistsRoute: StockistsRoute,
   StrainsRoute: StrainsRoute,
   AccountForgotPasswordRoute: AccountForgotPasswordRoute,

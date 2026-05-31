@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { listMyWholesaleOrders } from "@/lib/wholesale.functions";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { GoldButton } from "@/components/brand/GoldButton";
+import { ListSkeleton } from "@/components/layout/PageSkeletons";
 
 export const Route = createFileRoute("/wholesale/dashboard/orders/")({
   head: () => ({ meta: [{ title: "Terps — Wholesale Orders" }] }),
@@ -14,7 +15,7 @@ function OrdersPage() {
   const fetchOrders = useServerFn(listMyWholesaleOrders);
   const { data, isLoading } = useQuery({ queryKey: ["wholesale-orders"], queryFn: () => fetchOrders() });
 
-  if (isLoading) return <div className="py-16 text-center text-[color:var(--text-tertiary)]">Loading orders…</div>;
+  if (isLoading) return <ListSkeleton count={6} />;
   const orders = data ?? [];
 
   return (

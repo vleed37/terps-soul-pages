@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/accordion";
 import type { Strain, Terpene } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+import { GridSkeleton } from "@/components/layout/PageSkeletons";
 
 const terpenesQuery = queryOptions({
   queryKey: ["terpenes", "all"],
@@ -49,6 +50,8 @@ export const Route = createFileRoute("/strains")({
       context.queryClient.ensureQueryData(strainsQuery),
     ]);
   },
+  pendingComponent: () => <GridSkeleton count={6} />,
+  pendingMs: 0,
   component: StrainsPage,
 });
 

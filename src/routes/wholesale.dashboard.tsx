@@ -9,6 +9,7 @@ import { MetaLabel } from "@/components/brand/MetaLabel";
 import { WholesaleCartDrawer } from "@/components/brand/WholesaleCartDrawer";
 import { useWholesaleCart, wholesaleCartSelectors } from "@/lib/store/wholesale-cart";
 import { cn } from "@/lib/utils";
+import { DashboardSkeleton } from "@/components/layout/PageSkeletons";
 
 export const Route = createFileRoute("/wholesale/dashboard")({
   beforeLoad: async ({ location }) => {
@@ -21,6 +22,8 @@ export const Route = createFileRoute("/wholesale/dashboard")({
     }
   },
   component: WholesaleDashboardLayout,
+  pendingComponent: () => <DashboardSkeleton />,
+  pendingMs: 0,
 });
 
 const NAV = [

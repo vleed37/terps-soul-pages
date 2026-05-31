@@ -10,6 +10,7 @@ import { StrainTypePill } from "@/components/brand/StrainTypePill";
 import { useWholesaleCart } from "@/lib/store/wholesale-cart";
 import { toast } from "sonner";
 import type { WholesaleStrain } from "@/lib/types";
+import { GridSkeleton } from "@/components/layout/PageSkeletons";
 
 export const Route = createFileRoute("/wholesale/dashboard/catalog")({
   head: () => ({ meta: [{ title: "Terps — Wholesale Catalog" }] }),
@@ -23,7 +24,7 @@ function CatalogPage() {
     queryFn: () => fetchStrains(),
   });
 
-  if (isLoading) return <div className="py-16 text-center text-[color:var(--text-tertiary)]">Loading catalog…</div>;
+  if (isLoading) return <GridSkeleton count={8} />;
   const strains = data ?? [];
 
   return (

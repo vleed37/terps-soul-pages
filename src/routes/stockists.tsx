@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import type { Stockist, Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+import { MapSkeleton } from "@/components/layout/PageSkeletons";
 
 const StockistMap = lazy(() =>
   import("@/components/brand/StockistMap").then((m) => ({ default: m.StockistMap })),
@@ -48,6 +49,8 @@ export const Route = createFileRoute("/stockists")({
       context.queryClient.ensureQueryData(strainsQuery),
     ]);
   },
+  pendingComponent: () => <MapSkeleton />,
+  pendingMs: 0,
   component: StockistsPage,
 });
 

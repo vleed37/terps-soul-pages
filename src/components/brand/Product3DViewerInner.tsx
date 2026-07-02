@@ -37,7 +37,7 @@ export function Product3DViewerInner({
   return (
     <div className={className}>
       <Canvas
-        camera={{ position: [0, 0, 0.25], fov: 50 }}
+        camera={{ position: [0, 0, 0.18], fov: 42 }}
         gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={1.2} />
@@ -46,10 +46,12 @@ export function Product3DViewerInner({
         <pointLight position={[0, 2, 0]} intensity={0.6} color="#d4c4a0" />
         <Model url={url} />
         <OrbitControls
-          enableZoom={false}
+          enableZoom
           enablePan={false}
           autoRotate
           autoRotateSpeed={1.5}
+          minDistance={0.08}
+          maxDistance={0.5}
         />
       </Canvas>
     </div>

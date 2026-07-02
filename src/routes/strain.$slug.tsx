@@ -163,9 +163,9 @@ function StrainDetail() {
       {/* BUY ZONE */}
       <section className="px-6 py-24 md:px-12">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 md:grid-cols-2">
-          <div className="rounded-lg bg-[color:var(--bg-surface)] p-12">
+          <div className="overflow-hidden rounded-lg bg-[color:var(--bg-surface)]">
             {modelUrl ? (
-              <Product3DViewer url={modelUrl} className="mx-auto h-[520px] w-full" />
+              <Product3DViewer url={modelUrl} className="mx-auto h-[720px] w-full" />
             ) : img ? (
               <img src={img} alt={s.name} className="mx-auto max-h-[520px] rounded-xl" />
             ) : null}

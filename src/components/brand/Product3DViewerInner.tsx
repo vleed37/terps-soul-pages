@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Center } from "@react-three/drei";
 import * as THREE from "three";
@@ -7,12 +7,6 @@ function Model({ url }: { url: string }) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const { scene } = useGLTF(url);
-
-  useEffect(() => {
-    const box = new THREE.Box3().setFromObject(scene);
-    const size = box.getSize(new THREE.Vector3());
-    console.log("[3D DEBUG] Model bounding box size:", size.x, size.y, size.z);
-  }, [scene]);
 
   useFrame((_, delta) => {
     if (groupRef.current && !hovered) {
@@ -28,10 +22,6 @@ function Model({ url }: { url: string }) {
         onPointerOut={() => setHovered(false)}
       >
         <primitive object={scene.clone()} />
-        <mesh>
-          <boxGeometry args={[0.5, 0.5, 0.5]} />
-          <meshStandardMaterial color="red" />
-        </mesh>
       </group>
     </Center>
   );
@@ -46,8 +36,8 @@ export function Product3DViewerInner({
 }) {
   return (
     <div className={className}>
-        <Canvas
-        camera={{ position: [0, 0, 3], fov: 50 }}
+      <Canvas
+        camera={{ position: [0, 0, 0.25], fov: 50 }}
         gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={1.2} />

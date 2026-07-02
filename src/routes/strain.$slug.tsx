@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, getStrainProductImage } from "@/lib/strain-assets";
+import { getStrainImage, getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -12,6 +12,7 @@ import { StrainTypePill } from "@/components/brand/StrainTypePill";
 import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
 import { FindClosestStockistModal } from "@/components/brand/FindClosestStockistModal";
 import { StrainInformation } from "@/components/brand/StrainInformation";
+import { Product3DViewer } from "@/components/brand/Product3DViewer";
 import { MapPin } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
@@ -98,6 +99,7 @@ function StrainDetail() {
   const addItem = useCart((st) => st.addItem);
   if (!s) return null;
   const img = getStrainProductImage(s.slug);
+  const modelUrl = getStrain3DModel(s.slug);
   const bgImg = getStrainImage(s.slug);
   const videoSrc = `/strains/${s.slug}.mp4`;
   const posterSrc = `/strains/${s.slug}-poster.jpg`;
@@ -162,7 +164,11 @@ function StrainDetail() {
       <section className="px-6 py-24 md:px-12">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 md:grid-cols-2">
           <div className="rounded-lg bg-[color:var(--bg-surface)] p-12">
-            {img && <img src={img} alt={s.name} className="mx-auto max-h-[520px] rounded-xl" />}
+            {modelUrl ? (
+              <Product3DViewer url={modelUrl} className="mx-auto h-[520px] w-full" />
+            ) : img ? (
+              <img src={img} alt={s.name} className="mx-auto max-h-[520px] rounded-xl" />
+            ) : null}
           </div>
           <div>
             {isPremium && (

@@ -9,6 +9,7 @@ import productGirlScoutCookie from "@/assets/product-girl-scout-cookie.jpg";
 import productCaviarSativa from "@/assets/product-caviar-stix-sativa.jpg";
 import productCaviarHybrid from "@/assets/product-caviar-stix-hybrid.jpg";
 import productCaviarIndica from "@/assets/product-caviar-stix-indica.jpg";
+import caviarModelAsset from "@/assets/aviator-tube-caviar.glb.asset.json";
 
 export const STRAIN_IMAGE: Record<string, string> = {
   "green-crack": greenCrack,
@@ -51,4 +52,12 @@ export const STRAIN_PALETTE: Record<string, { primary: string; accent: string }>
 
 export function getStrainPalette(slug: string): { primary: string; accent: string } {
   return STRAIN_PALETTE[slug] ?? { primary: "#283526", accent: "#A4B285" };
+}
+
+export const STRAIN_3D_MODEL: Record<string, string> = {
+  "caviar-stix-indica": caviarModelAsset.url,
+};
+
+export function getStrain3DModel(slug: string): string | undefined {
+  return STRAIN_3D_MODEL[slug];
 }

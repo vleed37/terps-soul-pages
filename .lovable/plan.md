@@ -1,47 +1,47 @@
 ## Objective
-Integrate the uploaded `Aviator_Tube_CGAT6-100MM_Caviar.glb` 3D model as the primary product visual for the **Caviar Stix Indica** product, replacing the static image on both the product card grid and the product detail page. The viewer auto-rotates and allows user drag-to-orbit.
+Replace the static product images for all 7 strains with auto-rotating 3D models (no user interaction / controls).
 
-## Technical Approach
+## Uploaded → Slug Mapping
+| GLB file | Strain slug |
+|---|---|
+| `003-CaviarStix_Hybrid.glb` | `caviar-stix-hybrid` |
+| `003-CaviarStix_Indica.glb` | `caviar-stix-indica` (replaces existing) |
+| `003-CaviarStix_Sativa.glb` | `caviar-stix-sativa` |
+| `003-Terps_BlueDream.glb` | `blue-dream` |
+| `003-Terps_GirlScoutCookies.glb` | `girl-scout-cookie` |
+| `003-Terps_GreenCrack.glb` | `green-crack` |
+| `003-Terps_MangoSapphire.glb` | `mango-sapphire` |
 
-### 1. Asset Upload
-- Upload `Aviator_Tube_CGAT6-100MM_Caviar.glb` via `lovable-assets create` to generate a `.asset.json` pointer.
-- Register the CDN URL in `src/lib/strain-assets.ts` under a new `STRAIN_3D_MODEL` map keyed by `caviar-stix-indica`.
+## Changes
 
-### 2. Dependency Installation
-- Add `@react-three/fiber`, `@react-three/drei`, and `three` as runtime dependencies.
-- Add `@types/three` as a dev dependency.
+### 1. Assets
+- Upload each GLB via `lovable-assets create --file /mnt/user-uploads/<file>` and write `.asset.json` pointers into `src/assets/`.
+- Delete the now-unused existing `aviator-tube-caviar.glb.asset.json` (its CDN object) and replace with the new Indica model.
 
-### 3. 3D Viewer Component (`src/components/brand/Product3DViewer.tsx`)
-- **SSR-safe**: Create as a `.client.tsx` file so it is excluded from the server bundle (Cloudflare Worker compatibility).
-- **Features**:
-  - Load GLB via `<Suspense>` with `useGLTF` from `@react-three/drei`.
-  - Auto-rotate using a slow `useFrame` rotation on the model group.
-  - User override via `<OrbitControls>` from `@react-three/drei` — controls are active immediately, and auto-rotation pauses/resumes based on interaction.
-  - Soft studio lighting with `<Environment preset="studio" />` or basic `<ambientLight>` + `<directionalLight>` for the dark brand theme.
-  - Dark background matching `var(--bg-rich)` or transparent canvas so it blends with card/page backgrounds.
-- **Responsive sizing**: Accepts a `className` prop; the parent container controls dimensions. Cards get a square aspect container, the detail page gets a larger framed container.
+### 2. `src/lib/strain-assets.ts`
+- Import all 7 new `.asset.json` pointers.
+- Expand `STRAIN_3D_MODEL` to include all 7 slugs.
 
-### 4. Card Integration (`src/components/brand/StrainCard.tsx` & `CaviarStixCard.tsx`)
-- In `StrainCard`, before returning the `<CaviarStixCard>`, check if `strain.slug === 'caviar-stix-indica'` and a 3D model exists.
-- In `CaviarStixCard`, replace the static `<motion.img>` with `<Product3DViewer>` when the 3D model is available for that strain. The viewer fills the product image area (`relative flex-[7]` container).
-- Keep the existing product chrome (corner ornaments, badges, overlay text) unchanged.
+### 3. `src/components/brand/Product3DViewerInner.tsx`
+- Remove `OrbitControls` entirely (no user interaction — no orbit, no zoom, no pan).
+- Keep auto-rotation via `useFrame` on the model group (constant spin, never paused).
+- Remove the hover-pause logic and pointer handlers.
+- Make the canvas non-interactive: add `style={{ pointerEvents: 'none' }}` on the `<Canvas>` so drag/scroll pass through to the page.
 
-### 5. Detail Page Integration (`src/routes/strain.$slug.tsx`)
-- In the "BUY ZONE" section, replace the static `<img>` with `<Product3DViewer>` when the current slug is `caviar-stix-indica` and a 3D model URL exists.
-- The viewer sits inside the existing `rounded-lg bg-[color:var(--bg-surface)] p-12` container, filling the left column.
+### 4. `src/components/brand/StrainCard.tsx`
+- For non-premium strains, when `getStrain3DModel(slug)` returns a URL, render `<Product3DViewer>` in the image slot instead of the static `<motion.img>`. Keep static image path as fallback for any slug without a model.
 
-### 6. Build Verification
-- Run `bun run build` to confirm `@react-three/fiber` bundles cleanly in the Vite + TanStack Start setup.
-- If SSR treeshaking issues occur, ensure the `.client.tsx` suffix prevents server-side inclusion.
+### 5. `src/components/brand/CaviarStixCard.tsx`
+- Already 3D-enabled; will automatically pick up the new Hybrid + Sativa models via the expanded map. No code change needed beyond verifying.
+
+### 6. `src/routes/strain.$slug.tsx`
+- Existing 3D block already keys off `getStrain3DModel(slug)`; will automatically apply to all 7 products now. No code change needed beyond verifying.
+
+### 7. Verify
+- Run `bun run build` to confirm clean bundle.
+- Visit `/shop` and a couple of detail pages via preview to confirm each product rotates on its own and does not respond to drag/scroll.
 
 ## Out of Scope
-- No 3D for other strains (static images remain).
-- No animation beyond auto-rotate + orbit.
-- No AR / fullscreen modal / zoom modal.
-
-## Acceptance Criteria
-- [ ] `caviar-stix-indica` card on `/shop` shows the 3D model auto-rotating.
-- [ ] Dragging the model in the card pauses auto-rotation and allows manual orbit.
-- [ ] `/strain/caviar-stix-indica` detail page shows the same 3D viewer replacing the static product image.
-- [ ] Other products continue to show static images with no regression.
-- [ ] Build completes without errors.
+- No zoom, drag, orbit, or fullscreen.
+- No lighting/camera redesign per-model (shared viewer config; can tune later if a specific model frames poorly).
+- No changes to product metadata, pricing, or copy.

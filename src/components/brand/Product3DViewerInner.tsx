@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Center } from "@react-three/drei";
+import { useGLTF, Center, Bounds } from "@react-three/drei";
 import * as THREE from "three";
 
 function Model({ url }: { url: string }) {
@@ -32,7 +32,7 @@ export function Product3DViewerInner({
   return (
     <div className={className} style={{ pointerEvents: "none" }}>
       <Canvas
-        camera={{ position: [0, 0, 0.18], fov: 42 }}
+        camera={{ position: [0, 0, 2], fov: 35 }}
         gl={{ alpha: true, antialias: true }}
         style={{ pointerEvents: "none", touchAction: "auto" }}
       >
@@ -40,7 +40,9 @@ export function Product3DViewerInner({
         <directionalLight position={[3, 3, 3]} intensity={2} />
         <directionalLight position={[-2, 1, -2]} intensity={0.8} color="#b8a070" />
         <pointLight position={[0, 2, 0]} intensity={0.6} color="#d4c4a0" />
-        <Model url={url} />
+        <Bounds fit clip observe margin={1.15}>
+          <Model url={url} />
+        </Bounds>
       </Canvas>
     </div>
   );

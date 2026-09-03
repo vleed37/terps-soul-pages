@@ -1,28 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { Instagram, Mail } from "lucide-react";
 import { listStrains } from "@/lib/strains.functions";
 import { Hairline } from "@/components/brand/Hairline";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { GhostLink } from "@/components/brand/GhostLink";
 import { MetaLabel } from "@/components/brand/MetaLabel";
-import { StrainCard } from "@/components/brand/StrainCard";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { PullQuote } from "@/components/brand/PullQuote";
-import { FeatureBand } from "@/components/brand/FeatureBand";
-import { CaviarStixComingSoon } from "@/components/brand/CaviarStixComingSoon";
+import { Logo } from "@/components/brand/Logo";
+import { CaviarStixTeaser } from "@/components/brand/CaviarStixTeaser";
 import { subscribeEmail } from "@/lib/forms.functions";
-import lifestyle1 from "@/assets/lifestyle-1.webp";
+import { SALES_EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/brand";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
-import lifestyle4 from "@/assets/lifestyle-4.webp";
-import greenCrack from "@/assets/strain-green-crack.webp";
 import stockistDisplay from "@/assets/stockist-display.jpg";
 import heroImage from "@/assets/hero-mindspark.jpg";
 import { getStrainProductImage } from "@/lib/strain-assets";
-import { useState } from "react";
 import type { Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+
+/** Swap-in point for the hero visual — replace with a new still or a <video> source. */
+const HERO_MEDIA = heroImage;
+/** Swap-in point for the stockist programme photo. */
+const STOCKIST_IMAGE = stockistDisplay;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,8 +46,12 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { data: strains } = useSuspenseQuery({ queryKey: ["strains"], queryFn: () => listStrains() });
   const list = (strains ?? []) as unknown as Strain[];
-  const preRolls = list.filter((s) => s.product_line === "pre_roll");
-  const featured = list.find((s) => s.slug === "green-crack") ?? preRolls[0] ?? list[0];
+  // listStrains() already filters is_active and orders by display_order.
+  const teaserTiles = list
+    .filter((s) => s.product_line === "pre_roll")
+    .map((s) => ({ strain: s, image: getStrainProductImage(s.slug) }))
+    .filter((t): t is { strain: Strain; image: string } => Boolean(t.image))
+    .slice(0, 3);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -57,91 +63,98 @@ function Home() {
       <section ref={heroRef} className="tone-dark relative h-screen w-full overflow-hidden">
         <motion.div style={{ y: bgY }} className="absolute inset-0">
           <img
-            src={heroImage}
-            alt="Terps Mindspark premium infused preroll"
+            src={HERO_MEDIA}
+            alt="Terps premium infused pre-roll"
             className="h-[120%] w-full object-cover"
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B0A08]/50 via-[#0B0A08]/65 to-[#0B0A08]" />
         <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6 md:px-12">
-          <Hairline w="120px" className="mb-8" />
-          <h1 className="max-w-3xl font-display text-[2.75rem] font-normal leading-[1.05] md:text-[5rem]">
-            The depth of the inhale.<br />
-            <em className="not-italic text-[color:var(--accent-gold)]">The truth of the flavor.</em>
+          <Logo onTone="dark" height={84} className="mb-8 max-w-full md:h-[120px]" />
+          <h1 className="max-w-3xl font-display text-[3rem] font-normal leading-[1.02] md:text-[5.5rem]">
+            Flavour first.
           </h1>
-          <p className="mt-8 max-w-xl font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
-            South African–bred. Hand-infused with live hash rosin. Built for the moment, not the noise.
+          <p className="mt-6 max-w-xl font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
+            South Africa's premium handcrafted infused pre-rolls.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a href="/shop"><GoldButton variant="cream">Discover the collection</GoldButton></a>
-            <a href="/about"><GoldButton variant="tertiary">Our story</GoldButton></a>
+          <div className="mt-10 flex flex-col items-start gap-5">
+            <a href="/shop">
+              <GoldButton variant="cream">Discover the collection</GoldButton>
+            </a>
+            <GhostLink to="/about">Our story</GhostLink>
           </div>
         </div>
       </section>
 
-      {/* Sage feature band */}
-      <FeatureBand />
-
-      {/* 2. THE COLLECTION */}
+      {/* 2. INFUSED PRE-ROLLS TEASER */}
       <section className="px-6 py-32 md:py-40">
-        <div className="mx-auto max-w-[1400px]">
+        <div className="mx-auto max-w-[1200px]">
           <ScrollReveal className="text-center">
             <MetaLabel gold>✦ Infused Pre-Rolls</MetaLabel>
             <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl leading-[1.05] md:text-6xl">
-              Four drops. Four flavors. <em className="text-[color:var(--accent-gold)]">One standard.</em>
+              The only premium infused pre-roll you need.
             </h2>
             <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
-              Every Terps strain is selected for its terpene profile, slow-cured, and hand-infused with live hash rosin. No shortcuts. No fillers.
+              Premium flower, hand-infused with cured hash and crumble. Every pre-roll is checked by hand
+              before it's sealed in its tube.
             </p>
           </ScrollReveal>
-          <div className="mx-auto mt-20 grid max-w-[900px] grid-cols-1 gap-8 sm:grid-cols-2">
-            {preRolls.map((s, i) => (
-              <ScrollReveal key={s.id} delay={i * 0.08}>
-                <StrainCard strain={s} />
-              </ScrollReveal>
-            ))}
-          </div>
+          {teaserTiles.length > 0 && (
+            <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+              {teaserTiles.map(({ strain, image }, i) => (
+                <ScrollReveal key={strain.id} delay={i * 0.08}>
+                  <div className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-8">
+                    <img
+                      src={image}
+                      alt={strain.name}
+                      loading="lazy"
+                      className="max-h-full w-auto object-contain"
+                    />
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          )}
           <div className="mt-16 text-center">
-            <GhostLink to="/shop">Explore all strains</GhostLink>
+            <a href="/shop">
+              <GoldButton>Shop the collection</GoldButton>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* 2b. CAVIAR STIX — Coming Soon teaser */}
-      <CaviarStixComingSoon />
+      {/* 3. CAVIAR STICKS */}
+      <CaviarStixTeaser />
 
-      {/* 3. FEATURED — Green Crack */}
-      {featured && (
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0">
-            <img src={greenCrack} alt="" className="h-full w-full object-cover opacity-10" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--bg-base)] via-[color:var(--bg-base)]/92 to-[color:var(--bg-base)]/70" />
-            {/* soft sage gradient blob behind product */}
-            <div
-              className="absolute right-[8%] top-1/2 hidden h-[420px] w-[420px] -translate-y-1/2 rounded-full md:block"
-              style={{
-                background: "radial-gradient(circle, rgba(92,102,80,0.18), transparent 70%)",
-                filter: "blur(20px)",
-              }}
-            />
-          </div>
-          <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-12 px-6 py-32 md:grid-cols-5 md:py-48">
-            <ScrollReveal className="md:col-span-3">
-              <MetaLabel gold>Featured · Daytime</MetaLabel>
-              <h2 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">{featured.name}</h2>
-              <p className="mt-4 font-display text-2xl italic text-[color:var(--text-secondary)]">{featured.tagline}</p>
-              <p className="mt-8 max-w-lg font-body text-lg leading-relaxed text-[color:var(--text-primary)]">
-                {featured.story}
-              </p>
-            </ScrollReveal>
-            <ScrollReveal delay={0.15} className="hidden md:col-span-2 md:block">
-              <img src={getStrainProductImage(featured.slug) ?? greenCrack} alt={featured.name} className="mx-auto max-h-[520px] w-auto rounded-xl drop-shadow-[0_28px_60px_rgba(40,60,40,0.25)]" />
-            </ScrollReveal>
-          </div>
-        </section>
-      )}
+      {/* 4. SOCIALS */}
+      <section className="px-6 py-32 md:py-40">
+        <div className="mx-auto max-w-[900px] text-center">
+          <ScrollReveal>
+            <MetaLabel gold>✦ Follow Terps</MetaLabel>
+            <Hairline w="120px" className="mx-auto my-10" />
+            <div className="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-16">
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex items-center gap-3 font-display text-2xl italic text-[color:var(--text-primary)] transition-colors hover:text-[color:var(--accent-gold)] md:text-3xl"
+              >
+                <Instagram strokeWidth={1.5} className="h-6 w-6 shrink-0" />
+                <span className="break-all">{INSTAGRAM_HANDLE}</span>
+              </a>
+              <a
+                href={`mailto:${SALES_EMAIL}`}
+                className="inline-flex items-center gap-3 font-display text-2xl italic text-[color:var(--text-primary)] transition-colors hover:text-[color:var(--accent-gold)] md:text-3xl"
+              >
+                <Mail strokeWidth={1.5} className="h-6 w-6 shrink-0" />
+                <span className="break-all">{SALES_EMAIL}</span>
+              </a>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
 
-      {/* 4. THE CRAFT */}
+      {/* 5. THE CRAFT */}
       <section className="px-6 py-32 md:py-40">
         <div className="mx-auto max-w-[1200px]">
           <ScrollReveal className="text-center">
@@ -164,16 +177,16 @@ function Home() {
         </div>
       </section>
 
-      {/* 5. LIFESTYLE QUOTE */}
+      {/* 6. LIFESTYLE QUOTE */}
       <section className="tone-dark relative h-[80vh] overflow-hidden">
         <img src={lifestyle3} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-[#0B0A08]/65" />
         <div className="relative mx-auto flex h-full max-w-3xl items-center justify-center px-6">
-          <PullQuote attribution="Terps">We don't chase hype. We chase flavor.</PullQuote>
+          <PullQuote attribution="Terps">Every pre-roll is checked by hand before it's sealed.</PullQuote>
         </div>
       </section>
 
-      {/* 6. STRAIN LIBRARY TEASER */}
+      {/* 7. STRAIN LIBRARY TEASER */}
       <section className="px-6 py-32 md:py-40">
         <div className="mx-auto max-w-[1200px]">
           <ScrollReveal className="text-center">
@@ -202,8 +215,7 @@ function Home() {
         </div>
       </section>
 
-      {/* 7. DROP ALERTS */}
-      {/* 6b. BECOME A STOCKIST */}
+      {/* 8. BECOME A STOCKIST */}
       <section className="relative overflow-hidden bg-[color:var(--bg-contrast)] px-6 py-32 md:py-40">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-16 md:grid-cols-5">
           <div className="md:col-span-3">
@@ -213,33 +225,19 @@ function Home() {
                 Stock Terps in your store.
               </h2>
               <p className="mt-8 max-w-xl font-body text-lg leading-relaxed text-[color:var(--text-on-dark)] opacity-80">
-                Working with curated dispensaries across South Africa. Premium pre-rolls, exclusive Caviar Stix access, marketing support, and direct line to the source.
+                Sign up to become a stockist and get wholesale pricing, early access to new drops and
+                marketing support.
               </p>
-              <ul className="mt-10 space-y-3">
-                {[
-                  "Wholesale pricing on the full collection",
-                  "Early access to Caviar Stix limited drops",
-                  "Marketing materials and brand support",
-                  "Direct partnership with the Terps team",
-                ].map((b) => (
-                  <li
-                    key={b}
-                    className="font-display text-xl italic text-[color:var(--text-on-dark)] opacity-90 md:text-2xl"
-                  >
-                    — {b}
-                  </li>
-                ))}
-              </ul>
               <div className="mt-12">
                 <a href="/wholesale">
-                  <GoldButton>Become a Stockist →</GoldButton>
+                  <GoldButton>Become a stockist</GoldButton>
                 </a>
               </div>
             </ScrollReveal>
           </div>
           <ScrollReveal delay={0.15} className="md:col-span-2">
             <img
-              src={stockistDisplay}
+              src={STOCKIST_IMAGE}
               alt="Curated Terps retail display"
               loading="lazy"
               className="aspect-[4/5] w-full rounded-lg object-cover shadow-[var(--shadow-card-hover)]"
@@ -249,24 +247,6 @@ function Home() {
       </section>
 
       <DropAlerts />
-
-      {/* 8. CLOSING */}
-      <section className="relative overflow-hidden bg-[color:var(--bg-contrast)] px-6 py-32 md:px-12 md:py-40">
-        <div className="relative mx-auto flex max-w-[1400px] items-center justify-between gap-8">
-          <p className="font-display text-5xl leading-[1.05] text-[color:var(--text-on-dark)] md:text-7xl lg:text-8xl">
-            Flavour first.<br />
-            <em className="not-italic text-[color:var(--accent-gold)]">Always.</em>
-          </p>
-          <svg
-            viewBox="0 0 100 100"
-            className="hidden h-24 w-24 shrink-0 text-[color:var(--accent-gold)] opacity-70 md:block lg:h-32 lg:w-32"
-            aria-hidden="true"
-          >
-            <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="1" />
-            <circle cx="50" cy="50" r="20" fill="currentColor" opacity="0.6" />
-          </svg>
-        </div>
-      </section>
     </>
   );
 }

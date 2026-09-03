@@ -1,26 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { Hairline } from "@/components/brand/Hairline";
-import { subscribeEmail } from "@/lib/forms.functions";
-import { ArrowRight, Lock } from "lucide-react";
-import { SALES_EMAIL } from "@/lib/brand";
+import { Lock } from "lucide-react";
+import { SALES_EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/brand";
 
 export function Footer() {
-  const [email, setEmail] = useState("");
-  const [done, setDone] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setErr(null);
-    try {
-      await subscribeEmail({ data: { email, source: "footer" } });
-      setDone(true);
-    } catch (e: any) {
-      setErr("Try again with a valid email.");
-    }
-  }
 
   return (
     <footer className="tone-dark border-t border-[color:var(--border-on-dark)] pt-24 pb-10">

@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/wholesale/login")({
   head: () => ({ meta: [{ title: "Terps — Stockist Sign In" }] }),
   validateSearch: (s: Record<string, unknown>) => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : "/wholesale/dashboard",
+    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
   }),
   component: WholesaleLoginPage,
 });

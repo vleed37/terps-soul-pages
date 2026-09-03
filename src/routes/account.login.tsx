@@ -11,7 +11,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/account/login")({
   head: () => ({ meta: [{ title: "Terps — Sign In" }] }),
   validateSearch: (s: Record<string, unknown>) => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : "/account",
+    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
   }),
   component: LoginPage,
 });

@@ -57,25 +57,8 @@ export function Footer() {
               <li><a href="https://instagram.com/terps.official_" className="hover:text-[color:var(--accent-gold)]">@terps.official_</a></li>
               <li><a href={`mailto:${SALES_EMAIL}`} className="hover:text-[color:var(--accent-gold)]">{SALES_EMAIL}</a></li>
             </ul>
-            {done ? (
-              <p className="mt-8 font-display italic text-[color:var(--accent-gold)]">You're on the list.</p>
-            ) : (
-              <form onSubmit={submit} className="mt-8 flex items-center gap-2 border-b border-[color:var(--border-strong)] pb-2">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-[color:var(--text-tertiary)]"
-                />
-                <button type="submit" aria-label="Subscribe" className="text-[color:var(--accent-gold)] hover:text-[color:var(--accent-gold-hover)]">
-                  <ArrowRight strokeWidth={1.5} className="h-5 w-5" />
-                </button>
-              </form>
-            )}
-            {err && <p className="mt-2 text-xs text-[color:var(--status-error)]">{err}</p>}
           </div>
+
         </div>
         <Hairline className="my-12" />
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">

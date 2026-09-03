@@ -18,6 +18,7 @@ export const Route = createFileRoute("/account/login")({
 
 function LoginPage() {
   const { redirect } = Route.useSearch();
+  const redirectTo = redirect ?? "/account";
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +39,7 @@ function LoginPage() {
       toast.error(error.message);
       return;
     }
-    navigate({ to: redirect });
+    navigate({ to: redirectTo });
   }
 
   async function onMagicSubmit(e: React.FormEvent) {
@@ -46,7 +47,7 @@ function LoginPage() {
     setSubmitting(true);
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}${redirect}` },
+      options: { emailRedirectTo: `${window.location.origin}${redirectTo}` },
     });
     setSubmitting(false);
     if (error) {

@@ -17,6 +17,7 @@ export const Route = createFileRoute("/wholesale/login")({
 
 function WholesaleLoginPage() {
   const { redirect } = Route.useSearch();
+  const redirectTo = redirect ?? "/wholesale/dashboard";
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +34,7 @@ function WholesaleLoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setSubmitting(false);
     if (error) return toast.error(error.message);
-    navigate({ to: redirect });
+    navigate({ to: redirectTo });
   }
 
   return (

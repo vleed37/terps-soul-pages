@@ -28,7 +28,7 @@ export function AgeGate() {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[color:var(--bg-rich)]/90 backdrop-blur-2xl px-4">
       <img src={lifestyle} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover opacity-15 blur-xl" />
       <div className="relative max-w-lg rounded-lg border border-[color:var(--border-strong)] bg-[color:var(--bg-elevated)] p-10 md:p-16 text-center">
-        <div className="flex justify-center"><Logo height={64} /></div>
+        <div className="flex justify-center"><Logo height={36} /></div>
         <Hairline className="my-8 mx-auto w-24" />
         <h2 className="font-display text-3xl leading-tight md:text-4xl">You must be of legal age to enter.</h2>
         <p className="mt-4 font-body text-[color:var(--text-secondary)] leading-relaxed">

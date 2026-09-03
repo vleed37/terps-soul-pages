@@ -70,7 +70,7 @@ function Home() {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B0A08]/50 via-[#0B0A08]/65 to-[#0B0A08]" />
         <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6 md:px-12">
-          <Logo onTone="dark" height={84} className="mb-8 max-w-full" />
+          <Logo onTone="dark" height={39} className="mb-8 self-start" />
           <h1 className="max-w-3xl font-display text-[3rem] font-normal leading-[1.02] md:text-[5.5rem]">
             Flavour first.
           </h1>
@@ -158,14 +158,14 @@ function Home() {
       <section className="px-6 py-32 md:py-40">
         <div className="mx-auto max-w-[1200px]">
           <ScrollReveal className="text-center">
-            <MetaLabel gold>The Craft</MetaLabel>
+            <MetaLabel gold>✦ The Craft</MetaLabel>
             <h2 className="mt-6 font-display text-4xl leading-tight md:text-5xl">Built slowly. <em className="text-[color:var(--accent-gold)]">Built once.</em></h2>
           </ScrollReveal>
           <div className="mt-20 grid grid-cols-1 gap-px bg-[color:var(--border-subtle)] md:grid-cols-3">
             {[
-              { t: "Selected Strains", d: "Hand-picked for terpene profile. Only the cultivars that earn their flavor." },
+              { t: "Selected Strains", d: "Hand-picked for terpene profile. Only the cultivars that earn their flavour." },
               { t: "Extended Curing", d: "Slow-cured to lock in the depth and the body. Patience over volume, every batch." },
-              { t: "Live Hash Rosin", d: "Solventless, top-tier live rosin in every joint. The cleanest infusion we know." },
+              { t: "Hand Infusion", d: "Premium flower, cured hash and crumble, brought together by hand." },
             ].map((c, i) => (
               <ScrollReveal key={c.t} delay={i * 0.1} className="bg-[color:var(--bg-base)] p-10 md:p-12">
                 <div className="h-px w-12 bg-[color:var(--accent-gold)]" />
@@ -190,10 +190,10 @@ function Home() {
       <section className="px-6 py-32 md:py-40">
         <div className="mx-auto max-w-[1200px]">
           <ScrollReveal className="text-center">
-            <MetaLabel gold>The Strain Library</MetaLabel>
+            <MetaLabel gold>✦ The Strain Library</MetaLabel>
             <h2 className="mt-6 font-display text-4xl md:text-5xl">Know what you're tasting.</h2>
             <p className="mx-auto mt-6 max-w-xl text-[color:var(--text-secondary)] md:text-lg">
-              Terpenes shape the flavor, the high, and the experience. Learn what's in each drop and why it matters.
+              Terpenes shape the flavour, the high, and the experience. Learn what's in each drop and why it matters.
             </p>
           </ScrollReveal>
           <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -271,10 +271,10 @@ function DropAlerts() {
     <section className="tone-dark px-6 py-32 md:py-40">
       <div className="mx-auto max-w-2xl text-center">
         <ScrollReveal>
-          <MetaLabel gold>Stay Close</MetaLabel>
+          <MetaLabel gold>✦ Stay Close</MetaLabel>
           <h2 className="mt-6 font-display text-4xl md:text-5xl">Get word when the next drop lands.</h2>
           <p className="mx-auto mt-6 max-w-md text-[color:var(--text-secondary)]">
-            Quiet emails. New flavors. The occasional batch story.
+            Quiet emails. New flavours. The occasional strain story.
           </p>
           {done ? (
             <p className="mt-10 font-display italic text-2xl text-[color:var(--accent-gold)]">You're on the list.</p>

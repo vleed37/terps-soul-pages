@@ -1,33 +1,18 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { Hairline } from "@/components/brand/Hairline";
-import { subscribeEmail } from "@/lib/forms.functions";
-import { ArrowRight, Lock } from "lucide-react";
-import { SALES_EMAIL } from "@/lib/brand";
+import { Lock } from "lucide-react";
+import { SALES_EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/brand";
 
 export function Footer() {
-  const [email, setEmail] = useState("");
-  const [done, setDone] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setErr(null);
-    try {
-      await subscribeEmail({ data: { email, source: "footer" } });
-      setDone(true);
-    } catch (e: any) {
-      setErr("Try again with a valid email.");
-    }
-  }
 
   return (
     <footer className="tone-dark border-t border-[color:var(--border-on-dark)] pt-24 pb-10">
       <div className="mx-auto max-w-[1400px] px-6 md:px-8">
         <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
           <div>
-            <Logo height={90} onTone="dark" />
+            <Logo height={44} onTone="dark" />
           </div>
 
           <div>
@@ -54,28 +39,11 @@ export function Footer() {
           <div>
             <h4 className="meta-xs mb-6 text-gold">Connect</h4>
             <ul className="space-y-3 font-body text-sm">
-              <li><a href="https://instagram.com/terps.official_" className="hover:text-[color:var(--accent-gold)]">@terps.official_</a></li>
+              <li><a href={INSTAGRAM_URL} target="_blank" rel="noreferrer noopener" className="hover:text-[color:var(--accent-gold)]">{INSTAGRAM_HANDLE}</a></li>
               <li><a href={`mailto:${SALES_EMAIL}`} className="hover:text-[color:var(--accent-gold)]">{SALES_EMAIL}</a></li>
             </ul>
-            {done ? (
-              <p className="mt-8 font-display italic text-[color:var(--accent-gold)]">You're on the list.</p>
-            ) : (
-              <form onSubmit={submit} className="mt-8 flex items-center gap-2 border-b border-[color:var(--border-strong)] pb-2">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-[color:var(--text-tertiary)]"
-                />
-                <button type="submit" aria-label="Subscribe" className="text-[color:var(--accent-gold)] hover:text-[color:var(--accent-gold-hover)]">
-                  <ArrowRight strokeWidth={1.5} className="h-5 w-5" />
-                </button>
-              </form>
-            )}
-            {err && <p className="mt-2 text-xs text-[color:var(--status-error)]">{err}</p>}
           </div>
+
         </div>
         <Hairline className="my-12" />
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">

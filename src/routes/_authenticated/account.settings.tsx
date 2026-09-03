@@ -114,7 +114,7 @@ function SettingsPage() {
 
       <Card label="MARKETING">
         <label className="flex items-center justify-between gap-3 text-[color:var(--text-secondary)]">
-          <span>Drop alerts and flavor announcements</span>
+          <span>Drop alerts and flavour announcements</span>
           <input type="checkbox" checked={marketing} onChange={(e) => saveMarketing(e.target.checked)} className="h-5 w-5 accent-[color:var(--accent-gold)]" />
         </label>
         <label className="mt-3 flex items-center justify-between gap-3 text-[color:var(--text-tertiary)]">

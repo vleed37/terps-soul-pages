@@ -157,7 +157,7 @@ function EditStrain() {
         <MetaLabel className="text-[color:var(--accent-sage,#7d9b76)]">✦ AI ASSIST</MetaLabel>
         <h2 className="mt-3 font-display text-2xl">Auto-fill from strain name</h2>
         <p className="mt-2 text-sm text-[color:var(--text-secondary)]">
-          Type the strain name. We'll fetch effects, flavors, terpenes, lineage, and a story
+          Type the strain name. We'll fetch effects, flavours, terpenes, lineage, and a story
           draft from public cannabis databases. Review and edit before saving.
         </p>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">

@@ -65,7 +65,7 @@ function RegisterPage() {
     <AuthCard
       label="CREATE ACCOUNT"
       title="Join us."
-      subtitle="Faster checkout, order tracking, and the occasional flavor first."
+      subtitle="Faster checkout, order tracking, and the occasional flavour first."
     >
       <form onSubmit={onSubmit} className="space-y-5">
         <AuthField label="Full Name">
@@ -97,7 +97,7 @@ function RegisterPage() {
         </label>
         <label className="flex items-start gap-3 text-sm text-[color:var(--text-secondary)]">
           <input type="checkbox" className="mt-1 accent-[color:var(--accent-gold)]" checked={marketing} onChange={(e) => setMarketing(e.target.checked)} />
-          <span>Send me drop alerts and flavor announcements.</span>
+          <span>Send me drop alerts and flavour announcements.</span>
         </label>
         <GoldButton type="submit" className="w-full" disabled={submitting}>
           {submitting ? "Creating…" : "Create Account"}

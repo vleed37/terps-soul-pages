@@ -34,7 +34,7 @@ export function StockistContextBanner() {
   };
 
   return (
-    <div className="fixed inset-x-0 top-[88px] z-30 border-b border-[color:var(--border-subtle)] bg-[color:var(--bg-elevated)]">
+    <div className="relative z-10 border-b border-[color:var(--border-subtle)] bg-[color:var(--bg-elevated)]">
       <Link
         to="/wholesale/dashboard"
         className="group flex items-center justify-center gap-3 px-6 py-3 text-center transition-colors hover:bg-[color:var(--sage-muted,#e8ede0)]"

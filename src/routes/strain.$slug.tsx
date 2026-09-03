@@ -290,7 +290,7 @@ function StrainDetail() {
             <p className="mt-3 text-sm text-[color:var(--text-secondary)]">{s.description}</p>
           </div>
           <div className="bg-[color:var(--bg-surface)] p-10">
-            <MetaLabel gold>Flavor Profile</MetaLabel>
+            <MetaLabel gold>Flavour Profile</MetaLabel>
             <div className="mt-4 flex flex-wrap gap-2">
               {s.flavor_tags?.map((f, i) => <FlavorChip key={f} dominant={i === 0}>{f}</FlavorChip>)}
             </div>

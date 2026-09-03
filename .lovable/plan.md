@@ -46,13 +46,14 @@ Constants at the top of the file so media can be swapped later without touching 
 
 Final section order:
 
-1. **Hero** — same parallax wrapper and overlay. `<Logo onTone="dark">` at ~1.5× current brand size, then H1 "Flavour first.", subline "South Africa's premium handcrafted infused pre-rolls.", one gold pill CTA "Discover the collection" → `/shop`. Old headline, "Our story" button and premium/batch copy removed.
+1. **Hero** — same parallax wrapper and overlay. `<Logo onTone="dark">` at ~1.5× current brand size, then H1 "Flavour first.", subline "South Africa's premium handcrafted infused pre-rolls.", one gold pill CTA "Discover the collection" → `/shop`, and beneath it a small ghost text link "Our story" → `/about`. Old headline and premium/batch copy removed.
 2. **FeatureBand removed** from the homepage; `src/components/brand/FeatureBand.tsx` stays on disk.
-3. **Infused Pre-Rolls teaser** — label "✦ Infused Pre-Rolls", heading "The only premium infused pre-roll you need.", the supplied body copy, a row of 2–3 product images on cream tiles (same imagery the collection cards use, via `getStrainProductImage`), CTA "Shop the collection" → `/shop`. No `StrainCard` rendering here.
-4. **Caviar Sticks teaser** — `CaviarStixComingSoon.tsx` reworked in place (dark section, sage glow kept): label "✦ Caviar Sticks", heading "The only caviar stick you need.", subline "Cream of the crop.", body placeholder "[Caviar description — client to supply]", CTA "Shop the collection" → `/shop`. Coming-soon/drop-date/limited-batch copy and the inline email capture are removed, so the component no longer imports `subscribeEmail`.
+3. **Infused Pre-Rolls teaser** — label "✦ Infused Pre-Rolls", heading "The only premium infused pre-roll you need.", the supplied body copy, CTA "Shop the collection" → `/shop`. Tiles come from the first 3 active pre-rolls in `display_order` (the existing `listStrains` loader already filters `is_active` and orders by `display_order`), skipping any strain with no product image; if fewer than 3 qualify, only those render — never an empty tile. No `StrainCard` rendering here.
+4. **Caviar Sticks teaser** — `CaviarStixComingSoon.tsx` renamed to `src/components/brand/CaviarStixTeaser.tsx` (export renamed to `CaviarStixTeaser`, import in `index.tsx` updated): label "✦ Caviar Sticks", heading "The only caviar stick you need.", subline "Cream of the crop.", body placeholder "[Caviar description — client to supply]", CTA "Shop the collection" → `/shop`. Coming-soon/drop-date/limited-batch copy and the inline email capture removed, so the component no longer imports `subscribeEmail`.
 5. **Socials block** — replaces the featured-strain section: label "✦ Follow Terps", Instagram icon + `INSTAGRAM_HANDLE` → `INSTAGRAM_URL`, mail icon + `SALES_EMAIL` mailto, same editorial type scale. Featured-strain markup removed from the homepage; `StrainCard` and the product-image helper stay available for `/shop`.
 6. **The Craft** — unchanged.
 7. **Lifestyle pull-quote** — same image and layout, quote becomes "Every pre-roll is checked by hand before it's sealed."
+
 8. **Strain Library teaser** — unchanged, CTA points at `/strains`.
 9. **Become a Stockist** — heading "Stock Terps in your store.", the supplied body copy, CTA "Become a stockist" → `/wholesale`, image from `STOCKIST_IMAGE`.
 10. **Drop Alerts** — unchanged.

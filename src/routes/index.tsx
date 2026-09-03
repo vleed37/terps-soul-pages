@@ -70,7 +70,7 @@ function Home() {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B0A08]/50 via-[#0B0A08]/65 to-[#0B0A08]" />
         <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-center px-6 md:px-12">
-          <Logo onTone="dark" height={84} className="mb-8 max-w-full md:h-[120px]" />
+          <Logo onTone="dark" height={84} className="mb-8 max-w-full" />
           <h1 className="max-w-3xl font-display text-[3rem] font-normal leading-[1.02] md:text-[5.5rem]">
             Flavour first.
           </h1>

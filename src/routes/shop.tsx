@@ -165,7 +165,7 @@ function ShopPage() {
         </div>
       </div>
       <div>
-        <MetaLabel gold>Flavor family</MetaLabel>
+        <MetaLabel gold>Flavour family</MetaLabel>
         <div className="mt-4 grid grid-cols-2 gap-3">
           {FLAVORS.map((f) => (
             <label key={f} className="flex items-center gap-2 text-sm capitalize cursor-pointer">

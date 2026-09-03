@@ -48,7 +48,7 @@ function AboutPage() {
       <ScrollReveal className="mx-auto max-w-4xl text-center">
         <MetaLabel gold>✦ Our Story</MetaLabel>
         <h1 className="mt-6 font-display text-6xl leading-[0.95] md:text-[8rem]">
-          Flavor first.
+          Flavour first.
         </h1>
         <p className="mt-3 font-display text-4xl italic leading-none text-[color:var(--accent-gold)] md:text-6xl">
           Always.

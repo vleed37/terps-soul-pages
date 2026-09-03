@@ -41,7 +41,7 @@ function ForgotPage() {
         </form>
       )}
       <p className="mt-8 text-center font-display italic text-sm text-[color:var(--text-secondary)]">
-        <Link to="/account/login" className="text-[color:var(--accent-gold)] hover:underline">
+        <Link to="/account/login" search={{ redirect: "/account" }} className="text-[color:var(--accent-gold)] hover:underline">
           ← Back to sign in
         </Link>
       </p>

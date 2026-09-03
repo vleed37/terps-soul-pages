@@ -46,7 +46,7 @@ function WholesalePage() {
             <a href="#apply">
               <GoldButton>Apply Now</GoldButton>
             </a>
-            <Link to="/wholesale/login">
+            <Link to="/wholesale/login" search={{ redirect: "/wholesale/dashboard" }}>
               <GoldButton variant="secondary">Stockist Sign In</GoldButton>
             </Link>
           </div>
@@ -359,7 +359,7 @@ function Step1Form({ values, setValues, onSubmit, submitting }: {
         <input type="password" required minLength={8} value={values.password} onChange={(e) => setValues((s) => ({ ...s, password: e.target.value }))} className={inputCls} />
       </div>
       <p className="text-xs text-[color:var(--text-tertiary)]">
-        Already have an account? <Link to="/wholesale/login" className="ghost-link">Sign in</Link>
+        Already have an account? <Link to="/wholesale/login" search={{ redirect: "/wholesale/dashboard" }} className="ghost-link">Sign in</Link>
       </p>
       <div className="pt-2">
         <GoldButton type="submit" disabled={submitting} className="w-full md:w-auto">

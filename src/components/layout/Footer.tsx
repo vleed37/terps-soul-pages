@@ -90,7 +90,6 @@ export function Footer() {
             </Link>
           </p>
 
-          </p>
           <p className="meta-xs text-[color:var(--text-tertiary)]">© 2026 Terps. All rights reserved.</p>
         </div>
       </div>

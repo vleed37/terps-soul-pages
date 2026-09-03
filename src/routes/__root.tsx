@@ -64,18 +64,12 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthSync />
-      {/* Top status band — thin dark batch indicator */}
-      <div className="tone-dark fixed inset-x-0 top-0 z-50 flex h-[28px] items-center justify-center border-b border-[color:var(--border-on-dark)] px-6">
-        <p className="meta-xs flex items-center gap-2 text-[color:var(--accent-gold)]">
-          <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--accent-gold)]" />
-          Premium Infused · Batch 04 Active
-        </p>
-      </div>
       <Header />
       <StockistContextBanner />
-      <main className="relative z-0 pt-[116px]">
+      <main className="relative z-0 pt-[88px]">
         <Outlet />
       </main>
+
       <Footer />
       <AgeGate />
       <CookieConsent />

@@ -65,10 +65,13 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthSync />
       <Header />
-      <StockistContextBanner />
-      <main className="relative z-0 pt-[88px]">
-        <Outlet />
-      </main>
+      <div className="relative z-0 pt-[88px]">
+        <StockistContextBanner />
+        <main>
+          <Outlet />
+        </main>
+      </div>
+
 
       <Footer />
       <AgeGate />

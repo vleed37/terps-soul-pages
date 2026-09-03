@@ -28,9 +28,16 @@ Swap the hard-coded address for `SALES_EMAIL` in all 11 files (display text and 
 
 ## B. Global chrome
 
-**src/routes/__root.tsx** — delete the fixed top status band ("Premium Infused · Batch 04 Active") and reduce `<main>` top padding from `pt-[116px]` to the header-only height so no gap or overlap remains. Title untouched.
+**src/routes/__root.tsx** — delete the fixed top status band ("Premium Infused · Batch 04 Active") and reduce `<main>` padding from `pt-[116px]` to `pt-[88px]` (header-only height). Title untouched.
+
+**Offset audit (the removed 28px band shifted everything).** Confirmed dependants:
+- `src/components/layout/Header.tsx` — header is `fixed ... top-[28px]`, heights 88px (top of page) / 64px (scrolled), same on desktop and mobile → becomes `top-0`.
+- `src/components/brand/StockistContextBanner.tsx` — also `fixed top-[28px] z-40`, currently overlapping the header → repositioned to sit directly under it (`top-[88px]`, matching the unscrolled header height) so it stacks below the header instead of on top of it.
+- Remaining sticky offsets (`shop.tsx` `sticky top-20`, `stockists.tsx`/`wholesale.dashboard.checkout.tsx` `top-24`, `checkout.tsx` `top-32`) are measured from their own scroll containers, and the wholesale dashboard layout uses no fixed top offset, so each is re-checked in the browser and only adjusted if a gap or overlap appears.
+- No `scroll-margin-top` / `scroll-mt` usage exists anywhere in `src/`, so no anchor targets need updating.
 
 **src/components/layout/Footer.tsx** — logo `height` 64 → 90 (~40% larger), remove the "Flavour First." line, and reduce the bottom line to just the 18+ lock link to `/legal/cannabis-disclaimer` plus the copyright ("Batch 04 active" and "Bred in South Africa" removed). Email link uses `SALES_EMAIL`.
+
 
 ## C. Homepage — src/routes/index.tsx
 

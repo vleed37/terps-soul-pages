@@ -11,14 +11,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/account/login")({
   head: () => ({ meta: [{ title: "Terps — Sign In" }] }),
   validateSearch: (s: Record<string, unknown>) => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
+    redirect: typeof s.redirect === "string" ? s.redirect : "/account",
   }),
   component: LoginPage,
 });
 
 function LoginPage() {
   const { redirect } = Route.useSearch();
-  const redirectTo = redirect ?? "/account";
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +38,7 @@ function LoginPage() {
       toast.error(error.message);
       return;
     }
-    navigate({ to: redirectTo });
+    navigate({ to: redirect });
   }
 
   async function onMagicSubmit(e: React.FormEvent) {
@@ -47,7 +46,7 @@ function LoginPage() {
     setSubmitting(true);
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}${redirectTo}` },
+      options: { emailRedirectTo: `${window.location.origin}${redirect}` },
     });
     setSubmitting(false);
     if (error) {

@@ -10,14 +10,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/wholesale/login")({
   head: () => ({ meta: [{ title: "Terps — Stockist Sign In" }] }),
   validateSearch: (s: Record<string, unknown>) => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
+    redirect: typeof s.redirect === "string" ? s.redirect : "/wholesale/dashboard",
   }),
   component: WholesaleLoginPage,
 });
 
 function WholesaleLoginPage() {
   const { redirect } = Route.useSearch();
-  const redirectTo = redirect ?? "/wholesale/dashboard";
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +33,7 @@ function WholesaleLoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setSubmitting(false);
     if (error) return toast.error(error.message);
-    navigate({ to: redirectTo });
+    navigate({ to: redirect });
   }
 
   return (

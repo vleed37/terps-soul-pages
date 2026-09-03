@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getRequest } from "@tanstack/react-start/server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { SALES_EMAIL } from "@/lib/brand";
 
 const CartItemSchema = z.object({
   strainId: z.string().uuid(),
@@ -139,7 +140,7 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
       return {
         ok: false as const,
         error:
-          "Payments are not yet configured. Please contact sales@terpnation.co.za to complete this order.",
+          `Payments are not yet configured. Please contact ${SALES_EMAIL} to complete this order.`,
         orderNumber: order.order_number,
       };
     }

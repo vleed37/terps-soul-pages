@@ -12,6 +12,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { createWholesaleAccount, getMyWholesaleAccount } from "@/lib/wholesale.functions";
 import stockistDisplay from "@/assets/stockist-display.jpg";
 import { seoMeta } from "@/lib/seo";
+import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/wholesale/")({
   head: () => ({
@@ -256,7 +257,7 @@ function ApplyFlow() {
         ) : status === "rejected" ? (
           <>
             <p className="font-display text-3xl italic md:text-4xl">Application declined.</p>
-            <p className="mt-4 text-[color:var(--text-secondary)]">Contact <a className="ghost-link" href="mailto:sales@terpnation.co.za">sales@terpnation.co.za</a> for next steps.</p>
+            <p className="mt-4 text-[color:var(--text-secondary)]">Contact <a className="ghost-link" href={`mailto:${SALES_EMAIL}`}>{SALES_EMAIL}</a> for next steps.</p>
           </>
         ) : (
           <>

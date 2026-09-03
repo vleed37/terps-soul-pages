@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { seoMeta } from "@/lib/seo";
+import { SALES_EMAIL } from "@/lib/brand";
 
 const LAST_UPDATED = "31 May 2026";
 
@@ -74,9 +75,7 @@ function PrivacyPage() {
             <p>
               You have the right to access, correct, or delete your personal information, and to
               object to processing. Contact us at{" "}
-              <a href="mailto:sales@terpnation.co.za" className="ghost-link">
-                sales@terpnation.co.za
-              </a>{" "}
+              <a href={`mailto:${SALES_EMAIL}`} className="ghost-link">{SALES_EMAIL}</a>{" "}
               to exercise these rights.
             </p>
           ),
@@ -95,9 +94,7 @@ function PrivacyPage() {
           body: (
             <p>
               For any privacy-related queries, please email{" "}
-              <a href="mailto:sales@terpnation.co.za" className="ghost-link">
-                sales@terpnation.co.za
-              </a>
+              <a href={`mailto:${SALES_EMAIL}`} className="ghost-link">{SALES_EMAIL}</a>
               .
             </p>
           ),

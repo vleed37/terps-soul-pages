@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { SALES_EMAIL } from "@/lib/brand";
 
 const BusinessTypeEnum = z.enum(["dispensary", "lounge", "specialty_retailer", "other"]);
 const VolumeEnum = z.enum(["under_50", "50_to_200", "200_to_500", "500_plus"]);
@@ -291,7 +292,7 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     if (!merchantId || !apiKey || !apiUrl) {
       return {
         ok: false as const,
-        error: "Payments not yet configured. Contact sales@terpnation.co.za to complete this order.",
+        error: `Payments not yet configured. Contact ${SALES_EMAIL} to complete this order.`,
         orderNumber: order.order_number,
       };
     }

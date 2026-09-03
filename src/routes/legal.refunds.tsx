@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { seoMeta } from "@/lib/seo";
+import { SALES_EMAIL } from "@/lib/brand";
 
 const LAST_UPDATED = "31 May 2026";
 
@@ -70,9 +71,7 @@ function RefundsPage() {
           body: (
             <p>
               Orders may be cancelled prior to dispatch by contacting{" "}
-              <a href="mailto:sales@terpnation.co.za" className="ghost-link">
-                sales@terpnation.co.za
-              </a>
+              <a href={`mailto:${SALES_EMAIL}`} className="ghost-link">{SALES_EMAIL}</a>
               . Once dispatched, the order is subject to the returns process above.
             </p>
           ),

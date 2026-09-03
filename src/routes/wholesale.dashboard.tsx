@@ -10,6 +10,7 @@ import { WholesaleCartDrawer } from "@/components/brand/WholesaleCartDrawer";
 import { useWholesaleCart, wholesaleCartSelectors } from "@/lib/store/wholesale-cart";
 import { cn } from "@/lib/utils";
 import { DashboardSkeleton } from "@/components/layout/PageSkeletons";
+import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/wholesale/dashboard")({
   beforeLoad: async ({ location }) => {
@@ -78,8 +79,8 @@ function WholesaleDashboardLayout() {
     };
     const msgMap: Record<string, string> = {
       pending: "We'll be in touch within 48 hours. You'll receive an email once your stockist account is approved.",
-      rejected: acct.rejection_reason || "Please contact sales@terpnation.co.za for next steps.",
-      suspended: "Your account is temporarily suspended. Contact sales@terpnation.co.za.",
+      rejected: acct.rejection_reason || `Please contact ${SALES_EMAIL} for next steps.`,
+      suspended: `Your account is temporarily suspended. Contact ${SALES_EMAIL}.`,
     };
     return (
       <Gated>

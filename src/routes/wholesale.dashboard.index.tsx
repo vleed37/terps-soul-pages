@@ -7,6 +7,7 @@ import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { UpdateAccountModal } from "@/components/brand/UpdateAccountModal";
+import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/wholesale/dashboard/")({
   head: () => ({ meta: [{ title: "Terps — Stockist Dashboard" }] }),
@@ -96,7 +97,7 @@ function DashboardHome() {
           Update details →
         </button>
         <p className="mt-4 text-sm text-[color:var(--text-secondary)]">
-          Need help? Email <a className="ghost-link" href="mailto:sales@terpnation.co.za">sales@terpnation.co.za</a> or WhatsApp +27 ··· ····.
+          Need help? Email <a className="ghost-link" href={`mailto:${SALES_EMAIL}`}>{SALES_EMAIL}</a> or WhatsApp +27 ··· ····.
         </p>
       </div>
 

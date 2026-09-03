@@ -4,6 +4,7 @@ import { Logo } from "@/components/brand/Logo";
 import { Hairline } from "@/components/brand/Hairline";
 import { subscribeEmail } from "@/lib/forms.functions";
 import { ArrowRight, Lock } from "lucide-react";
+import { SALES_EMAIL } from "@/lib/brand";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -26,9 +27,9 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-8">
         <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
           <div>
-            <Logo height={64} onTone="dark" />
-            <p className="mt-6 font-display text-2xl italic text-[color:var(--text-primary)]">Flavour First.</p>
+            <Logo height={90} onTone="dark" />
           </div>
+
           <div>
             <h4 className="meta-xs mb-6 text-gold">Explore</h4>
             <ul className="space-y-3 font-body text-sm">
@@ -54,7 +55,7 @@ export function Footer() {
             <h4 className="meta-xs mb-6 text-gold">Connect</h4>
             <ul className="space-y-3 font-body text-sm">
               <li><a href="https://instagram.com/terps.official_" className="hover:text-[color:var(--accent-gold)]">@terps.official_</a></li>
-              <li><a href="mailto:sales@terpnation.co.za" className="hover:text-[color:var(--accent-gold)]">sales@terpnation.co.za</a></li>
+              <li><a href={`mailto:${SALES_EMAIL}`} className="hover:text-[color:var(--accent-gold)]">{SALES_EMAIL}</a></li>
             </ul>
             {done ? (
               <p className="mt-8 font-display italic text-[color:var(--accent-gold)]">You're on the list.</p>
@@ -87,11 +88,8 @@ export function Footer() {
               <Lock className="h-3 w-3" strokeWidth={1.5} />
               18+
             </Link>
-            <span aria-hidden>·</span>
-            <span>Bred in South Africa</span>
-            <span aria-hidden>·</span>
-            <span>Batch 04 active</span>
           </p>
+
           <p className="meta-xs text-[color:var(--text-tertiary)]">© 2026 Terps. All rights reserved.</p>
         </div>
       </div>

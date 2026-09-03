@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { AlertTriangle } from "lucide-react";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
+import { SALES_EMAIL } from "@/lib/brand";
 
 export interface LegalSection {
   heading: string;
@@ -63,9 +64,7 @@ export function LegalPage({ eyebrow, title, lastUpdated, intro, sections }: Prop
 
         <p className="text-center font-display text-lg italic text-[color:var(--text-secondary)]">
           Questions? Reach us at{" "}
-          <a href="mailto:sales@terpnation.co.za" className="ghost-link">
-            sales@terpnation.co.za
-          </a>
+          <a href={`mailto:${SALES_EMAIL}`} className="ghost-link">{SALES_EMAIL}</a>
           .
         </p>
       </article>

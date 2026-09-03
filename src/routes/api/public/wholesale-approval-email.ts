@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { timingSafeEqual } from "crypto";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/api/public/wholesale-approval-email")({
   server: {
@@ -106,7 +107,7 @@ function welcomeHtml(businessName: string, contactName: string, loginUrl: string
       <hr style="border:none;border-top:1px solid #e8e1d0;margin:32px 0;">
       <p style="font-size:13px;line-height:1.6;color:#666;margin:0 0 12px;">
         Questions? Reply to this email or reach out at
-        <a href="mailto:sales@terpnation.co.za" style="color:#5a6f4a;text-decoration:underline;">sales@terpnation.co.za</a>.
+        <a href="mailto:${SALES_EMAIL}" style="color:#5a6f4a;text-decoration:underline;">${SALES_EMAIL}</a>.
       </p>
       <p style="font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:15px;color:#3a3a3a;margin:24px 0 0;">
         Welcome to the network. — The Terps Team

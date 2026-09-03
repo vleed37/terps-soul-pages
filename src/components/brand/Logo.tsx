@@ -17,7 +17,7 @@ export function Logo({
     <img
       src={src}
       alt="Terps"
-      className={cn("inline-block h-auto w-auto max-w-full select-none object-contain", className)}
+      className={cn("inline-block h-auto w-auto max-w-full flex-none self-start select-none object-contain", className)}
       style={{ height, width: "auto" }}
       draggable={false}
     />

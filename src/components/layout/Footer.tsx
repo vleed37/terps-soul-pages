@@ -27,7 +27,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-8">
         <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
           <div>
-            <Logo height={90} onTone="dark" />
+            <Logo height={44} onTone="dark" />
           </div>
 
           <div>

@@ -88,10 +88,8 @@ export function Footer() {
               <Lock className="h-3 w-3" strokeWidth={1.5} />
               18+
             </Link>
-            <span aria-hidden>·</span>
-            <span>Bred in South Africa</span>
-            <span aria-hidden>·</span>
-            <span>Batch 04 active</span>
+          </p>
+
           </p>
           <p className="meta-xs text-[color:var(--text-tertiary)]">© 2026 Terps. All rights reserved.</p>
         </div>

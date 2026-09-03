@@ -1,10 +1,10 @@
-import logoLight from "@/assets/logo-terps.png";       // light/cream wordmark — for use on dark surfaces
-import logoDark from "@/assets/logo-terps-light.png";  // dark wordmark — for use on cream surfaces
+import logoLight from "@/assets/logo-terps-wordmark-light.png"; // light/cream wordmark — for use on dark surfaces
+import logoDark from "@/assets/logo-terps-wordmark-dark.png"; // dark wordmark — for use on cream surfaces
 import { cn } from "@/lib/utils";
 
 export function Logo({
   className,
-  height = 56,
+  height = 28,
   onTone = "light",
 }: {
   className?: string;
@@ -17,8 +17,8 @@ export function Logo({
     <img
       src={src}
       alt="Terps"
-      className={cn("inline-block w-auto select-none", className)}
-      style={{ height }}
+      className={cn("inline-block h-auto w-auto max-w-full select-none object-contain", className)}
+      style={{ height, width: "auto" }}
       draggable={false}
     />
   );

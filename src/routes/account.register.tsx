@@ -58,7 +58,7 @@ function RegisterPage() {
     setSubmitting(false);
     if (error) return toast.error(error.message);
     toast.success("Check your email to verify your account.");
-    navigate({ to: "/account/login" });
+    navigate({ to: "/account/login", search: { redirect: "/account" } });
   }
 
   return (
@@ -105,7 +105,7 @@ function RegisterPage() {
       </form>
       <p className="mt-8 text-center font-display italic text-sm text-[color:var(--text-secondary)]">
         Already have an account?{" "}
-        <Link to="/account/login" className="text-[color:var(--accent-gold)] hover:underline">
+        <Link to="/account/login" search={{ redirect: "/account" }} className="text-[color:var(--accent-gold)] hover:underline">
           Sign in →
         </Link>
       </p>

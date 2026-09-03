@@ -80,7 +80,7 @@ const EFFECT_COPY: Record<string, { label: string; headline: string; body: strin
   nighttime: {
     label: "Nighttime",
     headline: "Slow. Rich. Deep.",
-    body: "Nighttime strains land in the body. Rich, lingering flavors and a calm that settles in. Built for the after-dinner sit-down, the no-plans evening, the slow conversation.",
+    body: "Nighttime strains land in the body. Rich, lingering flavours and a calm that settles in. Built for the after-dinner sit-down, the no-plans evening, the slow conversation.",
   },
 };
 
@@ -91,11 +91,11 @@ const FAQS = [
   },
   {
     q: "How is Terps different from a normal pre-roll?",
-    a: "A normal pre-roll is just flower. Terps is flower plus live rosin from the same strain — same terpene profile, same flavor language. The result is brighter flavor, longer burn, and a noticeably stronger, more dimensional high.",
+    a: "A normal pre-roll is just flower. Terps is flower plus live rosin from the same strain — same terpene profile, same flavour language. The result is brighter flavour, longer burn, and a noticeably stronger, more dimensional high.",
   },
   {
     q: "What is live hash rosin?",
-    a: "Rosin pressed from fresh-frozen flower using heat and pressure — no solvents, no chemicals. 'Live' means the plant was frozen at harvest to preserve every terpene. It's the cleanest, most flavor-forward concentrate we know.",
+    a: "Rosin pressed from fresh-frozen flower using heat and pressure — no solvents, no chemicals. 'Live' means the plant was frozen at harvest to preserve every terpene. It's the cleanest, most flavour-forward concentrate we know.",
   },
   {
     q: "How should I store my Terps?",
@@ -126,10 +126,10 @@ function StrainsPage() {
       <ScrollReveal className="mx-auto max-w-3xl text-center">
         <MetaLabel gold>✦ The Strain Library</MetaLabel>
         <h1 className="mt-5 font-display text-5xl leading-[1.05] md:text-[5.5rem]">
-          The <em className="text-[color:var(--accent-gold)]">language</em> of flavor.
+          The <em className="text-[color:var(--accent-gold)]">language</em> of flavour.
         </h1>
         <p className="mx-auto mt-6 max-w-[700px] text-base text-[color:var(--text-secondary)] md:text-lg">
-          Every cannabis flavor — every nuance of every high — comes down to terpenes. This is your guide.
+          Every cannabis flavour — every nuance of every high — comes down to terpenes. This is your guide.
         </p>
       </ScrollReveal>
 

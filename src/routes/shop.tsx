@@ -223,7 +223,7 @@ function ShopPage() {
         <ScrollReveal className="text-center">
           <MetaLabel gold>✦ The Collection</MetaLabel>
           <h1 className="mx-auto mt-5 font-display text-[2.75rem] leading-[1.05] md:text-7xl">
-            Every drop. <em className="text-[color:var(--accent-gold)]">Every flavor.</em>
+            Every drop. <em className="text-[color:var(--accent-gold)]">Every flavour.</em>
           </h1>
           <p className="mx-auto mt-6 max-w-[500px] text-base text-[color:var(--text-secondary)] md:text-lg">
             Pre-rolls and premium stix. Every craft, every effect.

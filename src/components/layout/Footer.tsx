@@ -39,7 +39,7 @@ export function Footer() {
           <div>
             <h4 className="meta-xs mb-6 text-gold">Connect</h4>
             <ul className="space-y-3 font-body text-sm">
-              <li><a href="https://instagram.com/terps.official_" className="hover:text-[color:var(--accent-gold)]">@terps.official_</a></li>
+              <li><a href={INSTAGRAM_URL} target="_blank" rel="noreferrer noopener" className="hover:text-[color:var(--accent-gold)]">{INSTAGRAM_HANDLE}</a></li>
               <li><a href={`mailto:${SALES_EMAIL}`} className="hover:text-[color:var(--accent-gold)]">{SALES_EMAIL}</a></li>
             </ul>
           </div>

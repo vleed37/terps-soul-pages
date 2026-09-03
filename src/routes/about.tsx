@@ -35,11 +35,11 @@ function AboutPage() {
   const strains = (data ?? []) as unknown as Strain[];
 
   const paragraphs = [
-    "Terps was built around one belief: an infused pre-roll should taste like something. Not chemicals. Not cover-ups. Real strain expression — sharpened, never masked. Every drop carries the flavor it was supposed to.",
+    "Terps was built around one belief: an infused pre-roll should taste like something. Not chemicals. Not cover-ups. Real strain expression — sharpened, never masked. Every drop carries the flavour it was supposed to.",
     "Every batch starts with cultivars chosen for their terpene profile, not their yield. We slow-cure. We hand-infuse with live hash rosin. We do small drops, strain-specific, and we put the strain on the label because we're proud of what's inside.",
     "We're South African born and bred. The land here grows different, and so do the people. Terps is a product of that — the patience of the soil, the edge of the streets, the standard of a culture that knows quality when it tastes it.",
-    "Every drop is limited. Every batch is numbered. When it's gone, it's gone — and the next one is already in cure. This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavor on the other end.",
-    "Welcome to Terps. Welcome to flavor first.",
+    "Every drop is limited. Every batch is numbered. When it's gone, it's gone — and the next one is already in cure. This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavour on the other end.",
+    "Welcome to Terps. Welcome to flavour first.",
   ];
 
   return (
@@ -77,7 +77,7 @@ function AboutPage() {
 
         <ScrollReveal delay={0.05}>
           <div className="my-20">
-            <PullQuote attribution="Terps">We don't chase hype. We chase flavor.</PullQuote>
+            <PullQuote attribution="Terps">We don't chase hype. We chase flavour.</PullQuote>
           </div>
         </ScrollReveal>
 

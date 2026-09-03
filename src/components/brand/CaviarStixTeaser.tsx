@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { ScrollReveal } from "./ScrollReveal";
 import { MetaLabel } from "./MetaLabel";
 import { Hairline } from "./Hairline";
@@ -29,9 +28,9 @@ export function CaviarStixTeaser() {
             [Caviar description — client to supply]
           </p>
           <div className="mt-10 flex justify-center">
-            <Link to="/shop">
+            <a href="/shop">
               <GoldButton variant="cream">Shop the collection</GoldButton>
-            </Link>
+            </a>
           </div>
         </ScrollReveal>
       </div>

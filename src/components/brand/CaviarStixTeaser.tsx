@@ -3,7 +3,11 @@ import { MetaLabel } from "./MetaLabel";
 import { Hairline } from "./Hairline";
 import { GoldButton } from "./GoldButton";
 
+/** Swap-in point for Caviar Stick product photography. Add 2–3 image imports here. */
+const CAVIAR_IMAGES: { src: string; alt: string }[] = [];
+
 export function CaviarStixTeaser() {
+
   return (
     <section className="tone-dark relative overflow-hidden px-6 py-32 md:py-40">
       {/* sage glow */}

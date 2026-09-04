@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Menu, Search, User, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { useCart, cartSelectors } from "@/lib/store/cart";
+import { useWholesaleAccount } from "@/hooks/useWholesaleAccount";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -19,6 +20,10 @@ export function Header() {
   const openCart = useCart((s) => s.openDrawer);
   const itemCount = useCart(cartSelectors.itemCount);
   const hydrated = useCart((s) => s.hydrated);
+  const { account } = useWholesaleAccount();
+  const stockistLink = account
+    ? { to: "/wholesale/dashboard" as const, label: "Stockist Portal" }
+    : { to: "/wholesale" as const, label: "Become a Stockist" };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -57,6 +62,13 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Link
+              to={stockistLink.to}
+              className="meta-xs underline-grow text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)] transition-colors"
+              activeProps={{ "data-status": "active" } as any}
+            >
+              {stockistLink.label}
+            </Link>
             </nav>
             <div className="flex items-center gap-5 border-l border-[color:var(--border-subtle)] pl-8">
             <button aria-label="Search" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
@@ -129,6 +141,12 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <Link
+              to={stockistLink.to}
+              className="font-display text-5xl font-normal text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]"
+            >
+              {stockistLink.label}
+            </Link>
           </nav>
           <div className="px-8 pb-12 meta-xs text-[color:var(--text-tertiary)]">
             18+ · Bred in South Africa

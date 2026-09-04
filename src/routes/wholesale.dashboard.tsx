@@ -59,12 +59,12 @@ function WholesaleDashboardLayout() {
   if (!acct) {
     return (
       <Gated>
-        <h1 className="font-display text-4xl">No application found.</h1>
+        <h1 className="font-display text-4xl">No stockist account found.</h1>
         <p className="mt-4 text-[color:var(--text-secondary)]">
-          You're signed in but haven't applied to become a stockist yet.
+          You're signed in but haven't created a stockist account yet.
         </p>
         <div className="mt-8 flex justify-center gap-4">
-          <GoldButton onClick={() => navigate({ to: "/wholesale" })}>Apply Now</GoldButton>
+          <GoldButton onClick={() => navigate({ to: "/wholesale" })}>Sign Up</GoldButton>
           <GoldButton variant="secondary" onClick={signOut}>Sign Out</GoldButton>
         </div>
       </Gated>
@@ -73,20 +73,22 @@ function WholesaleDashboardLayout() {
 
   if (acct.approval_status !== "approved") {
     const titleMap: Record<string, string> = {
-      pending: "Application under review.",
-      rejected: "Application declined.",
+      rejected: "Account closed.",
       suspended: "Account suspended.",
     };
     const msgMap: Record<string, string> = {
-      pending: "We'll be in touch within 48 hours. You'll receive an email once your stockist account is approved.",
       rejected: acct.rejection_reason || `Please contact ${SALES_EMAIL} for next steps.`,
       suspended: `Your account is temporarily suspended. Contact ${SALES_EMAIL}.`,
     };
     return (
       <Gated>
         <MetaLabel gold>Stockist Status</MetaLabel>
-        <h1 className="mt-4 font-display text-4xl">{titleMap[acct.approval_status]}</h1>
-        <p className="mt-4 text-[color:var(--text-secondary)]">{msgMap[acct.approval_status]}</p>
+        <h1 className="mt-4 font-display text-4xl">
+          {titleMap[acct.approval_status] ?? "Your account isn't active."}
+        </h1>
+        <p className="mt-4 text-[color:var(--text-secondary)]">
+          {msgMap[acct.approval_status] ?? `Please contact ${SALES_EMAIL} and we'll sort it out.`}
+        </p>
         <p className="mt-6 text-sm text-[color:var(--text-tertiary)]">
           Signed in as <span className="text-[color:var(--text-primary)]">{acct.business_name}</span>
         </p>

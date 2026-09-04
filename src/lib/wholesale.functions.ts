@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { SALES_EMAIL } from "@/lib/brand";
+import { SALES_EMAIL, VAT_RATE, WHOLESALE_DELIVERY_FEE } from "@/lib/brand";
 
 const BusinessTypeEnum = z.enum(["dispensary", "lounge", "specialty_retailer", "other"]);
 const VolumeEnum = z.enum(["under_50", "50_to_200", "200_to_500", "500_plus"]);
@@ -13,7 +13,7 @@ const ApplicationSchema = z.object({
   vat_number: z.string().trim().max(40).optional().or(z.literal("")),
   cipc_registration_number: z.string().trim().max(40).optional().or(z.literal("")),
   business_type: BusinessTypeEnum,
-  estimated_monthly_volume: VolumeEnum,
+  estimated_monthly_volume: VolumeEnum.optional().or(z.literal("")),
   primary_contact_name: z.string().trim().min(1).max(120),
   primary_contact_email: z.string().trim().toLowerCase().email().max(255),
   primary_contact_phone: z.string().trim().min(6).max(30),
@@ -47,7 +47,7 @@ export const createWholesaleAccount = createServerFn({ method: "POST" })
       vat_number: data.vat_number || null,
       cipc_registration_number: data.cipc_registration_number || null,
       business_type: data.business_type,
-      estimated_monthly_volume: data.estimated_monthly_volume,
+      estimated_monthly_volume: data.estimated_monthly_volume || null,
       primary_contact_name: data.primary_contact_name,
       primary_contact_email: data.primary_contact_email,
       primary_contact_phone: data.primary_contact_phone,
@@ -57,7 +57,8 @@ export const createWholesaleAccount = createServerFn({ method: "POST" })
       business_province: data.business_province,
       business_postal_code: data.business_postal_code || null,
       business_country: data.business_country || "South Africa",
-      approval_status: "pending" as const,
+      approval_status: "approved" as const,
+      approved_at: new Date().toISOString(),
     };
 
     const { error } = await supabaseAdmin.from("wholesale_accounts").insert(insertRow);
@@ -83,14 +84,13 @@ async function maybeNotifyAdmin(data: z.infer<typeof ApplicationSchema>) {
       body: JSON.stringify({
         from,
         to: adminEmail,
-        subject: `Terps — New stockist application: ${data.business_name}`,
+        subject: `Terps — New stockist signed up: ${data.business_name}`,
         html: `<div style="font-family:'Manrope',sans-serif;padding:24px;background:#0d0d0d;color:#f5f0e0;">
-          <h2 style="font-family:'Fraunces',serif;color:#c9a84c;">New stockist application</h2>
+          <h2 style="font-family:'Fraunces',serif;color:#c9a84c;">New stockist signed up</h2>
           <p><strong>${data.business_name}</strong> (${data.business_type})</p>
           <p>Contact: ${data.primary_contact_name} · ${data.primary_contact_email} · ${data.primary_contact_phone}</p>
           <p>${data.business_city}, ${data.business_province}</p>
-          <p>Monthly volume: ${data.estimated_monthly_volume}</p>
-          <p>Review in Supabase Studio (wholesale_accounts).</p>
+          <p>Monthly volume: ${data.estimated_monthly_volume || "—"}</p>
         </div>`,
       }),
     });
@@ -187,8 +187,7 @@ const CreateOrderSchema = z.object({
   customer_notes: z.string().max(1000).optional().nullable(),
 });
 
-const SHIPPING_FLAT = 250;
-const VAT_RATE = 0.15;
+const SHIPPING_FLAT = WHOLESALE_DELIVERY_FEE;
 
 export const createWholesaleOrder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

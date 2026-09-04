@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { VAT_RATE, WHOLESALE_DELIVERY_FEE } from "@/lib/brand";
 
 export type WholesaleCartItem = {
   strainId: string;
@@ -75,8 +76,8 @@ export const wholesaleCartSelectors = {
   subtotal: (s: State) => s.items.reduce((a, i) => a + i.boxPriceZar * i.boxes, 0),
 };
 
-export const WHOLESALE_SHIPPING = 250;
-export const WHOLESALE_VAT_RATE = 0.15;
+export const WHOLESALE_SHIPPING = WHOLESALE_DELIVERY_FEE;
+export const WHOLESALE_VAT_RATE = VAT_RATE;
 
 export function computeWholesaleTotals(subtotal: number) {
   const shipping = WHOLESALE_SHIPPING;

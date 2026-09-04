@@ -29,7 +29,7 @@ const CheckoutInputSchema = z.object({
     email: z.string().email().max(200),
     phone: z.string().min(6).max(20),
   }),
-  deliveryMethod: z.enum(["delivery", "collect"]),
+  deliveryMethod: z.literal("delivery"),
   address: AddressSchema.optional().nullable(),
   collectStockistId: z.string().uuid().optional().nullable(),
   notes: z.string().max(1000).optional().nullable(),
@@ -93,8 +93,7 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
       });
     }
 
-    const deliveryFee =
-      data.deliveryMethod === "collect" ? 0 : subtotal >= 500 ? 0 : 80;
+    const deliveryFee = subtotal >= 500 ? 0 : 80;
     const total = subtotal + deliveryFee;
 
     // 2) Generate order number
@@ -117,9 +116,9 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
         subtotal,
         delivery_fee: deliveryFee,
         total,
-        delivery_method: data.deliveryMethod,
-        delivery_address: data.deliveryMethod === "delivery" ? data.address : null,
-        collect_stockist_id: data.deliveryMethod === "collect" ? data.collectStockistId : null,
+        delivery_method: "delivery",
+        delivery_address: data.address,
+        collect_stockist_id: null,
         notes: data.notes ?? null,
       })
       .select("id, order_number")

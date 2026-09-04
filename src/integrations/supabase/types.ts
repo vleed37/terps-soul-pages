@@ -674,7 +674,7 @@ export type Database = {
           business_type: string
           cipc_registration_number: string | null
           created_at: string
-          estimated_monthly_volume: string
+          estimated_monthly_volume: string | null
           id: string
           internal_notes: string | null
           primary_contact_email: string
@@ -700,7 +700,7 @@ export type Database = {
           business_type: string
           cipc_registration_number?: string | null
           created_at?: string
-          estimated_monthly_volume: string
+          estimated_monthly_volume?: string | null
           id?: string
           internal_notes?: string | null
           primary_contact_email: string
@@ -726,7 +726,7 @@ export type Database = {
           business_type?: string
           cipc_registration_number?: string | null
           created_at?: string
-          estimated_monthly_volume?: string
+          estimated_monthly_volume?: string | null
           id?: string
           internal_notes?: string | null
           primary_contact_email?: string

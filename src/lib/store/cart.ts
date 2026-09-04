@@ -89,8 +89,7 @@ export const cartSelectors = {
 export const DELIVERY_FEE = 80;
 export const FREE_DELIVERY_THRESHOLD = 500;
 
-export function computeTotals(subtotal: number, method: "delivery" | "collect") {
-  const deliveryFee =
-    method === "collect" ? 0 : subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+export function computeTotals(subtotal: number) {
+  const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
   return { subtotal, deliveryFee, total: subtotal + deliveryFee };
 }

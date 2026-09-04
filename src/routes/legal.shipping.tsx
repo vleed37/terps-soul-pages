@@ -67,15 +67,6 @@ function ShippingPage() {
           ),
         },
         {
-          heading: "Collection at a Stockist",
-          body: (
-            <p>
-              Selected stockists offer in-store collection at checkout. ID may be required on
-              collection.
-            </p>
-          ),
-        },
-        {
           heading: "Failed Delivery",
           body: (
             <p>

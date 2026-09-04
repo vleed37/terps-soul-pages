@@ -17,7 +17,7 @@ export function CartDrawer() {
   const remove = useCart((s) => s.removeItem);
   const itemCount = useCart(cartSelectors.itemCount);
   const subtotal = useCart(cartSelectors.subtotal);
-  const totals = computeTotals(subtotal, "delivery");
+  const totals = computeTotals(subtotal);
   const remainingForFree = Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal);
 
   useEffect(() => {

@@ -122,7 +122,7 @@ export function UpdateAccountModal({ open, onOpenChange, account }: Props) {
                 <ReadOnly label="CIPC registration number" value={account?.cipc_registration_number} className="md:col-span-2" />
               </div>
               <p className="mt-4 text-xs italic text-[color:var(--text-tertiary)]">
-                Business identity is locked once approved. Contact us if any of these change.
+                Business identity details are locked. Contact us if any of these change.
               </p>
             </section>
           </div>

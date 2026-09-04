@@ -116,7 +116,10 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
         subtotal,
         delivery_fee: deliveryFee,
         total,
-        delivery_method: "delivery",
+        // DB check constraint allows 'standard' | 'express' | 'collect_stockist'.
+        // Retail is courier delivery only.
+        delivery_method: "standard",
+
         delivery_address: data.address,
         collect_stockist_id: null,
         notes: data.notes ?? null,

@@ -15,6 +15,9 @@ import { Loader2, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/admin/strains/$id/edit")({
   beforeLoad: async ({ location }) => {
+    // Session lives in browser storage; during SSR there is nothing to read, so
+    // gate on the client only (the route's own data fetch still enforces access).
+    if (typeof window === "undefined") return;
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
       throw redirect({ to: "/account/login", search: { redirect: location.pathname } });

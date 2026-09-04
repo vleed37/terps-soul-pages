@@ -70,34 +70,22 @@ export const createWholesaleAccount = createServerFn({ method: "POST" })
   });
 
 async function maybeNotifyAdmin(data: z.infer<typeof ApplicationSchema>) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const adminEmail = process.env.WHOLESALE_ADMIN_EMAIL;
-  const from = process.env.RESEND_FROM_EMAIL || "Terps <orders@terpnation.co.za>";
-  if (!apiKey || !adminEmail) return;
-  try {
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from,
-        to: adminEmail,
-        subject: `Terps — New stockist signed up: ${data.business_name}`,
-        html: `<div style="font-family:'Manrope',sans-serif;padding:24px;background:#0d0d0d;color:#f5f0e0;">
-          <h2 style="font-family:'Fraunces',serif;color:#c9a84c;">New stockist signed up</h2>
-          <p><strong>${data.business_name}</strong> (${data.business_type})</p>
-          <p>Contact: ${data.primary_contact_name} · ${data.primary_contact_email} · ${data.primary_contact_phone}</p>
-          <p>${data.business_city}, ${data.business_province}</p>
-          <p>Monthly volume: ${data.estimated_monthly_volume || "—"}</p>
-        </div>`,
-      }),
-    });
-  } catch (e) {
-    console.warn("[wholesale] admin notification failed", e);
-  }
+  const { sendEmail } = await import("@/lib/email.server");
+  const adminEmail = process.env.WHOLESALE_ADMIN_EMAIL || SALES_EMAIL;
+  await sendEmail({
+    type: "internal-new-stockist",
+    to: adminEmail,
+    subject: `Terps — New stockist signed up: ${data.business_name}`,
+    html: `<div style="font-family:'Manrope',sans-serif;padding:24px;background:#0d0d0d;color:#f5f0e0;">
+      <h2 style="font-family:'Fraunces',serif;color:#c9a84c;">New stockist signed up</h2>
+      <p><strong>${data.business_name}</strong> (${data.business_type})</p>
+      <p>Contact: ${data.primary_contact_name} · ${data.primary_contact_email} · ${data.primary_contact_phone}</p>
+      <p>${data.business_city}, ${data.business_province}</p>
+      <p>Monthly volume: ${data.estimated_monthly_volume || "—"}</p>
+    </div>`,
+  });
 }
+
 
 export const getMyWholesaleAccount = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])

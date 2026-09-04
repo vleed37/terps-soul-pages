@@ -97,15 +97,23 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
         const isFailed = ["failed", "declined", "cancelled", "canceled"].includes(status);
 
         if (isPaid) {
-          await supabaseAdmin
+          // Must succeed — if it fails the idempotency guard above can never
+          // fire and a repeat webhook would double-decrement stock.
+          const { error: upErr } = await supabaseAdmin
             .from("orders")
             .update({
               payment_status: "paid",
-              status: "confirmed",
+              // status check constraint: pending | paid | fulfilling | shipped | delivered | cancelled | refunded
+              status: "paid",
               payment_completed_at: new Date().toISOString(),
               bobpay_transaction_id: payload.transaction_id ?? null,
             })
             .eq("id", order.id);
+          if (upErr) {
+            console.error(`[bobpay] failed to mark order ${order.order_number} paid — ${upErr.message}`);
+            return new Response(upErr.message, { status: 500 });
+          }
+
 
           // Decrement stock
           const { data: items } = await supabaseAdmin

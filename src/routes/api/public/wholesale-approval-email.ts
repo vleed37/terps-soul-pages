@@ -36,52 +36,43 @@ export const Route = createFileRoute("/api/public/wholesale-approval-email")({
         if (error) return new Response(error.message, { status: 500 });
         if (!acct) return new Response("Account not found", { status: 404 });
         if (acct.approval_status !== "approved") {
-          // Trigger may re-fire on unrelated updates; ack silently.
-          return new Response("ok");
+          // Trigger may re-fire on unrelated updates; ack without sending.
+          return jsonResponse({ sent: false, reason: "not_approved" }, 200);
         }
 
-        const apiKey = process.env.RESEND_API_KEY;
-        const from = process.env.RESEND_FROM_EMAIL || "Terps <orders@terpnation.co.za>";
-        if (!apiKey) {
-          console.warn(
-            `RESEND_API_KEY not set — skipping approval email for ${acct.business_name}`,
-          );
-          return new Response("ok");
-        }
-
+        const { sendEmail } = await import("@/lib/email.server");
         const siteUrl = process.env.PUBLIC_SITE_URL || "https://terps2.carbonmediasolutions.com";
         const loginUrl = `${siteUrl.replace(/\/$/, "")}/wholesale/login`;
         const html = welcomeHtml(acct.business_name, acct.primary_contact_name, loginUrl);
 
-        try {
-          const res = await fetch("https://api.resend.com/emails", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              from,
-              to: acct.primary_contact_email,
-              subject: "Your Terps stockist account is ready",
-              html,
-            }),
-          });
-          if (!res.ok) {
-            const text = await res.text().catch(() => "");
-            console.error("Resend approval email failed", res.status, text);
-            return new Response("Email send failed", { status: 500 });
-          }
-        } catch (e) {
-          console.error("Resend approval email threw", e);
-          return new Response("Email send error", { status: 500 });
-        }
+        const result = await sendEmail({
+          type: "stockist-welcome",
+          to: acct.primary_contact_email,
+          subject: "Your Terps stockist account is ready",
+          html,
+        });
 
-        return new Response("ok");
+        if (result.sent) {
+          return jsonResponse({ sent: true }, 200);
+        }
+        if (result.reason === "missing_api_key" || result.reason === "no_recipient") {
+          // Loud but terminal — retrying will not help.
+          return jsonResponse({ sent: false, reason: result.reason }, 202);
+        }
+        // Provider/network failure: 500 so the pg_net response row records it.
+        return jsonResponse({ sent: false, reason: result.reason, detail: result.detail }, 500);
+
       },
     },
   },
 });
+
+function jsonResponse(payload: unknown, status: number) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
 
 function welcomeHtml(businessName: string, contactName: string, loginUrl: string) {
   return `<!doctype html>

@@ -27,11 +27,13 @@ ALTER TABLE public.wholesale_accounts
 ALTER TABLE public.wholesale_accounts
   ALTER COLUMN estimated_monthly_volume DROP NOT NULL;
 
--- Belt-and-braces: a non-service caller can never move status or ownership.
+-- Belt-and-braces: a client JWT caller can never move status or ownership.
+-- Only 'authenticated'/'anon' are locked, so SQL editor and dashboard edits
+-- (where auth.role() is NULL) can still suspend an account by hand.
 CREATE OR REPLACE FUNCTION public.wholesale_accounts_lock_fields()
 RETURNS trigger LANGUAGE plpgsql SET search_path = public AS $$
 begin
-  if auth.role() is distinct from 'service_role' then
+  if coalesce(auth.role(), '') in ('authenticated', 'anon') then
     new.approval_status := old.approval_status;
     new.user_id := old.user_id;
   end if;

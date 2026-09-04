@@ -65,10 +65,13 @@ Note: `SALES_EMAIL` is `sales@terpnation.co.za` and the default from-address is 
 
 Add to the webhook, for both order types once payment is confirmed:
 
-- **a. Internal "New order" to `SALES_EMAIL`** — subject `New [retail|wholesale] order #<number> — <name>`. Body: order number, retail/wholesale, customer or stockist name, line items with quantities (boxes and total units for wholesale, units for retail), delivery address, phone, total paid.
+- **a. Internal "New order" to `SALES_EMAIL`** — subject `New [retail|wholesale] order #<number> — <name>`. Body: order number, retail/wholesale, customer or stockist name, **their email address**, phone, line items with quantities (boxes and total units for wholesale, units for retail), delivery address, total paid, and the **BobPay payment reference / transaction id** so Terps can reply and reconcile without opening the database.
 - **b. Wholesale confirmation to the stockist** — mirrors the retail confirmation (order number, thank-you line, box line items, total), sent to the account's `primary_contact_email`.
 
 Both go through the same loud-failure helper as part 3. The webhook always returns 200 to BobPay regardless of email outcome — payment capture must never be retried over an email problem — and logs each email's outcome.
+
+**Idempotency (verified present today):** both branches already short-circuit a repeat delivery — the retail branch returns `ok` when `order.payment_status === "paid"` before any update, stock decrement or email, and the wholesale branch does the same on `wholesale_orders.payment_status`. The new email sends go **after** those guards, so a duplicate webhook sends nothing and never re-runs `decrement_stock`. The report will state that the guard already existed rather than being added; if the reads during build show otherwise, the guard is added before the sends.
+
 
 ## Technical notes
 

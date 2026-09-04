@@ -96,7 +96,8 @@ begin
         headers := jsonb_build_object(
           'Content-Type', 'application/json',
           'X-Webhook-Secret', coalesce(webhook_secret, '')
-        )
+        ),
+        timeout_milliseconds := 15000
       );
     exception when others then
       raise warning '[wholesale] welcome email dispatch failed: %', sqlerrm;

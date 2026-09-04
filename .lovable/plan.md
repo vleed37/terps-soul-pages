@@ -53,6 +53,8 @@ Webhook URL stored in `public.app_secrets` under key `wholesale_approval_webhook
 
 `https://terps2.carbonmediasolutions.com/api/public/wholesale-approval-email`
 
+Checked: `public.app_secrets` has `updated_at timestamptz not null default now()` and a primary key on `key`, so the `ON CONFLICT (key)` upsert below is valid as written.
+
 ```sql
 INSERT INTO public.app_secrets (key, value)
 VALUES ('wholesale_approval_webhook_url',

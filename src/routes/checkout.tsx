@@ -35,7 +35,7 @@ const FormSchema = z
     fullName: z.string().min(2, "Required"),
     email: z.string().email("Valid email required"),
     phone: z.string().min(6, "Required"),
-    deliveryMethod: z.enum(["delivery", "collect"]),
+    deliveryMethod: z.literal("delivery"),
     savedAddressId: z.string().optional(), // "" = new address
     line1: z.string().optional(),
     line2: z.string().optional(),
@@ -49,7 +49,7 @@ const FormSchema = z
     confirmAge: z.boolean().refine((v) => v === true, { message: "You must confirm you're 18+" }),
   })
   .superRefine((v, ctx) => {
-    if (v.deliveryMethod === "delivery" && !v.savedAddressId) {
+    if (!v.savedAddressId) {
       const req = ["line1", "suburb", "city", "province", "postalCode"] as const;
       for (const k of req) {
         if (!v[k] || String(v[k]).trim() === "") {
@@ -95,7 +95,7 @@ function CheckoutPage() {
 
   const method = watch("deliveryMethod");
   const savedAddressId = watch("savedAddressId");
-  const totals = computeTotals(subtotal, method);
+  const totals = computeTotals(subtotal);
 
   // Prefill from customer + email when signed in
   useEffect(() => {
@@ -280,7 +280,7 @@ function CheckoutPage() {
             </Section>
 
             <Section title="Delivery">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-3">
                 <MethodRadio
                   value="delivery"
                   current={method}
@@ -288,16 +288,9 @@ function CheckoutPage() {
                   label="Courier Delivery"
                   hint="2–4 business days · Free over R500"
                 />
-                <MethodRadio
-                  value="collect"
-                  current={method}
-                  register={register("deliveryMethod")}
-                  label="Collect from Stockist"
-                  hint="Free · We'll confirm by email"
-                />
               </div>
 
-              {method === "delivery" && (
+              {(
                 <div className="mt-6 space-y-6">
                   {user && savedAddresses.length > 0 && (
                     <Field label="Saved address">
@@ -479,7 +472,7 @@ function MethodRadio({
   label,
   hint,
 }: {
-  value: "delivery" | "collect";
+  value: "delivery";
   current: string;
   register: UseFormRegisterReturn;
   label: string;

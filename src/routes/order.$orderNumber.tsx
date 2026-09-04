@@ -120,13 +120,13 @@ function OrderPage() {
           </div>
 
           <div className="rounded-[4px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] p-8">
-            <MetaLabel gold>{order.delivery_method === "collect" ? "Collection" : "Delivery"}</MetaLabel>
+            <MetaLabel gold>Delivery</MetaLabel>
             <div className="mt-6 space-y-2 text-[color:var(--text-secondary)]">
               <p className="font-display text-lg text-[color:var(--text-primary)]">{order.guest_name}</p>
               <p>{order.guest_email}</p>
               <p>{order.guest_phone}</p>
             </div>
-            {addr && order.delivery_method === "delivery" && (
+            {addr && (
               <>
                 <Hairline className="my-6" />
                 <address className="not-italic text-[color:var(--text-secondary)]">

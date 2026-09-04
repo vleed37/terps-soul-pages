@@ -62,7 +62,7 @@ function TermsPage() {
           body: (
             <p>
               Risk passes to you on delivery to the address you supplied. Please see our Shipping
-              Policy for delivery windows, costs, and collection options.
+              Policy for delivery windows and costs.
             </p>
           ),
         },

@@ -19,7 +19,7 @@ export const Route = createFileRoute("/wholesale/")({
     meta: seoMeta({
       title: "Become a Terps Stockist · Terps",
       description:
-        "Apply to stock Terps at your dispensary or lounge. Wholesale pricing, early access to drops, brand support.",
+        "Stock Terps at your dispensary or lounge. Sign up in minutes for wholesale box pricing, early access to drops and brand support.",
       path: "/wholesale",
     }),
   }),
@@ -45,7 +45,7 @@ function WholesalePage() {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <a href="#apply">
-              <GoldButton>Apply Now</GoldButton>
+              <GoldButton>Sign Up</GoldButton>
             </a>
             <Link to="/wholesale/login" search={{ redirect: "/wholesale/dashboard" }}>
               <GoldButton variant="secondary">Stockist Sign In</GoldButton>
@@ -88,9 +88,9 @@ function WholesalePage() {
           </ScrollReveal>
           <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
             {[
-              { n: "01", t: "Apply", d: "Create your stockist account and tell us about your store." },
-              { n: "02", t: "Approve", d: "Quick review, usually within 48 hours." },
-              { n: "03", t: "Stock", d: "Sign in to your portal, browse box pricing, place orders." },
+              { n: "01", t: "Sign up", d: "Create your stockist account and tell us about your store." },
+              { n: "02", t: "Log in", d: "Your portal is active straight away — no waiting." },
+              { n: "03", t: "Order", d: "Browse box pricing and minimums, then place your order." },
             ].map((step, i) => (
               <ScrollReveal key={step.n} delay={i * 0.1} className="text-center">
                 <p className="font-display text-5xl italic text-[color:var(--accent-gold)]">{step.n}</p>
@@ -106,9 +106,9 @@ function WholesalePage() {
       <section id="apply" className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-[860px]">
           <ScrollReveal className="text-center">
-            <MetaLabel gold>Application</MetaLabel>
+            <MetaLabel gold>Sign Up</MetaLabel>
             <h2 className="mt-6 font-display text-4xl md:text-5xl">Tell us about your store.</h2>
-            <p className="mt-4 text-[color:var(--text-secondary)]">Step through the application. Approval typically within 48 hours.</p>
+            <p className="mt-4 text-[color:var(--text-secondary)]">Sign up below — your stockist portal is active immediately.</p>
           </ScrollReveal>
           <div className="mt-16">
             <ApplyFlow />
@@ -151,7 +151,7 @@ function ApplyFlow() {
   const [s1, setS1] = useState<Step1>({ email: "", password: "" });
   const [s2, setS2] = useState<Step2>({
     business_name: "", trading_as: "", business_type: "dispensary",
-    vat_number: "", cipc_registration_number: "", estimated_monthly_volume: "under_50",
+    vat_number: "", cipc_registration_number: "", estimated_monthly_volume: "",
   });
   const [s3, setS3] = useState<Step3>({
     primary_contact_name: "", primary_contact_email: "", primary_contact_phone: "",
@@ -243,33 +243,21 @@ function ApplyFlow() {
   if (authLoading) return <Loading />;
 
   if (done || existingStatus) {
-    const status = existingStatus ?? "pending";
+    const status = existingStatus ?? "approved";
     return (
       <div className="rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] p-12 text-center">
         {status === "approved" ? (
           <>
-            <p className="font-display text-3xl italic text-[color:var(--accent-gold)] md:text-4xl">You're approved.</p>
+            <p className="font-display text-3xl italic text-[color:var(--accent-gold)] md:text-4xl">You're all set.</p>
             <p className="mt-4 text-[color:var(--text-secondary)]">Head to your stockist portal to start ordering.</p>
             <div className="mt-8">
-              <GoldButton onClick={() => navigate({ to: "/wholesale/dashboard" })}>Go to Portal</GoldButton>
+              <GoldButton onClick={() => navigate({ to: "/wholesale/dashboard" })}>Go to your stockist portal</GoldButton>
             </div>
-          </>
-        ) : status === "rejected" ? (
-          <>
-            <p className="font-display text-3xl italic md:text-4xl">Application declined.</p>
-            <p className="mt-4 text-[color:var(--text-secondary)]">Contact <a className="ghost-link" href={`mailto:${SALES_EMAIL}`}>{SALES_EMAIL}</a> for next steps.</p>
           </>
         ) : (
           <>
-            <p className="font-display text-3xl italic text-[color:var(--accent-gold)] md:text-4xl">Application received.</p>
-            <p className="mt-6 text-[color:var(--text-secondary)]">
-              We'll be in touch within 48 hours. Check your email for a verification link if you just signed up.
-            </p>
-            <div className="mt-8">
-              <button onClick={() => navigate({ to: "/shop" })}>
-                <span className="ghost-link">Explore the collection →</span>
-              </button>
-            </div>
+            <p className="font-display text-3xl italic md:text-4xl">Your account isn't active.</p>
+            <p className="mt-4 text-[color:var(--text-secondary)]">Contact <a className="ghost-link" href={`mailto:${SALES_EMAIL}`}>{SALES_EMAIL}</a> for next steps.</p>
           </>
         )}
       </div>
@@ -349,7 +337,7 @@ function Step1Form({ values, setValues, onSubmit, submitting }: {
   return (
     <form onSubmit={onSubmit} className="space-y-5">
       <p className="text-sm text-[color:var(--text-secondary)]">
-        Create your stockist account. You'll sign in here after approval.
+        Create your stockist account. You'll sign in here any time.
       </p>
       <div>
         <label className={labelCls}>Work email *</label>
@@ -398,8 +386,9 @@ function Step2Form({ values, setValues, onBack, onSubmit }: {
           </select>
         </div>
         <div>
-          <label className={labelCls}>Estimated monthly volume *</label>
-          <select required value={values.estimated_monthly_volume} onChange={(e) => setValues((s) => ({ ...s, estimated_monthly_volume: e.target.value }))} className={inputCls}>
+          <label className={labelCls}>Estimated monthly volume (optional)</label>
+          <select value={values.estimated_monthly_volume} onChange={(e) => setValues((s) => ({ ...s, estimated_monthly_volume: e.target.value }))} className={inputCls}>
+            <option value="">Prefer not to say</option>
             <option value="under_50">Under 50 units</option>
             <option value="50_to_200">50 – 200</option>
             <option value="200_to_500">200 – 500</option>
@@ -474,7 +463,7 @@ function Step3Form({ values, setValues, onBack, onSubmit, submitting }: {
       <div className="flex items-center justify-between pt-2">
         <button type="button" onClick={onBack} className="ghost-link">← Back</button>
         <GoldButton type="submit" disabled={submitting}>
-          {submitting ? "Submitting…" : "Submit Application"}
+          {submitting ? "Creating…" : "Create Stockist Account"}
         </GoldButton>
       </div>
     </form>

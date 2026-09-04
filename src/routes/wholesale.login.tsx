@@ -73,7 +73,7 @@ function WholesaleLoginPage() {
       <p className="mt-8 text-center font-display italic text-sm text-[color:var(--text-secondary)]">
         Not a stockist yet?{" "}
         <Link to="/wholesale" className="text-[color:var(--accent-gold)] hover:underline">
-          Apply now →
+          Sign up →
         </Link>
       </p>
     </AuthCard>

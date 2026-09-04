@@ -49,7 +49,7 @@ export const Route = createFileRoute("/api/public/wholesale-approval-email")({
           return new Response("ok");
         }
 
-        const siteUrl = process.env.PUBLIC_SITE_URL || "https://terps-soul-pages.lovable.app";
+        const siteUrl = process.env.PUBLIC_SITE_URL || "https://terps2.carbonmediasolutions.com";
         const loginUrl = `${siteUrl.replace(/\/$/, "")}/wholesale/login`;
         const html = welcomeHtml(acct.business_name, acct.primary_contact_name, loginUrl);
 
@@ -63,7 +63,7 @@ export const Route = createFileRoute("/api/public/wholesale-approval-email")({
             body: JSON.stringify({
               from,
               to: acct.primary_contact_email,
-              subject: "Welcome to the Terps Stockist Program",
+              subject: "Your Terps stockist account is ready",
               html,
             }),
           });
@@ -94,10 +94,13 @@ function welcomeHtml(businessName: string, contactName: string, loginUrl: string
         Welcome, ${escapeHtml(businessName)}.
       </h1>
       <p style="font-size:15px;line-height:1.65;color:#3a3a3a;margin:0 0 18px;">
-        ${escapeHtml(contactName ? contactName + "," : "")} your application to become a Terps stockist has been approved.
+        ${escapeHtml(contactName ? contactName + "," : "")} your Terps stockist account is ready — no further steps needed.
+      </p>
+      <p style="font-size:15px;line-height:1.65;color:#3a3a3a;margin:0 0 18px;">
+        Sign in to your stockist portal to browse the wholesale catalogue, place orders and manage your details.
       </p>
       <p style="font-size:15px;line-height:1.65;color:#3a3a3a;margin:0 0 32px;">
-        You can now sign in to your stockist portal to browse the wholesale catalog, place box orders, and manage your account.
+        Ordering is by the box — box prices and minimum quantities are shown on every strain in the catalogue.
       </p>
       <p style="margin:0 0 36px;">
         <a href="${loginUrl}" style="display:inline-block;background:#5a6f4a;color:#FAF7F0;padding:14px 28px;text-decoration:none;border-radius:4px;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;">

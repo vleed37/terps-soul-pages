@@ -1,14 +1,17 @@
 # Roadmap
 
-## Wholesale portal — Phase 1 (shipped)
-- [x] Migrations: policies, approved default, nullable volume, lock trigger, welcome-email trigger via net.http_post
-- [x] Server fns: instant approval; optional VAT, registration number, monthly volume, trading name
-- [x] Copy sweep, header entry point, delivery-only retail checkout, shared VAT/delivery constants
+## Done — Phase 1 wholesale/email closeout
+- Security lint migration: EXECUTE revoked on 6 internal functions (all trigger/internal-only; none called via rpc(), none a column DEFAULT, none referenced in an RLS policy).
+- Loud email handling via `src/lib/email.server.ts` — every send logs type + recipient; missing key returns `{sent:false,reason:"missing_api_key"}`.
+- Welcome (stockist) email route returns 200/202/500 JSON as specified.
+- Order notifications on BobPay webhook: retail + wholesale customer confirmation and internal "New order" to SALES_EMAIL (incl. email + payment ref/txn).
+- Idempotency: duplicate paid webhook returns `{ok:true,duplicate:true}`, no stock change, no email (retail + wholesale). Paid-update failures now surface instead of silently breaking the guard.
+- Retail checkout persists `delivery_method: "standard"` (DB constraint), delivery only, R80 / free ≥ R500.
+- QA: anonymous + signed-in retail flows, wholesale E2E, suspension block, 375/390px sweep — all pass.
 
-## Pre-publish pass (current)
-- [x] Security-lint migration audit: revoked-EXECUTE functions vs rpc call sites, column defaults, RLS expressions
-- [x] Loud email failures: shared `src/lib/email.server.ts`, welcome route returns 202 `{sent:false,reason:"missing_api_key"}`
-- [x] Order notifications: internal "New order" to SALES_EMAIL (retail + wholesale, with email + BobPay ref) and wholesale confirmation to the stockist
-- [x] Idempotency guard confirmed on both webhook branches (no duplicate stock decrement, no duplicate email)
-- [ ] Verification: retail flows anon + signed-in, wholesale end-to-end, suspension block, R80/free-over-R500, 375/390px
-- [ ] Add RESEND_API_KEY once terpnation.co.za is verified in Resend, then confirm the welcome email delivers
+## Outstanding (needs config, not code)
+- `RESEND_API_KEY` not set — no email actually leaves the app until it is added.
+- `BOBPAY_MERCHANT_ID` not set — checkout returns "Payments not yet configured" instead of a redirect.
+
+## Known minor issue
+- Stockist finder dialog lacks a `DialogTitle` (Radix a11y console warning).

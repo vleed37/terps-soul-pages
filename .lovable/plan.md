@@ -169,6 +169,8 @@ Review/approval/waiting wording also swept from `wholesale.dashboard.tsx`, `whol
 - Fresh sign-up → session → row created `approved` → welcome email fires → login → box prices and minimums → order reaches the BobPay step, no manual step.
 - With a normal user JWT: direct REST **insert** and **update** on `wholesale_accounts` both rejected.
 - Temporarily set a wrong webhook secret, sign up, confirm the account is still created (email failure cannot abort the insert); restore the secret and confirm the welcome email arrives within a minute.
+- Report the `net._http_response` rows (status, timing) for each welcome-email request.
+- Note on wording: the webhook targets the published domain, so preview sign-ups are served by the currently published route and will arrive with the **old approval wording**. Preview run verifies delivery + account creation; after you publish, one more sign-up confirms the **new welcome wording**. Which version arrived is reported each time.
 - Set the test account to `suspended` → catalogue and ordering blocked; restore to `approved`.
 - Retail checkout offers delivery only; fee R80, free over R500.
 - Typecheck + build, 375/390px pass, no console errors.

@@ -49,17 +49,32 @@ Every send site gets the same treatment: when `RESEND_API_KEY` is absent, log a 
 
 | Type | Trigger | From address | Template lives in |
 | --- | --- | --- | --- |
-| Stockist welcome | New `wholesale_accounts` row set to `approved` → DB trigger → `net.http_post` → public route | `RESEND_FROM_EMAIL`, default `Terps <orders@terpnation.co.za>` | `src/routes/api/public/wholesale-approval-email.ts` (`welcomeHtml`) |
-| New-stockist internal notice | Stockist sign-up, sent to `SALES_EMAIL` | same | `src/lib/wholesale.functions.ts` |
-| Retail order confirmation | BobPay webhook marks the order paid | same | `src/routes/api/public/bobpay-webhook.ts` |
+| Stockist welcome | New `wholesale_accounts` row set to `approved` → DB trigger → `net.http_post` → public route | `RESEND_FROM_EMAIL`, default `Terps <orders@terpnation.co.za>` | `src/routes/api/public/wholesale-approval-email.ts` |
+| New-stockist internal notice | Stockist sign-up, sent to `WHOLESALE_ADMIN_EMAIL` (falls back to `SALES_EMAIL`) | same | `src/lib/wholesale.functions.ts` |
+| Retail order confirmation | BobPay webhook marks a retail order paid | same | `src/routes/api/public/bobpay-webhook.ts` |
+| Wholesale order confirmation (new, part 4) | BobPay webhook marks a wholesale order paid | same | `src/routes/api/public/bobpay-webhook.ts` |
+| Internal "New order" notice (new, part 4) | Either order type marked paid, sent to `SALES_EMAIL` | same | `src/routes/api/public/bobpay-webhook.ts` |
 
 Supabase Auth also sends sign-up/password-reset mail; that uses the built-in auth mailer, not Resend.
 
 Note: `SALES_EMAIL` is `sales@terpnation.co.za` and the default from-address is `orders@terpnation.co.za`, so `terpnation.co.za` is the domain to verify in Resend. Once verified, set `RESEND_API_KEY` (and optionally `RESEND_FROM_EMAIL`) as project secrets.
 
+## 4. Order notifications
+
+**Current behaviour (verified):** a paid **wholesale** order sends nothing at all — the wholesale branch of `src/routes/api/public/bobpay-webhook.ts` updates `payment_status`/`fulfillment_status` and returns `ok`, with no email to the stockist and none to Terps. A paid **retail** order sends only the customer confirmation; Terps receives nothing.
+
+Add to the webhook, for both order types once payment is confirmed:
+
+- **a. Internal "New order" to `SALES_EMAIL`** — subject `New [retail|wholesale] order #<number> — <name>`. Body: order number, retail/wholesale, customer or stockist name, line items with quantities (boxes and total units for wholesale, units for retail), delivery address, phone, total paid.
+- **b. Wholesale confirmation to the stockist** — mirrors the retail confirmation (order number, thank-you line, box line items, total), sent to the account's `primary_contact_email`.
+
+Both go through the same loud-failure helper as part 3. The webhook always returns 200 to BobPay regardless of email outcome — payment capture must never be retried over an email problem — and logs each email's outcome.
+
 ## Technical notes
 
-- No new migration is needed for parts 1 and 3. Part 2b uses two temporary SQL updates on one row and restores it.
+- A small server-only helper (`src/lib/email.server.ts`) becomes the single outbound path: it logs `[email] SENT|SKIPPED|FAILED <type> to <recipient>` and returns `{ sent, reason }`. All four existing send sites plus the two new ones use it, so the loud behaviour is defined once.
+- No new migration is needed for parts 1, 3 and 4. Part 2b uses two temporary SQL updates on one row and restores it.
 - The single remaining lint finding (`RLS Enabled No Policy` on `public.app_secrets`) stays intentional: the table is read only by the SECURITY DEFINER trigger, and adding any client policy would expose the webhook secret.
-- Files edited: `src/routes/api/public/wholesale-approval-email.ts`, `src/routes/api/public/bobpay-webhook.ts`, `src/lib/wholesale.functions.ts`.
-- Closes with typecheck, build, and the full PASS/FAIL report for parts 1 and 2.
+- Files edited: new `src/lib/email.server.ts`, plus `src/routes/api/public/wholesale-approval-email.ts`, `src/routes/api/public/bobpay-webhook.ts`, `src/lib/wholesale.functions.ts`, and `roadmap.md`.
+- Closes with typecheck, build, the final send-site table, and the full PASS/FAIL report for parts 1 and 2.
+

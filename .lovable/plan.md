@@ -27,11 +27,13 @@ ALTER TABLE public.wholesale_accounts
 ALTER TABLE public.wholesale_accounts
   ALTER COLUMN estimated_monthly_volume DROP NOT NULL;
 
--- Belt-and-braces: a non-service caller can never move status or ownership.
+-- Belt-and-braces: a client JWT caller can never move status or ownership.
+-- Only 'authenticated'/'anon' are locked, so SQL editor and dashboard edits
+-- (where auth.role() is NULL) can still suspend an account by hand.
 CREATE OR REPLACE FUNCTION public.wholesale_accounts_lock_fields()
 RETURNS trigger LANGUAGE plpgsql SET search_path = public AS $$
 begin
-  if auth.role() is distinct from 'service_role' then
+  if coalesce(auth.role(), '') in ('authenticated', 'anon') then
     new.approval_status := old.approval_status;
     new.user_id := old.user_id;
   end if;
@@ -50,6 +52,8 @@ CREATE TRIGGER lock_wholesale_fields
 Webhook URL stored in `public.app_secrets` under key `wholesale_approval_webhook_url`, exact value:
 
 `https://terps2.carbonmediasolutions.com/api/public/wholesale-approval-email`
+
+Checked: `public.app_secrets` has `updated_at timestamptz not null default now()` and a primary key on `key`, so the `ON CONFLICT (key)` upsert below is valid as written.
 
 ```sql
 INSERT INTO public.app_secrets (key, value)
@@ -92,7 +96,8 @@ begin
         headers := jsonb_build_object(
           'Content-Type', 'application/json',
           'X-Webhook-Secret', coalesce(webhook_secret, '')
-        )
+        ),
+        timeout_milliseconds := 15000
       );
     exception when others then
       raise warning '[wholesale] welcome email dispatch failed: %', sqlerrm;
@@ -164,6 +169,8 @@ Review/approval/waiting wording also swept from `wholesale.dashboard.tsx`, `whol
 - Fresh sign-up → session → row created `approved` → welcome email fires → login → box prices and minimums → order reaches the BobPay step, no manual step.
 - With a normal user JWT: direct REST **insert** and **update** on `wholesale_accounts` both rejected.
 - Temporarily set a wrong webhook secret, sign up, confirm the account is still created (email failure cannot abort the insert); restore the secret and confirm the welcome email arrives within a minute.
+- Report the `net._http_response` rows (status, timing) for each welcome-email request.
+- Note on wording: the webhook targets the published domain, so preview sign-ups are served by the currently published route and will arrive with the **old approval wording**. Preview run verifies delivery + account creation; after you publish, one more sign-up confirms the **new welcome wording**. Which version arrived is reported each time.
 - Set the test account to `suspended` → catalogue and ordering blocked; restore to `approved`.
 - Retail checkout offers delivery only; fee R80, free over R500.
 - Typecheck + build, 375/390px pass, no console errors.

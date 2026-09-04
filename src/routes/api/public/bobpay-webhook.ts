@@ -64,7 +64,7 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
           const wFailed = ["failed", "declined", "cancelled", "canceled"].includes(wStatus);
 
           if (wPaid) {
-            await supabaseAdmin
+            const { error: wUpErr } = await supabaseAdmin
               .from("wholesale_orders")
               .update({
                 payment_status: "paid",
@@ -73,10 +73,15 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
                 bobpay_transaction_id: payload.transaction_id ?? null,
               })
               .eq("id", wOrder.id);
+            if (wUpErr) {
+              console.error(`[bobpay] failed to mark wholesale order ${wOrder.order_number} paid — ${wUpErr.message}`);
+              return new Response(wUpErr.message, { status: 500 });
+            }
 
             const emails = await sendWholesaleOrderEmails(wOrder.id, payload.transaction_id ?? null);
             return json200({ ok: true, emails });
           }
+
 
           if (wFailed) {
             await supabaseAdmin

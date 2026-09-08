@@ -48,7 +48,7 @@ export function Header() {
         {/* Desktop: logo-left, nav + utilities on the right */}
         <div className="mx-auto hidden h-full max-w-[1400px] items-center justify-between px-6 md:flex md:px-8">
           <Link to="/" className="flex items-center">
-            <Logo height={scrolled ? 20 : 26} />
+            <Logo height={scrolled ? 30 : 39} />
           </Link>
 
           <div className="flex items-center gap-8">
@@ -72,9 +72,7 @@ export function Header() {
             </Link>
             </nav>
             <div className="flex items-center gap-5 border-l border-[color:var(--border-subtle)] pl-8">
-            <button aria-label="Search" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
-              <Search strokeWidth={1.5} className="h-5 w-5" />
-            </button>
+
             <Link to="/account" aria-label="Account" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
               <User strokeWidth={1.5} className="h-5 w-5" />
             </Link>
@@ -95,7 +93,8 @@ export function Header() {
         </div>
 
         {/* Mobile: logo-left, utilities right */}
-        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:hidden">
+        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 pt-1 md:hidden">
+
           <Link to="/" className="flex items-center">
             <Logo height={scrolled ? 18 : 22} />
           </Link>

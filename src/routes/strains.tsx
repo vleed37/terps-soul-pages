@@ -86,30 +86,31 @@ const EFFECT_COPY: Record<string, { label: string; headline: string; body: strin
 
 const FAQS = [
   {
-    q: "What does 'infused' actually mean?",
-    a: "We add live hash rosin — a solventless, terpene-rich concentrate — directly into the flower before it's rolled. Not sprayed on. Not soaked in distillate. Real concentrate, mixed by hand, locked into every joint.",
+    q: "What is an infused pre-roll?",
+    a: "Premium flower with cured hash and crumble worked into it by hand before it's rolled. Not sprayed, not soaked — real concentrate, mixed in, so the flavour and the strength both come through.",
   },
   {
-    q: "How is Terps different from a normal pre-roll?",
-    a: "A normal pre-roll is just flower. Terps is flower plus live rosin from the same strain — same terpene profile, same flavour language. The result is brighter flavour, longer burn, and a noticeably stronger, more dimensional high.",
+    q: "What is a Caviar Stix?",
+    a: "Our infused pre-roll taken to the next level: coated with live rosin and sprinkled with a generous amount of hash. The top of the range.",
   },
   {
-    q: "What is live hash rosin?",
-    a: "Rosin pressed from fresh-frozen flower using heat and pressure — no solvents, no chemicals. 'Live' means the plant was frozen at harvest to preserve every terpene. It's the cleanest, most flavour-forward concentrate we know.",
+    q: "What's the difference between the two?",
+    a: "An infused pre-roll is infused on the inside. A Caviar Stix is infused inside and coated on the outside, which makes it richer, slower-burning and more intense.",
   },
   {
-    q: "How should I store my Terps?",
-    a: "Keep the tube sealed, upright, somewhere cool and dark. Out of direct sunlight. Out of the fridge. The tube is the storage — leave it in the tube until you're ready to smoke.",
+    q: "How do I store them?",
+    a: "Keep the tube sealed, upright, somewhere cool and dark. Out of direct sunlight, out of the fridge. The tube is the storage — leave it in there until you're ready to smoke.",
   },
   {
-    q: "Is Terps legal in South Africa?",
-    a: "Terps follows the current South African regulatory framework for adult-use cannabis. We sell only to adults 21+ and ship within permitted regions. Check your local laws if you're unsure.",
+    q: "Where can I buy Terps?",
+    a: "Order directly from this site, or find a stockist near you on our Stockists page. New stores are added as they come on board.",
   },
   {
-    q: "What does '0.75g' refer to?",
-    a: "The total weight of cannabis material in each pre-roll — flower plus infused rosin. A single Terps is a session built for two or three people, or a long solo evening.",
+    q: "How do I become a stockist?",
+    a: "Sign up on our Wholesale page. You'll get straight into the stockist portal, where you can see box pricing and place orders.",
   },
 ];
+
 
 function StrainsPage() {
   const { data: terpenesData } = useSuspenseQuery(terpenesQuery);

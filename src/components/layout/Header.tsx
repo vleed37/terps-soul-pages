@@ -94,9 +94,9 @@ export function Header() {
 
         {/* Mobile: logo-left, utilities right */}
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 pt-1 md:hidden">
-
           <Link to="/" className="flex items-center">
-            <Logo height={scrolled ? 18 : 22} />
+            <Logo height={scrolled ? 26 : 32} />
+
           </Link>
           <div className="flex items-center gap-4">
             <button

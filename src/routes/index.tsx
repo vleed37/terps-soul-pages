@@ -83,9 +83,12 @@ function Home() {
         <div className="mx-auto max-w-[1200px]">
           <ScrollReveal className="text-center">
             <MetaLabel gold>✦ Infused Pre-Rolls</MetaLabel>
-            <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl leading-[1.05] md:text-6xl">
-              The only premium infused pre-roll you need.
+            <h2 className="mx-auto mt-6 max-w-3xl font-display text-[2.5rem] font-semibold leading-[1.03] md:text-[4.5rem]">
+              Infused Pre-Rolls
             </h2>
+            <p className="mt-5 font-display text-[1.35rem] italic text-[color:var(--text-secondary)] md:text-[1.6rem]">
+              The only premium infused pre-roll you need.
+            </p>
             <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
               Premium flower, hand-infused with cured hash and crumble. Every pre-roll is checked by hand
               before it's sealed in its tube.
@@ -95,18 +98,19 @@ function Home() {
             <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
               {teaserTiles.map(({ strain, image }, i) => (
                 <ScrollReveal key={strain.id} delay={i * 0.08}>
-                  <div className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-8">
+                  <div className="aspect-[4/5] overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]">
                     <img
                       src={image}
                       alt={strain.name}
                       loading="lazy"
-                      className="max-h-full w-auto object-contain"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                 </ScrollReveal>
               ))}
             </div>
           )}
+
           <div className="mt-16 text-center">
             <a href="/shop">
               <GoldButton>Shop the collection</GoldButton>

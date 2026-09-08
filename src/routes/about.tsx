@@ -116,44 +116,45 @@ function AboutPage() {
         </ScrollReveal>
       </article>
 
-      {/* CLOSING SHOWCASE */}
-      <section className="mx-auto mt-32 max-w-[1400px]">
+      {/* THE CRAFT */}
+      <section className="mx-auto mt-32 max-w-[1200px]">
         <ScrollReveal className="text-center">
-          <MetaLabel gold>✦ The Collection</MetaLabel>
-          <h2 className="mt-4 font-display text-4xl md:text-5xl">
-            Four drops. <em className="text-[color:var(--accent-gold)]">One standard.</em>
+          <MetaLabel gold>✦ The Craft</MetaLabel>
+          <h2 className="mt-6 font-display text-4xl font-semibold leading-tight md:text-5xl">
+            Built slowly. <em className="text-[color:var(--accent-gold)]">Built once.</em>
           </h2>
         </ScrollReveal>
-
-        <ScrollReveal delay={0.1}>
-          <div className="relative mt-16 grid grid-cols-2 items-end justify-items-center gap-6 px-2 py-12 md:flex md:gap-12 md:px-6 md:py-16">
-            {strains.slice(0, 4).map((s) => {
-              const img = getStrainProductImage(s.slug);
-              if (!img) return null;
-              return (
-                <Link
-                  key={s.id}
-                  to="/strain/$slug"
-                  params={{ slug: s.slug }}
-                  className="group block"
-                >
-                  <img
-                    src={img}
-                    alt={s.name}
-                    className="max-h-[200px] w-auto rounded-xl transition-transform duration-500 ease-out group-hover:-translate-y-2 sm:max-h-[280px] md:max-h-[420px]"
-                  />
-                </Link>
-              );
-            })}
-          </div>
-        </ScrollReveal>
-
-        <div className="mt-12 text-center">
+        <div className="mt-20 grid grid-cols-1 gap-px bg-[color:var(--border-subtle)] md:grid-cols-3">
+          {[
+            {
+              t: "Selected Strains",
+              d: "Hand-picked for terpene profile. Only the cultivars that earn their flavour.",
+            },
+            {
+              t: "Extended Curing",
+              d: "Slow-cured to lock in the depth and the body. Patience over volume.",
+            },
+            {
+              t: "Hand Infusion",
+              d: "Premium flower, cured hash and crumble, brought together by hand.",
+            },
+          ].map((c, i) => (
+            <ScrollReveal key={c.t} delay={i * 0.1} className="bg-[color:var(--bg-base)] p-10 md:p-12">
+              <div className="h-px w-12 bg-[color:var(--accent-gold)]" />
+              <h3 className="mt-6 font-display text-2xl">{c.t}</h3>
+              <p className="mt-4 font-body text-base leading-relaxed text-[color:var(--text-secondary)]">
+                {c.d}
+              </p>
+            </ScrollReveal>
+          ))}
+        </div>
+        <div className="mt-16 text-center">
           <Link to="/shop" className="inline-block">
-            <GoldButton>Discover all four</GoldButton>
+            <GoldButton>Discover the collection</GoldButton>
           </Link>
         </div>
       </section>
     </div>
   );
 }
+

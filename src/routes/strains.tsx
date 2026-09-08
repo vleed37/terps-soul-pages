@@ -279,62 +279,53 @@ function StrainsPage() {
         })}
       </section>
 
-      {/* SECTION 3 — LABEL TRANSPARENCY */}
-      <section className="mx-auto mt-32 max-w-[1100px]">
+      {/* SECTION 3 — EVERY STRAIN */}
+      <section className="mx-auto mt-32 max-w-[1200px]">
         <ScrollReveal className="text-center">
-          <MetaLabel gold>✦ Transparency</MetaLabel>
-          <h2 className="mt-4 font-display text-4xl md:text-5xl">Every detail is on the tube.</h2>
+          <MetaLabel gold>✦ Every Strain</MetaLabel>
+          <h2 className="mt-4 font-display text-4xl font-semibold md:text-5xl">The full library.</h2>
         </ScrollReveal>
-        <ScrollReveal delay={0.1}>
-          <div
-            className="tone-sage relative mt-16 grid grid-cols-1 items-center gap-12 rounded-2xl p-8 md:grid-cols-2 md:p-16"
-            style={{ backgroundColor: "var(--bg-sage)" }}
-          >
-            <div className="relative mx-auto">
-              {(() => {
-                const img = getStrainProductImage("green-crack");
-                return img ? (
-                  <img
-                    src={img}
-                    alt="Terps tube"
-                    className="max-h-[480px] drop-shadow-[0_24px_40px_rgba(40,60,40,0.25)]"
-                  />
-                ) : null;
-              })()}
-              {/* Callouts — desktop only */}
-              {[
-                { t: "Strain name", top: "18%", side: "right" },
-                { t: "Batch number", top: "34%", side: "left" },
-                { t: "0.75g", top: "50%", side: "right" },
-                { t: "THC %", top: "62%", side: "left" },
-                { t: "Effect category", top: "76%", side: "right" },
-                { t: "QR → COA", top: "88%", side: "left" },
-              ].map((c) => (
-                <span
-                  key={c.t}
-                  className="absolute hidden font-display italic text-sm whitespace-nowrap md:inline-block"
-                  style={{
-                    top: c.top,
-                    color: "rgba(11,10,8,0.7)",
-                    ...(c.side === "left" ? { right: "calc(100% + 12px)" } : { left: "calc(100% + 12px)" }),
-                  }}
+        <div className="mt-14 grid grid-cols-2 gap-6 md:grid-cols-4">
+          {strains.map((s, i) => {
+            const img = getStrainProductImage(s.slug);
+            const soldOut = s.stock_quantity <= 0;
+            return (
+              <ScrollReveal key={s.id} delay={Math.min(i, 5) * 0.06}>
+                <Link
+                  to="/strain/$slug"
+                  params={{ slug: s.slug }}
+                  className="group block overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]"
                 >
-                  {c.side === "right" && <span className="mr-2">—</span>}
-                  {c.t}
-                  {c.side === "left" && <span className="ml-2">—</span>}
-                </span>
-              ))}
-            </div>
-            <div>
-              <p className="text-base leading-[1.8] md:text-lg" style={{ color: "rgba(11,10,8,0.8)" }}>
-                Terps tubes carry the same data we publish online — strain, batch, lab-verified
-                cannabinoids, and a QR code that links to the exact certificate of analysis for what
-                you're holding. No mystery.
-              </p>
-            </div>
-          </div>
-        </ScrollReveal>
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    {img && (
+                      <img
+                        src={img}
+                        alt={s.name}
+                        loading="lazy"
+                        className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] ${
+                          soldOut ? "opacity-60" : ""
+                        }`}
+                      />
+                    )}
+                    {soldOut && (
+                      <span className="absolute left-3 top-3 rounded-[4px] bg-[color:var(--bg-rich)]/80 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-on-dark)]">
+                        Sold out
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-display text-xl leading-tight">{s.name}</h3>
+                    <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[color:var(--text-tertiary)]">
+                      {s.strain_type ?? s.effect_category}
+                    </p>
+                  </div>
+                </Link>
+              </ScrollReveal>
+            );
+          })}
+        </div>
       </section>
+
 
       {/* SECTION 4 — FAQ */}
       <section className="mx-auto mt-32 max-w-3xl">

@@ -14,23 +14,22 @@ Every outbound email also sets reply-to `sales@terpsnation.co.za`, so a customer
 
 Final order: **Hero → Infused Pre-Rolls → Caviar Stix → Drop Alerts → Footer.** Nothing else.
 
-1. **Hero** — remove the "Terps." wordmark above "Flavour first."; keep the headline and surrounding text, positioned to suit the new background photo. Extra top padding on mobile so the logo isn't squashed against the top of the screen.
-2. **Infused Pre-Rolls** — big bold heading "Infused Pre-Rolls", smaller subheading "The only premium infused pre-roll you need.", description "Premium flower hand infused with cured hash and crumble, each checked by hand." Tiles swap to the lifestyle photos.
+1. **Hero** — remove the "Terps." wordmark above "Flavour first."; keep the headline, the surrounding text and both buttons exactly as they are — "Discover the collection" (gold pill → /shop) and "Our story" (ghost link → /about). Extra top padding on mobile so the logo isn't squashed against the top of the screen.
+2. **Infused Pre-Rolls** — big bold heading "Infused Pre-Rolls", smaller subheading "The only premium infused pre-roll you need.", description "Premium flower hand infused with cured hash and crumble, each checked by hand." Tiles swap to the new shoot photos.
 3. **Caviar Stix** — stays on the **black** background (the site's accent, agreed 3 Sept). Heading "Caviar Stix", subheading "Cream of the crop" (smaller), description "Taking our infused pre-rolls to the next level. Coated with live rosin and sprinkled with a generous amount of hash." No height equalising here.
 4. **Drop Alerts** — kept, but the "Stay close" label and the "Quiet emails. New flavours…" line are removed.
 
 Removed from the homepage entirely: "The Craft — built slowly, built once" (its three cards move to Our Story), all quote banners, the "Follow Terps" social section (the footer covers it), the "Stock Terps in your store" band, and the Strain Library block. There is **no** stockist block on the homepage — the header tab and the popup replace it.
 
-**Header, site-wide:** black background in both states (top of page and scrolled), light text and icons, logo about 1.5× its current size. Mobile top padding fix included, plus the phone top-crop fix on the logo.
+**Header, site-wide:** stays cream in both scroll states with its current text and icon colours. The only header changes: the black "Terps" wordmark about 1.5× its current size, the search control removed, the "Strains" tab renamed "Strain Library", and the mobile top-padding / logo top-crop fix.
 
-**Product galleries:** both product blocks get a small gallery built from the new shoot photos (the numbered selections from Dean's folder — 47, 48, 56, 110, 115–119, Divine Matcha 62, Terps 23), replacing the cartoon/AI-style product artwork everywhere it appears.
+**Product galleries:** both product blocks use the new shoot photos, replacing the cartoon/AI-style product artwork.
 
-*Note on the shared notes:* they say keep "Discover the Collection" and "Our Story" on the homepage; your correction sets the final order above, so those two blocks come off the homepage and the header tabs carry them instead.
 
 
 ## 3. First-visit popup (homepage only)
 
-Message: "First time here? Sign up to become a stockist, or continue shopping." Two buttons — stockist sign-up and continue shopping. Shown once per visitor and remembered.
+Message: "First time here? Sign up to become a stockist, or continue shopping." Buttons, exactly: primary "Sign up for wholesale pricing" (→ /wholesale) and secondary "Continue shopping". Shown once per visitor and remembered.
 
 Rules:
 - Homepage only.

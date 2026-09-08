@@ -57,9 +57,11 @@ export async function sendEmail(opts: {
       body: JSON.stringify({
         from: opts.from ?? emailFrom(),
         to: recipient,
+        reply_to: SALES_EMAIL,
         subject,
         html,
       }),
+
     });
     if (!res.ok) {
       const body = await res.text().catch(() => "");

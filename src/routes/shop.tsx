@@ -218,26 +218,28 @@ function ShopPage() {
   );
 
   return (
-    <section className="px-6 py-10 md:px-12 md:py-28">
-      <div className="mx-auto max-w-[1400px]">
-        <ScrollReveal className="text-center">
-          <MetaLabel gold>✦ The Collection</MetaLabel>
-          <h1 className="mx-auto mt-5 font-display text-[2.75rem] leading-[1.05] md:text-7xl">
-            Every drop. <em className="text-[color:var(--accent-gold)]">Every flavour.</em>
-          </h1>
-          <p className="mx-auto mt-6 max-w-[500px] text-base text-[color:var(--text-secondary)] md:text-lg">
-            Pre-rolls and premium stix. Every craft, every effect.
-          </p>
-        </ScrollReveal>
-
+    <section className="pb-10 md:pb-28">
+      {/* Page header over collection photography */}
+      <div className="tone-dark relative -mt-[88px] overflow-hidden">
+        <img
+          src={collectionHeader.url}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[#0B0A08]/75" />
+        <div className="relative mx-auto max-w-[1400px] px-6 pb-16 pt-[140px] text-center md:px-12 md:pb-24 md:pt-[200px]">
+          <ScrollReveal>
+            <MetaLabel gold>✦ The Collection</MetaLabel>
+            <h1 className="mx-auto mt-5 font-display text-[2.75rem] font-semibold leading-[1.05] md:text-7xl">
+              Every drop. <em className="text-[color:var(--accent-gold)]">Every flavour.</em>
+            </h1>
+          </ScrollReveal>
+        </div>
       </div>
 
-      <div className="-mx-6 mt-10 md:-mx-12 md:mt-16">
-        <FeatureBand />
-      </div>
-
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-[1400px] px-6 md:px-12">
         {/* Tier toggle tabs */}
+
         <div className="mt-16 flex items-center justify-center gap-8 border-b border-[color:var(--border-subtle)] pb-4">
           {[
             { v: "all" as const, l: "All", c: strains.length },

@@ -85,14 +85,18 @@ Once desktop edits land: full sweep at phone widths — header, hero, both produ
 
 ## Waiting on you
 
-- The photos (hero, product/lifestyle, collection header, story) — arriving with your approval.
+- The photos (hero, product/lifestyle shoot selections, collection header, story) — arriving with your approval.
 - Wholesale and retail price list.
 - New Our Story copy.
+- Legal page copy (privacy, refunds, shipping, cannabis disclaimer, terms) — the pages exist with placeholder text; paste the drafted wording and I'll drop it in.
 - Confirmation that `terpsnation.co.za` is ready so sending can be switched on.
+
+Not a website task, noted from the call: mention to Kelsey that the Terps Instagram may be flagged or hard to find by search.
 
 ## Not in this pass (Phase 2)
 
 Chat assistant at the bottom of the site, stockist portal extras (marketing-material downloads, discount codes, tasting-event booking), admin dashboard, spin-to-win offer.
+
 
 ## Technical notes
 

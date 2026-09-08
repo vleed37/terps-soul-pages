@@ -150,11 +150,8 @@ function DropAlerts() {
     <section className="tone-dark px-6 py-32 md:py-40">
       <div className="mx-auto max-w-2xl text-center">
         <ScrollReveal>
-          <MetaLabel gold>✦ Stay Close</MetaLabel>
-          <h2 className="mt-6 font-display text-4xl md:text-5xl">Get word when the next drop lands.</h2>
-          <p className="mx-auto mt-6 max-w-md text-[color:var(--text-secondary)]">
-            Quiet emails. New flavours. The occasional strain story.
-          </p>
+          <h2 className="font-display text-4xl font-semibold md:text-5xl">Get word when the next drop lands.</h2>
+
           {done ? (
             <p className="mt-10 font-display italic text-2xl text-[color:var(--accent-gold)]">You're on the list.</p>
           ) : (

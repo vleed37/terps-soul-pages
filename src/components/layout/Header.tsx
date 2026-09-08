@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, Search, User, ShoppingBag, X } from "lucide-react";
+import { Menu, User, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { useCart, cartSelectors } from "@/lib/store/cart";
 import { useWholesaleAccount } from "@/hooks/useWholesaleAccount";
@@ -8,10 +8,11 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/shop", label: "The Collection" },
-  { to: "/strains", label: "Strains" },
+  { to: "/strains", label: "Strain Library" },
   { to: "/stockists", label: "Stockists" },
   { to: "/about", label: "Our Story" },
 ] as const;
+
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);

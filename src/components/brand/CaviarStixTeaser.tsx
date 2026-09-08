@@ -2,12 +2,18 @@ import { ScrollReveal } from "./ScrollReveal";
 import { MetaLabel } from "./MetaLabel";
 import { Hairline } from "./Hairline";
 import { GoldButton } from "./GoldButton";
+import caviarIndica from "@/assets/shoot/divine-115.jpg.asset.json";
+import caviarHybrid from "@/assets/shoot/divine-116.jpg.asset.json";
+import caviarSativa from "@/assets/shoot/divine-117.jpg.asset.json";
 
-/** Swap-in point for Caviar Stick product photography. Add 2–3 image imports here. */
-const CAVIAR_IMAGES: { src: string; alt: string }[] = [];
+/** Swap-in point for Caviar Stix product photography. 2–3 images. */
+const CAVIAR_IMAGES: { src: string; alt: string }[] = [
+  { src: caviarIndica.url, alt: "Terps Caviar Stix Indica" },
+  { src: caviarHybrid.url, alt: "Terps Caviar Stix Hybrid" },
+  { src: caviarSativa.url, alt: "Terps Caviar Stix Sativa" },
+];
 
 export function CaviarStixTeaser() {
-
   return (
     <section className="tone-dark relative overflow-hidden px-6 py-32 md:py-40">
       {/* sage glow */}
@@ -18,18 +24,19 @@ export function CaviarStixTeaser() {
           filter: "blur(20px)",
         }}
       />
-      <div className="relative mx-auto max-w-[720px] text-center">
+      <div className="relative mx-auto max-w-[900px] text-center">
         <ScrollReveal>
-          <MetaLabel gold>✦ Caviar Sticks</MetaLabel>
-          <h2 className="mx-auto mt-6 max-w-[600px] font-display text-4xl leading-[1.05] tracking-[-0.01em] md:text-6xl">
-            The only caviar stick you need.
+          <MetaLabel gold>✦ Caviar Stix</MetaLabel>
+          <h2 className="mx-auto mt-6 max-w-[700px] font-display text-[2.5rem] font-semibold leading-[1.03] tracking-[-0.01em] md:text-[4.5rem]">
+            Caviar Stix
           </h2>
-          <p className="mt-5 font-display text-[1.5rem] italic text-[color:var(--text-secondary)] md:text-[1.75rem]">
+          <p className="mt-5 font-display text-[1.35rem] italic text-[color:var(--text-secondary)] md:text-[1.6rem]">
             Cream of the crop.
           </p>
           <Hairline w="120px" className="mx-auto my-10" />
-          <p className="mx-auto max-w-[580px] text-base leading-[1.65] text-[color:var(--text-secondary)] md:text-lg">
-            [Caviar description — client to supply]
+          <p className="mx-auto max-w-[620px] text-base leading-[1.65] text-[color:var(--text-secondary)] md:text-lg">
+            Taking our infused pre-rolls to the next level. Coated with live rosin and sprinkled with
+            a generous amount of hash.
           </p>
           {CAVIAR_IMAGES.length > 0 && (
             <div
@@ -40,20 +47,19 @@ export function CaviarStixTeaser() {
               {CAVIAR_IMAGES.slice(0, 3).map((img) => (
                 <div
                   key={img.src}
-                  className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-lg border border-[color:var(--border-on-dark)] bg-white/[0.03] p-8"
+                  className="aspect-[4/5] overflow-hidden rounded-lg border border-[color:var(--border-on-dark)] bg-white/[0.03]"
                 >
                   <img
                     src={img.src}
                     alt={img.alt}
                     loading="lazy"
-                    className="max-h-full w-auto object-contain"
+                    className="h-full w-full object-cover"
                   />
                 </div>
               ))}
             </div>
           )}
-          <div className="mt-10 flex justify-center">
-
+          <div className="mt-12 flex justify-center">
             <a href="/shop">
               <GoldButton variant="cream">Shop the collection</GoldButton>
             </a>

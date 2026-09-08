@@ -2,13 +2,13 @@ import greenCrack from "@/assets/strain-green-crack.webp";
 import blueDream from "@/assets/strain-blue-dream.webp";
 import mangoSapphire from "@/assets/strain-mango-sapphire.webp";
 import girlScoutCookie from "@/assets/strain-girl-scout-cookie.webp";
-import productGreenCrack from "@/assets/product-green-crack.png";
-import productBlueDream from "@/assets/product-blue-dream.jpg";
-import productMangoSapphire from "@/assets/product-mango-sapphire.jpg";
 import productGirlScoutCookie from "@/assets/product-girl-scout-cookie.jpg";
-import productCaviarSativa from "@/assets/product-caviar-stix-sativa.jpg";
-import productCaviarHybrid from "@/assets/product-caviar-stix-hybrid.jpg";
-import productCaviarIndica from "@/assets/product-caviar-stix-indica.jpg";
+import shootGreenCrack from "@/assets/shoot/divine-110.jpg.asset.json";
+import shootMangoSapphire from "@/assets/shoot/divine-118.jpg.asset.json";
+import shootBlueDream from "@/assets/shoot/divine-119.jpg.asset.json";
+import shootCaviarIndica from "@/assets/shoot/divine-115.jpg.asset.json";
+import shootCaviarHybrid from "@/assets/shoot/divine-116.jpg.asset.json";
+import shootCaviarSativa from "@/assets/shoot/divine-117.jpg.asset.json";
 import modelGreenCrack from "@/assets/green-crack.glb.asset.json";
 import modelBlueDream from "@/assets/blue-dream.glb.asset.json";
 import modelMangoSapphire from "@/assets/mango-sapphire.glb.asset.json";
@@ -24,15 +24,17 @@ export const STRAIN_IMAGE: Record<string, string> = {
   "girl-scout-cookie": girlScoutCookie,
 };
 
+/** Product photography from the studio shoot (CDN-hosted). */
 export const STRAIN_PRODUCT_IMAGE: Record<string, string> = {
-  "green-crack": productGreenCrack,
-  "blue-dream": productBlueDream,
-  "mango-sapphire": productMangoSapphire,
+  "green-crack": shootGreenCrack.url,
+  "blue-dream": shootBlueDream.url,
+  "mango-sapphire": shootMangoSapphire.url,
   "girl-scout-cookie": productGirlScoutCookie,
-  "caviar-stix-sativa": productCaviarSativa,
-  "caviar-stix-hybrid": productCaviarHybrid,
-  "caviar-stix-indica": productCaviarIndica,
+  "caviar-stix-sativa": shootCaviarSativa.url,
+  "caviar-stix-hybrid": shootCaviarHybrid.url,
+  "caviar-stix-indica": shootCaviarIndica.url,
 };
+
 
 export function getStrainImage(slug: string): string | undefined {
   return STRAIN_IMAGE[slug];

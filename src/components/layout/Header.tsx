@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, Search, User, ShoppingBag, X } from "lucide-react";
+import { Menu, User, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { useCart, cartSelectors } from "@/lib/store/cart";
 import { useWholesaleAccount } from "@/hooks/useWholesaleAccount";
@@ -8,10 +8,11 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/shop", label: "The Collection" },
-  { to: "/strains", label: "Strains" },
+  { to: "/strains", label: "Strain Library" },
   { to: "/stockists", label: "Stockists" },
   { to: "/about", label: "Our Story" },
 ] as const;
+
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -41,13 +42,13 @@ export function Header() {
           "fixed inset-x-0 top-0 z-40 transition-all duration-500",
           scrolled
             ? "h-[64px] bg-[color:var(--bg-base)]/85 backdrop-blur-xl border-b border-[color:var(--border-subtle)]"
-            : "h-[88px] bg-transparent",
+            : "h-[88px] bg-[color:var(--bg-base)]",
         )}
       >
         {/* Desktop: logo-left, nav + utilities on the right */}
         <div className="mx-auto hidden h-full max-w-[1400px] items-center justify-between px-6 md:flex md:px-8">
           <Link to="/" className="flex items-center">
-            <Logo height={scrolled ? 20 : 26} />
+            <Logo height={scrolled ? 30 : 39} />
           </Link>
 
           <div className="flex items-center gap-8">
@@ -71,9 +72,7 @@ export function Header() {
             </Link>
             </nav>
             <div className="flex items-center gap-5 border-l border-[color:var(--border-subtle)] pl-8">
-            <button aria-label="Search" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
-              <Search strokeWidth={1.5} className="h-5 w-5" />
-            </button>
+
             <Link to="/account" aria-label="Account" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
               <User strokeWidth={1.5} className="h-5 w-5" />
             </Link>
@@ -94,9 +93,10 @@ export function Header() {
         </div>
 
         {/* Mobile: logo-left, utilities right */}
-        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:hidden">
+        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 pt-1 md:hidden">
           <Link to="/" className="flex items-center">
-            <Logo height={scrolled ? 18 : 22} />
+            <Logo height={scrolled ? 26 : 32} />
+
           </Link>
           <div className="flex items-center gap-4">
             <button

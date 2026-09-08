@@ -40,7 +40,7 @@ export const Route = createFileRoute("/strain/$slug")({
       .map((t) => t.name)
       .slice(0, 3)
       .join(", ");
-    const description = `${s.tagline ?? s.name}. ${s.thc_percentage ?? "—"}% THC${terpenes ? ` · ${terpenes}` : ""}.`;
+    const description = `${s.tagline ?? s.name}.${terpenes ? ` Terpenes: ${terpenes}.` : ""}`;
     const localImg = getStrainImage(s.slug) || getStrainProductImage(s.slug);
     const image = localImg || DEFAULT_OG_IMAGE;
     const title = `${s.name} · Terps`;
@@ -153,7 +153,7 @@ function StrainDetail() {
               </span>
               {s.strain_type && <StrainTypePill type={s.strain_type} />}
               <span className="meta-xs text-[color:var(--text-tertiary)]">
-                Live Rosin Infused · Lab Verified · Batch {s.batch_number}
+                Hand Infused
               </span>
             </div>
           </div>
@@ -248,7 +248,7 @@ function StrainDetail() {
             </p>
             <Hairline className="my-8" />
             <div className="grid grid-cols-2 gap-4 text-center md:grid-cols-4">
-              {["Lab Verified", "Batch Numbered", "Secure Checkout", "Couriered in SA"].map((t) => (
+              {["Hand Infused", "Hand Checked", "Secure Checkout", "Couriered in SA"].map((t) => (
                 <MetaLabel key={t}>{t}</MetaLabel>
               ))}
             </div>
@@ -320,17 +320,15 @@ function StrainDetail() {
         </div>
 
         <div className="mx-auto mt-16 max-w-[1200px]">
-          <MetaLabel gold>Lab Verified</MetaLabel>
-          <h3 className="mt-4 font-display text-3xl md:text-4xl">Tested. Numbered. Transparent.</h3>
+          <MetaLabel gold>The Profile</MetaLabel>
+          <h3 className="mt-4 font-display text-3xl md:text-4xl">Flavour, in detail.</h3>
           <div className="mt-10 grid grid-cols-1 gap-12 md:grid-cols-2">
             <dl className="space-y-3 text-sm">
               {[
-                ["Batch Number", s.batch_number],
-                ["Test Date", s.test_date],
-                ["THC", `${s.thc_percentage}%`],
-                ["CBD", `${s.cbd_percentage}%`],
+                ["Strain Type", s.strain_type],
+                ["Effect", s.effect_category],
+                ["Weight", `${s.weight_grams ?? 0.75}g`],
                 ["Total Terpenes", `${s.total_terpenes_percentage}%`],
-                ["Lab", s.lab_name],
               ].map(([k, v]) => (
                 <div key={k as string} className="flex items-baseline justify-between border-b border-dashed border-[color:var(--border-luxe)] pb-2">
                   <dt className="font-display italic text-[color:var(--text-secondary)]">{k}</dt>

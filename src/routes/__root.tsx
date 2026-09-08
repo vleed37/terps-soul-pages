@@ -9,6 +9,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AgeGate } from "@/components/layout/AgeGate";
 import { CookieConsent } from "@/components/layout/CookieConsent";
+import { VisitorPrompt } from "@/components/layout/VisitorPrompt";
+
 import { BrandNotFound } from "@/components/layout/BrandNotFound";
 import { BrandError } from "@/components/layout/BrandError";
 import { StockistContextBanner } from "@/components/brand/StockistContextBanner";
@@ -76,6 +78,8 @@ function RootComponent() {
       <Footer />
       <AgeGate />
       <CookieConsent />
+      <VisitorPrompt />
+
       <Toaster theme="light" position="bottom-center" />
     </QueryClientProvider>
   );

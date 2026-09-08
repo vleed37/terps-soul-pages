@@ -8,7 +8,7 @@ import { StrainCard } from "@/components/brand/StrainCard";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { FeatureBand } from "@/components/brand/FeatureBand";
+import collectionHeader from "@/assets/shoot/divine-56.jpg.asset.json";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { StrainTypeDot } from "@/components/brand/StrainTypePill";
@@ -218,31 +218,35 @@ function ShopPage() {
   );
 
   return (
-    <section className="px-6 py-10 md:px-12 md:py-28">
-      <div className="mx-auto max-w-[1400px]">
-        <ScrollReveal className="text-center">
-          <MetaLabel gold>✦ The Collection</MetaLabel>
-          <h1 className="mx-auto mt-5 font-display text-[2.75rem] leading-[1.05] md:text-7xl">
-            Every drop. <em className="text-[color:var(--accent-gold)]">Every flavour.</em>
-          </h1>
-          <p className="mx-auto mt-6 max-w-[500px] text-base text-[color:var(--text-secondary)] md:text-lg">
-            Pre-rolls and premium stix. Every craft, every effect.
-          </p>
-        </ScrollReveal>
+    <section className="pb-10 md:pb-28">
+      {/* Page header over collection photography */}
+      <div className="tone-dark relative overflow-hidden">
+        <img
+          src={collectionHeader.url}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[#0B0A08]/75" />
+        <div className="relative mx-auto max-w-[1400px] px-6 py-20 text-center md:px-12 md:py-28">
 
+          <ScrollReveal>
+            <MetaLabel gold>✦ The Collection</MetaLabel>
+            <h1 className="mx-auto mt-5 font-display text-[2.75rem] font-semibold leading-[1.05] md:text-7xl">
+              Every drop. <em className="text-[color:var(--accent-gold)]">Every flavour.</em>
+            </h1>
+          </ScrollReveal>
+        </div>
       </div>
 
-      <div className="-mx-6 mt-10 md:-mx-12 md:mt-16">
-        <FeatureBand />
-      </div>
-
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto max-w-[1400px] px-6 md:px-12">
         {/* Tier toggle tabs */}
+
         <div className="mt-16 flex items-center justify-center gap-8 border-b border-[color:var(--border-subtle)] pb-4">
           {[
             { v: "all" as const, l: "All", c: strains.length },
-            { v: "pre_roll" as const, l: "Pre-Rolls", c: preRollCount },
+            { v: "pre_roll" as const, l: "Infused Pre-Rolls", c: preRollCount },
             { v: "caviar_stix" as const, l: "Caviar Stix", c: caviarCount },
+
           ].map((tab) => {
             const active = line === tab.v;
             return (

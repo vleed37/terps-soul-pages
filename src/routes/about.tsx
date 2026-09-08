@@ -1,21 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { listStrains } from "@/lib/strains.functions";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { PullQuote } from "@/components/brand/PullQuote";
 import { GoldButton } from "@/components/brand/GoldButton";
-import { getStrainProductImage } from "@/lib/strain-assets";
-import lifestyle1 from "@/assets/lifestyle-1.webp";
-import lifestyle3 from "@/assets/lifestyle-3.webp";
-import lifestyle4 from "@/assets/lifestyle-4.webp";
-import type { Strain } from "@/lib/types";
+import story1 from "@/assets/shoot/divine-62.jpg.asset.json";
+import story2 from "@/assets/shoot/divine-48.jpg.asset.json";
+import story3 from "@/assets/shoot/divine-56.jpg.asset.json";
 import { seoMeta } from "@/lib/seo";
-
-const strainsQuery = queryOptions({
-  queryKey: ["strains", "all"],
-  queryFn: () => listStrains(),
-});
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -26,19 +17,15 @@ export const Route = createFileRoute("/about")({
       path: "/about",
     }),
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(strainsQuery),
   component: AboutPage,
 });
 
 function AboutPage() {
-  const { data } = useSuspenseQuery(strainsQuery);
-  const strains = (data ?? []) as unknown as Strain[];
-
   const paragraphs = [
     "Terps was built around one belief: an infused pre-roll should taste like something. Not chemicals. Not cover-ups. Real strain expression — sharpened, never masked. Every drop carries the flavour it was supposed to.",
-    "Every batch starts with cultivars chosen for their terpene profile, not their yield. We slow-cure. We hand-infuse with live hash rosin. We do small drops, strain-specific, and we put the strain on the label because we're proud of what's inside.",
+    "We start with cultivars chosen for their terpene profile, not their yield. We slow-cure. We hand-infuse with cured hash and crumble. Strain-specific, and the strain goes on the label because we're proud of what's inside.",
     "We're South African born and bred. The land here grows different, and so do the people. Terps is a product of that — the patience of the soil, the edge of the streets, the standard of a culture that knows quality when it tastes it.",
-    "Every drop is limited. Every batch is numbered. When it's gone, it's gone — and the next one is already in cure. This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavour on the other end.",
+    "This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavour on the other end.",
     "Welcome to Terps. Welcome to flavour first.",
   ];
 
@@ -63,7 +50,7 @@ function AboutPage() {
 
         <ScrollReveal delay={0.05}>
           <img
-            src={lifestyle1}
+            src={story1.url}
             alt=""
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
@@ -87,7 +74,7 @@ function AboutPage() {
 
         <ScrollReveal delay={0.05}>
           <img
-            src={lifestyle3}
+            src={story2.url}
             alt=""
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
@@ -101,7 +88,7 @@ function AboutPage() {
 
         <ScrollReveal delay={0.05}>
           <img
-            src={lifestyle4}
+            src={story3.url}
             alt=""
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
@@ -116,44 +103,45 @@ function AboutPage() {
         </ScrollReveal>
       </article>
 
-      {/* CLOSING SHOWCASE */}
-      <section className="mx-auto mt-32 max-w-[1400px]">
+      {/* THE CRAFT */}
+      <section className="mx-auto mt-32 max-w-[1200px]">
         <ScrollReveal className="text-center">
-          <MetaLabel gold>✦ The Collection</MetaLabel>
-          <h2 className="mt-4 font-display text-4xl md:text-5xl">
-            Four drops. <em className="text-[color:var(--accent-gold)]">One standard.</em>
+          <MetaLabel gold>✦ The Craft</MetaLabel>
+          <h2 className="mt-6 font-display text-4xl font-semibold leading-tight md:text-5xl">
+            Built slowly. <em className="text-[color:var(--accent-gold)]">Built once.</em>
           </h2>
         </ScrollReveal>
-
-        <ScrollReveal delay={0.1}>
-          <div className="relative mt-16 grid grid-cols-2 items-end justify-items-center gap-6 px-2 py-12 md:flex md:gap-12 md:px-6 md:py-16">
-            {strains.slice(0, 4).map((s) => {
-              const img = getStrainProductImage(s.slug);
-              if (!img) return null;
-              return (
-                <Link
-                  key={s.id}
-                  to="/strain/$slug"
-                  params={{ slug: s.slug }}
-                  className="group block"
-                >
-                  <img
-                    src={img}
-                    alt={s.name}
-                    className="max-h-[200px] w-auto rounded-xl transition-transform duration-500 ease-out group-hover:-translate-y-2 sm:max-h-[280px] md:max-h-[420px]"
-                  />
-                </Link>
-              );
-            })}
-          </div>
-        </ScrollReveal>
-
-        <div className="mt-12 text-center">
+        <div className="mt-20 grid grid-cols-1 gap-px bg-[color:var(--border-subtle)] md:grid-cols-3">
+          {[
+            {
+              t: "Selected Strains",
+              d: "Hand-picked for terpene profile. Only the cultivars that earn their flavour.",
+            },
+            {
+              t: "Extended Curing",
+              d: "Slow-cured to lock in the depth and the body. Patience over volume.",
+            },
+            {
+              t: "Hand Infusion",
+              d: "Premium flower, cured hash and crumble, brought together by hand.",
+            },
+          ].map((c, i) => (
+            <ScrollReveal key={c.t} delay={i * 0.1} className="bg-[color:var(--bg-base)] p-10 md:p-12">
+              <div className="h-px w-12 bg-[color:var(--accent-gold)]" />
+              <h3 className="mt-6 font-display text-2xl">{c.t}</h3>
+              <p className="mt-4 font-body text-base leading-relaxed text-[color:var(--text-secondary)]">
+                {c.d}
+              </p>
+            </ScrollReveal>
+          ))}
+        </div>
+        <div className="mt-16 text-center">
           <Link to="/shop" className="inline-block">
-            <GoldButton>Discover all four</GoldButton>
+            <GoldButton>Discover the collection</GoldButton>
           </Link>
         </div>
       </section>
     </div>
   );
 }
+

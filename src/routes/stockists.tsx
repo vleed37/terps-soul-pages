@@ -143,7 +143,7 @@ function StockistsPage() {
           Where to <em className="text-[color:var(--accent-gold)]">find us.</em>
         </h1>
         <p className="mx-auto mt-6 max-w-[600px] text-base text-[color:var(--text-secondary)] md:text-lg">
-          Stocked at premium retailers across South Africa. Each one personally selected.
+          Stocked at premium retailers across South Africa.
         </p>
         <div className="mx-auto mt-10 flex max-w-md items-center gap-3 rounded-[4px] border border-[color:var(--border-strong)] bg-[color:var(--bg-surface)] px-4 py-3 focus-within:border-[color:var(--accent-gold)]">
           <MapPin size={16} strokeWidth={1.5} className="text-[color:var(--accent-gold)]" />

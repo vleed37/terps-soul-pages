@@ -31,7 +31,7 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
     <Link
       to="/strain/$slug"
       params={{ slug: strain.slug }}
-      className="group relative block overflow-hidden rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-elevated)] transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
+      className="group relative block overflow-hidden rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[var(--shadow-card)]"
     >
       {/* Ornamental corner flourishes */}
       <CornerOrnament className="left-2 top-2" />
@@ -39,14 +39,9 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
       <CornerOrnament className="bottom-2 left-2 -rotate-90" />
       <CornerOrnament className="bottom-2 right-2 rotate-180" />
 
-      <div className="flex aspect-[3/4] w-full flex-col">
-        {/* Premium specimen surface — slightly darker, more atmospheric */}
-        <div
-          className="relative flex-[7] overflow-hidden"
-          style={{
-            background: `radial-gradient(circle at 50% 40%, ${strain.accent_color_primary ?? "#283526"}22, var(--bg-rich) 75%)`,
-          }}
-        >
+      <div className="flex aspect-[4/5] w-full flex-col">
+        {/* Product area — clean neutral surface matching StrainCard */}
+        <div className="relative flex-[7] overflow-hidden bg-[color:var(--bg-elevated)]">
           <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
             {strain.strain_type && <StrainTypePill type={strain.strain_type} />}
           </div>
@@ -79,15 +74,15 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
         </div>
 
         {/* Info band — premium typography scale */}
-        <div className="flex flex-[3] flex-col justify-between gap-3 border-t border-[color:var(--border-luxe)] p-6">
+        <div className="flex flex-[3] flex-col justify-between gap-3 border-t border-[color:var(--border-subtle)] p-5">
           <div>
-            <p className="meta-xs text-[color:var(--accent-gold)]">
-              {strain.strain_type ?? "Caviar"} · Caviar Stix
-            </p>
-            <h3 className="mt-2 font-display text-[1.875rem] font-normal leading-[1.05] text-[color:var(--text-primary)]">
+            <h3 className="font-display text-[1.5rem] font-normal leading-none text-[color:var(--text-primary)]">
               {strain.name.replace("Caviar Stix — ", "")}
             </h3>
-            <p className="mt-3 font-body text-[1.05rem] font-semibold text-[color:var(--text-primary)]">
+            <p className="meta-xs mt-2 text-[color:var(--text-tertiary)]">
+              {strain.strain_type ?? "Caviar"} · Caviar Stix
+            </p>
+            <p className="mt-3 font-body text-[1rem] font-semibold text-[color:var(--text-primary)]">
               R{Number(strain.price_zar).toFixed(0)}
             </p>
           </div>

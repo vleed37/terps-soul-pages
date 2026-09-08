@@ -10,7 +10,7 @@ import { GoldButton } from "@/components/brand/GoldButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { createWholesaleAccount, getMyWholesaleAccount } from "@/lib/wholesale.functions";
-import stockistDisplay from "@/assets/stockist-display.jpg";
+import wholesaleHero from "@/assets/shoot/divine-62.jpg.asset.json";
 import { seoMeta } from "@/lib/seo";
 import { SALES_EMAIL } from "@/lib/brand";
 
@@ -32,7 +32,7 @@ function WholesalePage() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={stockistDisplay} alt="" className="h-full w-full object-cover opacity-25" />
+          <img src={wholesaleHero.url} alt="" className="h-full w-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/70 via-[color:var(--bg-rich)]/85 to-[color:var(--bg-base)]" />
         </div>
         <div className="relative mx-auto max-w-3xl px-6 py-32 text-center md:py-44">
@@ -41,7 +41,7 @@ function WholesalePage() {
             Become a Terps stockist.
           </h1>
           <p className="mx-auto mt-8 max-w-xl font-display text-2xl italic text-[color:var(--text-on-dark,#F5EFE2)]/85 md:text-3xl">
-            Premium pre-rolls and exclusive Caviar Stix access for curated retailers.
+            Box pricing on Infused Pre-Rolls and Caviar Stix for South African retailers.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <a href="#apply">
@@ -61,10 +61,11 @@ function WholesalePage() {
             <MetaLabel gold>What you get</MetaLabel>
             <h2 className="mt-6 font-display text-4xl md:text-5xl">Built for serious retailers.</h2>
           </ScrollReveal>
-          <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { t: "Wholesale Pricing", d: "Box pricing across the full collection — Infused Pre-Rolls and Caviar Stix. Real margin for real retailers." },
-              { t: "Early Access", d: "Caviar Stix drops before public release. First look at exclusive batches and limited runs." },
+              { t: "Wholesale Pricing", d: "Box pricing across the full collection." },
+              { t: "Early Access", d: "Early access to new product drops." },
+              { t: "Marketing Material", d: "Marketing material for your socials." },
               { t: "Customer Routing", d: "Our Find Closest Stockist routes nearby customers to your store. The site sells for you." },
             ].map((c, i) => (
               <ScrollReveal key={c.t} delay={i * 0.1} className="rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-10">
@@ -107,8 +108,8 @@ function WholesalePage() {
         <div className="mx-auto max-w-[860px]">
           <ScrollReveal className="text-center">
             <MetaLabel gold>Sign Up</MetaLabel>
-            <h2 className="mt-6 font-display text-4xl md:text-5xl">Tell us about your store.</h2>
-            <p className="mt-4 text-[color:var(--text-secondary)]">Sign up below — your stockist portal is active immediately.</p>
+            <h2 className="mt-6 font-display text-4xl md:text-5xl">Your details.</h2>
+            <p className="mt-4 text-[color:var(--text-secondary)]">Sign up below — your stockist portal opens immediately.</p>
           </ScrollReveal>
           <div className="mt-16">
             <ApplyFlow />

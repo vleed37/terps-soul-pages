@@ -78,6 +78,8 @@ function RootComponent() {
       <Footer />
       <AgeGate />
       <CookieConsent />
+      <VisitorPrompt />
+
       <Toaster theme="light" position="bottom-center" />
     </QueryClientProvider>
   );

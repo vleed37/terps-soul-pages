@@ -21,7 +21,12 @@ Final order: **Hero → Infused Pre-Rolls → Caviar Stix → Drop Alerts → Fo
 
 Removed from the homepage entirely: "The Craft — built slowly, built once" (its three cards move to Our Story), all quote banners, the "Follow Terps" social section (the footer covers it), the "Stock Terps in your store" band, and the Strain Library block. There is **no** stockist block on the homepage — the header tab and the popup replace it.
 
-**Header, site-wide:** black background in both states (top of page and scrolled), light text and icons, logo about 1.5× its current size. Mobile top padding fix included.
+**Header, site-wide:** black background in both states (top of page and scrolled), light text and icons, logo about 1.5× its current size. Mobile top padding fix included, plus the phone top-crop fix on the logo.
+
+**Product galleries:** both product blocks get a small gallery built from the new shoot photos (the numbered selections from Dean's folder — 47, 48, 56, 110, 115–119, Divine Matcha 62, Terps 23), replacing the cartoon/AI-style product artwork everywhere it appears.
+
+*Note on the shared notes:* they say keep "Discover the Collection" and "Our Story" on the homepage; your correction sets the final order above, so those two blocks come off the homepage and the header tabs carry them instead.
+
 
 ## 3. First-visit popup (homepage only)
 
@@ -80,14 +85,18 @@ Once desktop edits land: full sweep at phone widths — header, hero, both produ
 
 ## Waiting on you
 
-- The photos (hero, product/lifestyle, collection header, story) — arriving with your approval.
+- The photos (hero, product/lifestyle shoot selections, collection header, story) — arriving with your approval.
 - Wholesale and retail price list.
 - New Our Story copy.
+- Legal page copy (privacy, refunds, shipping, cannabis disclaimer, terms) — the pages exist with placeholder text; paste the drafted wording and I'll drop it in.
 - Confirmation that `terpsnation.co.za` is ready so sending can be switched on.
+
+Not a website task, noted from the call: mention to Kelsey that the Terps Instagram may be flagged or hard to find by search.
 
 ## Not in this pass (Phase 2)
 
 Chat assistant at the bottom of the site, stockist portal extras (marketing-material downloads, discount codes, tasting-event booking), admin dashboard, spin-to-win offer.
+
 
 ## Technical notes
 

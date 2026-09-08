@@ -220,14 +220,15 @@ function ShopPage() {
   return (
     <section className="pb-10 md:pb-28">
       {/* Page header over collection photography */}
-      <div className="tone-dark relative -mt-[88px] overflow-hidden">
+      <div className="tone-dark relative overflow-hidden">
         <img
           src={collectionHeader.url}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-[#0B0A08]/75" />
-        <div className="relative mx-auto max-w-[1400px] px-6 pb-16 pt-[140px] text-center md:px-12 md:pb-24 md:pt-[200px]">
+        <div className="relative mx-auto max-w-[1400px] px-6 py-20 text-center md:px-12 md:py-28">
+
           <ScrollReveal>
             <MetaLabel gold>✦ The Collection</MetaLabel>
             <h1 className="mx-auto mt-5 font-display text-[2.75rem] font-semibold leading-[1.05] md:text-7xl">

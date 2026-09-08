@@ -6,6 +6,8 @@
  * Callers decide what to do with that — nothing silently pretends to succeed.
  */
 
+import { ORDERS_EMAIL, SALES_EMAIL } from "@/lib/brand";
+
 export type EmailFailureReason =
   | "missing_api_key"
   | "provider_error"
@@ -16,11 +18,12 @@ export type EmailResult =
   | { sent: true }
   | { sent: false; reason: EmailFailureReason; detail?: string };
 
-export const DEFAULT_FROM = "Terps <orders@terpnation.co.za>";
+export const DEFAULT_FROM = `Terps <${ORDERS_EMAIL}>`;
 
 export function emailFrom(): string {
   return process.env.RESEND_FROM_EMAIL || DEFAULT_FROM;
 }
+
 
 export async function sendEmail(opts: {
   /** Short label for the logs, e.g. "stockist-welcome", "retail-order-confirmation". */

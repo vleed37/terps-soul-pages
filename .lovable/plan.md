@@ -29,7 +29,7 @@ Removed from the homepage entirely: "The Craft — built slowly, built once" (it
 
 ## 3. First-visit popup (homepage only)
 
-Message: "First time here? Sign up to become a stockist, or continue shopping." Two buttons — stockist sign-up and continue shopping. Shown once per visitor and remembered.
+Message: "First time here? Sign up to become a stockist, or continue shopping." Buttons, exactly: primary "Sign up for wholesale pricing" (→ /wholesale) and secondary "Continue shopping". Shown once per visitor and remembered.
 
 Rules:
 - Homepage only.

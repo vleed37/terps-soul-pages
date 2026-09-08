@@ -8,7 +8,7 @@ import { StrainCard } from "@/components/brand/StrainCard";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { FeatureBand } from "@/components/brand/FeatureBand";
+import collectionHeader from "@/assets/shoot/divine-56.jpg.asset.json";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { StrainTypeDot } from "@/components/brand/StrainTypePill";
@@ -244,8 +244,9 @@ function ShopPage() {
         <div className="mt-16 flex items-center justify-center gap-8 border-b border-[color:var(--border-subtle)] pb-4">
           {[
             { v: "all" as const, l: "All", c: strains.length },
-            { v: "pre_roll" as const, l: "Pre-Rolls", c: preRollCount },
+            { v: "pre_roll" as const, l: "Infused Pre-Rolls", c: preRollCount },
             { v: "caviar_stix" as const, l: "Caviar Stix", c: caviarCount },
+
           ].map((tab) => {
             const active = line === tab.v;
             return (

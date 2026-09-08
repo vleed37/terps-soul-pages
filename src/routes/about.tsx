@@ -1,21 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { listStrains } from "@/lib/strains.functions";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { PullQuote } from "@/components/brand/PullQuote";
 import { GoldButton } from "@/components/brand/GoldButton";
-import { getStrainProductImage } from "@/lib/strain-assets";
-import lifestyle1 from "@/assets/lifestyle-1.webp";
-import lifestyle3 from "@/assets/lifestyle-3.webp";
-import lifestyle4 from "@/assets/lifestyle-4.webp";
-import type { Strain } from "@/lib/types";
+import story1 from "@/assets/shoot/divine-62.jpg.asset.json";
+import story2 from "@/assets/shoot/divine-48.jpg.asset.json";
+import story3 from "@/assets/shoot/divine-56.jpg.asset.json";
 import { seoMeta } from "@/lib/seo";
-
-const strainsQuery = queryOptions({
-  queryKey: ["strains", "all"],
-  queryFn: () => listStrains(),
-});
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -26,19 +17,15 @@ export const Route = createFileRoute("/about")({
       path: "/about",
     }),
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(strainsQuery),
   component: AboutPage,
 });
 
 function AboutPage() {
-  const { data } = useSuspenseQuery(strainsQuery);
-  const strains = (data ?? []) as unknown as Strain[];
-
   const paragraphs = [
     "Terps was built around one belief: an infused pre-roll should taste like something. Not chemicals. Not cover-ups. Real strain expression — sharpened, never masked. Every drop carries the flavour it was supposed to.",
-    "Every batch starts with cultivars chosen for their terpene profile, not their yield. We slow-cure. We hand-infuse with live hash rosin. We do small drops, strain-specific, and we put the strain on the label because we're proud of what's inside.",
+    "We start with cultivars chosen for their terpene profile, not their yield. We slow-cure. We hand-infuse with cured hash and crumble. Strain-specific, and the strain goes on the label because we're proud of what's inside.",
     "We're South African born and bred. The land here grows different, and so do the people. Terps is a product of that — the patience of the soil, the edge of the streets, the standard of a culture that knows quality when it tastes it.",
-    "Every drop is limited. Every batch is numbered. When it's gone, it's gone — and the next one is already in cure. This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavour on the other end.",
+    "This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavour on the other end.",
     "Welcome to Terps. Welcome to flavour first.",
   ];
 
@@ -63,7 +50,7 @@ function AboutPage() {
 
         <ScrollReveal delay={0.05}>
           <img
-            src={lifestyle1}
+            src={story1.url}
             alt=""
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
@@ -87,7 +74,7 @@ function AboutPage() {
 
         <ScrollReveal delay={0.05}>
           <img
-            src={lifestyle3}
+            src={story2.url}
             alt=""
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
@@ -101,7 +88,7 @@ function AboutPage() {
 
         <ScrollReveal delay={0.05}>
           <img
-            src={lifestyle4}
+            src={story3.url}
             alt=""
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"

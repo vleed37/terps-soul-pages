@@ -2,20 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
-import { Instagram, Mail } from "lucide-react";
 import { listStrains } from "@/lib/strains.functions";
-import { Hairline } from "@/components/brand/Hairline";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { GhostLink } from "@/components/brand/GhostLink";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { PullQuote } from "@/components/brand/PullQuote";
-import { Logo } from "@/components/brand/Logo";
 import { CaviarStixTeaser } from "@/components/brand/CaviarStixTeaser";
 import { subscribeEmail } from "@/lib/forms.functions";
-import { SALES_EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/brand";
-import lifestyle3 from "@/assets/lifestyle-3.webp";
-import stockistDisplay from "@/assets/stockist-display.jpg";
 import heroImage from "@/assets/hero-mindspark.jpg";
 import { getStrainProductImage } from "@/lib/strain-assets";
 import type { Strain } from "@/lib/types";
@@ -23,8 +16,7 @@ import { seoMeta } from "@/lib/seo";
 
 /** Swap-in point for the hero visual — replace with a new still or a <video> source. */
 const HERO_MEDIA = heroImage;
-/** Swap-in point for the stockist programme photo. */
-const STOCKIST_IMAGE = stockistDisplay;
+
 
 export const Route = createFileRoute("/")({
   head: () => ({

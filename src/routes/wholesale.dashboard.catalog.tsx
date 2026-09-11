@@ -51,9 +51,9 @@ function CatalogPage() {
 
 function WholesaleStrainCard({ s }: { s: WholesaleStrain }) {
   const addItem = useWholesaleCart((st) => st.addItem);
-  const [boxes, setBoxes] = useState(s.wholesale_minimum_boxes || 1);
-  const boxPrice = Number(s.wholesale_box_price_zar);
-  const unitPrice = s.box_quantity > 0 ? boxPrice / s.box_quantity : 0;
+  const [boxes, setBoxes] = useState(s.minimum_boxes || 1);
+  const boxPrice = resolveTierPrice(s.tiers, boxes);
+  const unitPrice = s.units_per_box > 0 ? boxPrice / s.units_per_box : 0;
 
   function onAdd() {
     addItem({
@@ -62,9 +62,9 @@ function WholesaleStrainCard({ s }: { s: WholesaleStrain }) {
       name: s.name,
       imageUrl: s.product_image_url,
       strainType: s.strain_type,
-      boxPriceZar: boxPrice,
-      boxQuantity: s.box_quantity,
-      minimumBoxes: s.wholesale_minimum_boxes,
+      tiers: s.tiers,
+      boxQuantity: s.units_per_box,
+      minimumBoxes: s.minimum_boxes,
     }, boxes);
     toast.success(`${boxes} box${boxes > 1 ? "es" : ""} of ${s.name} added`);
   }
@@ -78,22 +78,44 @@ function WholesaleStrainCard({ s }: { s: WholesaleStrain }) {
       <div className="mt-4 flex-1">
         <h3 className="font-display text-xl leading-tight">{s.name}</h3>
         {s.tagline && <p className="mt-1 text-xs italic text-[color:var(--text-tertiary)]">{s.tagline}</p>}
-        <p className="mt-3 meta-xs text-[color:var(--accent-gold)]">BOX PRICING</p>
+        <p className="mt-3 meta-xs text-[color:var(--accent-gold)]">YOUR BOX PRICE</p>
         <div className="mt-1 flex items-baseline gap-2">
           <span className="font-display text-2xl">R{boxPrice.toFixed(0)}</span>
           <span className="text-xs text-[color:var(--text-tertiary)]">/ box</span>
         </div>
         <p className="text-xs text-[color:var(--text-secondary)]">
-          {s.box_quantity} units · R{unitPrice.toFixed(0)}/unit
+          {s.units_per_box} units per box · R{unitPrice.toFixed(0)}/unit
         </p>
-        {s.wholesale_minimum_boxes > 1 && (
-          <p className="mt-1 text-xs text-[color:var(--text-tertiary)]">Min. order: {s.wholesale_minimum_boxes} boxes</p>
+        <p className="mt-1 text-xs text-[color:var(--text-tertiary)]">
+          Recommended retail: R{Number(s.rrp_zar).toFixed(0)}/unit
+        </p>
+
+        <div className="mt-4 rounded-[4px] border border-[color:var(--border-subtle)] p-3">
+          <p className="meta-xs text-[color:var(--text-tertiary)]">VOLUME PRICING</p>
+          <ul className="mt-2 space-y-1">
+            {s.tiers.map((t) => {
+              const active = boxes >= t.min_boxes && (t.max_boxes == null || boxes <= t.max_boxes);
+              return (
+                <li
+                  key={`${t.min_boxes}-${t.max_boxes ?? "plus"}`}
+                  className={`flex justify-between text-xs ${active ? "text-[color:var(--accent-gold)]" : "text-[color:var(--text-secondary)]"}`}
+                >
+                  <span>{formatTierRange(t)}</span>
+                  <span>R{Number(t.price_per_box_zar).toFixed(0)} / box</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {s.minimum_boxes > 1 && (
+          <p className="mt-2 text-xs text-[color:var(--text-tertiary)]">Min. order: {s.minimum_boxes} boxes</p>
         )}
       </div>
       <div className="mt-4 flex items-center gap-3">
         <div className="flex items-center gap-2 rounded-[4px] border border-[color:var(--border-luxe)] px-2 py-1">
           <button
-            onClick={() => setBoxes((b) => Math.max(s.wholesale_minimum_boxes, b - 1))}
+            onClick={() => setBoxes((b) => Math.max(s.minimum_boxes || 1, b - 1))}
             className="grid h-7 w-7 place-items-center text-[color:var(--text-secondary)] hover:text-[color:var(--accent-gold)]"
             aria-label="Decrease"
           >

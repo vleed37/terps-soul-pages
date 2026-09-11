@@ -385,6 +385,117 @@ function EditStrain() {
           {saving ? "Saving…" : "Save changes"}
         </GoldButton>
       </div>
+
+      {/* Wholesale pricing */}
+      <div className="mt-16 rounded-2xl border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-7">
+        <MetaLabel gold>✦ WHOLESALE PRICING</MetaLabel>
+        <h2 className="mt-3 font-display text-2xl">Box pricing for stockists</h2>
+        <p className="mt-2 text-sm text-[color:var(--text-secondary)]">
+          Stockists only. Tiers must start at 1 box, run without gaps, and the last tier stays
+          open-ended.
+        </p>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <div>
+            <FieldLabel>Units per box</FieldLabel>
+            <Input
+              type="number"
+              min="1"
+              value={wholesale.units_per_box}
+              onChange={(e) => setWholesale({ ...wholesale, units_per_box: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Minimum boxes</FieldLabel>
+            <Input
+              type="number"
+              min="1"
+              value={wholesale.minimum_boxes}
+              onChange={(e) => setWholesale({ ...wholesale, minimum_boxes: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Available to stockists</FieldLabel>
+            <label className="flex h-10 items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={wholesale.wholesale_active}
+                onChange={(e) => setWholesale({ ...wholesale, wholesale_active: e.target.checked })}
+              />
+              Active
+            </label>
+          </div>
+        </div>
+
+        <div className="mt-6 space-y-2">
+          <FieldLabel>Tiers — from boxes / to boxes (blank = no limit) / price per box</FieldLabel>
+          {wholesale.tiers.map((t, i) => (
+            <div key={i} className="grid grid-cols-12 items-center gap-2">
+              <Input
+                className="col-span-3"
+                type="number"
+                min="1"
+                value={t.min_boxes}
+                onChange={(e) => {
+                  const arr = [...wholesale.tiers];
+                  arr[i] = { ...arr[i], min_boxes: Number(e.target.value) };
+                  setWholesale({ ...wholesale, tiers: arr });
+                }}
+              />
+              <Input
+                className="col-span-3"
+                type="number"
+                min="1"
+                value={t.max_boxes ?? ""}
+                onChange={(e) => {
+                  const arr = [...wholesale.tiers];
+                  arr[i] = { ...arr[i], max_boxes: e.target.value === "" ? null : Number(e.target.value) };
+                  setWholesale({ ...wholesale, tiers: arr });
+                }}
+              />
+              <Input
+                className="col-span-4"
+                type="number"
+                min="0"
+                step="1"
+                value={t.price_per_box_zar}
+                onChange={(e) => {
+                  const arr = [...wholesale.tiers];
+                  arr[i] = { ...arr[i], price_per_box_zar: Number(e.target.value) };
+                  setWholesale({ ...wholesale, tiers: arr });
+                }}
+              />
+              <button
+                type="button"
+                className="ghost-link col-span-2 text-xs"
+                onClick={() =>
+                  setWholesale({ ...wholesale, tiers: wholesale.tiers.filter((_, j) => j !== i) })
+                }
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="ghost-link text-xs"
+            onClick={() =>
+              setWholesale({
+                ...wholesale,
+                tiers: [...wholesale.tiers, { min_boxes: 1, max_boxes: null, price_per_box_zar: 0 }],
+              })
+            }
+          >
+            + Add tier
+          </button>
+        </div>
+
+        <div className="mt-6">
+          <GoldButton onClick={handleSaveWholesale} disabled={savingWholesale}>
+            {savingWholesale ? "Saving…" : "Save wholesale pricing"}
+          </GoldButton>
+        </div>
+      </div>
     </section>
   );
 }

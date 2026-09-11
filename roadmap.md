@@ -15,3 +15,15 @@
 
 ## Known minor issue
 - Stockist finder dialog lacks a `DialogTitle` (Radix a11y console warning).
+
+## Phase 1 remediation (tiered wholesale pricing) — done
+- Retail prices corrected: pre-rolls R160, Caviar Stix R210.
+- Protected tiered box pricing live (20 units/box); tiers verified at boxes 1,2,3,5,6,9,10,11 for both families.
+- Wholesale prices readable only by approved stockists/admins (RLS + anon grants revoked); checkout totals recomputed server-side.
+- Legal placeholder banners removed; notify-me is idempotent.
+- Admin strain editor now edits retail price, stock, active flag and wholesale tiers.
+
+### Open (needs user)
+- Old unused columns on strains (wholesale_box_price_zar, wholesale_minimum_boxes, wholesale_available, box_quantity) still exist — dropping them needs approval.
+- Missing env config: BOBPAY_* and RESEND_API_KEY — live payments and email sending remain unverified.
+- Legal page wording still awaits client/legal review.

@@ -131,30 +131,92 @@ export const updateMyWholesaleAccount = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
+async function assertApprovedStockist(userId: string) {
+  const { data: acct } = await supabaseAdmin
+    .from("wholesale_accounts")
+    .select("approval_status")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (!acct || acct.approval_status !== "approved") {
+    throw new Response("Forbidden", { status: 403 });
+  }
+}
+
+type TierRow = { strain_id: string; min_boxes: number; max_boxes: number | null; price_per_box_zar: number };
+
+/** Server-only: protected wholesale config + tier ladder per strain. */
+async function loadWholesaleCatalog(strainIds?: string[]) {
+  let productQuery = supabaseAdmin
+    .from("wholesale_products")
+    .select("strain_id,units_per_box,minimum_boxes,wholesale_active")
+    .eq("wholesale_active", true);
+  if (strainIds?.length) productQuery = productQuery.in("strain_id", strainIds);
+  const { data: products, error: pErr } = await productQuery;
+  if (pErr) throw new Error(pErr.message);
+
+  const ids = (products ?? []).map((p) => p.strain_id);
+  if (!ids.length) return { products: [], tiersByStrain: new Map<string, TierRow[]>(), strainsById: new Map() };
+
+  const [{ data: tiers, error: tErr }, { data: strains, error: sErr }] = await Promise.all([
+    supabaseAdmin
+      .from("wholesale_price_tiers")
+      .select("strain_id,min_boxes,max_boxes,price_per_box_zar")
+      .in("strain_id", ids),
+    supabaseAdmin
+      .from("strains")
+      .select(
+        "id,slug,name,tagline,strain_type,product_line,product_image_url,accent_color_primary,weight_grams,price_zar,is_active,display_order",
+      )
+      .in("id", ids),
+  ]);
+  if (tErr) throw new Error(tErr.message);
+  if (sErr) throw new Error(sErr.message);
+
+  const tiersByStrain = new Map<string, TierRow[]>();
+  for (const t of (tiers ?? []) as TierRow[]) {
+    const list = tiersByStrain.get(t.strain_id) ?? [];
+    list.push({ ...t, price_per_box_zar: Number(t.price_per_box_zar) });
+    tiersByStrain.set(t.strain_id, list);
+  }
+  const strainsById = new Map((strains ?? []).map((s) => [s.id, s]));
+  return { products: products ?? [], tiersByStrain, strainsById };
+}
+
 export const listWholesaleStrains = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    // Verify approved
-    const { data: acct } = await supabaseAdmin
-      .from("wholesale_accounts")
-      .select("approval_status")
-      .eq("user_id", context.userId)
-      .maybeSingle();
-    if (!acct || acct.approval_status !== "approved") {
-      throw new Response("Forbidden", { status: 403 });
-    }
+    await assertApprovedStockist(context.userId);
 
-    const { data, error } = await supabaseAdmin
-      .from("strains")
-      .select(
-        "id,slug,name,tagline,strain_type,product_line,product_image_url,accent_color_primary,box_quantity,wholesale_box_price_zar,wholesale_minimum_boxes,wholesale_available,weight_grams",
-      )
-      .eq("is_active", true)
-      .eq("wholesale_available", true)
-      .not("wholesale_box_price_zar", "is", null)
-      .order("display_order", { ascending: true });
-    if (error) throw new Error(error.message);
-    return (data ?? []) as unknown as import("./types").WholesaleStrain[];
+    const { products, tiersByStrain, strainsById } = await loadWholesaleCatalog();
+    const rows = products
+      .map((p) => {
+        const s = strainsById.get(p.strain_id);
+        const tiers = tiersByStrain.get(p.strain_id) ?? [];
+        if (!s || !s.is_active || tiers.length === 0) return null;
+        return {
+          id: s.id,
+          slug: s.slug,
+          name: s.name,
+          tagline: s.tagline,
+          strain_type: s.strain_type,
+          product_line: s.product_line,
+          product_image_url: s.product_image_url,
+          accent_color_primary: s.accent_color_primary,
+          weight_grams: s.weight_grams,
+          units_per_box: p.units_per_box,
+          minimum_boxes: p.minimum_boxes ?? 1,
+          rrp_zar: Number(s.price_zar),
+          tiers: tiers
+            .map((t) => ({ min_boxes: t.min_boxes, max_boxes: t.max_boxes, price_per_box_zar: t.price_per_box_zar }))
+            .sort((a, b) => a.min_boxes - b.min_boxes),
+          display_order: s.display_order ?? 0,
+        };
+      })
+      .filter((r): r is NonNullable<typeof r> => r !== null)
+      .sort((a, b) => a.display_order - b.display_order)
+      .map(({ display_order: _d, ...rest }) => rest);
+
+    return rows as unknown as import("./types").WholesaleStrain[];
   });
 
 const CartLineSchema = z.object({

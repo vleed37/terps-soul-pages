@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   adminGetStrain,
   adminUpdateStrain,
+  adminGetWholesalePricing,
+  adminUpdateWholesalePricing,
   generateStrainInfo,
 } from "@/lib/admin.functions";
 import { GoldButton } from "@/components/brand/GoldButton";

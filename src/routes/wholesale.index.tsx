@@ -362,7 +362,7 @@ function Stepper({ step }: { step: 1 | 2 }) {
 }
 
 const inputCls =
-  "w-full rounded-[4px] border border-[color:var(--border-strong)] bg-[color:var(--bg-base)] px-4 py-3 text-sm outline-none transition-colors focus:border-[color:var(--accent-gold)]";
+  "w-full rounded-[4px] border border-[color:var(--border-strong)] bg-[color:var(--bg-base)] px-4 py-3.5 text-[0.95rem] outline-none transition-all duration-300 placeholder:text-[color:var(--text-tertiary)] focus:border-[color:var(--accent-gold)] focus:shadow-[0_0_0_3px_var(--accent-gold-muted)]";
 const labelCls = "meta-xs mb-2 block text-[color:var(--text-secondary)]";
 
 function FieldRow({ children }: { children: React.ReactNode }) {

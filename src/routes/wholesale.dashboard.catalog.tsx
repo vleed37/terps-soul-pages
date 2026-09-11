@@ -11,6 +11,7 @@ import { useWholesaleCart } from "@/lib/store/wholesale-cart";
 import { toast } from "sonner";
 import type { WholesaleStrain } from "@/lib/types";
 import { GridSkeleton } from "@/components/layout/PageSkeletons";
+import { formatTierRange, resolveTierPrice } from "@/lib/wholesale-pricing";
 
 export const Route = createFileRoute("/wholesale/dashboard/catalog")({
   head: () => ({ meta: [{ title: "Terps — Wholesale Catalog" }] }),
@@ -33,7 +34,8 @@ function CatalogPage() {
         <MetaLabel gold>Catalog</MetaLabel>
         <h2 className="mt-3 font-display text-3xl md:text-4xl">Box pricing for stockists.</h2>
         <p className="mt-3 text-sm text-[color:var(--text-secondary)]">
-          All prices are wholesale box rate, excluding VAT and shipping.
+          All prices are per box of 20 units, excluding VAT and delivery. Box price drops
+          automatically as your box count increases.
         </p>
       </div>
       {strains.length === 0 ? (

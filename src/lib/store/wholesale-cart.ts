@@ -84,7 +84,7 @@ export const useWholesaleCart = create<State>()(
 
 export const wholesaleCartSelectors = {
   boxCount: (s: State) => s.items.reduce((a, i) => a + i.boxes, 0),
-  subtotal: (s: State) => s.items.reduce((a, i) => a + i.boxPriceZar * i.boxes, 0),
+  subtotal: (s: State) => Number(s.items.reduce((a, i) => a + itemLineTotal(i), 0).toFixed(2)),
 };
 
 export const WHOLESALE_SHIPPING = WHOLESALE_DELIVERY_FEE;

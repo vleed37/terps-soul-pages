@@ -9,7 +9,7 @@ export const Route = createFileRoute("/legal/shipping")({
     meta: seoMeta({
       title: "Shipping Policy · Terps",
       description:
-        "Delivery areas, timelines, and costs for Terps orders in South Africa. Placeholder copy — under legal review.",
+        "Delivery areas, timelines, and costs for Terps orders in South Africa.",
       path: "/legal/shipping",
     }),
   }),

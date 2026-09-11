@@ -10,7 +10,7 @@ export const Route = createFileRoute("/legal/privacy")({
     meta: seoMeta({
       title: "Privacy Policy · Terps",
       description:
-        "How Terps collects, uses, and protects your personal information under POPIA. Placeholder copy — under legal review.",
+        "How Terps collects, uses, and protects your personal information under POPIA.",
       path: "/legal/privacy",
     }),
   }),

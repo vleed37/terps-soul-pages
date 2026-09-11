@@ -10,7 +10,8 @@ import { GoldButton } from "@/components/brand/GoldButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { createWholesaleAccount, getMyWholesaleAccount } from "@/lib/wholesale.functions";
-import wholesaleHero from "@/assets/shoot/divine-62.jpg.asset.json";
+import { motion, useReducedMotion } from "framer-motion";
+import wholesaleHero from "@/assets/shoot/wholesale-hero-display.jpg.asset.json";
 import { seoMeta } from "@/lib/seo";
 import { SALES_EMAIL } from "@/lib/brand";
 

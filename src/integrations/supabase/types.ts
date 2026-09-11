@@ -659,6 +659,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       wholesale_accounts: {
         Row: {
           approval_status: string
@@ -901,6 +922,82 @@ export type Database = {
           },
         ]
       }
+      wholesale_price_tiers: {
+        Row: {
+          created_at: string
+          id: string
+          max_boxes: number | null
+          min_boxes: number
+          price_per_box_zar: number
+          strain_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          max_boxes?: number | null
+          min_boxes: number
+          price_per_box_zar: number
+          strain_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          max_boxes?: number | null
+          min_boxes?: number
+          price_per_box_zar?: number
+          strain_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wholesale_price_tiers_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: false
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wholesale_products: {
+        Row: {
+          created_at: string
+          id: string
+          minimum_boxes: number
+          strain_id: string
+          units_per_box: number
+          updated_at: string
+          wholesale_active: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          minimum_boxes?: number
+          strain_id: string
+          units_per_box?: number
+          updated_at?: string
+          wholesale_active?: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          minimum_boxes?: number
+          strain_id?: string
+          units_per_box?: number
+          updated_at?: string
+          wholesale_active?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wholesale_products_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: true
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -912,9 +1009,21 @@ export type Database = {
       }
       generate_order_number: { Args: never; Returns: string }
       generate_wholesale_order_number: { Args: never; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_approved_stockist: { Args: { _user_id: string }; Returns: boolean }
+      resolve_wholesale_price: {
+        Args: { _boxes: number; _strain_id: string }
+        Returns: number
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "staff"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1041,6 +1150,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "staff"],
+    },
   },
 } as const

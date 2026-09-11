@@ -118,6 +118,18 @@ const BENEFITS = [
   { n: "04", t: "Customer Routing", d: "Our stockist finder helps nearby customers discover your store." },
 ] as const;
 
+function Step({ n, t, d, delay = 0 }: { n: string; t: string; d: string; delay?: number }) {
+  return (
+    <ScrollReveal delay={delay}>
+      <p className="font-display text-6xl italic leading-none text-[color:var(--accent-gold)] md:text-7xl">{n}</p>
+      <h3 className="mt-6 font-body text-sm font-semibold uppercase tracking-[0.18em]">{t}</h3>
+      <p className="mt-4 max-w-sm font-body text-base leading-relaxed text-[color:var(--text-secondary)]">{d}</p>
+    </ScrollReveal>
+  );
+}
+
+
+
 function WholesaleHero() {
   const reduce = useReducedMotion();
   return (

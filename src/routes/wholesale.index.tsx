@@ -76,32 +76,21 @@ function WholesalePage() {
             <h2 className="mt-6 font-display text-4xl md:text-5xl">Two steps. That's it.</h2>
           </ScrollReveal>
           <div className="mt-14 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] md:gap-12">
-            {[
-              { n: "01", t: "Sign up", d: "Create your stockist account. No lengthy application or approval wait." },
-              { n: "02", t: "Shop wholesale", d: "Sign in, access protected box pricing and place your order." },
-            ].map((step, i) => (
-              <>
-                {i === 1 && (
-                  <div
-                    key="divider"
-                    aria-hidden
-                    className="my-10 h-px w-full bg-[color:var(--border-luxe)] md:my-0 md:h-full md:w-px"
-                  />
-                )}
-                <ScrollReveal key={step.n} delay={i * 0.12}>
-                  <p className="font-display text-6xl italic leading-none text-[color:var(--accent-gold)] md:text-7xl">
-                    {step.n}
-                  </p>
-                  <h3 className="mt-6 font-body text-sm font-semibold uppercase tracking-[0.18em]">{step.t}</h3>
-                  <p className="mt-4 max-w-sm font-body text-base leading-relaxed text-[color:var(--text-secondary)]">
-                    {step.d}
-                  </p>
-                </ScrollReveal>
-              </>
-            ))}
+            <Step n="01" t="Sign up" d="Create your stockist account. No lengthy application or approval wait." />
+            <div
+              aria-hidden
+              className="my-10 h-px w-full bg-[color:var(--border-luxe)] md:my-0 md:h-full md:w-px"
+            />
+            <Step
+              n="02"
+              t="Shop wholesale"
+              d="Sign in, access protected box pricing and place your order."
+              delay={0.12}
+            />
           </div>
         </div>
       </section>
+
 
       {/* REGISTER */}
       <section id="apply" className="scroll-mt-28 bg-[color:var(--bg-surface)] px-6 py-24 md:py-32">

@@ -133,7 +133,7 @@ function Step({ n, t, d, delay = 0 }: { n: string; t: string; d: string; delay?:
 function WholesaleHero() {
   const reduce = useReducedMotion();
   return (
-    <section className="relative grid grid-cols-1 items-stretch lg:min-h-[86vh] lg:grid-cols-[1.05fr_1fr]">
+    <section className="relative grid grid-cols-1 items-stretch lg:min-h-[80vh] lg:grid-cols-[1.05fr_1fr]">
       {/* Photograph */}
       <div className="relative order-1 h-[58vh] min-h-[340px] overflow-hidden lg:order-2 lg:h-auto">
         <motion.img

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { VAT_RATE, WHOLESALE_DELIVERY_FEE } from "@/lib/brand";
+import { lineTotalZar, resolveTierPrice, type WholesalePriceTier } from "@/lib/wholesale-pricing";
 
 export type WholesaleCartItem = {
   strainId: string;
@@ -8,11 +9,21 @@ export type WholesaleCartItem = {
   name: string;
   imageUrl: string | null;
   strainType: "sativa" | "hybrid" | "indica" | null;
-  boxPriceZar: number;
+  /** Display-only tier ladder supplied by the protected server catalogue. */
+  tiers: WholesalePriceTier[];
   boxQuantity: number;
   minimumBoxes: number;
   boxes: number;
 };
+
+/** Display-only: the server recalculates every price at checkout. */
+export function itemBoxPrice(item: WholesaleCartItem): number {
+  return resolveTierPrice(item.tiers ?? [], item.boxes);
+}
+
+export function itemLineTotal(item: WholesaleCartItem): number {
+  return lineTotalZar(item.tiers ?? [], item.boxes);
+}
 
 type State = {
   items: WholesaleCartItem[];

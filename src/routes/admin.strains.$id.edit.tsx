@@ -260,6 +260,41 @@ function EditStrain() {
           />
         </div>
 
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <FieldLabel>Retail price (R per unit)</FieldLabel>
+            <Input
+              type="number"
+              step="1"
+              min="0"
+              value={form.price_zar}
+              onChange={(e) => setForm({ ...form, price_zar: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Stock (units)</FieldLabel>
+            <Input
+              type="number"
+              step="1"
+              min="0"
+              value={form.stock_quantity}
+              onChange={(e) => setForm({ ...form, stock_quantity: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Visible on site</FieldLabel>
+            <label className="flex h-10 items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={form.is_active}
+                onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
+              />
+              Active
+            </label>
+          </div>
+        </div>
+
+
         <div>
           <FieldLabel>Story</FieldLabel>
           <textarea

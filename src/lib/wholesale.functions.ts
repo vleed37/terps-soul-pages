@@ -255,12 +255,8 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     }
 
     const ids = data.items.map((i) => i.strainId);
-    const { data: strains, error: sErr } = await supabaseAdmin
-      .from("strains")
-      .select("id,name,box_quantity,wholesale_box_price_zar,wholesale_minimum_boxes,wholesale_available,is_active,weight_grams")
-      .in("id", ids);
-    if (sErr) throw new Error(sErr.message);
-    const byId = new Map((strains ?? []).map((s) => [s.id, s]));
+    const { products, tiersByStrain, strainsById } = await loadWholesaleCatalog(ids);
+    const productById = new Map(products.map((p) => [p.strain_id, p]));
 
     let subtotal = 0;
     const orderItems: Array<{
@@ -275,18 +271,24 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     }> = [];
 
     for (const line of data.items) {
-      const s = byId.get(line.strainId);
-      if (!s || !s.is_active || !s.wholesale_available || s.wholesale_box_price_zar == null) {
+      const s = strainsById.get(line.strainId);
+      const p = productById.get(line.strainId);
+      const tiers = tiersByStrain.get(line.strainId) ?? [];
+      if (!s || !s.is_active || !p || tiers.length === 0) {
         return { ok: false as const, error: `${s?.name ?? "Item"} is not available for wholesale.` };
       }
-      const minBoxes = s.wholesale_minimum_boxes ?? 1;
+      const minBoxes = p.minimum_boxes ?? 1;
       if (line.boxes < minBoxes) {
         return { ok: false as const, error: `${s.name}: minimum ${minBoxes} box(es).` };
       }
-      const boxPrice = Number(s.wholesale_box_price_zar);
-      const boxQty = s.box_quantity ?? 20;
+      // Server-authoritative tier pricing — client-sent prices are never trusted.
+      const boxPrice = resolveTierPrice(tiers, line.boxes);
+      if (boxPrice <= 0) {
+        return { ok: false as const, error: `${s.name}: no wholesale price configured.` };
+      }
+      const boxQty = p.units_per_box ?? 20;
       const unitPrice = boxQty > 0 ? boxPrice / boxQty : 0;
-      const lineTotal = boxPrice * line.boxes;
+      const lineTotal = Number((boxPrice * line.boxes).toFixed(2));
       subtotal += lineTotal;
       orderItems.push({
         strain_id: s.id,
@@ -299,6 +301,7 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
         line_total_zar: lineTotal,
       });
     }
+    subtotal = Number(subtotal.toFixed(2));
 
     const shipping = SHIPPING_FLAT;
     const vat = Number(((subtotal + shipping) * VAT_RATE).toFixed(2));

@@ -115,15 +115,17 @@ Using the existing admin editor and the new role table, admin-only:
 ## 10. Visual and copy regression check
 
 - Confirm no return of "Craft. Built slowly. Built once.", quote banners, "4 drops / 4 flavours", "1 standard", "Batch 04 Active", "Limited First Batch", Follow Terps / Stay Close filler.
-- "Caviar Stix" spelling consistent; live-rosin language only on Caviar Stix, never on Infused Pre-Rolls.
+- Terminology: "Infused Pre-Roll" and "Caviar Stix" everywhere (artwork's "Caviar stick" is not used on the site).
+- Product distinction preserved: Infused Pre-Roll = premium indoor flower with extracts, crumble and hash. Caviar Stix = the enhanced version with the exterior live resin/rosin plus hash treatment. No live-rosin coating language on the standard pre-roll.
 - Strain Library and stockist locator verified, not rebuilt; only real defects fixed. No THC percentages shown.
 - Re-run the 390 / 768 / 1280 route sweep to confirm no overflow, no console errors, all routes healthy.
 
 ## Technical notes
 
-- Migrations: new `strain_wholesale_pricing` table with grants and stockist/admin-only select; `app_role` enum, `user_roles` table and `security definer has_role()`; retail price updates; drop of the wholesale price columns from `strains` (destructive — will ask for confirmation).
-- Server functions touched: wholesale catalogue/checkout (auth-scoped pricing reads), admin catalogue update, notify-me and newsletter send paths, BobPay webhook branches.
-- Frontend touched: header nav, wholesale signup copy, legal page layout, admin product list, price strings.
+- Migrations, in order: role enum/table + `has_role()`; protected wholesale config and tier tables with grants, stockist/admin-only read and admin-only write, plus non-overlap/no-gap constraints; insert of the authoritative tiers; retail price updates; and finally the drop of the obsolete wholesale columns from the product table (destructive — separate, approval-gated step).
+- Server functions touched: wholesale catalogue and checkout (entitlement-scoped reads, server-resolved tier pricing), admin catalogue/wholesale management, notify-me and newsletter send paths, BobPay webhook branches.
+- Frontend touched: header nav, wholesale signup copy, wholesale catalogue/cart/checkout tier display, legal page layout, admin product list, retail price strings.
+
 
 ## Final report
 

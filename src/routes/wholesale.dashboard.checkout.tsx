@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import {
   useWholesaleCart,
   wholesaleCartSelectors,
+  itemBoxPrice,
+  itemLineTotal,
   WHOLESALE_SHIPPING,
   WHOLESALE_VAT_RATE,
 } from "@/lib/store/wholesale-cart";
@@ -161,10 +163,10 @@ function WholesaleCheckoutPage() {
                 <div className="min-w-0">
                   <p className="font-display text-base leading-tight">{i.name}</p>
                   <p className="meta-xs text-[color:var(--text-tertiary)]">
-                    {i.boxes} × box ({i.boxQuantity} units)
+                    {i.boxes} × box ({i.boxQuantity} units) · R{itemBoxPrice(i).toFixed(0)}/box
                   </p>
                 </div>
-                <span className="font-semibold whitespace-nowrap">R{(i.boxPriceZar * i.boxes).toFixed(0)}</span>
+                <span className="font-semibold whitespace-nowrap">R{itemLineTotal(i).toFixed(0)}</span>
               </li>
             ))}
           </ul>

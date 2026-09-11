@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   adminGetStrain,
   adminUpdateStrain,
+  adminGetWholesalePricing,
+  adminUpdateWholesalePricing,
   generateStrainInfo,
 } from "@/lib/admin.functions";
 import { GoldButton } from "@/components/brand/GoldButton";
@@ -42,6 +44,17 @@ type Form = {
   helps_with: string[];
   negatives: string[];
   terpene_breakdown: Array<{ name: string; percentage: number; descriptor: string }>;
+  price_zar: number;
+  stock_quantity: number;
+  is_active: boolean;
+};
+
+type Tier = { min_boxes: number; max_boxes: number | null; price_per_box_zar: number };
+type WholesaleForm = {
+  units_per_box: number;
+  minimum_boxes: number;
+  wholesale_active: boolean;
+  tiers: Tier[];
 };
 
 function arrToCsv(a: string[] | null | undefined) {
@@ -56,9 +69,12 @@ function EditStrain() {
   const getFn = useServerFn(adminGetStrain);
   const saveFn = useServerFn(adminUpdateStrain);
   const aiFn = useServerFn(generateStrainInfo);
+  const getWholesaleFn = useServerFn(adminGetWholesalePricing);
+  const saveWholesaleFn = useServerFn(adminUpdateWholesalePricing);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [savingWholesale, setSavingWholesale] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiName, setAiName] = useState("");
   const [form, setForm] = useState<Form>({
@@ -70,6 +86,15 @@ function EditStrain() {
     helps_with: [],
     negatives: [],
     terpene_breakdown: [],
+    price_zar: 0,
+    stock_quantity: 0,
+    is_active: true,
+  });
+  const [wholesale, setWholesale] = useState<WholesaleForm>({
+    units_per_box: 20,
+    minimum_boxes: 1,
+    wholesale_active: true,
+    tiers: [],
   });
 
   useEffect(() => {
@@ -86,6 +111,9 @@ function EditStrain() {
           helps_with: s.helps_with ?? [],
           negatives: s.negatives ?? [],
           terpene_breakdown: s.terpene_breakdown ?? [],
+          price_zar: Number(s.price_zar ?? 0),
+          stock_quantity: Number(s.stock_quantity ?? 0),
+          is_active: s.is_active !== false,
         });
         setAiName(s.name ?? "");
       })
@@ -95,6 +123,42 @@ function EditStrain() {
       cancelled = true;
     };
   }, [id, getFn]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getWholesaleFn({ data: { strain_id: id } })
+      .then((res: any) => {
+        if (cancelled || !res) return;
+        setWholesale({
+          units_per_box: res.product?.units_per_box ?? 20,
+          minimum_boxes: res.product?.minimum_boxes ?? 1,
+          wholesale_active: res.product?.wholesale_active ?? true,
+          tiers: (res.tiers ?? []).map((t: any) => ({
+            min_boxes: Number(t.min_boxes),
+            max_boxes: t.max_boxes == null ? null : Number(t.max_boxes),
+            price_per_box_zar: Number(t.price_per_box_zar),
+          })),
+        });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [id, getWholesaleFn]);
+
+  const handleSaveWholesale = async () => {
+    setSavingWholesale(true);
+    try {
+      const res: any = await saveWholesaleFn({ data: { strain_id: id, ...wholesale } });
+      if (res?.ok === false) toast.error(res.error);
+      else toast.success("Wholesale pricing saved.");
+    } catch (e: any) {
+      toast.error(e?.message ?? "Save failed.");
+    } finally {
+      setSavingWholesale(false);
+    }
+  };
+
 
   const handleAI = async () => {
     if (!aiName.trim()) return toast.error("Enter a strain name first.");
@@ -196,6 +260,41 @@ function EditStrain() {
           />
         </div>
 
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <FieldLabel>Retail price (R per unit)</FieldLabel>
+            <Input
+              type="number"
+              step="1"
+              min="0"
+              value={form.price_zar}
+              onChange={(e) => setForm({ ...form, price_zar: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Stock (units)</FieldLabel>
+            <Input
+              type="number"
+              step="1"
+              min="0"
+              value={form.stock_quantity}
+              onChange={(e) => setForm({ ...form, stock_quantity: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Visible on site</FieldLabel>
+            <label className="flex h-10 items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={form.is_active}
+                onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
+              />
+              Active
+            </label>
+          </div>
+        </div>
+
+
         <div>
           <FieldLabel>Story</FieldLabel>
           <textarea
@@ -285,6 +384,117 @@ function EditStrain() {
         <GoldButton onClick={handleSave} disabled={saving}>
           {saving ? "Saving…" : "Save changes"}
         </GoldButton>
+      </div>
+
+      {/* Wholesale pricing */}
+      <div className="mt-16 rounded-2xl border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-7">
+        <MetaLabel gold>✦ WHOLESALE PRICING</MetaLabel>
+        <h2 className="mt-3 font-display text-2xl">Box pricing for stockists</h2>
+        <p className="mt-2 text-sm text-[color:var(--text-secondary)]">
+          Stockists only. Tiers must start at 1 box, run without gaps, and the last tier stays
+          open-ended.
+        </p>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <div>
+            <FieldLabel>Units per box</FieldLabel>
+            <Input
+              type="number"
+              min="1"
+              value={wholesale.units_per_box}
+              onChange={(e) => setWholesale({ ...wholesale, units_per_box: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Minimum boxes</FieldLabel>
+            <Input
+              type="number"
+              min="1"
+              value={wholesale.minimum_boxes}
+              onChange={(e) => setWholesale({ ...wholesale, minimum_boxes: Number(e.target.value) })}
+            />
+          </div>
+          <div>
+            <FieldLabel>Available to stockists</FieldLabel>
+            <label className="flex h-10 items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={wholesale.wholesale_active}
+                onChange={(e) => setWholesale({ ...wholesale, wholesale_active: e.target.checked })}
+              />
+              Active
+            </label>
+          </div>
+        </div>
+
+        <div className="mt-6 space-y-2">
+          <FieldLabel>Tiers — from boxes / to boxes (blank = no limit) / price per box</FieldLabel>
+          {wholesale.tiers.map((t, i) => (
+            <div key={i} className="grid grid-cols-12 items-center gap-2">
+              <Input
+                className="col-span-3"
+                type="number"
+                min="1"
+                value={t.min_boxes}
+                onChange={(e) => {
+                  const arr = [...wholesale.tiers];
+                  arr[i] = { ...arr[i], min_boxes: Number(e.target.value) };
+                  setWholesale({ ...wholesale, tiers: arr });
+                }}
+              />
+              <Input
+                className="col-span-3"
+                type="number"
+                min="1"
+                value={t.max_boxes ?? ""}
+                onChange={(e) => {
+                  const arr = [...wholesale.tiers];
+                  arr[i] = { ...arr[i], max_boxes: e.target.value === "" ? null : Number(e.target.value) };
+                  setWholesale({ ...wholesale, tiers: arr });
+                }}
+              />
+              <Input
+                className="col-span-4"
+                type="number"
+                min="0"
+                step="1"
+                value={t.price_per_box_zar}
+                onChange={(e) => {
+                  const arr = [...wholesale.tiers];
+                  arr[i] = { ...arr[i], price_per_box_zar: Number(e.target.value) };
+                  setWholesale({ ...wholesale, tiers: arr });
+                }}
+              />
+              <button
+                type="button"
+                className="ghost-link col-span-2 text-xs"
+                onClick={() =>
+                  setWholesale({ ...wholesale, tiers: wholesale.tiers.filter((_, j) => j !== i) })
+                }
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="ghost-link text-xs"
+            onClick={() =>
+              setWholesale({
+                ...wholesale,
+                tiers: [...wholesale.tiers, { min_boxes: 1, max_boxes: null, price_per_box_zar: 0 }],
+              })
+            }
+          >
+            + Add tier
+          </button>
+        </div>
+
+        <div className="mt-6">
+          <GoldButton onClick={handleSaveWholesale} disabled={savingWholesale}>
+            {savingWholesale ? "Saving…" : "Save wholesale pricing"}
+          </GoldButton>
+        </div>
       </div>
     </section>
   );

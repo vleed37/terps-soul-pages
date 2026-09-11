@@ -10,7 +10,7 @@ export const Route = createFileRoute("/legal/refunds")({
     meta: seoMeta({
       title: "Refund Policy · Terps",
       description:
-        "How returns, refunds, and order issues are handled by Terps. Placeholder copy — under legal review.",
+        "How returns, refunds, and order issues are handled by Terps.",
       path: "/legal/refunds",
     }),
   }),

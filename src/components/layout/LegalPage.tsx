@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AlertTriangle } from "lucide-react";
+
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { SALES_EMAIL } from "@/lib/brand";
@@ -29,17 +29,6 @@ export function LegalPage({ eyebrow, title, lastUpdated, intro, sections }: Prop
           </p>
         </header>
 
-        <div className="mt-12 flex items-start gap-3 rounded-lg border border-[color:var(--accent-gold)]/40 bg-[color:var(--accent-gold-muted)] p-5">
-          <AlertTriangle
-            className="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--accent-gold)]"
-            strokeWidth={1.5}
-            aria-hidden
-          />
-          <p className="text-sm leading-relaxed text-[color:var(--text-primary)]">
-            <strong className="font-semibold">This is a placeholder.</strong> Final legal copy to be
-            reviewed by qualified counsel before launch.
-          </p>
-        </div>
 
         {intro && (
           <div className="mt-12 font-body text-lg leading-[1.85] text-[color:var(--text-primary)]">

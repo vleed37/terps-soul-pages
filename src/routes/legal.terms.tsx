@@ -9,7 +9,7 @@ export const Route = createFileRoute("/legal/terms")({
     meta: seoMeta({
       title: "Terms of Sale · Terps",
       description:
-        "The terms and conditions that govern your purchase from Terps. Placeholder copy — under legal review.",
+        "The terms and conditions that govern your purchase from Terps.",
       path: "/legal/terms",
     }),
   }),

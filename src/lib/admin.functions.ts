@@ -113,6 +113,11 @@ const StrainUpdateSchema = z.object({
     )
     .max(10)
     .optional(),
+  // Commerce fields
+  price_zar: z.number().min(0).max(100000).optional(),
+  stock_quantity: z.number().int().min(0).max(1000000).optional(),
+  is_active: z.boolean().optional(),
+  product_image_url: z.string().max(600).optional().nullable(),
 });
 
 export const adminUpdateStrain = createServerFn({ method: "POST" })
@@ -146,8 +151,95 @@ export const adminListStrains = createServerFn({ method: "POST" })
     assertAdmin(context.claims as Record<string, unknown>);
     const { data, error } = await supabaseAdmin
       .from("strains")
-      .select("id,slug,name,product_line,is_active,display_order")
+      .select("id,slug,name,product_line,is_active,display_order,price_zar,stock_quantity")
       .order("display_order", { ascending: true });
     if (error) throw new Error(error.message);
     return data ?? [];
+  });
+
+/** Admin view of the protected wholesale configuration and tier ladder. */
+export const adminGetWholesalePricing = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ strain_id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    assertAdmin(context.claims as Record<string, unknown>);
+    const [{ data: product }, { data: tiers }] = await Promise.all([
+      supabaseAdmin
+        .from("wholesale_products")
+        .select("strain_id,units_per_box,minimum_boxes,wholesale_active")
+        .eq("strain_id", data.strain_id)
+        .maybeSingle(),
+      supabaseAdmin
+        .from("wholesale_price_tiers")
+        .select("min_boxes,max_boxes,price_per_box_zar")
+        .eq("strain_id", data.strain_id)
+        .order("min_boxes", { ascending: true }),
+    ]);
+    return { product, tiers: tiers ?? [] };
+  });
+
+const TierSchema = z.object({
+  min_boxes: z.number().int().min(1).max(10000),
+  max_boxes: z.number().int().min(1).max(10000).nullable(),
+  price_per_box_zar: z.number().min(0).max(1000000),
+});
+
+export const adminUpdateWholesalePricing = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        strain_id: z.string().uuid(),
+        units_per_box: z.number().int().min(1).max(1000),
+        minimum_boxes: z.number().int().min(1).max(1000),
+        wholesale_active: z.boolean(),
+        tiers: z.array(TierSchema).min(1).max(12),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    assertAdmin(context.claims as Record<string, unknown>);
+
+    const sorted = [...data.tiers].sort((a, b) => a.min_boxes - b.min_boxes);
+    // Contiguous, gap-free ladder ending in one open-ended tier.
+    if (sorted[0].min_boxes !== 1) {
+      return { ok: false as const, error: "The first tier must start at 1 box." };
+    }
+    for (let i = 0; i < sorted.length; i++) {
+      const t = sorted[i];
+      const isLast = i === sorted.length - 1;
+      if (isLast) {
+        if (t.max_boxes !== null) return { ok: false as const, error: "The last tier must be open-ended." };
+      } else {
+        if (t.max_boxes === null) return { ok: false as const, error: "Only the last tier may be open-ended." };
+        if (t.max_boxes < t.min_boxes) return { ok: false as const, error: "A tier cannot end before it starts." };
+        if (sorted[i + 1].min_boxes !== t.max_boxes + 1) {
+          return { ok: false as const, error: "Tiers must be contiguous with no gaps or overlaps." };
+        }
+      }
+    }
+
+    const { error: pErr } = await supabaseAdmin.from("wholesale_products").upsert(
+      {
+        strain_id: data.strain_id,
+        units_per_box: data.units_per_box,
+        minimum_boxes: data.minimum_boxes,
+        wholesale_active: data.wholesale_active,
+      },
+      { onConflict: "strain_id" },
+    );
+    if (pErr) throw new Error(pErr.message);
+
+    const { error: dErr } = await supabaseAdmin
+      .from("wholesale_price_tiers")
+      .delete()
+      .eq("strain_id", data.strain_id);
+    if (dErr) throw new Error(dErr.message);
+
+    const { error: iErr } = await supabaseAdmin
+      .from("wholesale_price_tiers")
+      .insert(sorted.map((t) => ({ ...t, strain_id: data.strain_id })));
+    if (iErr) throw new Error(iErr.message);
+
+    return { ok: true as const };
   });

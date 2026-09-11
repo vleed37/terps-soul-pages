@@ -4,6 +4,8 @@ import { Link } from "@tanstack/react-router";
 import {
   useWholesaleCart,
   wholesaleCartSelectors,
+  itemBoxPrice,
+  itemLineTotal,
   WHOLESALE_SHIPPING,
   WHOLESALE_VAT_RATE,
 } from "@/lib/store/wholesale-cart";
@@ -59,7 +61,7 @@ export function WholesaleCartDrawer() {
                   <div className="min-w-0 flex-1">
                     <p className="font-display text-base leading-tight">{it.name}</p>
                     <p className="meta-xs text-[color:var(--text-tertiary)]">
-                      R{it.boxPriceZar.toFixed(0)}/box · {it.boxQuantity} units
+                      R{itemBoxPrice(it).toFixed(0)}/box · {it.boxQuantity} units
                     </p>
                     <div className="mt-3 flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -79,7 +81,7 @@ export function WholesaleCartDrawer() {
                           <Plus className="h-3 w-3" />
                         </button>
                       </div>
-                      <p className="font-display text-base">R{(it.boxPriceZar * it.boxes).toFixed(0)}</p>
+                      <p className="font-display text-base">R{itemLineTotal(it).toFixed(0)}</p>
                     </div>
                     <button onClick={() => removeItem(it.strainId)} className="mt-2 text-xs text-[color:var(--text-tertiary)] hover:text-[color:var(--accent-gold)]">
                       Remove

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/legal/cannabis-disclaimer")({
     meta: seoMeta({
       title: "Cannabis Disclaimer · Terps",
       description:
-        "Responsible consumption, legal age, and health information for Terps cannabis products. Placeholder copy — under legal review.",
+        "Responsible consumption, legal age, and health information for Terps cannabis products.",
       path: "/legal/cannabis-disclaimer",
     }),
   }),

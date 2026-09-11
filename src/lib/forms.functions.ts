@@ -21,6 +21,16 @@ export const requestRestock = createServerFn({ method: "POST" })
     z.object({ email: emailSchema, strain_id: z.string().uuid() }).parse(d),
   )
   .handler(async ({ data }) => {
+    // Idempotent: repeat requests for the same strain/email must not error.
+    const { data: existing } = await supabaseAdmin
+      .from("restock_notifications")
+      .select("id")
+      .eq("email", data.email)
+      .eq("strain_id", data.strain_id)
+      .eq("notified", false)
+      .maybeSingle();
+    if (existing) return { ok: true };
+
     const { error } = await supabaseAdmin
       .from("restock_notifications")
       .insert({ email: data.email, strain_id: data.strain_id });

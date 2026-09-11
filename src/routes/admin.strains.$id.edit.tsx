@@ -42,6 +42,17 @@ type Form = {
   helps_with: string[];
   negatives: string[];
   terpene_breakdown: Array<{ name: string; percentage: number; descriptor: string }>;
+  price_zar: number;
+  stock_quantity: number;
+  is_active: boolean;
+};
+
+type Tier = { min_boxes: number; max_boxes: number | null; price_per_box_zar: number };
+type WholesaleForm = {
+  units_per_box: number;
+  minimum_boxes: number;
+  wholesale_active: boolean;
+  tiers: Tier[];
 };
 
 function arrToCsv(a: string[] | null | undefined) {

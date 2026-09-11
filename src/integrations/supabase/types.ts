@@ -469,7 +469,6 @@ export type Database = {
           accent_color_accent: string | null
           accent_color_primary: string | null
           batch_number: string | null
-          box_quantity: number | null
           cbd_percentage: number | null
           created_at: string | null
           description: string | null
@@ -504,16 +503,12 @@ export type Database = {
           total_terpenes_percentage: number | null
           updated_at: string | null
           weight_grams: number | null
-          wholesale_available: boolean | null
-          wholesale_box_price_zar: number | null
-          wholesale_minimum_boxes: number | null
           wholesale_price_zar: number | null
         }
         Insert: {
           accent_color_accent?: string | null
           accent_color_primary?: string | null
           batch_number?: string | null
-          box_quantity?: number | null
           cbd_percentage?: number | null
           created_at?: string | null
           description?: string | null
@@ -548,16 +543,12 @@ export type Database = {
           total_terpenes_percentage?: number | null
           updated_at?: string | null
           weight_grams?: number | null
-          wholesale_available?: boolean | null
-          wholesale_box_price_zar?: number | null
-          wholesale_minimum_boxes?: number | null
           wholesale_price_zar?: number | null
         }
         Update: {
           accent_color_accent?: string | null
           accent_color_primary?: string | null
           batch_number?: string | null
-          box_quantity?: number | null
           cbd_percentage?: number | null
           created_at?: string | null
           description?: string | null
@@ -592,10 +583,34 @@ export type Database = {
           total_terpenes_percentage?: number | null
           updated_at?: string | null
           weight_grams?: number | null
+          wholesale_price_zar?: number | null
+        }
+        Relationships: []
+      }
+      strains_wholesale_cols_backup_20260911: {
+        Row: {
+          backed_up_at: string | null
+          box_quantity: number | null
+          id: string | null
+          wholesale_available: boolean | null
+          wholesale_box_price_zar: number | null
+          wholesale_minimum_boxes: number | null
+        }
+        Insert: {
+          backed_up_at?: string | null
+          box_quantity?: number | null
+          id?: string | null
           wholesale_available?: boolean | null
           wholesale_box_price_zar?: number | null
           wholesale_minimum_boxes?: number | null
-          wholesale_price_zar?: number | null
+        }
+        Update: {
+          backed_up_at?: string | null
+          box_quantity?: number | null
+          id?: string | null
+          wholesale_available?: boolean | null
+          wholesale_box_price_zar?: number | null
+          wholesale_minimum_boxes?: number | null
         }
         Relationships: []
       }

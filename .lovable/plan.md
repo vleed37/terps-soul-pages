@@ -2,21 +2,71 @@
 
 Ten targeted fixes from the QA audit. No redesign, no Phase-2 features, existing visual system preserved.
 
-## 1. Wholesale pricing security (critical)
+## Confirmations before any migration runs
 
-Wholesale box prices sit in the same publicly readable `strains` row as retail prices, so anyone can read them through the public data API. Row-level rules cannot protect single columns, so the protected pricing moves out.
+- Wholesale pricing becomes **tiered per box**, not a single box price.
+- The official prices below **replace** the old R1,600 / blank values.
+- Every box contains **20 units**.
+- Wholesale line totals and order totals are **calculated server-side only**.
+- Anonymous visitors and ordinary retail users **cannot read** wholesale pricing data at all.
+- All eight box boundaries (1, 2, 3, 5, 6, 9, 10, 11) will be tested for both products.
+- The destructive column drop happens **last**, only after everything reads the new structure.
 
-- New table `strain_wholesale_pricing` (one row per strain): box price, box quantity, minimum boxes, availability flag.
-- Copy existing values across, then remove those columns from `strains`.
-- No public read access at all: read rights granted only to signed-in users, and the read rule additionally requires either an approved stockist account or an admin role. Anonymous visitors get nothing.
-- Add a proper admin role table (`user_roles` + `has_role` helper) since one is needed for the admin side of that rule and for Priority 9.
-- Wholesale catalogue/checkout functions read pricing as the signed-in stockist, not with the public key. Retail pages never request these fields.
-- Verification: four live tests (anonymous, retail user, approved stockist, admin) reported in the QA section.
+## 1. Wholesale pricing security + tiered model (critical)
+
+Wholesale prices currently sit in the same publicly readable product row as retail prices, so anyone can read them through the public data API. Row-level rules cannot protect single columns, so protected pricing moves into its own structures.
+
+**Wholesale product configuration** (one row per product): product reference, units per box (20), wholesale active flag.
+
+**Wholesale price tiers** (several rows per product): product reference, min boxes, max boxes (blank = open ended), price per box. Database rules prevent overlapping tiers, prevent gaps, and require every active wholesale product to have a tier starting at 1 box.
+
+Authoritative values inserted:
+
+| Infused Pre-Roll | boxes | price/box |
+| --- | --- | --- |
+| | 1–2 | R1,600 |
+| | 3–5 | R1,500 |
+| | 6–9 | R1,400 |
+| | 10+ | R1,350 |
+
+| Caviar Stix | boxes | price/box |
+| --- | --- | --- |
+| | 1–2 | R2,200 |
+| | 3–5 | R2,100 |
+| | 6–9 | R2,000 |
+| | 10+ | R1,950 |
+
+Access rules on both new tables: no anonymous read at all; signed-in read only when the user has an approved stockist account or the admin role; only admins may change them.
+
+An admin role table (`user_roles` + `has_role` helper) is added, since the rule above and Priority 9 both need it.
+
+**Sequencing** — no shortcuts:
+
+1. Create the two protected structures and the role table.
+2. Insert the new authoritative tiers and units-per-box of 20.
+3. Move the wholesale catalogue read onto the protected structures (signed-in stockist context, never the public key).
+4. Rewrite wholesale cart logic so it holds quantities and displays server-resolved prices only.
+5. Rewrite checkout/order/payment totals to resolve the tier server-side.
+6. Update wholesale UI (catalogue, cart, checkout, order views).
+7. Verify protected access and every tier calculation.
+8. Confirm nothing still references the old wholesale columns.
+9. Only then drop the obsolete columns from the product table (this step asks for your approval).
+
+**Price calculation** — the tier is chosen by the number of boxes ordered for that product, and the whole quantity is priced at that tier. Expected results, tested at every boundary:
+
+- Pre-Roll: 1 = 1,600 · 2 = 3,200 · 3 = 4,500 · 5 = 7,500 · 6 = 8,400 · 9 = 12,600 · 10 = 13,500 · 11 = 14,850
+- Caviar Stix: 1 = 2,200 · 2 = 4,400 · 3 = 6,300 · 5 = 10,500 · 6 = 12,000 · 9 = 18,000 · 10 = 19,500 · 11 = 21,450
+
+**Checkout security** — every wholesale order: verify sign-in, verify stockist entitlement, read the product, read requested box counts, resolve the tier server-side, compute price per box and totals server-side, create the order, hand that authoritative amount to BobPay. Tampering tests: request 1 box at the 10+ rate, submit an altered price per box, altered discount, altered final amount — each must be ignored or rejected.
+
+**Wholesale UI** — signed-in stockists see the full tier ladder per product ("1–2 boxes — R1,600 / box", etc.), 20 units per box, and RRP guidance (Pre-Roll R160–R180, Caviar Stix R210–R235). Retail visitors see none of it.
 
 ## 2. Retail pricing
 
-- Infused Pre-Rolls: R180 → **R160**. Caviar Stix: R350 → **R210** (database).
-- Global sweep for any hard-coded 180/350/price strings in copy, product cards, teasers, structured data and legal/shipping thresholds; wholesale box pricing untouched.
+- Infused Pre-Roll 0.75g: R180 → **R160** per unit (RRP range R160–R180).
+- Caviar Stix 0.75g: R350 → **R210** per unit (RRP range R210–R235).
+- Global sweep for hard-coded price strings in copy, product cards, teasers and structured data.
+
 
 ## 3. Wholesale signup journey
 
@@ -55,23 +105,27 @@ Instant access stays. Adjust only copy and prominence:
 
 ## 9. Lightweight catalogue management
 
-Using the existing admin strain editor and the new role table:
+Using the existing admin editor and the new role table, admin-only:
 
-- A simple admin list of products with inline edit for retail price, stock quantity and active/featured flags, plus the existing copy/image fields.
-- Access restricted server-side to admin role holders. Nothing beyond this — no orders, CRM, coupons or exports.
+- Product list with inline edit for retail price, stock quantity, active/featured flags, plus existing copy/image fields.
+- Wholesale management: units per box, wholesale availability, and the wholesale price tiers.
+- Nothing beyond this — no orders, CRM, coupons or exports.
+
 
 ## 10. Visual and copy regression check
 
 - Confirm no return of "Craft. Built slowly. Built once.", quote banners, "4 drops / 4 flavours", "1 standard", "Batch 04 Active", "Limited First Batch", Follow Terps / Stay Close filler.
-- "Caviar Stix" spelling consistent; live-rosin language only on Caviar Stix, never on Infused Pre-Rolls.
+- Terminology: "Infused Pre-Roll" and "Caviar Stix" everywhere (artwork's "Caviar stick" is not used on the site).
+- Product distinction preserved: Infused Pre-Roll = premium indoor flower with extracts, crumble and hash. Caviar Stix = the enhanced version with the exterior live resin/rosin plus hash treatment. No live-rosin coating language on the standard pre-roll.
 - Strain Library and stockist locator verified, not rebuilt; only real defects fixed. No THC percentages shown.
 - Re-run the 390 / 768 / 1280 route sweep to confirm no overflow, no console errors, all routes healthy.
 
 ## Technical notes
 
-- Migrations: new `strain_wholesale_pricing` table with grants and stockist/admin-only select; `app_role` enum, `user_roles` table and `security definer has_role()`; retail price updates; drop of the wholesale price columns from `strains` (destructive — will ask for confirmation).
-- Server functions touched: wholesale catalogue/checkout (auth-scoped pricing reads), admin catalogue update, notify-me and newsletter send paths, BobPay webhook branches.
-- Frontend touched: header nav, wholesale signup copy, legal page layout, admin product list, price strings.
+- Migrations, in order: role enum/table + `has_role()`; protected wholesale config and tier tables with grants, stockist/admin-only read and admin-only write, plus non-overlap/no-gap constraints; insert of the authoritative tiers; retail price updates; and finally the drop of the obsolete wholesale columns from the product table (destructive — separate, approval-gated step).
+- Server functions touched: wholesale catalogue and checkout (entitlement-scoped reads, server-resolved tier pricing), admin catalogue/wholesale management, notify-me and newsletter send paths, BobPay webhook branches.
+- Frontend touched: header nav, wholesale signup copy, wholesale catalogue/cart/checkout tier display, legal page layout, admin product list, retail price strings.
+
 
 ## Final report
 

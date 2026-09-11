@@ -100,11 +100,13 @@ export type WholesaleStrain = {
   product_line: "pre_roll" | "caviar_stix";
   product_image_url: string | null;
   accent_color_primary: string | null;
-  box_quantity: number;
-  wholesale_box_price_zar: number;
-  wholesale_minimum_boxes: number;
-  wholesale_available: boolean;
   weight_grams: number | null;
+  /** Units contained in one wholesale box. */
+  units_per_box: number;
+  minimum_boxes: number;
+  /** Recommended retail price per unit (incl.). */
+  rrp_zar: number;
+  tiers: import("./wholesale-pricing").WholesalePriceTier[];
 };
 
 export type WholesaleOrderItem = {

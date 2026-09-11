@@ -105,10 +105,12 @@ Instant access stays. Adjust only copy and prominence:
 
 ## 9. Lightweight catalogue management
 
-Using the existing admin strain editor and the new role table:
+Using the existing admin editor and the new role table, admin-only:
 
-- A simple admin list of products with inline edit for retail price, stock quantity and active/featured flags, plus the existing copy/image fields.
-- Access restricted server-side to admin role holders. Nothing beyond this — no orders, CRM, coupons or exports.
+- Product list with inline edit for retail price, stock quantity, active/featured flags, plus existing copy/image fields.
+- Wholesale management: units per box, wholesale availability, and the wholesale price tiers.
+- Nothing beyond this — no orders, CRM, coupons or exports.
+
 
 ## 10. Visual and copy regression check
 

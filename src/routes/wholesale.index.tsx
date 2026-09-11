@@ -10,7 +10,8 @@ import { GoldButton } from "@/components/brand/GoldButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { createWholesaleAccount, getMyWholesaleAccount } from "@/lib/wholesale.functions";
-import wholesaleHero from "@/assets/shoot/divine-62.jpg.asset.json";
+import { motion, useReducedMotion } from "framer-motion";
+import wholesaleHero from "@/assets/shoot/wholesale-hero-display.jpg.asset.json";
 import { seoMeta } from "@/lib/seo";
 import { SALES_EMAIL } from "@/lib/brand";
 
@@ -29,89 +30,79 @@ export const Route = createFileRoute("/wholesale/")({
 function WholesalePage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={wholesaleHero.url} alt="" className="h-full w-full object-cover opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--bg-rich)]/70 via-[color:var(--bg-rich)]/85 to-[color:var(--bg-base)]" />
-        </div>
-        <div className="relative mx-auto max-w-3xl px-6 py-32 text-center md:py-44">
-          <MetaLabel gold>✦ Stockist Program</MetaLabel>
-          <h1 className="mx-auto mt-6 font-display text-5xl leading-[1.05] text-[color:var(--text-on-dark,#F5EFE2)] md:text-7xl lg:text-[5.5rem]">
-            Become a Terps stockist.
-          </h1>
-          <p className="mx-auto mt-8 max-w-xl font-display text-2xl italic text-[color:var(--text-on-dark,#F5EFE2)]/85 md:text-3xl">
-            Box pricing on Infused Pre-Rolls and Caviar Stix for South African retailers.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a href="#apply">
-              <GoldButton>Sign Up</GoldButton>
-            </a>
-            <Link to="/wholesale/login" search={{ redirect: "/wholesale/dashboard" }}>
-              <GoldButton variant="secondary">Stockist Sign In</GoldButton>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <WholesaleHero />
 
       {/* WHAT YOU GET */}
       <section className="px-6 py-24 md:py-32">
         <div className="mx-auto max-w-[1200px]">
-          <ScrollReveal className="text-center">
-            <MetaLabel gold>What you get</MetaLabel>
+          <ScrollReveal className="max-w-2xl">
+            <MetaLabel gold>✦ What you get</MetaLabel>
             <h2 className="mt-6 font-display text-4xl md:text-5xl">Built for serious retailers.</h2>
           </ScrollReveal>
-          <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { t: "Wholesale Pricing", d: "Box pricing across the full collection." },
-              { t: "Early Access", d: "Early access to new product drops." },
-              { t: "Marketing Material", d: "Marketing material for your socials." },
-              { t: "Customer Routing", d: "Our Find Closest Stockist routes nearby customers to your store. The site sells for you." },
-            ].map((c, i) => (
-              <ScrollReveal key={c.t} delay={i * 0.1} className="rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-10">
-                <div className="h-px w-12 bg-[color:var(--accent-gold)]" />
-                <h3 className="mt-6 font-display text-2xl">{c.t}</h3>
-                <p className="mt-4 font-body text-base leading-relaxed text-[color:var(--text-secondary)]">{c.d}</p>
+          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--border-luxe)] sm:grid-cols-2 lg:grid-cols-4">
+            {BENEFITS.map((c, i) => (
+              <ScrollReveal
+                key={c.t}
+                delay={i * 0.08}
+                className="group relative bg-[color:var(--bg-base)] p-10 transition-colors duration-500 hover:bg-[color:var(--bg-surface)] md:p-12"
+              >
+                <span className="font-display text-2xl italic text-[color:var(--accent-gold)]">{c.n}</span>
+                <div className="mt-6 h-px w-10 bg-[color:var(--accent-gold)] transition-all duration-500 group-hover:w-16" />
+                <h3 className="mt-6 font-display text-[1.6rem] leading-tight">{c.t}</h3>
+                <p className="mt-4 font-body text-[0.95rem] leading-relaxed text-[color:var(--text-secondary)]">{c.d}</p>
               </ScrollReveal>
             ))}
           </div>
         </div>
+      </section>
+
+      {/* EDITORIAL STATEMENT */}
+      <section className="border-y border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] px-6 py-20 md:py-28">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
+          <p className="font-display text-3xl italic leading-[1.2] md:text-[2.75rem]">
+            Built for the people putting Terps on shelves.
+          </p>
+          <p className="mt-6 font-body text-base text-[color:var(--text-secondary)] md:text-lg">
+            Better access. Better support. A direct line to what's coming next.
+          </p>
+        </ScrollReveal>
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="bg-[color:var(--bg-surface)] px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-[1200px]">
-          <ScrollReveal className="text-center">
-            <MetaLabel gold>How it works</MetaLabel>
-            <h2 className="mt-6 font-display text-4xl md:text-5xl">
-              Three steps. <em className="text-[color:var(--accent-gold)]">No friction.</em>
-            </h2>
+      <section className="px-6 py-20 md:py-28">
+        <div className="mx-auto max-w-[1100px]">
+          <ScrollReveal>
+            <MetaLabel gold>✦ How it works</MetaLabel>
+            <h2 className="mt-6 font-display text-4xl md:text-5xl">Two steps. That's it.</h2>
           </ScrollReveal>
-          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
-            {[
-              { n: "01", t: "Sign up", d: "Create your stockist account and tell us about your store." },
-              { n: "02", t: "Log in", d: "Your portal is active straight away — no waiting." },
-              { n: "03", t: "Order", d: "Browse box pricing and minimums, then place your order." },
-            ].map((step, i) => (
-              <ScrollReveal key={step.n} delay={i * 0.1} className="text-center">
-                <p className="font-display text-5xl italic text-[color:var(--accent-gold)]">{step.n}</p>
-                <h3 className="mt-4 font-display text-2xl">{step.t}</h3>
-                <p className="mt-3 font-body text-base text-[color:var(--text-secondary)]">{step.d}</p>
-              </ScrollReveal>
-            ))}
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] md:gap-12">
+            <Step n="01" t="Sign up" d="Create your stockist account. No lengthy application or approval wait." />
+            <div
+              aria-hidden
+              className="my-10 h-px w-full bg-[color:var(--border-luxe)] md:my-0 md:h-full md:w-px"
+            />
+            <Step
+              n="02"
+              t="Shop wholesale"
+              d="Sign in, access protected box pricing and place your order."
+              delay={0.12}
+            />
           </div>
         </div>
       </section>
 
-      {/* APPLY */}
-      <section id="apply" className="px-6 py-24 md:py-32">
+
+      {/* REGISTER */}
+      <section id="apply" className="scroll-mt-28 bg-[color:var(--bg-surface)] px-6 py-24 md:py-32">
         <div className="mx-auto max-w-[860px]">
           <ScrollReveal className="text-center">
-            <MetaLabel gold>Sign Up</MetaLabel>
+            <MetaLabel gold>✦ Become a Stockist</MetaLabel>
             <h2 className="mt-6 font-display text-4xl md:text-5xl">Your details.</h2>
-            <p className="mt-4 text-[color:var(--text-secondary)]">Sign up below — your stockist portal opens immediately.</p>
+            <p className="mt-4 text-[color:var(--text-secondary)]">
+              Create your account and your stockist portal opens immediately.
+            </p>
           </ScrollReveal>
-          <div className="mt-16">
+          <div className="mt-14">
             <ApplyFlow />
           </div>
         </div>
@@ -119,6 +110,73 @@ function WholesalePage() {
     </>
   );
 }
+
+const BENEFITS = [
+  { n: "01", t: "Box Pricing", d: "Volume-based box pricing across the full collection." },
+  { n: "02", t: "New Product Drops", d: "Get early access to new Terps releases." },
+  { n: "03", t: "Marketing Material", d: "Access Terps content created for your socials and store." },
+  { n: "04", t: "Customer Routing", d: "Our stockist finder helps nearby customers discover your store." },
+] as const;
+
+function Step({ n, t, d, delay = 0 }: { n: string; t: string; d: string; delay?: number }) {
+  return (
+    <ScrollReveal delay={delay}>
+      <p className="font-display text-6xl italic leading-none text-[color:var(--accent-gold)] md:text-7xl">{n}</p>
+      <h3 className="mt-6 font-body text-sm font-semibold uppercase tracking-[0.18em]">{t}</h3>
+      <p className="mt-4 max-w-sm font-body text-base leading-relaxed text-[color:var(--text-secondary)]">{d}</p>
+    </ScrollReveal>
+  );
+}
+
+
+
+function WholesaleHero() {
+  const reduce = useReducedMotion();
+  return (
+    <section className="relative grid grid-cols-1 items-stretch lg:min-h-[80vh] lg:grid-cols-[1.05fr_1fr]">
+      {/* Photograph */}
+      <div className="relative order-1 h-[58vh] min-h-[340px] overflow-hidden lg:order-2 lg:h-auto">
+        <motion.img
+          src={wholesaleHero.url}
+          alt="Terps Infused Pre-Roll tubes and six-pack cartons in a retail display case"
+          className="h-full w-full object-cover object-[62%_38%] sm:object-[58%_40%] lg:object-center"
+          initial={reduce ? false : { scale: 1.06 }}
+          animate={reduce ? undefined : { scale: 1 }}
+          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+        />
+        {/* minimal legibility fade only at the seam */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[color:var(--bg-base)] to-transparent lg:hidden" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-24 bg-gradient-to-r from-[color:var(--bg-base)] to-transparent lg:block" />
+      </div>
+
+      {/* Copy */}
+      <div className="order-2 flex items-center bg-[color:var(--bg-base)] px-6 py-16 sm:px-10 lg:order-1 lg:py-24 lg:pl-[max(2rem,6vw)] lg:pr-16">
+        <div className="max-w-xl">
+          <MetaLabel gold>✦ Stockist Program</MetaLabel>
+          <h1 className="mt-6 font-display text-[3.25rem] leading-[0.95] md:text-7xl lg:text-[6rem]">Stock Terps.</h1>
+          <Hairline className="my-8" w="88px" />
+          <p className="font-body text-lg leading-relaxed text-[color:var(--text-secondary)] md:text-xl">
+            Wholesale access to Terps Infused Pre-Rolls and Caviar Stix, built for retailers across South Africa.
+          </p>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <a href="#apply" className="inline-flex">
+              <GoldButton className="group w-full sm:w-auto">
+                Become a Stockist
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </GoldButton>
+            </a>
+            <Link to="/wholesale/login" search={{ redirect: "/wholesale/dashboard" }} className="inline-flex">
+              <GoldButton variant="tertiary" className="w-full sm:w-auto">
+                Stockist Sign In
+              </GoldButton>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 /* ============== Application Flow ============== */
 
@@ -304,7 +362,7 @@ function Stepper({ step }: { step: 1 | 2 }) {
 }
 
 const inputCls =
-  "w-full rounded-[4px] border border-[color:var(--border-strong)] bg-[color:var(--bg-base)] px-4 py-3 text-sm outline-none transition-colors focus:border-[color:var(--accent-gold)]";
+  "w-full rounded-[4px] border border-[color:var(--border-strong)] bg-[color:var(--bg-base)] px-4 py-3.5 text-[0.95rem] outline-none transition-all duration-300 placeholder:text-[color:var(--text-tertiary)] focus:border-[color:var(--accent-gold)] focus:shadow-[0_0_0_3px_var(--accent-gold-muted)]";
 const labelCls = "meta-xs mb-2 block text-[color:var(--text-secondary)]";
 
 function FieldRow({ children }: { children: React.ReactNode }) {

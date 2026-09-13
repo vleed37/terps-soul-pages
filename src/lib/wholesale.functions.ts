@@ -9,7 +9,8 @@ const BusinessTypeEnum = z.enum(["dispensary", "lounge", "specialty_retailer", "
 const VolumeEnum = z.enum(["under_50", "50_to_200", "200_to_500", "500_plus"]);
 
 const ApplicationSchema = z.object({
-  business_name: z.string().trim().min(1).max(200),
+  // Company name is optional (Sept 2026 decision). Falls back to the contact name.
+  business_name: z.string().trim().max(200).optional().or(z.literal("")),
   trading_as: z.string().trim().max(200).optional().or(z.literal("")),
   vat_number: z.string().trim().max(40).optional().or(z.literal("")),
   cipc_registration_number: z.string().trim().max(40).optional().or(z.literal("")),
@@ -43,7 +44,7 @@ export const createWholesaleAccount = createServerFn({ method: "POST" })
 
     const insertRow = {
       user_id: userId,
-      business_name: data.business_name,
+      business_name: data.business_name || data.primary_contact_name,
       trading_as: data.trading_as || null,
       vat_number: data.vat_number || null,
       cipc_registration_number: data.cipc_registration_number || null,
@@ -76,10 +77,10 @@ async function maybeNotifyAdmin(data: z.infer<typeof ApplicationSchema>) {
   await sendEmail({
     type: "internal-new-stockist",
     to: adminEmail,
-    subject: `Terps — New stockist signed up: ${data.business_name}`,
+    subject: `Terps — New stockist signed up: ${data.business_name || data.primary_contact_name}`,
     html: `<div style="font-family:'Manrope',sans-serif;padding:24px;background:#0d0d0d;color:#f5f0e0;">
       <h2 style="font-family:'Fraunces',serif;color:#c9a84c;">New stockist signed up</h2>
-      <p><strong>${data.business_name}</strong> (${data.business_type})</p>
+      <p><strong>${data.business_name || data.primary_contact_name}</strong> (${data.business_type})</p>
       <p>Contact: ${data.primary_contact_name} · ${data.primary_contact_email} · ${data.primary_contact_phone}</p>
       <p>${data.business_city}, ${data.business_province}</p>
       <p>Monthly volume: ${data.estimated_monthly_volume || "—"}</p>

@@ -76,7 +76,7 @@ function WholesalePage() {
             <h2 className="mt-6 font-display text-4xl md:text-5xl">Two steps. That's it.</h2>
           </ScrollReveal>
           <div className="mt-14 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] md:gap-12">
-            <Step n="01" t="Sign up" d="Create your stockist account. No lengthy application or approval wait." />
+            <Step n="01" t="Sign up" d="Create your stockist account. Access is immediate." />
             <div
               aria-hidden
               className="my-10 h-px w-full bg-[color:var(--border-luxe)] md:my-0 md:h-full md:w-px"

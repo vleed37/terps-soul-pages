@@ -1,6 +1,6 @@
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { StrainTypePill } from "@/components/brand/StrainTypePill";
-import { Sparkles, Leaf, HeartPulse, Wind } from "lucide-react";
+import { Sparkles, Leaf, Wind } from "lucide-react";
 import { getStrainProductImage } from "@/lib/strain-assets";
 import type { Strain } from "@/lib/types";
 
@@ -36,7 +36,7 @@ export function StrainInformation({ strain }: { strain: Strain }) {
   const img = getStrainProductImage(strain.slug);
   const effects = strain.effects ?? [];
   const flavors = strain.flavor_tags ?? [];
-  const helps = strain.helps_with ?? [];
+  
   const negatives = strain.negatives ?? [];
   const terpenes = strain.terpene_breakdown?.slice(0, 3) ?? [];
 

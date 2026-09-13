@@ -9,8 +9,8 @@ import {
   itemBoxPrice,
   itemLineTotal,
   WHOLESALE_SHIPPING,
-  WHOLESALE_VAT_RATE,
 } from "@/lib/store/wholesale-cart";
+import { VAT_ENABLED, VAT_RATE, vatOn } from "@/lib/brand";
 import { getMyWholesaleAccount, createWholesaleOrder } from "@/lib/wholesale.functions";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
@@ -62,7 +62,7 @@ function WholesaleCheckoutPage() {
     return <div className="py-16 text-center text-[color:var(--text-tertiary)]">Loading…</div>;
   }
 
-  const vat = (subtotal + WHOLESALE_SHIPPING) * WHOLESALE_VAT_RATE;
+  const vat = vatOn(subtotal + WHOLESALE_SHIPPING);
   const total = subtotal + WHOLESALE_SHIPPING + vat;
 
   async function submit(e: React.FormEvent) {
@@ -174,7 +174,9 @@ function WholesaleCheckoutPage() {
           <div className="space-y-2 text-sm">
             <Row label="Subtotal" value={`R${subtotal.toFixed(0)}`} />
             <Row label="Shipping" value={`R${WHOLESALE_SHIPPING.toFixed(0)}`} />
-            <Row label="VAT (15%)" value={`R${vat.toFixed(0)}`} />
+            {VAT_ENABLED && (
+              <Row label={`VAT (${Math.round(VAT_RATE * 100)}%)`} value={`R${vat.toFixed(0)}`} />
+            )}
           </div>
           <Hairline className="my-6" />
           <div className="flex items-baseline justify-between">

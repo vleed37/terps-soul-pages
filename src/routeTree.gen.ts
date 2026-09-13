@@ -31,16 +31,16 @@ import { Route as AccountResetPasswordRouteImport } from './routes/account.reset
 import { Route as AccountRegisterRouteImport } from './routes/account.register'
 import { Route as AccountLoginRouteImport } from './routes/account.login'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account.forgot-password'
-import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as WholesaleDashboardIndexRouteImport } from './routes/wholesale.dashboard.index'
+import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account.index'
 import { Route as WholesaleDashboardCheckoutRouteImport } from './routes/wholesale.dashboard.checkout'
 import { Route as WholesaleDashboardCatalogRouteImport } from './routes/wholesale.dashboard.catalog'
 import { Route as ApiPublicWholesaleApprovalEmailRouteImport } from './routes/api/public/wholesale-approval-email'
 import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
 import { Route as AuthenticatedAccountSettingsRouteImport } from './routes/_authenticated/account.settings'
-import { Route as AuthenticatedAccountOrdersRouteImport } from './routes/_authenticated/account.orders'
 import { Route as AuthenticatedAccountAddressesRouteImport } from './routes/_authenticated/account.addresses'
 import { Route as WholesaleDashboardOrdersIndexRouteImport } from './routes/wholesale.dashboard.orders.index'
+import { Route as AuthenticatedAccountOrdersIndexRouteImport } from './routes/_authenticated/account.orders.index'
 import { Route as WholesaleDashboardOrdersIdRouteImport } from './routes/wholesale.dashboard.orders.$id'
 import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
 import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
@@ -154,16 +154,17 @@ const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
   path: '/account/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
-  id: '/account',
-  path: '/account',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const WholesaleDashboardIndexRoute = WholesaleDashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => WholesaleDashboardRoute,
 } as any)
+const AuthenticatedAccountIndexRoute =
+  AuthenticatedAccountIndexRouteImport.update({
+    id: '/account/',
+    path: '/account/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const WholesaleDashboardCheckoutRoute =
   WholesaleDashboardCheckoutRouteImport.update({
     id: '/checkout',
@@ -189,27 +190,27 @@ const ApiPublicBobpayWebhookRoute = ApiPublicBobpayWebhookRouteImport.update({
 } as any)
 const AuthenticatedAccountSettingsRoute =
   AuthenticatedAccountSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedAccountRoute,
-  } as any)
-const AuthenticatedAccountOrdersRoute =
-  AuthenticatedAccountOrdersRouteImport.update({
-    id: '/orders',
-    path: '/orders',
-    getParentRoute: () => AuthenticatedAccountRoute,
+    id: '/account/settings',
+    path: '/account/settings',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedAccountAddressesRoute =
   AuthenticatedAccountAddressesRouteImport.update({
-    id: '/addresses',
-    path: '/addresses',
-    getParentRoute: () => AuthenticatedAccountRoute,
+    id: '/account/addresses',
+    path: '/account/addresses',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 const WholesaleDashboardOrdersIndexRoute =
   WholesaleDashboardOrdersIndexRouteImport.update({
     id: '/orders/',
     path: '/orders/',
     getParentRoute: () => WholesaleDashboardRoute,
+  } as any)
+const AuthenticatedAccountOrdersIndexRoute =
+  AuthenticatedAccountOrdersIndexRouteImport.update({
+    id: '/account/orders/',
+    path: '/account/orders/',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 const WholesaleDashboardOrdersIdRoute =
   WholesaleDashboardOrdersIdRouteImport.update({
@@ -224,9 +225,9 @@ const AdminStrainsIdEditRoute = AdminStrainsIdEditRouteImport.update({
 } as any)
 const AuthenticatedAccountOrdersOrderNumberRoute =
   AuthenticatedAccountOrdersOrderNumberRouteImport.update({
-    id: '/$orderNumber',
-    path: '/$orderNumber',
-    getParentRoute: () => AuthenticatedAccountOrdersRoute,
+    id: '/account/orders/$orderNumber',
+    path: '/account/orders/$orderNumber',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -237,7 +238,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
-  '/account': typeof AuthenticatedAccountRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
@@ -253,16 +253,17 @@ export interface FileRoutesByFullPath {
   '/wholesale/login': typeof WholesaleLoginRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
-  '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
   '/api/public/wholesale-approval-email': typeof ApiPublicWholesaleApprovalEmailRoute
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
+  '/account/': typeof AuthenticatedAccountIndexRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
+  '/account/orders/': typeof AuthenticatedAccountOrdersIndexRoute
   '/wholesale/dashboard/orders/': typeof WholesaleDashboardOrdersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -273,7 +274,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
-  '/account': typeof AuthenticatedAccountRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
@@ -288,16 +288,17 @@ export interface FileRoutesByTo {
   '/wholesale/login': typeof WholesaleLoginRoute
   '/wholesale': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
-  '/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
   '/api/public/wholesale-approval-email': typeof ApiPublicWholesaleApprovalEmailRoute
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
+  '/account': typeof AuthenticatedAccountIndexRoute
   '/wholesale/dashboard': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
+  '/account/orders': typeof AuthenticatedAccountOrdersIndexRoute
   '/wholesale/dashboard/orders': typeof WholesaleDashboardOrdersIndexRoute
 }
 export interface FileRoutesById {
@@ -310,7 +311,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
-  '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
@@ -326,16 +326,17 @@ export interface FileRoutesById {
   '/wholesale/login': typeof WholesaleLoginRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/account/addresses': typeof AuthenticatedAccountAddressesRoute
-  '/_authenticated/account/orders': typeof AuthenticatedAccountOrdersRouteWithChildren
   '/_authenticated/account/settings': typeof AuthenticatedAccountSettingsRoute
   '/api/public/bobpay-webhook': typeof ApiPublicBobpayWebhookRoute
   '/api/public/wholesale-approval-email': typeof ApiPublicWholesaleApprovalEmailRoute
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
+  '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/_authenticated/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
+  '/_authenticated/account/orders/': typeof AuthenticatedAccountOrdersIndexRoute
   '/wholesale/dashboard/orders/': typeof WholesaleDashboardOrdersIndexRoute
 }
 export interface FileRouteTypes {
@@ -348,7 +349,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/stockists'
     | '/strains'
-    | '/account'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
@@ -364,16 +364,17 @@ export interface FileRouteTypes {
     | '/wholesale/login'
     | '/wholesale/'
     | '/account/addresses'
-    | '/account/orders'
     | '/account/settings'
     | '/api/public/bobpay-webhook'
     | '/api/public/wholesale-approval-email'
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
+    | '/account/'
     | '/wholesale/dashboard/'
     | '/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
     | '/wholesale/dashboard/orders/$id'
+    | '/account/orders/'
     | '/wholesale/dashboard/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -384,7 +385,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/stockists'
     | '/strains'
-    | '/account'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
@@ -399,16 +399,17 @@ export interface FileRouteTypes {
     | '/wholesale/login'
     | '/wholesale'
     | '/account/addresses'
-    | '/account/orders'
     | '/account/settings'
     | '/api/public/bobpay-webhook'
     | '/api/public/wholesale-approval-email'
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
+    | '/account'
     | '/wholesale/dashboard'
     | '/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
     | '/wholesale/dashboard/orders/$id'
+    | '/account/orders'
     | '/wholesale/dashboard/orders'
   id:
     | '__root__'
@@ -420,7 +421,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/stockists'
     | '/strains'
-    | '/_authenticated/account'
     | '/account/forgot-password'
     | '/account/login'
     | '/account/register'
@@ -436,16 +436,17 @@ export interface FileRouteTypes {
     | '/wholesale/login'
     | '/wholesale/'
     | '/_authenticated/account/addresses'
-    | '/_authenticated/account/orders'
     | '/_authenticated/account/settings'
     | '/api/public/bobpay-webhook'
     | '/api/public/wholesale-approval-email'
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
+    | '/_authenticated/account/'
     | '/wholesale/dashboard/'
     | '/_authenticated/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
     | '/wholesale/dashboard/orders/$id'
+    | '/_authenticated/account/orders/'
     | '/wholesale/dashboard/orders/'
   fileRoutesById: FileRoutesById
 }
@@ -633,19 +634,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/account': {
-      id: '/_authenticated/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AuthenticatedAccountRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/wholesale/dashboard/': {
       id: '/wholesale/dashboard/'
       path: '/'
       fullPath: '/wholesale/dashboard/'
       preLoaderRoute: typeof WholesaleDashboardIndexRouteImport
       parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/_authenticated/account/': {
+      id: '/_authenticated/account/'
+      path: '/account'
+      fullPath: '/account/'
+      preLoaderRoute: typeof AuthenticatedAccountIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/wholesale/dashboard/checkout': {
       id: '/wholesale/dashboard/checkout'
@@ -677,24 +678,17 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/account/settings': {
       id: '/_authenticated/account/settings'
-      path: '/settings'
+      path: '/account/settings'
       fullPath: '/account/settings'
       preLoaderRoute: typeof AuthenticatedAccountSettingsRouteImport
-      parentRoute: typeof AuthenticatedAccountRoute
-    }
-    '/_authenticated/account/orders': {
-      id: '/_authenticated/account/orders'
-      path: '/orders'
-      fullPath: '/account/orders'
-      preLoaderRoute: typeof AuthenticatedAccountOrdersRouteImport
-      parentRoute: typeof AuthenticatedAccountRoute
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/account/addresses': {
       id: '/_authenticated/account/addresses'
-      path: '/addresses'
+      path: '/account/addresses'
       fullPath: '/account/addresses'
       preLoaderRoute: typeof AuthenticatedAccountAddressesRouteImport
-      parentRoute: typeof AuthenticatedAccountRoute
+      parentRoute: typeof AuthenticatedRoute
     }
     '/wholesale/dashboard/orders/': {
       id: '/wholesale/dashboard/orders/'
@@ -702,6 +696,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/wholesale/dashboard/orders/'
       preLoaderRoute: typeof WholesaleDashboardOrdersIndexRouteImport
       parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/_authenticated/account/orders/': {
+      id: '/_authenticated/account/orders/'
+      path: '/account/orders'
+      fullPath: '/account/orders/'
+      preLoaderRoute: typeof AuthenticatedAccountOrdersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/wholesale/dashboard/orders/$id': {
       id: '/wholesale/dashboard/orders/$id'
@@ -719,50 +720,29 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/account/orders/$orderNumber': {
       id: '/_authenticated/account/orders/$orderNumber'
-      path: '/$orderNumber'
+      path: '/account/orders/$orderNumber'
       fullPath: '/account/orders/$orderNumber'
       preLoaderRoute: typeof AuthenticatedAccountOrdersOrderNumberRouteImport
-      parentRoute: typeof AuthenticatedAccountOrdersRoute
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
-interface AuthenticatedAccountOrdersRouteChildren {
-  AuthenticatedAccountOrdersOrderNumberRoute: typeof AuthenticatedAccountOrdersOrderNumberRoute
-}
-
-const AuthenticatedAccountOrdersRouteChildren: AuthenticatedAccountOrdersRouteChildren =
-  {
-    AuthenticatedAccountOrdersOrderNumberRoute:
-      AuthenticatedAccountOrdersOrderNumberRoute,
-  }
-
-const AuthenticatedAccountOrdersRouteWithChildren =
-  AuthenticatedAccountOrdersRoute._addFileChildren(
-    AuthenticatedAccountOrdersRouteChildren,
-  )
-
-interface AuthenticatedAccountRouteChildren {
-  AuthenticatedAccountAddressesRoute: typeof AuthenticatedAccountAddressesRoute
-  AuthenticatedAccountOrdersRoute: typeof AuthenticatedAccountOrdersRouteWithChildren
-  AuthenticatedAccountSettingsRoute: typeof AuthenticatedAccountSettingsRoute
-}
-
-const AuthenticatedAccountRouteChildren: AuthenticatedAccountRouteChildren = {
-  AuthenticatedAccountAddressesRoute: AuthenticatedAccountAddressesRoute,
-  AuthenticatedAccountOrdersRoute: AuthenticatedAccountOrdersRouteWithChildren,
-  AuthenticatedAccountSettingsRoute: AuthenticatedAccountSettingsRoute,
-}
-
-const AuthenticatedAccountRouteWithChildren =
-  AuthenticatedAccountRoute._addFileChildren(AuthenticatedAccountRouteChildren)
-
 interface AuthenticatedRouteChildren {
-  AuthenticatedAccountRoute: typeof AuthenticatedAccountRouteWithChildren
+  AuthenticatedAccountAddressesRoute: typeof AuthenticatedAccountAddressesRoute
+  AuthenticatedAccountSettingsRoute: typeof AuthenticatedAccountSettingsRoute
+  AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute
+  AuthenticatedAccountOrdersOrderNumberRoute: typeof AuthenticatedAccountOrdersOrderNumberRoute
+  AuthenticatedAccountOrdersIndexRoute: typeof AuthenticatedAccountOrdersIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAccountRoute: AuthenticatedAccountRouteWithChildren,
+  AuthenticatedAccountAddressesRoute: AuthenticatedAccountAddressesRoute,
+  AuthenticatedAccountSettingsRoute: AuthenticatedAccountSettingsRoute,
+  AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
+  AuthenticatedAccountOrdersOrderNumberRoute:
+    AuthenticatedAccountOrdersOrderNumberRoute,
+  AuthenticatedAccountOrdersIndexRoute: AuthenticatedAccountOrdersIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

@@ -6,7 +6,7 @@ import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { getMyCustomer, getMyOrders } from "@/lib/account.functions";
 
-export const Route = createFileRoute("/_authenticated/account")({
+export const Route = createFileRoute("/_authenticated/account/")({
   head: () => ({ meta: [{ title: "Terps — Account" }] }),
   component: OverviewPage,
 });

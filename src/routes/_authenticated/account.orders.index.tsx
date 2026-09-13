@@ -7,7 +7,7 @@ import { Hairline } from "@/components/brand/Hairline";
 import { getMyOrders } from "@/lib/account.functions";
 import { useMemo, useState } from "react";
 
-export const Route = createFileRoute("/_authenticated/account/orders")({
+export const Route = createFileRoute("/_authenticated/account/orders/")({
   head: () => ({ meta: [{ title: "Terps — Orders" }] }),
   component: OrdersPage,
 });

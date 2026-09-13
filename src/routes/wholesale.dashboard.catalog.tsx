@@ -34,7 +34,7 @@ function CatalogPage() {
         <MetaLabel gold>Catalog</MetaLabel>
         <h2 className="mt-3 font-display text-3xl md:text-4xl">Box pricing for stockists.</h2>
         <p className="mt-3 text-sm text-[color:var(--text-secondary)]">
-          All prices are per box of 20 units, excluding VAT and delivery. Box price drops
+          All prices are per box of 20 units, excluding delivery. Box price drops
           automatically as your box count increases.
         </p>
       </div>

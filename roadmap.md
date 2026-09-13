@@ -27,3 +27,12 @@
 - Old unused columns on strains (wholesale_box_price_zar, wholesale_minimum_boxes, wholesale_available, box_quantity) still exist — dropping them needs approval.
 - Missing env config: BOBPAY_* and RESEND_API_KEY — live payments and email sending remain unverified.
 - Legal page wording still awaits client/legal review.
+
+## Phase 1 verification pass (2026-09-13)
+Evidence-based suite run against localhost preview with PHASE1TEST fixtures; all fixtures deleted by ID and baseline counts restored.
+Fixes made during the pass:
+- Account sub-pages (`/account/orders|addresses|settings`) rendered the overview instead of the child page — renamed to index routes.
+- Unknown product slugs returned HTTP 200 — now throw notFound() (404).
+- Account deletion now detaches orders and preserves buyer details before removing the auth user.
+- Catalog copy no longer says "excluding VAT" while VAT is disabled; wholesale step copy no longer mentions approval waits.
+Still blocked by external input: BobPay credentials (live handoff), Resend API key + sending domain (delivery), real stockist data, VAT confirmation, wholesale delivery fee confirmation (R250 configured, pending owner sign-off), courier info, legal copy approval.

@@ -248,7 +248,7 @@ function ApplyFlow() {
 
   async function handleDetails(e: React.FormEvent) {
     e.preventDefault();
-    if (!d.business_name.trim()) return toast.error("Business name is required");
+    
     setSubmitting(true);
     try {
       const { data: sess } = await supabase.auth.getSession();
@@ -409,8 +409,8 @@ function DetailsForm({ values, setValues, onBack, onSubmit, submitting }: {
     <form onSubmit={onSubmit} className="space-y-5">
       <FieldRow>
         <div>
-          <label className={labelCls}>Business name *</label>
-          <input required maxLength={200} value={values.business_name} onChange={(e) => set({ business_name: e.target.value })} className={inputCls} />
+          <label className={labelCls}>Business name</label>
+          <input maxLength={200} value={values.business_name} onChange={(e) => set({ business_name: e.target.value })} className={inputCls} />
         </div>
         <div>
           <label className={labelCls}>Business type *</label>

@@ -1,6 +1,6 @@
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { StrainTypePill } from "@/components/brand/StrainTypePill";
-import { Sparkles, Leaf, HeartPulse, Wind } from "lucide-react";
+import { Sparkles, Leaf, Wind } from "lucide-react";
 import { getStrainProductImage } from "@/lib/strain-assets";
 import type { Strain } from "@/lib/types";
 
@@ -36,7 +36,7 @@ export function StrainInformation({ strain }: { strain: Strain }) {
   const img = getStrainProductImage(strain.slug);
   const effects = strain.effects ?? [];
   const flavors = strain.flavor_tags ?? [];
-  const helps = strain.helps_with ?? [];
+  
   const negatives = strain.negatives ?? [];
   const terpenes = strain.terpene_breakdown?.slice(0, 3) ?? [];
 
@@ -91,16 +91,6 @@ export function StrainInformation({ strain }: { strain: Strain }) {
                   <div className="flex flex-wrap gap-2">
                     {flavors.map((f) => <Pill key={f}>{f}</Pill>)}
                   </div>
-                </Card>
-              )}
-              {helps.length > 0 && (
-                <Card icon={<HeartPulse className="h-4 w-4" strokeWidth={1.5} />} title="MAY HELP WITH">
-                  <div className="flex flex-wrap gap-2">
-                    {helps.map((h) => <Pill key={h}>{h}</Pill>)}
-                  </div>
-                  <p className="mt-5 font-display text-xs italic text-[color:var(--text-tertiary)]">
-                    Not medical advice. Consult a healthcare professional.
-                  </p>
                 </Card>
               )}
               {negatives.length > 0 && (

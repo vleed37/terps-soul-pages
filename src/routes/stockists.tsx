@@ -19,6 +19,8 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import type { Stockist, Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+import { SALES_EMAIL } from "@/lib/brand";
+import { matchesSearch } from "@/lib/place-aliases";
 import { MapSkeleton } from "@/components/layout/PageSkeletons";
 
 const StockistMap = lazy(() =>
@@ -105,8 +107,8 @@ function StockistsPage() {
     const q = query.trim().toLowerCase();
     let list = stockists.filter((s) => {
       if (q) {
-        const hay = `${s.name} ${s.address} ${s.suburb ?? ""} ${s.city} ${s.postal_code ?? ""}`.toLowerCase();
-        if (!hay.includes(q)) return false;
+        const hay = `${s.name} ${s.address} ${s.suburb ?? ""} ${s.city} ${s.province} ${s.postal_code ?? ""}`;
+        if (!matchesSearch(hay, q)) return false;
       }
       if (province !== "all" && s.province !== province) return false;
       if (strainFilter !== "all" && !(s.carried_strain_ids ?? []).includes(strainFilter))
@@ -160,6 +162,10 @@ function StockistsPage() {
         >
           Use my location →
         </button>
+        <p className="mx-auto mt-2 max-w-sm text-xs text-[color:var(--text-tertiary)]">
+          We only ask for your location when you tap this, and we use it once — to sort stockists
+          by how near they are to you.
+        </p>
       </ScrollReveal>
 
       {/* MAIN LAYOUT */}
@@ -205,7 +211,31 @@ function StockistsPage() {
           {/* LIST */}
           <div className="order-2 md:order-1 md:col-span-3">
             <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]">
-              {filtered.length === 0 ? (
+              {stockists.length === 0 ? (
+                <div className="px-6 py-20 text-center">
+                  <p className="font-display italic text-2xl text-[color:var(--text-secondary)]">
+                    Our stockist list is being finalised.
+                  </p>
+                  <p className="mx-auto mt-4 max-w-md text-sm text-[color:var(--text-secondary)]">
+                    We're confirming the shops that will carry Terps. In the meantime you can order
+                    directly from us, or get in touch about stocking Terps in your store.
+                  </p>
+                  <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                    <Link to="/shop">
+                      <GoldButton>Shop the collection</GoldButton>
+                    </Link>
+                    <Link to="/wholesale">
+                      <GoldButton variant="secondary">Become a stockist</GoldButton>
+                    </Link>
+                  </div>
+                  <a
+                    href={`mailto:${SALES_EMAIL}`}
+                    className="mt-6 inline-block font-display text-sm italic text-[color:var(--accent-gold)] hover:underline"
+                  >
+                    {SALES_EMAIL} →
+                  </a>
+                </div>
+              ) : filtered.length === 0 ? (
                 <p className="px-6 py-20 text-center font-display italic text-2xl text-[color:var(--text-secondary)]">
                   No stockists match that search.
                 </p>
@@ -330,7 +360,8 @@ function StockistsPage() {
             Stock Terps in your store.
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-base text-[color:var(--text-secondary)] md:text-lg">
-            Interested in carrying Terps as a retailer? We work with curated dispensaries across SA.
+            Interested in carrying Terps as a retailer? Create a stockist account to access
+            wholesale ordering.
           </p>
           <Link to="/wholesale" className="mt-10 inline-block">
             <GoldButton>Become a stockist</GoldButton>

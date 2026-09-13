@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getRequest } from "@tanstack/react-start/server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { SALES_EMAIL } from "@/lib/brand";
+import { SALES_EMAIL, retailDeliveryFee } from "@/lib/brand";
 
 const CartItemSchema = z.object({
   strainId: z.string().uuid(),
@@ -93,7 +93,7 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
       });
     }
 
-    const deliveryFee = subtotal >= 500 ? 0 : 80;
+    const deliveryFee = retailDeliveryFee(subtotal);
     const total = subtotal + deliveryFee;
 
     // 2) Generate order number

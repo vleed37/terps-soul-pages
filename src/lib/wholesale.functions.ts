@@ -2,14 +2,15 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { SALES_EMAIL, VAT_RATE, WHOLESALE_DELIVERY_FEE } from "@/lib/brand";
+import { SALES_EMAIL, WHOLESALE_DELIVERY_FEE, vatOn } from "@/lib/brand";
 import { resolveTierPrice } from "@/lib/wholesale-pricing";
 
 const BusinessTypeEnum = z.enum(["dispensary", "lounge", "specialty_retailer", "other"]);
 const VolumeEnum = z.enum(["under_50", "50_to_200", "200_to_500", "500_plus"]);
 
 const ApplicationSchema = z.object({
-  business_name: z.string().trim().min(1).max(200),
+  // Company name is optional (Sept 2026 decision). Falls back to the contact name.
+  business_name: z.string().trim().max(200).optional().or(z.literal("")),
   trading_as: z.string().trim().max(200).optional().or(z.literal("")),
   vat_number: z.string().trim().max(40).optional().or(z.literal("")),
   cipc_registration_number: z.string().trim().max(40).optional().or(z.literal("")),
@@ -43,7 +44,7 @@ export const createWholesaleAccount = createServerFn({ method: "POST" })
 
     const insertRow = {
       user_id: userId,
-      business_name: data.business_name,
+      business_name: data.business_name || data.primary_contact_name,
       trading_as: data.trading_as || null,
       vat_number: data.vat_number || null,
       cipc_registration_number: data.cipc_registration_number || null,
@@ -76,10 +77,10 @@ async function maybeNotifyAdmin(data: z.infer<typeof ApplicationSchema>) {
   await sendEmail({
     type: "internal-new-stockist",
     to: adminEmail,
-    subject: `Terps — New stockist signed up: ${data.business_name}`,
+    subject: `Terps — New stockist signed up: ${data.business_name || data.primary_contact_name}`,
     html: `<div style="font-family:'Manrope',sans-serif;padding:24px;background:#0d0d0d;color:#f5f0e0;">
       <h2 style="font-family:'Fraunces',serif;color:#c9a84c;">New stockist signed up</h2>
-      <p><strong>${data.business_name}</strong> (${data.business_type})</p>
+      <p><strong>${data.business_name || data.primary_contact_name}</strong> (${data.business_type})</p>
       <p>Contact: ${data.primary_contact_name} · ${data.primary_contact_email} · ${data.primary_contact_phone}</p>
       <p>${data.business_city}, ${data.business_province}</p>
       <p>Monthly volume: ${data.estimated_monthly_volume || "—"}</p>
@@ -130,6 +131,62 @@ export const updateMyWholesaleAccount = createServerFn({ method: "POST" })
       .eq("user_id", context.userId);
     if (error) throw new Error(error.message);
     return { ok: true as const };
+  });
+
+const PublicListingSchema = z.object({
+  map_listing_opt_in: z.boolean(),
+  public_store_name: z.string().trim().max(200).optional().or(z.literal("")),
+  public_address: z.string().trim().max(200).optional().or(z.literal("")),
+  public_city: z.string().trim().max(120).optional().or(z.literal("")),
+  public_province: z.string().trim().max(60).optional().or(z.literal("")),
+  public_phone: z.string().trim().max(30).optional().or(z.literal("")),
+});
+
+/**
+ * Stockist-controlled public map listing. Opting in is not enough: the finder
+ * only shows the shop once the public details are complete AND the account has
+ * a paid wholesale order.
+ */
+export const updateMyPublicListing = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => PublicListingSchema.parse(d))
+  .handler(async ({ data, context }) => {
+    const { error } = await supabaseAdmin
+      .from("wholesale_accounts")
+      .update({
+        map_listing_opt_in: data.map_listing_opt_in,
+        public_store_name: data.public_store_name || null,
+        public_address: data.public_address || null,
+        public_city: data.public_city || null,
+        public_province: data.public_province || null,
+        public_phone: data.public_phone || null,
+      })
+      .eq("user_id", context.userId);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+/** Whether this stockist currently qualifies to appear on the public map. */
+export const getMyListingStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: acct } = await supabaseAdmin
+      .from("wholesale_accounts")
+      .select("id,map_listing_opt_in,public_store_name,public_address,public_phone")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (!acct) return { optedIn: false, detailsComplete: false, hasPaidOrder: false, listed: false };
+    const detailsComplete = Boolean(
+      acct.public_store_name?.trim() && acct.public_address?.trim() && acct.public_phone?.trim(),
+    );
+    const { count } = await supabaseAdmin
+      .from("wholesale_orders")
+      .select("id", { count: "exact", head: true })
+      .eq("wholesale_account_id", acct.id)
+      .eq("payment_status", "paid");
+    const hasPaidOrder = (count ?? 0) > 0;
+    const optedIn = Boolean(acct.map_listing_opt_in);
+    return { optedIn, detailsComplete, hasPaidOrder, listed: optedIn && detailsComplete && hasPaidOrder };
   });
 
 async function assertApprovedStockist(userId: string) {
@@ -305,7 +362,8 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     subtotal = Number(subtotal.toFixed(2));
 
     const shipping = SHIPPING_FLAT;
-    const vat = Number(((subtotal + shipping) * VAT_RATE).toFixed(2));
+    // VAT fails safe: vatOn() returns 0 until VAT registration is confirmed.
+    const vat = vatOn(subtotal + shipping);
     const total = Number((subtotal + shipping + vat).toFixed(2));
 
     const { data: numRow, error: nErr } = await supabaseAdmin.rpc(

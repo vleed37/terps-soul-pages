@@ -713,9 +713,17 @@ export type Database = {
           estimated_monthly_volume: string | null
           id: string
           internal_notes: string | null
+          map_listing_opt_in: boolean
           primary_contact_email: string
           primary_contact_name: string
           primary_contact_phone: string
+          public_address: string | null
+          public_city: string | null
+          public_latitude: number | null
+          public_longitude: number | null
+          public_phone: string | null
+          public_province: string | null
+          public_store_name: string | null
           rejection_reason: string | null
           trading_as: string | null
           updated_at: string
@@ -739,9 +747,17 @@ export type Database = {
           estimated_monthly_volume?: string | null
           id?: string
           internal_notes?: string | null
+          map_listing_opt_in?: boolean
           primary_contact_email: string
           primary_contact_name: string
           primary_contact_phone: string
+          public_address?: string | null
+          public_city?: string | null
+          public_latitude?: number | null
+          public_longitude?: number | null
+          public_phone?: string | null
+          public_province?: string | null
+          public_store_name?: string | null
           rejection_reason?: string | null
           trading_as?: string | null
           updated_at?: string
@@ -765,9 +781,17 @@ export type Database = {
           estimated_monthly_volume?: string | null
           id?: string
           internal_notes?: string | null
+          map_listing_opt_in?: boolean
           primary_contact_email?: string
           primary_contact_name?: string
           primary_contact_phone?: string
+          public_address?: string | null
+          public_city?: string | null
+          public_latitude?: number | null
+          public_longitude?: number | null
+          public_phone?: string | null
+          public_province?: string | null
+          public_store_name?: string | null
           rejection_reason?: string | null
           trading_as?: string | null
           updated_at?: string
@@ -1035,6 +1059,10 @@ export type Database = {
       resolve_wholesale_price: {
         Args: { _boxes: number; _strain_id: string }
         Returns: number
+      }
+      wholesale_map_listing_eligible: {
+        Args: { _account_id: string }
+        Returns: boolean
       }
     }
     Enums: {

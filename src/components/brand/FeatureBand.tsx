@@ -3,7 +3,7 @@ import { Leaf, Droplet, ShieldCheck, MapPin } from "lucide-react";
 const ITEMS = [
   { Icon: Leaf, label: "Premium Flower" },
   { Icon: Droplet, label: "Hand-Infused" },
-  { Icon: ShieldCheck, label: "Lab Verified" },
+  { Icon: ShieldCheck, label: "Checked By Hand" },
   { Icon: MapPin, label: "Bred in SA" },
 ] as const;
 

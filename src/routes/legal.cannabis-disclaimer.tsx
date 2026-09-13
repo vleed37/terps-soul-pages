@@ -73,9 +73,10 @@ function CannabisDisclaimerPage() {
           heading: "Legal Status",
           body: (
             <p>
-              Terps operates within South African law for adult-use cannabis. Laws differ by
-              region — please ensure you understand and comply with the laws applicable to you
-              before purchasing or consuming.
+              Cannabis laws in South Africa differ by region and continue to develop. Nothing on
+              this site is legal advice or a statement about the legality of any purchase. Please
+              ensure you understand and comply with the laws applicable to you before purchasing
+              or consuming. This page is subject to final legal review.
             </p>
           ),
         },

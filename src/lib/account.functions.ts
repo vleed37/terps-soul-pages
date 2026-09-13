@@ -49,10 +49,30 @@ export const updateMyCustomer = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+/**
+ * Attaches past guest orders to this account when the signed-in user's email is
+ * verified and matches the email used at guest checkout. Only unclaimed orders
+ * (customer_id is null) are ever linked.
+ */
+async function claimGuestOrders(userId: string, claims: Record<string, unknown>) {
+  const email = typeof claims["email"] === "string" ? (claims["email"] as string) : null;
+  const verified =
+    claims["email_verified"] === true ||
+    (claims["user_metadata"] as { email_verified?: boolean } | undefined)?.email_verified === true;
+  if (!email || !verified) return;
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  await supabaseAdmin
+    .from("orders")
+    .update({ customer_id: userId })
+    .is("customer_id", null)
+    .eq("guest_email", email.toLowerCase());
+}
+
 export const getMyOrders = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
+    await claimGuestOrders(userId, context.claims as unknown as Record<string, unknown>);
     const { data: orders, error } = await supabase
       .from("orders")
       .select("id, order_number, status, payment_status, total, delivery_method, created_at")

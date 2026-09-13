@@ -7,6 +7,7 @@ import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { UpdateAccountModal } from "@/components/brand/UpdateAccountModal";
+import { MapListingCard } from "@/components/brand/MapListingCard";
 import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/wholesale/dashboard/")({
@@ -87,6 +88,8 @@ function DashboardHome() {
           </ul>
         )}
       </div>
+
+      <MapListingCard account={acct} />
 
       <div className="rounded-[8px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-elevated)] p-8 text-center">
         <button

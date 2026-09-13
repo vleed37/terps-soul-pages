@@ -110,7 +110,7 @@ export function CartDrawer() {
                         <div className="min-w-0 flex-1">
                           <h3 className="font-display text-lg leading-tight">{item.name}</h3>
                           <p className="meta-xs mt-1 text-[color:var(--text-tertiary)]">
-                            {item.weightGrams}g · Live rosin
+                            {item.weightGrams}g
                           </p>
                           <div className="mt-3 flex items-center justify-between">
                             <div className="inline-flex items-center gap-2 rounded-[4px] border border-[color:var(--border-subtle)]">

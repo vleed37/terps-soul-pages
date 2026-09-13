@@ -30,7 +30,9 @@ function AccountLayout() {
     enabled: !!user,
   });
 
+  const first = customer?.full_name?.split(" ")[0];
   const path = useRouterState({ select: (s) => s.location.pathname });
+
 
   return (
     <section className="mx-auto max-w-[1400px] px-6 py-12 md:px-8 md:py-20">

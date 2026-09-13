@@ -93,16 +93,6 @@ export function StrainInformation({ strain }: { strain: Strain }) {
                   </div>
                 </Card>
               )}
-              {helps.length > 0 && (
-                <Card icon={<HeartPulse className="h-4 w-4" strokeWidth={1.5} />} title="MAY HELP WITH">
-                  <div className="flex flex-wrap gap-2">
-                    {helps.map((h) => <Pill key={h}>{h}</Pill>)}
-                  </div>
-                  <p className="mt-5 font-display text-xs italic text-[color:var(--text-tertiary)]">
-                    Not medical advice. Consult a healthcare professional.
-                  </p>
-                </Card>
-              )}
               {negatives.length > 0 && (
                 <Card icon={<Wind className="h-4 w-4" strokeWidth={1.5} />} title="COMMON FEELINGS">
                   <div className="flex flex-wrap gap-2">

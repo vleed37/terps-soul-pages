@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { SALES_EMAIL, VAT_RATE, WHOLESALE_DELIVERY_FEE } from "@/lib/brand";
+import { SALES_EMAIL, WHOLESALE_DELIVERY_FEE, vatOn } from "@/lib/brand";
 import { resolveTierPrice } from "@/lib/wholesale-pricing";
 
 const BusinessTypeEnum = z.enum(["dispensary", "lounge", "specialty_retailer", "other"]);
@@ -305,7 +305,8 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     subtotal = Number(subtotal.toFixed(2));
 
     const shipping = SHIPPING_FLAT;
-    const vat = Number(((subtotal + shipping) * VAT_RATE).toFixed(2));
+    // VAT fails safe: vatOn() returns 0 until VAT registration is confirmed.
+    const vat = vatOn(subtotal + shipping);
     const total = Number((subtotal + shipping + vat).toFixed(2));
 
     const { data: numRow, error: nErr } = await supabaseAdmin.rpc(

@@ -132,7 +132,6 @@ function OrderDetailPage() {
 
       <div className="mt-8 flex flex-wrap gap-4">
         <GoldButton onClick={reorder}>Reorder These Items</GoldButton>
-        <GoldButton variant="tertiary" disabled>Download Invoice · Coming Soon</GoldButton>
       </div>
     </div>
   );

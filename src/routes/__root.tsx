@@ -23,7 +23,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#5C6650" },
       { title: "Terps — Premium Infused Pre-Rolls. Flavour First." },
-      { name: "description", content: "South African–bred, hand-infused premium pre-rolls. Live rosin. Lab verified. Flavour first." },
+      { name: "description", content: "South Africa's premium handcrafted infused pre-rolls. Premium flower, hand-infused. Flavour first." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Terps" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -20,11 +20,14 @@ import type { Strain } from "@/lib/types";
 import { PUBLIC_SITE_URL, seoMeta, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const Route = createFileRoute("/strain/$slug")({
-  loader: ({ context, params }) =>
-    context.queryClient.ensureQueryData({
+  loader: async ({ context, params }) => {
+    const strain = await context.queryClient.ensureQueryData({
       queryKey: ["strain", params.slug],
       queryFn: () => getStrainBySlug({ data: { slug: params.slug } }),
-    }),
+    });
+    if (!strain) throw notFound();
+    return strain;
+  },
   head: ({ params, loaderData }) => {
     const s = loaderData as unknown as Strain | null;
     if (!s) {

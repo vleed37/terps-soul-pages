@@ -1,62 +1,38 @@
-# Phase 1 — Audit, Complete, Verify
+# Phase 1 — Audit, Complete, Verify (revised with your corrections)
 
-Most of Phase 1 already exists and works (retail catalogue, cart, checkout, orders, accounts, wholesale portal with protected box pricing, Strain Library, legal pages, age gate, first-visit prompt). This pass closes the verified gaps, removes remaining fake content, moves fee/tax settings into one place, and then runs the full acceptance test suite.
+I cannot edit code yet: the session is still in plan mode, so every file edit is blocked. Approving this plan switches me to build mode and I will implement it immediately, end to end, then report evidence in your requested format.
 
-## What I verified before writing this
+## Verified findings (checked in the code and the live database)
 
-- Six placeholder stockists are live and public, all with fake `555` phone numbers (The Divine Collective, Herb House, The Greenroom, Terp Bar, Flavor Room, The Pre-Roll Co.).
-- Retail delivery fee R80 / free over R500 is hard-coded inside the checkout server code, not in the settings file. Wholesale R250 and a 15% VAT rate do sit in the settings file.
-- No email key and no payment credentials are stored in the project, so email sending and BobPay checkout cannot be verified live yet.
-- Product pages already avoid THC/CBD, batch, lab and medical claims. But "Lab Verified" still shows in a homepage/section badge strip, the site's own search-result description still says "Live rosin. Lab verified.", and the cart still labels every item "Live rosin".
-- Stockist page still says "We work with curated dispensaries across SA."
-- Wholesale accounts have no map-listing opt-in fields at all, so the map eligibility rule does not exist yet.
-- Order detail has a dead "Download Invoice · Coming Soon" button.
-- No guest-order claiming exists when a customer registers with an email that placed guest orders.
-- Stockist search has no suburb/city alias matching (so "JHB" finds nothing).
+- Six placeholder stockists are active and publicly visible, all with fake `555` phone numbers.
+- Retail R80 / free-over-R500 is hard-coded inside the checkout server code, not in the settings file.
+- Wholesale totals currently add 15% VAT unconditionally.
+- No payment credentials and no email key are stored, so live payment and email delivery cannot be verified.
+- Unsupported claims still present: a "MAY HELP WITH" panel on product pages, a "Lab Verified" badge, "Live rosin. Lab verified." in the site description, a blanket "Live rosin" line on every cart item, "Terps operates within South African law for adult-use cannabis" on the disclaimer, "We work with curated dispensaries across SA" on the stockist page, and a dead "Download Invoice · Coming Soon" button.
+- Wholesale accounts have no map-listing fields, so the map eligibility rule does not exist.
+- No guest-order claiming on registration; stockist search has no alias matching (so "JHB" finds nothing).
 
-## Work to do
+## What I will implement
 
-### 1. Remove remaining fake and unverifiable content
-- Deactivate the six placeholder stockists (reversible: set inactive, no deletion) and confirm the finder shows an honest empty state with "Become a stockist" and contact actions.
-- Remove the "Lab Verified" badge, fix the site description to drop "Live rosin. Lab verified.", remove the blanket "Live rosin" label from cart lines (Caviar Stix copy keeps live rosin, which is correct).
-- Replace the "curated dispensaries" line with: "Interested in carrying Terps as a retailer? Create a stockist account to access wholesale ordering."
-- Remove the dead invoice button.
-
-### 2. One settings source for money
-- Move retail delivery fee and free-delivery threshold into the shared settings file, read by both the checkout page and the server, and mark all four commercial values (R80, R500, R250, VAT status) as pending owner confirmation in comments and in the launch-blocker list.
-- Make the VAT rate switchable in one place so wholesale totals show no VAT until registration is confirmed. I will not change the current 15% behaviour without your confirmation — flag only.
-
-### 3. Stockist map listing (missing feature)
-Additive migration on wholesale accounts: map opt-in flag, public store name, public address, public phone, and a listing state. A stockist becomes publicly visible only when they opted in, supplied complete public details, and have a successfully paid wholesale order. Registration step 2 gains the opt-in checkbox with conditional required fields and a plain explanation of when and how the listing appears. Map opt-out keeps the business fully private; personal signup data is never exposed publicly.
-
-### 4. Stockist finder search
-Add suburb/city/province alias matching (JHB → Johannesburg, Jozi, CPT → Cape Town, PTA/Tshwane → Pretoria, Durbs → Durban, plus province abbreviations), keeping existing filters, geolocation, nearest-first sorting and marker selection.
-
-### 5. Customer account completeness
-- Claim prior guest orders when a customer registers or signs in with a matching email (server-side, address-scoped, one-time).
-- Verify redirect-back-after-login for protected account routes, address CRUD, marketing opt-in/out, and that account deletion keeps order records while removing profile data.
-
-### 6. Email and payment readiness
-Wire the remaining pieces so nothing is missing except the credentials themselves: verify the sender name "Terps", reply-to sales@terpsnation.co.za on every send, newsletter confirmation/success feedback, and that every failure is logged loudly without leaking secrets. Payment and email credentials are external inputs; I will request them when you are ready, and until then these journeys are tested with clearly labelled test fixtures and reported as blocked, not passing.
-
-### 7. Legal wording
-Soften or remove any statement that adult-use commercial sale is lawful, keep delivery-only wording consistent in Terms/Refunds/Shipping, ensure the privacy page names the actual services used, add legal links at checkout, and mark every legal page as awaiting owner/legal review.
-
-### 8. Security and isolation audit
-Re-verify row-level security on every user-facing table, confirm wholesale pricing is unreachable for anonymous and retail users, confirm cross-account reads fail, confirm webhook signature rejection and replay idempotency, and confirm no secret appears in browser bundles or responses.
-
-### 9. Full acceptance test run
-Retail journey (guest and signed-in, single order, single stock decrement, failed/cancelled payments leave stock alone), customer account journey, wholesale journey (mandatory-only and optional-details signup, immediate access, minimum order, map rules), engagement (newsletter dedupe, notify-me dedupe, no restock sending), and responsive/accessibility checks at 390px, 768px and 1440px.
+1. **VAT fails safe.** One settings file holds retail delivery, free-delivery threshold, wholesale delivery and VAT. VAT collection is switched OFF and no VAT is added to any total until registration is confirmed in writing. All four values are marked as launch blockers in the code.
+2. **Full claim sweep** across code, database content and the rendered pages for: MAY HELP WITH, depression, anxiety, stress, fatigue, LAB VERIFIED, Live rosin, adult-use, within South African law, curated dispensaries, Coming Soon, Download Invoice, batch, THC, CBD. "Live rosin" stays only in accurate Caviar Stix copy. Medical, laboratory and legality claims are removed, including the stored strain data behind them.
+3. **Placeholder stockists deactivated, not deleted**, plus an honest empty state on the finder with "Become a stockist" and contact actions, and the neutral retailer line you specified.
+4. **Stockist map opt-in** (additive migration): opt-in flag, public store name, public address, public phone, listing state. Public listing requires opt-in AND complete public details AND at least one wholesale order with verified paid status. Public map queries return only approved public fields — never signup, VAT, account or delivery data.
+5. **Alias stockist search** (JHB/Jozi → Johannesburg, CPT → Cape Town, PTA/Tshwane → Pretoria, Durbs → Durban, province abbreviations), keeping existing filters, geolocation, nearest-first sort and marker linkage.
+6. **Secure guest-order claiming** on registration/sign-in using the verified session email only.
+7. **Email and payment readiness**: all eight Phase 1 messages wired with sender name Terps and reply-to sales@terpsnation.co.za, loud failure logging without leaking secrets, and abuse limits on signup, reset, newsletter and notify-me. Live delivery is marked BLOCKED where credentials or domain verification are missing.
+8. **Legal wording** softened, delivery-only wording consistent, privacy page accurate about services used, legal links at checkout, every legal page marked as awaiting owner/legal review.
+9. **Security audit and full acceptance suite**: RLS on every user-facing table, cross-account read attempts, anonymous and retail attempts on wholesale pricing, invalid webhook signature rejection, webhook replay idempotency, one order and one stock decrement per successful payment, no decrement on failure or cancellation, no secrets in browser bundles.
+10. **Verification of existing features rather than assumption**: age-gate persistence, first-visit prompt after age confirmation, cart persistence, guest and signed-in checkout, registration/verification/reset/magic link, address CRUD, marketing opt-in/out, account deletion and anonymisation, instant stockist registration, protected pricing, box quantity and minimum order enforcement, dedicated wholesale cart, newsletter dedupe, notify-me dedupe against a clearly labelled out-of-stock test fixture, galleries, and layouts at 390px, 768px and 1440px.
 
 ## Technical notes
 
-- Migrations are additive only: new nullable columns on `wholesale_accounts` plus a listing-eligibility helper; placeholder stockists are set `is_active = false` rather than deleted. No table drops, no data resets.
-- Guest-order claiming runs in an authenticated server function using the verified session email; RLS policies for `orders` are widened only to `customer_id = auth.uid()` rows.
-- Public stockist reads keep the existing narrow column projection; new map fields are exposed only through the same public projection once eligible.
-- Fee/VAT constants centralise in `src/lib/brand.ts`; `checkout.functions.ts` and `wholesale.functions.ts` import them so server totals stay authoritative.
-- Alias matching is a client-side lookup table applied to the existing filter; no schema change.
-- Phase 2 items (admin dashboard, restock sending, discounts, exports, chatbot, reviews) stay out.
+- Migrations are additive and reversible: new nullable columns on `wholesale_accounts`, a listing-eligibility helper, and a data update setting the placeholder stockists inactive. No drops, no resets, no deletions.
+- Fee and VAT constants live in `src/lib/brand.ts`; the retail and wholesale server functions import them so totals stay server-authoritative.
+- Public stockist reads keep the existing narrow column projection; new public map fields join it only when eligible.
+- BobPay is tested in test mode with fixtures only; no real charge. The full BobPay journey is reported BLOCKED BY CREDENTIALS until credentials exist.
+- No Phase 2 work: no admin dashboard, discount engine, shipping calculator, exports, loyalty, chatbot, reviews, restock sending or behavioural campaigns.
 
-## Known launch blockers (external inputs)
+## Launch blockers (owner inputs)
 
-Payment credentials and BobPay approval for the Terps merchant entity and final domain; email sending domain verification and key; real stockist list with addresses, phones, coordinates and hours; confirmation of VAT registration; confirmation of R80/R500 retail and R250 wholesale delivery; courier details; final legal sign-off; approved photography for any remaining stock imagery.
+Payment credentials and BobPay approval for the merchant entity and final domain; email sending domain verification and key; real stockist data; VAT registration confirmation; confirmation of R80/R500 retail and R250 wholesale delivery; courier details; final legal sign-off; approved photography for any remaining stock imagery.

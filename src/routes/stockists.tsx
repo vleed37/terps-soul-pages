@@ -19,6 +19,8 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import type { Stockist, Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+import { SALES_EMAIL } from "@/lib/brand";
+import { matchesSearch } from "@/lib/place-aliases";
 import { MapSkeleton } from "@/components/layout/PageSkeletons";
 
 const StockistMap = lazy(() =>

@@ -105,8 +105,8 @@ function StockistsPage() {
     const q = query.trim().toLowerCase();
     let list = stockists.filter((s) => {
       if (q) {
-        const hay = `${s.name} ${s.address} ${s.suburb ?? ""} ${s.city} ${s.postal_code ?? ""}`.toLowerCase();
-        if (!hay.includes(q)) return false;
+        const hay = `${s.name} ${s.address} ${s.suburb ?? ""} ${s.city} ${s.province} ${s.postal_code ?? ""}`;
+        if (!matchesSearch(hay, q)) return false;
       }
       if (province !== "all" && s.province !== province) return false;
       if (strainFilter !== "all" && !(s.carried_strain_ids ?? []).includes(strainFilter))
@@ -160,6 +160,10 @@ function StockistsPage() {
         >
           Use my location →
         </button>
+        <p className="mx-auto mt-2 max-w-sm text-xs text-[color:var(--text-tertiary)]">
+          We only ask for your location when you tap this, and we use it once — to sort stockists
+          by how near they are to you.
+        </p>
       </ScrollReveal>
 
       {/* MAIN LAYOUT */}
@@ -330,7 +334,8 @@ function StockistsPage() {
             Stock Terps in your store.
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-base text-[color:var(--text-secondary)] md:text-lg">
-            Interested in carrying Terps as a retailer? We work with curated dispensaries across SA.
+            Interested in carrying Terps as a retailer? Create a stockist account to access
+            wholesale ordering.
           </p>
           <Link to="/wholesale" className="mt-10 inline-block">
             <GoldButton>Become a stockist</GoldButton>

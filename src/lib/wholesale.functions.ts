@@ -133,6 +133,62 @@ export const updateMyWholesaleAccount = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
+const PublicListingSchema = z.object({
+  map_listing_opt_in: z.boolean(),
+  public_store_name: z.string().trim().max(200).optional().or(z.literal("")),
+  public_address: z.string().trim().max(200).optional().or(z.literal("")),
+  public_city: z.string().trim().max(120).optional().or(z.literal("")),
+  public_province: z.string().trim().max(60).optional().or(z.literal("")),
+  public_phone: z.string().trim().max(30).optional().or(z.literal("")),
+});
+
+/**
+ * Stockist-controlled public map listing. Opting in is not enough: the finder
+ * only shows the shop once the public details are complete AND the account has
+ * a paid wholesale order.
+ */
+export const updateMyPublicListing = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => PublicListingSchema.parse(d))
+  .handler(async ({ data, context }) => {
+    const { error } = await supabaseAdmin
+      .from("wholesale_accounts")
+      .update({
+        map_listing_opt_in: data.map_listing_opt_in,
+        public_store_name: data.public_store_name || null,
+        public_address: data.public_address || null,
+        public_city: data.public_city || null,
+        public_province: data.public_province || null,
+        public_phone: data.public_phone || null,
+      })
+      .eq("user_id", context.userId);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+/** Whether this stockist currently qualifies to appear on the public map. */
+export const getMyListingStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: acct } = await supabaseAdmin
+      .from("wholesale_accounts")
+      .select("id,map_listing_opt_in,public_store_name,public_address,public_phone")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (!acct) return { optedIn: false, detailsComplete: false, hasPaidOrder: false, listed: false };
+    const detailsComplete = Boolean(
+      acct.public_store_name?.trim() && acct.public_address?.trim() && acct.public_phone?.trim(),
+    );
+    const { count } = await supabaseAdmin
+      .from("wholesale_orders")
+      .select("id", { count: "exact", head: true })
+      .eq("wholesale_account_id", acct.id)
+      .eq("payment_status", "paid");
+    const hasPaidOrder = (count ?? 0) > 0;
+    const optedIn = Boolean(acct.map_listing_opt_in);
+    return { optedIn, detailsComplete, hasPaidOrder, listed: optedIn && detailsComplete && hasPaidOrder };
+  });
+
 async function assertApprovedStockist(userId: string) {
   const { data: acct } = await supabaseAdmin
     .from("wholesale_accounts")

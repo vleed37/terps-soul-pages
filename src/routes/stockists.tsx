@@ -209,7 +209,31 @@ function StockistsPage() {
           {/* LIST */}
           <div className="order-2 md:order-1 md:col-span-3">
             <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]">
-              {filtered.length === 0 ? (
+              {stockists.length === 0 ? (
+                <div className="px-6 py-20 text-center">
+                  <p className="font-display italic text-2xl text-[color:var(--text-secondary)]">
+                    Our stockist list is being finalised.
+                  </p>
+                  <p className="mx-auto mt-4 max-w-md text-sm text-[color:var(--text-secondary)]">
+                    We're confirming the shops that will carry Terps. In the meantime you can order
+                    directly from us, or get in touch about stocking Terps in your store.
+                  </p>
+                  <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                    <Link to="/shop">
+                      <GoldButton>Shop the collection</GoldButton>
+                    </Link>
+                    <Link to="/wholesale">
+                      <GoldButton variant="secondary">Become a stockist</GoldButton>
+                    </Link>
+                  </div>
+                  <a
+                    href={`mailto:${SALES_EMAIL}`}
+                    className="mt-6 inline-block font-display text-sm italic text-[color:var(--accent-gold)] hover:underline"
+                  >
+                    {SALES_EMAIL} →
+                  </a>
+                </div>
+              ) : filtered.length === 0 ? (
                 <p className="px-6 py-20 text-center font-display italic text-2xl text-[color:var(--text-secondary)]">
                   No stockists match that search.
                 </p>

@@ -2,13 +2,15 @@ import { createFileRoute, redirect, Outlet, useRouterState } from "@tanstack/rea
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { AccountSidebar } from "@/components/account/AccountSidebar";
 import { getMyCustomer } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated")({
+  // Session lives in browser storage, so the server can never read it: render
+  // this subtree on the client only and gate it there.
+  ssr: false,
   beforeLoad: async ({ location }) => {
-    // Session lives in browser storage; during SSR there is nothing to read, so
-    // gate on the client only (the route's own data fetch still enforces access).
     if (typeof window === "undefined") return;
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
@@ -19,12 +21,15 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AccountLayout() {
+  const { user } = useAuth();
   const fetchCustomer = useServerFn(getMyCustomer);
   const { data: customer } = useQuery({
     queryKey: ["me"],
     queryFn: () => fetchCustomer(),
+    // Without a restored session there is no bearer token to attach yet.
+    enabled: !!user,
   });
-  const first = customer?.full_name?.split(" ")[0];
+
   const path = useRouterState({ select: (s) => s.location.pathname });
 
   return (

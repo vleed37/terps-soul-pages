@@ -248,7 +248,7 @@ function ApplyFlow() {
 
   async function handleDetails(e: React.FormEvent) {
     e.preventDefault();
-    if (!d.business_name.trim()) return toast.error("Business name is required");
+    
     setSubmitting(true);
     try {
       const { data: sess } = await supabase.auth.getSession();

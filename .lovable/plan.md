@@ -4,10 +4,21 @@ You asked for a report, not more building. Producing that report honestly requir
 
 I will not report any item as PASS without a captured result (query output, HTTP status, screenshot, or log line).
 
-## Commercial confirmation to record
+## Commercial values
 
-- Wholesale delivery fee confirmed at R250 per order — recorded in the single commercial settings file as confirmed (removing the "awaiting confirmation" note for this value only).
-- VAT stays disabled. Retail R80 / free over R500 stays marked unconfirmed.
+- Wholesale delivery stays configured at R250 per order, labelled "pending owner confirmation" — not marked confirmed.
+- VAT stays disabled. Retail R80 / free over R500 stays unconfirmed.
+
+## Test-data safeguards
+
+- All fixture accounts, products, orders and stockists use a unique `PHASE1TEST` prefix; no real user, order, product, inventory or stockist row is touched.
+- Stock decrement is tested only against a dedicated fixture product. Account deletion only against an account created in this run.
+- Every created ID is recorded and deleted individually; no broad filters, truncation, resets or cascading cleanup.
+- Before/after row counts captured for every fixture operation, with cleanup confirmed to restore the initial state.
+- Only non-deliverable test email addresses; no mail to customers or third parties.
+- Locally signed webhook fixtures prove signature and idempotency logic only — the BobPay handoff and webhook integration stay BLOCKED BY CREDENTIALS, and real email delivery stays BLOCKED until the key and sending domain exist.
+- No real charges, no production checkout, no domain change, no Phase 2 scope.
+
 
 ## Test execution plan
 

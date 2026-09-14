@@ -835,39 +835,48 @@ export type Database = {
       }
       wholesale_order_items: {
         Row: {
+          box_composition: Json | null
           box_price_zar: number
           box_quantity_per_unit: number
           boxes_ordered: number
           created_at: string
           id: string
+          item_type: string
           line_total_zar: number
-          strain_id: string
+          product_line: string | null
+          strain_id: string | null
           strain_name: string
           total_units: number
           unit_price_zar: number
           wholesale_order_id: string
         }
         Insert: {
+          box_composition?: Json | null
           box_price_zar: number
           box_quantity_per_unit: number
           boxes_ordered: number
           created_at?: string
           id?: string
+          item_type?: string
           line_total_zar: number
-          strain_id: string
+          product_line?: string | null
+          strain_id?: string | null
           strain_name: string
           total_units: number
           unit_price_zar: number
           wholesale_order_id: string
         }
         Update: {
+          box_composition?: Json | null
           box_price_zar?: number
           box_quantity_per_unit?: number
           boxes_ordered?: number
           created_at?: string
           id?: string
+          item_type?: string
           line_total_zar?: number
-          strain_id?: string
+          product_line?: string | null
+          strain_id?: string | null
           strain_name?: string
           total_units?: number
           unit_price_zar?: number
@@ -1056,6 +1065,10 @@ export type Database = {
         Returns: boolean
       }
       is_approved_stockist: { Args: { _user_id: string }; Returns: boolean }
+      process_paid_wholesale_order: {
+        Args: { _order_id: string; _transaction_id: string }
+        Returns: boolean
+      }
       resolve_wholesale_price: {
         Args: { _boxes: number; _strain_id: string }
         Returns: number

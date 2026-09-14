@@ -1,16 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
+import { Pending } from "@/components/layout/LegalDraftNotice";
 import { seoMeta } from "@/lib/seo";
-import { SALES_EMAIL } from "@/lib/brand";
-
-const LAST_UPDATED = "31 May 2026";
+import { BUSINESS, contactEmail } from "@/lib/business";
 
 export const Route = createFileRoute("/legal/refunds")({
   head: () => ({
     meta: seoMeta({
-      title: "Refund Policy · Terps",
-      description:
-        "How returns, refunds, and order issues are handled by Terps.",
+      title: "Refund and Returns Policy · Terps",
+      description: "How returns, refunds and order issues are handled by Terps.",
       path: "/legal/refunds",
     }),
   }),
@@ -18,33 +16,56 @@ export const Route = createFileRoute("/legal/refunds")({
 });
 
 function RefundsPage() {
+  const email = contactEmail("refund");
+  const Mail = () => (
+    <a href={`mailto:${email}`} className="ghost-link">
+      {email}
+    </a>
+  );
+
   return (
     <LegalPage
       eyebrow="Legal"
-      title="Refund Policy"
-      lastUpdated={LAST_UPDATED}
+      title="Refund and Returns Policy"
       intro={
         <p>
-          We stand behind every Terps drop. This policy describes when refunds, replacements, and
-          credits apply.
+          This policy explains when you can return a {BUSINESS.tradingName} order and how refunds are
+          handled. It is a draft pending legal review, and the return notification period has not yet
+          been confirmed.
         </p>
       }
       sections={[
         {
-          heading: "Damaged or Defective Items",
+          heading: "Contact Us Before Returning Anything",
           body: (
             <p>
-              If your order arrives damaged or defective, contact us within 7 days with photos and
-              your order number. We will replace the item or refund you in full.
+              Our products are consumables. Do not send anything back before contacting us. Email{" "}
+              <Mail /> with your order number and, where relevant, photographs of the problem, and we
+              will confirm in writing whether and how the item should be returned. Unauthorised
+              returns cannot be processed or refunded.
             </p>
           ),
         },
         {
-          heading: "Incorrect Items",
+          heading: "Your Rights Under the Consumer Protection Act",
           body: (
             <p>
-              If you receive an item different from what you ordered, contact us within 7 days. We
-              will arrange a return at no cost and dispatch the correct item.
+              Nothing in this policy limits your rights under the Consumer Protection Act, 2008,
+              including your right to receive goods that are of good quality, in working order and
+              free of defects, and your statutory right to return goods that fail to meet that
+              standard within the period the Act allows. Where this policy and the Act differ, the Act
+              applies.
+            </p>
+          ),
+        },
+        {
+          heading: "Damaged, Defective or Incorrect Items",
+          body: (
+            <p>
+              If your order arrives damaged, defective or is not what you ordered, notify us within{" "}
+              <Pending label="return notification period" /> of delivery. Once we have confirmed the
+              problem, we will replace the item or refund it, and we will carry the cost of returning
+              it.
             </p>
           ),
         },
@@ -52,27 +73,37 @@ function RefundsPage() {
           heading: "Change of Mind",
           body: (
             <p>
-              As a consumable product, unopened items can be returned within 7 days of delivery at
-              your cost. Opened items cannot be returned for reasons of product integrity.
+              Because these are consumable cannabis products, we cannot accept the return of any item
+              whose seal or packaging has been opened, for reasons of product integrity and safety.
+              Where an unopened item may be returned, the notification period is{" "}
+              <Pending label="return notification period" /> and return shipping is for your account.
             </p>
           ),
         },
         {
-          heading: "Refund Method & Timing",
+          heading: "Refund Method and Timing",
           body: (
             <p>
-              Approved refunds are issued to the original payment method within 7 business days of
-              approval. Bank clearance times may vary.
+              Approved refunds are made in {BUSINESS.currency} to the original payment method through
+              our payment provider. We will confirm the refund by email once it has been submitted;
+              the time it takes to reflect depends on your bank. We do not issue cash refunds.
             </p>
           ),
         },
         {
-          heading: "Cancellations",
+          heading: "Cancelling an Order",
           body: (
             <p>
-              Orders may be cancelled prior to dispatch by contacting{" "}
-              <a href={`mailto:${SALES_EMAIL}`} className="ghost-link">{SALES_EMAIL}</a>
-              . Once dispatched, the order is subject to the returns process above.
+              You may cancel an order before it has been handed to the delivery partner by emailing{" "}
+              <Mail />. Once an order has been dispatched it falls under the return process above.
+            </p>
+          ),
+        },
+        {
+          heading: "Contact",
+          body: (
+            <p>
+              Returns and refunds: <Mail />. Telephone: <Pending label="phone number" />.
             </p>
           ),
         },

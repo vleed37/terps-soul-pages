@@ -37,3 +37,15 @@ export function retailDeliveryFee(subtotal: number): number {
 export function vatOn(base: number): number {
   return Number((base * EFFECTIVE_VAT_RATE).toFixed(2));
 }
+
+/**
+ * 14 Sept 2026 decision: the delivery model (fees, courier, thresholds) is NOT
+ * approved. Fees stay configurable above and are still applied at checkout, but
+ * nothing about them may be advertised publicly until this flag flips.
+ */
+export const DELIVERY_PRICING_CONFIRMED = false;
+
+/** Neutral, non-committal delivery line used anywhere a promise used to sit. */
+export const DELIVERY_COPY =
+  "Available delivery options and costs are shown at checkout.";
+

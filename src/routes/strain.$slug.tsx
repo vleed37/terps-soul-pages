@@ -1,29 +1,34 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
+import { getStrainImage, getStrainProductImage } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
-import { FeatureBand } from "@/components/brand/FeatureBand";
 import { EffectChip, FlavorChip } from "@/components/brand/Chips";
 import { QuantityStepper } from "@/components/brand/QuantityStepper";
-import { StrainTypePill } from "@/components/brand/StrainTypePill";
 import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
 import { FindClosestStockistModal } from "@/components/brand/FindClosestStockistModal";
-import { StrainInformation } from "@/components/brand/StrainInformation";
-import { Product3DViewer } from "@/components/brand/Product3DViewer";
+import { ProductGallery } from "@/components/brand/ProductGallery";
 import { MapPin } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
 import { PUBLIC_SITE_URL, seoMeta, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { canonicalSlug, lineMeta } from "@/lib/product-lines";
+import { DELIVERY_COPY } from "@/lib/brand";
 
 export const Route = createFileRoute("/strain/$slug")({
   loader: async ({ context, params }) => {
+    // Newer spellings ("caviar-stick-*", "girl-scout-cookies") resolve to the
+    // existing database slug so shared and indexed links never break.
+    const canonical = canonicalSlug(params.slug);
+    if (canonical !== params.slug) {
+      throw redirect({ to: "/strain/$slug", params: { slug: canonical } });
+    }
     const strain = await context.queryClient.ensureQueryData({
-      queryKey: ["strain", params.slug],
-      queryFn: () => getStrainBySlug({ data: { slug: params.slug } }),
+      queryKey: ["strain", canonical],
+      queryFn: () => getStrainBySlug({ data: { slug: canonical } }),
     });
     if (!strain) throw notFound();
     return strain;
@@ -34,22 +39,21 @@ export const Route = createFileRoute("/strain/$slug")({
       return {
         meta: seoMeta({
           title: "Strain · Terps",
-          description: "Explore the Terps strain library — flavour-first infused pre-rolls bred in South Africa.",
+          description:
+            "Explore the Terps strain library — flavour-first infused pre-rolls made in South Africa.",
           path: `/strain/${params.slug}`,
         }),
       };
     }
-    const terpenes = (s.terpene_breakdown ?? [])
-      .map((t) => t.name)
-      .slice(0, 3)
-      .join(", ");
-    const description = `${s.tagline ?? s.name}.${terpenes ? ` Terpenes: ${terpenes}.` : ""}`;
-    const localImg = getStrainImage(s.slug) || getStrainProductImage(s.slug);
+    const meta = lineMeta(s.product_line);
+    const description = `${s.name} — ${meta.name} by Terps.${
+      s.tagline ? ` ${s.tagline}.` : ""
+    }`;
+    const localImg = getStrainProductImage(s.slug) || getStrainImage(s.slug);
     const image = localImg || DEFAULT_OG_IMAGE;
-    const title = `${s.name} · Terps`;
     return {
       meta: seoMeta({
-        title,
+        title: `${s.name} · Terps`,
         description,
         path: `/strain/${params.slug}`,
         ogType: "product",
@@ -66,7 +70,7 @@ export const Route = createFileRoute("/strain/$slug")({
             image: image.startsWith("http") ? image : `${PUBLIC_SITE_URL}${image}`,
             sku: s.slug,
             brand: { "@type": "Brand", name: "Terps" },
-            category: s.product_line === "caviar_stix" ? "Caviar Stix" : "Infused Pre-Roll",
+            category: meta.name,
             offers: {
               "@type": "Offer",
               url: `${PUBLIC_SITE_URL}/strain/${s.slug}`,
@@ -85,8 +89,10 @@ export const Route = createFileRoute("/strain/$slug")({
   component: StrainDetail,
   notFoundComponent: () => (
     <div className="mx-auto max-w-xl py-40 text-center">
-      <p className="font-display italic text-4xl">Strain not found.</p>
-      <Link to="/shop" className="ghost-link mt-8">Back to collection</Link>
+      <p className="font-display italic text-4xl">Product not found.</p>
+      <Link to="/shop" className="ghost-link mt-8">
+        Back to the collection
+      </Link>
     </div>
   ),
   errorComponent: () => <div className="py-40 text-center">Something went wrong.</div>,
@@ -94,20 +100,26 @@ export const Route = createFileRoute("/strain/$slug")({
 
 function StrainDetail() {
   const { slug } = Route.useParams();
-  const { data } = useSuspenseQuery({ queryKey: ["strain", slug], queryFn: () => getStrainBySlug({ data: { slug } }) });
+  const { data } = useSuspenseQuery({
+    queryKey: ["strain", slug],
+    queryFn: () => getStrainBySlug({ data: { slug } }),
+  });
   const s = data as unknown as Strain | null;
   const [qty, setQty] = useState(1);
   const [notifyOpen, setNotifyOpen] = useState(false);
   const [stockistOpen, setStockistOpen] = useState(false);
   const addItem = useCart((st) => st.addItem);
   if (!s) return null;
+
+  const meta = lineMeta(s.product_line);
   const img = getStrainProductImage(s.slug);
-  const modelUrl = getStrain3DModel(s.slug);
-  const bgImg = getStrainImage(s.slug);
-  const videoSrc = `/strains/${s.slug}.mp4`;
-  const posterSrc = `/strains/${s.slug}-poster.jpg`;
+  const extra = ((s as unknown as { gallery_image_urls?: string[] | null })
+    .gallery_image_urls ?? []) as string[];
+  const gallery = [img, ...extra].filter(Boolean) as string[];
+
   const soldOut = s.stock_quantity <= 0;
-  const isPremium = s.product_tier === "premium" || s.product_line === "caviar_stix";
+  const isCaviar = s.product_line === "caviar_stix";
+
   const handleAdd = () => {
     if (soldOut) return;
     addItem(
@@ -127,72 +139,46 @@ function StrainDetail() {
   };
 
   return (
-    <>
-      {/* HERO */}
-      <section className="tone-dark relative h-[70vh] overflow-hidden">
-        <video
-          src={videoSrc}
-          poster={posterSrc}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="hero-video absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0A08]/30 via-[#0B0A08]/70 to-[#0B0A08]" />
-        <div className="relative mx-auto flex h-full max-w-[1400px] flex-col justify-end px-6 pb-16 md:px-12">
-          <Link to="/shop" className="ghost-link self-start">← The collection</Link>
-          <div className="mt-8">
-            {isPremium && (
-              <MetaLabel gold className="mb-3 block">✦ Premium Tier</MetaLabel>
-            )}
-            {s.effect_category && <MetaLabel gold className="capitalize">{s.effect_category} strain</MetaLabel>}
-            <h1 className="mt-4 font-display text-[2.75rem] leading-none tracking-tight sm:text-6xl md:text-8xl md:tracking-normal">{s.name}</h1>
-            <Hairline w="120px" className="my-6" />
-            <p className="font-display text-2xl italic text-[color:var(--text-secondary)]">{s.tagline}</p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <span className="meta-xs text-[color:var(--text-tertiary)]">
-                {s.weight_grams ?? 0.75}G
-              </span>
-              {s.strain_type && <StrainTypePill type={s.strain_type} />}
-              <span className="meta-xs text-[color:var(--text-tertiary)]">
-                Hand Infused
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="px-6 py-12 md:px-12 md:py-16">
+      <div className="mx-auto max-w-[1200px]">
+        <Link to={meta.path} className="ghost-link">
+          ← {meta.plural}
+        </Link>
 
-      {/* BUY ZONE */}
-      <section className="px-6 py-24 md:px-12">
-        <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 md:grid-cols-2">
-          <div className="overflow-hidden rounded-lg bg-[color:var(--bg-surface)]">
-            {modelUrl ? (
-              <Product3DViewer url={modelUrl} className="mx-auto h-[720px] w-full" />
-            ) : img ? (
-              <img src={img} alt={s.name} className="mx-auto max-h-[520px] rounded-xl" />
-            ) : null}
-          </div>
+        <div className="mt-8 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
+          {/* 1 — Photography */}
+          <ProductGallery images={gallery} name={s.name} lineName={meta.name} />
+
           <div>
-            {isPremium && (
-              <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-[color:var(--accent-gold-muted)] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--accent-gold)]">
-                ✦ Premium
-              </span>
+            {/* 2 — Name */}
+            <MetaLabel gold>{meta.name}</MetaLabel>
+            <h1 className="mt-3 font-display text-4xl leading-[1.05] md:text-6xl">{s.name}</h1>
+
+            {/* 3 — Concise summary */}
+            {s.description && (
+              <p className="mt-5 font-body text-base leading-[1.8] text-[color:var(--text-secondary)]">
+                {s.description}
+              </p>
             )}
-            <h2 className="font-display text-4xl md:text-5xl">{s.name}</h2>
-            <p className="mt-4 font-body text-3xl font-bold">R{Number(s.price_zar).toFixed(0)}</p>
-            <p className="mt-2 text-sm text-[color:var(--text-secondary)]">Free delivery on orders over R500</p>
-            {s.is_limited && !soldOut && (
-              <p className="meta-xs mt-4 text-gold">Limited release</p>
+
+            {/* 4 — Effects and flavours, compact */}
+            {(s.effect_category || (s.flavor_tags?.length ?? 0) > 0) && (
+              <div className="mt-6 flex flex-wrap items-center gap-2">
+                {s.effect_category && <EffectChip>{s.effect_category}</EffectChip>}
+                {s.flavor_tags?.map((f, i) => (
+                  <FlavorChip key={f} dominant={i === 0}>
+                    {f}
+                  </FlavorChip>
+                ))}
+              </div>
             )}
-            {soldOut && (
-              <p className="meta-xs mt-4 text-[color:var(--text-secondary)]">Currently out of stock</p>
-            )}
-            {isPremium && s.infusion_components && s.infusion_components.length > 0 && (
+
+            {/* 7 — Caviar infusion components */}
+            {isCaviar && (s.infusion_components?.length ?? 0) > 0 && (
               <div className="mt-6">
-                <p className="meta-xs text-[color:var(--text-tertiary)]">Infusion Components</p>
+                <p className="meta-xs text-[color:var(--text-tertiary)]">Infusion components</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {s.infusion_components.map((c) => (
+                  {s.infusion_components!.map((c) => (
                     <span
                       key={c}
                       className="inline-block rounded-full border border-[color:var(--accent-gold)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-[color:var(--accent-gold)]"
@@ -203,37 +189,49 @@ function StrainDetail() {
                 </div>
               </div>
             )}
+
             <Hairline className="my-8" />
-            {!soldOut && (
-              <div className="mb-6"><QuantityStepper value={qty} onChange={setQty} /></div>
-            )}
+
+            {/* 5 — Price, quantity, buy */}
+            <div className="flex flex-wrap items-baseline gap-4">
+              <p className="font-body text-3xl font-bold">R{Number(s.price_zar).toFixed(0)}</p>
+              <span className="meta-xs text-[color:var(--text-tertiary)]">
+                {s.weight_grams ?? 0.75}g
+              </span>
+              {s.is_limited && !soldOut && <span className="meta-xs text-gold">Limited release</span>}
+            </div>
+            <p className="mt-2 text-sm text-[color:var(--text-secondary)]">{DELIVERY_COPY}</p>
+
             {soldOut ? (
-              <GoldButton onClick={() => setNotifyOpen(true)} className="w-full">
-                Notify me when back
-              </GoldButton>
+              <>
+                <p className="meta-xs mt-6 text-[color:var(--text-secondary)]">
+                  Currently out of stock
+                </p>
+                <GoldButton onClick={() => setNotifyOpen(true)} className="mt-4 w-full">
+                  Notify me when back
+                </GoldButton>
+              </>
             ) : (
-              <GoldButton onClick={handleAdd} className="w-full">
-                Add to Cart
-              </GoldButton>
+              <>
+                <div className="mt-6">
+                  <QuantityStepper value={qty} onChange={setQty} />
+                </div>
+                <GoldButton onClick={handleAdd} className="mt-4 w-full">
+                  Add to Cart
+                </GoldButton>
+              </>
             )}
-            {soldOut ? (
-              <GoldButton
-                onClick={() => setStockistOpen(true)}
-                className="mt-1.5 w-full"
-              >
-                <MapPin className="h-4 w-4" strokeWidth={1.5} />
-                Find closest stockist
-              </GoldButton>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setStockistOpen(true)}
-                className="mt-1.5 flex w-full items-center justify-center gap-2 rounded-[4px] border border-[color:var(--border-strong)] bg-transparent px-8 py-4 font-body text-[0.8125rem] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-primary)] transition-all duration-300 hover:border-[color:var(--accent-sage,#7d9b76)] hover:text-[color:var(--accent-sage,#7d9b76)]"
-              >
-                <MapPin className="h-4 w-4" strokeWidth={1.5} />
-                Find closest stockist
-              </button>
-            )}
+
+            {/* 6 — Find this product near you */}
+            <button
+              type="button"
+              onClick={() => setStockistOpen(true)}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-[4px] border border-[color:var(--border-strong)] bg-transparent px-8 py-4 font-body text-[0.8125rem] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-primary)] transition-all duration-300 hover:border-[color:var(--accent-sage,#7d9b76)] hover:text-[color:var(--accent-sage,#7d9b76)]"
+            >
+              <MapPin className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+              Find this product near you
+            </button>
+
             <NotifyMeModal
               open={notifyOpen}
               onOpenChange={setNotifyOpen}
@@ -246,117 +244,23 @@ function StrainDetail() {
               strainId={s.id}
               strainName={s.name}
             />
-            <p className="mt-4 text-center text-sm">
-              <a href="https://instagram.com/terps.official_" className="ghost-link">Or message us on Instagram</a>
-            </p>
+
+            {/* 8 — Return to collection / library */}
             <Hairline className="my-8" />
-            <div className="grid grid-cols-2 gap-4 text-center md:grid-cols-4">
-              {["Hand Infused", "Hand Checked", "Secure Checkout", "Couriered in SA"].map((t) => (
-                <MetaLabel key={t}>{t}</MetaLabel>
-              ))}
+            <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm">
+              <Link to={meta.path} className="ghost-link">
+                All {meta.plural}
+              </Link>
+              <Link to="/strains" className="ghost-link">
+                Strain Library
+              </Link>
+              <Link to="/shop" className="ghost-link">
+                Our Collection
+              </Link>
             </div>
           </div>
         </div>
-      </section>
-
-      <FeatureBand />
-
-      {/* STORY */}
-      {s.story && (
-        <section className="px-6 py-24 md:px-12">
-          <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-16 md:grid-cols-2">
-            <div>
-              <MetaLabel gold>The Story</MetaLabel>
-              <h3 className="mt-4 font-display text-3xl md:text-4xl">{s.tagline}</h3>
-              <p className="mt-6 text-lg leading-relaxed text-[color:var(--text-secondary)]">{s.story}</p>
-            </div>
-            <div className="flex items-center">
-              <p className="font-display text-3xl italic text-[color:var(--accent-gold)] md:text-4xl">
-                "{s.description}"
-                <span className="mt-4 block meta-xs">— Terps</span>
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* PROFILE + LAB */}
-      <section className="px-6 py-24 md:px-12">
-        <div
-          className={`mx-auto grid max-w-[1200px] grid-cols-1 gap-px bg-[color:var(--border-luxe)] ${
-            isPremium ? "md:grid-cols-4" : "md:grid-cols-3"
-          }`}
-        >
-          <div className="bg-[color:var(--bg-surface)] p-10">
-            <MetaLabel gold>Effect</MetaLabel>
-            <h4 className="mt-4 font-display text-2xl capitalize">{s.effect_category}</h4>
-            <p className="mt-3 text-sm text-[color:var(--text-secondary)]">{s.description}</p>
-          </div>
-          <div className="bg-[color:var(--bg-surface)] p-10">
-            <MetaLabel gold>Flavour Profile</MetaLabel>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {s.flavor_tags?.map((f, i) => <FlavorChip key={f} dominant={i === 0}>{f}</FlavorChip>)}
-            </div>
-          </div>
-          <div className="bg-[color:var(--bg-surface)] p-10">
-            <MetaLabel gold>Terpenes</MetaLabel>
-            <div className="mt-4 space-y-3">
-              {s.terpene_breakdown?.map((t) => (
-                <div key={t.name} className="flex items-baseline justify-between gap-4">
-                  <span className="font-display text-lg">{t.name}</span>
-                  <span className="meta-xs text-[color:var(--text-secondary)]">{t.percentage}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          {isPremium && (
-            <div className="bg-[color:var(--bg-surface)] p-10">
-              <MetaLabel gold>Strain Type</MetaLabel>
-              <h4 className="mt-4 font-display text-2xl capitalize">{s.strain_type ?? "Hybrid"}</h4>
-              <p className="mt-3 text-sm text-[color:var(--text-secondary)]">
-                {s.strain_type === "sativa" && "Lifted energy. Sharp clarity. For the morning, the studio, the start."}
-                {s.strain_type === "indica" && "Slow, deep, profound. For the after-dinner sit-down."}
-                {s.strain_type === "hybrid" && "Balanced and versatile. For any moment, any session."}
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="mx-auto mt-16 max-w-[1200px]">
-          <MetaLabel gold>The Profile</MetaLabel>
-          <h3 className="mt-4 font-display text-3xl md:text-4xl">Flavour, in detail.</h3>
-          <div className="mt-10 grid grid-cols-1 gap-12 md:grid-cols-2">
-            <dl className="space-y-3 text-sm">
-              {[
-                ["Strain Type", s.strain_type],
-                ["Effect", s.effect_category],
-                ["Weight", `${s.weight_grams ?? 0.75}g`],
-                ["Total Terpenes", `${s.total_terpenes_percentage}%`],
-              ].map(([k, v]) => (
-                <div key={k as string} className="flex items-baseline justify-between border-b border-dashed border-[color:var(--border-luxe)] pb-2">
-                  <dt className="font-display italic text-[color:var(--text-secondary)]">{k}</dt>
-                  <dd className="font-body font-medium">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            <div className="space-y-4">
-              {s.terpene_breakdown?.map((t) => (
-                <div key={t.name}>
-                  <div className="flex justify-between text-sm">
-                    <span className="font-display">{t.name}</span>
-                    <span className="meta-xs">{t.percentage}%</span>
-                  </div>
-                  <div className="mt-2 h-px w-full bg-[color:var(--border-subtle)]">
-                    <div className="h-px bg-[color:var(--accent-gold)]" style={{ width: `${Math.min(100, t.percentage * 20)}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <StrainInformation strain={s} />
-    </>
+      </div>
+    </div>
   );
 }

@@ -77,10 +77,10 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
         <div className="flex flex-[3] flex-col justify-between gap-3 border-t border-[color:var(--border-subtle)] p-5">
           <div>
             <h3 className="font-display text-[1.5rem] font-normal leading-none text-[color:var(--text-primary)]">
-              {strain.name.replace("Caviar Stix — ", "")}
+              {strain.name.replace("Caviar Stick — ", "")}
             </h3>
             <p className="meta-xs mt-2 text-[color:var(--text-tertiary)]">
-              {strain.strain_type ?? "Caviar"} · Caviar Stix
+              {strain.strain_type ?? "Caviar"} · Caviar Stick
             </p>
             <p className="mt-3 font-body text-[1rem] font-semibold text-[color:var(--text-primary)]">
               R{Number(strain.price_zar).toFixed(0)}

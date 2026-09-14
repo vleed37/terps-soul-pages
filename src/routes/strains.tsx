@@ -38,12 +38,13 @@ const strainsQuery = queryOptions({
 export const Route = createFileRoute("/strains")({
   head: () => ({
     meta: seoMeta({
-      title: "Strains · Terps",
+      title: "Strain Library · Terps",
       description:
-        "The Terps strain library — effects, flavours, terpene profiles, and lab-verified data for every release.",
+        "The Terps strain library — terpenes, flavour families, strain types and effect classifications for every release.",
       path: "/strains",
     }),
   }),
+
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(terpenesQuery),
@@ -66,36 +67,25 @@ const TERPENE_ICON: Record<string, React.ComponentType<{ size?: number; strokeWi
   ocimene: Wheat,
 };
 
-const EFFECT_COPY: Record<string, { label: string; headline: string; body: string }> = {
+const EFFECT_COPY: Record<string, { label: string; body: string }> = {
   daytime: {
     label: "Daytime",
-    headline: "Sharp. Focused. Lifted.",
-    body: "Daytime strains lift without disorientation. Sharp citrus, fast-acting clarity, and a head-forward feel that keeps you in the room. Built for the work, the conversation, the long afternoon.",
+    body: "Bright, citrus-forward flavour profiles we group as daytime.",
   },
   balanced: {
     label: "Balanced",
-    headline: "Even. Versatile. In rotation.",
-    body: "Balanced strains are the daily drivers. Enough lift to start your day, enough body to wind it down. Not too far in any direction — just smooth, dialed in, and always in rotation.",
+    body: "Even flavour profiles that sit between the two — our daily rotation.",
   },
   nighttime: {
     label: "Nighttime",
-    headline: "Slow. Rich. Deep.",
-    body: "Nighttime strains land in the body. Rich, lingering flavours and a calm that settles in. Built for the after-dinner sit-down, the no-plans evening, the slow conversation.",
+    body: "Richer, deeper flavour profiles we group as nighttime.",
   },
 };
 
 const FAQS = [
   {
-    q: "What is an infused pre-roll?",
-    a: "Premium flower with cured hash and crumble worked into it by hand before it's rolled. Not sprayed, not soaked — real concentrate, mixed in, so the flavour and the strength both come through.",
-  },
-  {
-    q: "What is a Caviar Stix?",
-    a: "Our infused pre-roll taken to the next level: coated with live rosin and sprinkled with a generous amount of hash. The top of the range.",
-  },
-  {
-    q: "What's the difference between the two?",
-    a: "An infused pre-roll is infused on the inside. A Caviar Stix is infused inside and coated on the outside, which makes it richer, slower-burning and more intense.",
+    q: "What's the difference between an Infused Pre-Roll and a Caviar Stick?",
+    a: "An Infused Pre-Roll is infused on the inside. A Caviar Stick is infused inside and finished on the outside with live rosin and hash, which makes it richer and slower-burning.",
   },
   {
     q: "How do I store them?",
@@ -110,6 +100,7 @@ const FAQS = [
     a: "Sign up on our Wholesale page. You'll get straight into the stockist portal, where you can see box pricing and place orders.",
   },
 ];
+
 
 
 function StrainsPage() {
@@ -211,8 +202,9 @@ function StrainsPage() {
           ]).map((panel, i) => (
             <ScrollReveal key={panel.type} delay={i * 0.08}>
               <Link
-                to="/shop"
+                to="/shop/infused-pre-rolls"
                 search={{ strain_type: [panel.type] }}
+
                 className="group block h-full rounded-lg border border-[color:var(--border-luxe)] p-10 transition-all duration-500 hover:-translate-y-1"
                 style={{ backgroundColor: `var(--strain-${panel.type}-bg)` }}
               >
@@ -243,41 +235,50 @@ function StrainsPage() {
         </div>
       </section>
 
-      {/* SECTION 2 — EFFECT CATEGORIES */}
-      <section className="mx-auto mt-32 max-w-3xl">
-        {(["daytime", "balanced", "nighttime"] as const).map((eff, i) => {
-          const copy = EFFECT_COPY[eff];
-          const items = byEffect(eff);
-          return (
-            <div key={eff}>
-              {i > 0 && <Hairline className="my-20" />}
-              <ScrollReveal className="text-center">
-                <MetaLabel gold>{copy.label}</MetaLabel>
-                <h3 className="mt-4 font-display text-4xl leading-[1.1] md:text-5xl">
-                  {copy.headline}
-                </h3>
-                <p className="mx-auto mt-6 max-w-[700px] text-base leading-[1.8] text-[color:var(--text-secondary)] md:text-lg">
-                  {copy.body}
-                </p>
-                {items.length > 0 && (
-                  <div className="mt-8 flex flex-wrap justify-center gap-2">
-                    {items.map((s) => (
-                      <Link
-                        key={s.id}
-                        to="/shop"
-                        search={{ effect: [eff] }}
-                        className="inline-block rounded-full border border-[color:var(--accent-gold)]/40 px-4 py-1.5 text-xs text-[color:var(--accent-gold)] hover:bg-[color:var(--accent-gold-muted)] transition-colors"
-                      >
-                        {s.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+      {/* SECTION 2 — EFFECT CLASSIFICATION */}
+      <section className="mx-auto mt-32 max-w-[1200px]">
+        <ScrollReveal className="text-center">
+          <MetaLabel gold>✦ Effect Classification</MetaLabel>
+          <h2 className="mt-4 font-display text-4xl md:text-5xl">How we group flavour.</h2>
+          <p className="mx-auto mt-5 max-w-[640px] text-base leading-[1.8] text-[color:var(--text-secondary)]">
+            These groupings describe flavour character and how we tend to reach for a strain. They
+            are not a promise of any physical or psychological effect.
+          </p>
+        </ScrollReveal>
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {(["daytime", "balanced", "nighttime"] as const).map((eff, i) => {
+            const copy = EFFECT_COPY[eff];
+            const items = byEffect(eff);
+            return (
+              <ScrollReveal key={eff} delay={i * 0.08}>
+                <div className="h-full rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-8">
+                  <MetaLabel gold>{copy.label}</MetaLabel>
+                  <p className="mt-4 text-sm leading-[1.7] text-[color:var(--text-secondary)]">
+                    {copy.body}
+                  </p>
+                  {items.length > 0 && (
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {items.map((s) => (
+                        <Link
+                          key={s.id}
+                          to="/strain/$slug"
+                          params={{ slug: s.slug }}
+                          className="inline-block rounded-full border border-[color:var(--accent-gold)]/40 px-3 py-1 text-xs text-[color:var(--accent-gold)] transition-colors hover:bg-[color:var(--accent-gold-muted)]"
+                        >
+                          {s.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </ScrollReveal>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </section>
+
+
+
 
       {/* SECTION 3 — EVERY STRAIN */}
       <section className="mx-auto mt-32 max-w-[1200px]">

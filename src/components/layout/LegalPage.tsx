@@ -2,7 +2,9 @@ import { ReactNode } from "react";
 
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
+import { LegalDraftNotice } from "@/components/layout/LegalDraftNotice";
 import { SALES_EMAIL } from "@/lib/brand";
+import { BUSINESS } from "@/lib/business";
 
 export interface LegalSection {
   heading: string;
@@ -12,12 +14,15 @@ export interface LegalSection {
 interface Props {
   eyebrow: string;
   title: string;
-  lastUpdated: string; // e.g. "31 May 2026"
+  /** Confirmed effective date, or null while the owner has not supplied one. */
+  lastUpdated?: string | null;
   intro?: ReactNode;
   sections: LegalSection[];
 }
 
 export function LegalPage({ eyebrow, title, lastUpdated, intro, sections }: Props) {
+  const effective = lastUpdated ?? BUSINESS.effectiveDate;
+
   return (
     <div className="px-6 py-20 md:px-12 md:py-28">
       <article className="mx-auto max-w-[760px]">
@@ -25,10 +30,11 @@ export function LegalPage({ eyebrow, title, lastUpdated, intro, sections }: Prop
           <MetaLabel gold>✦ {eyebrow}</MetaLabel>
           <h1 className="mt-6 font-display text-5xl leading-[1.05] md:text-7xl">{title}</h1>
           <p className="meta-xs mt-6 text-[color:var(--text-tertiary)]">
-            Last updated: {lastUpdated}
+            {effective ? `Effective: ${effective}` : "Effective date to be confirmed"}
           </p>
         </header>
 
+        <LegalDraftNotice />
 
         {intro && (
           <div className="mt-12 font-body text-lg leading-[1.85] text-[color:var(--text-primary)]">
@@ -37,6 +43,7 @@ export function LegalPage({ eyebrow, title, lastUpdated, intro, sections }: Prop
         )}
 
         <Hairline className="my-16" />
+
 
         <div className="space-y-14">
           {sections.map((s) => (

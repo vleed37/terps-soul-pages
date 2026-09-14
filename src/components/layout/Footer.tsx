@@ -18,8 +18,11 @@ export function Footer() {
           <div>
             <h4 className="meta-xs mb-6 text-gold">Explore</h4>
             <ul className="space-y-3 font-body text-sm">
-              <li><Link to="/shop" className="hover:text-[color:var(--accent-gold)]">The Collection</Link></li>
-              <li><Link to="/strains" className="hover:text-[color:var(--accent-gold)]">Strains</Link></li>
+              <li><Link to="/shop" className="hover:text-[color:var(--accent-gold)]">Our Collection</Link></li>
+              <li><Link to="/shop/caviar-sticks" className="hover:text-[color:var(--accent-gold)]">Caviar Sticks</Link></li>
+              <li><Link to="/shop/infused-pre-rolls" className="hover:text-[color:var(--accent-gold)]">Infused Pre-Rolls</Link></li>
+              <li><Link to="/strains" className="hover:text-[color:var(--accent-gold)]">Strain Library</Link></li>
+
               <li><Link to="/stockists" className="hover:text-[color:var(--accent-gold)]">Stockists</Link></li>
               <li><Link to="/about" className="hover:text-[color:var(--accent-gold)]">Our Story</Link></li>
               <li><Link to="/wholesale" className="hover:text-[color:var(--accent-gold)]">Wholesale</Link></li>

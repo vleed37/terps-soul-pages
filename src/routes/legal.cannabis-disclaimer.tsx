@@ -1,82 +1,98 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
+import { Pending } from "@/components/layout/LegalDraftNotice";
 import { seoMeta } from "@/lib/seo";
-
-const LAST_UPDATED = "31 May 2026";
+import { BUSINESS, contactEmail } from "@/lib/business";
 
 export const Route = createFileRoute("/legal/cannabis-disclaimer")({
   head: () => ({
     meta: seoMeta({
-      title: "Cannabis Disclaimer · Terps",
+      title: "Cannabis Product Disclaimer · Terps",
       description:
-        "Responsible consumption, legal age, and health information for Terps cannabis products.",
+        "Important information about Terps cannabis products, age restrictions and responsible use.",
       path: "/legal/cannabis-disclaimer",
     }),
   }),
-  component: CannabisDisclaimerPage,
+  component: DisclaimerPage,
 });
 
-function CannabisDisclaimerPage() {
+function DisclaimerPage() {
+  const email = contactEmail("sales");
   return (
     <LegalPage
-      eyebrow="Important"
-      title="Cannabis Disclaimer"
-      lastUpdated={LAST_UPDATED}
+      eyebrow="Legal"
+      title="Cannabis Product Disclaimer"
       intro={
         <p>
-          Terps products contain cannabis. Please read this disclaimer carefully before purchasing
-          or consuming any Terps product.
+          Please read this before buying or using any {BUSINESS.tradingName} product. It is a draft
+          pending legal review.
         </p>
       }
       sections={[
         {
-          heading: "Adults Only — 18+",
+          heading: "Strictly 18 and Over",
           body: (
             <p>
-              Terps products are intended for adults aged 18 years or older. We do not sell to or
-              market to minors. ID may be required on delivery or collection.
+              These products are intended for adults aged 18 years or older. They must be kept away
+              from children and pets. Do not supply them to anyone under 18.
             </p>
           ),
         },
         {
-          heading: "No Medical Claims",
+          heading: "No Medical or Therapeutic Claims",
           body: (
             <p>
-              Terps products are not intended to diagnose, treat, cure, or prevent any disease.
-              Statements on this site have not been evaluated by SAHPRA or any equivalent
-              regulator. Consult a qualified healthcare practitioner before use, especially if you
-              are pregnant, breastfeeding, or on prescription medication.
+              Nothing on this website is medical advice, and no product sold here is offered to
+              diagnose, treat, cure or prevent any condition. We make no claim about any physical or
+              psychological effect, and no effect is guaranteed. If you are pregnant, breastfeeding,
+              taking medication or have any health condition, consult a healthcare professional before
+              use.
             </p>
           ),
         },
         {
-          heading: "Responsible Consumption",
+          heading: "No Potency or Laboratory Claims",
           body: (
             <p>
-              Cannabis affects everyone differently. Start with a low dose, go slow, and never
-              combine with alcohol or other substances. Keep all products out of reach of children
-              and pets.
+              We do not publish THC, CBD, cannabinoid or terpene percentages, batch numbers or
+              laboratory results on this website, and we make no representation about the potency of
+              any product. Flavour and terpene names given in our{" "}
+              <Link to="/strains" className="ghost-link">
+                Strain Library
+              </Link>{" "}
+              are descriptive only.
             </p>
           ),
         },
         {
-          heading: "Do Not Drive or Operate Machinery",
+          heading: "Effects and Responsible Use",
           body: (
             <p>
-              Do not drive, operate heavy machinery, or perform any activity requiring full
-              attention or coordination after consuming cannabis. Driving under the influence is
-              illegal and dangerous.
+              Cannabis affects people differently. Do not drive, operate machinery or perform any task
+              requiring alertness after use. Do not combine with alcohol or other substances. Start
+              low, go slow, and use only in a private and lawful setting.
             </p>
           ),
         },
         {
-          heading: "Legal Status",
+          heading: "Your Legal Responsibility",
           body: (
             <p>
-              Cannabis laws in South Africa differ by region and continue to develop. Nothing on
-              this site is legal advice or a statement about the legality of any purchase. Please
-              ensure you understand and comply with the laws applicable to you before purchasing
-              or consuming. This page is subject to final legal review.
+              Laws about cannabis possession, use and transport differ by territory and change over
+              time. You are responsible for knowing and complying with the law that applies to you,
+              including any restriction on quantity, transport or public use. We do not give legal
+              advice and we make no statement about the legality of these products in your
+              circumstances. Do not carry these products across any border.
+            </p>
+          ),
+        },
+        {
+          heading: "Workplace and Testing",
+          body: (
+            <p>
+              Use may result in a positive drug test. If you are subject to workplace testing,
+              professional licensing conditions or any similar obligation, take that into account
+              before purchasing.
             </p>
           ),
         },
@@ -84,8 +100,20 @@ function CannabisDisclaimerPage() {
           heading: "Storage",
           body: (
             <p>
-              Store Terps products in a cool, dry place, sealed in their original packaging, and
-              well out of reach of children, pets, and anyone under 18.
+              Store in the original packaging, sealed, out of direct sunlight, and out of reach of
+              children and pets.
+            </p>
+          ),
+        },
+        {
+          heading: "Questions",
+          body: (
+            <p>
+              Product queries:{" "}
+              <a href={`mailto:${email}`} className="ghost-link">
+                {email}
+              </a>
+              . Telephone: <Pending label="phone number" />.
             </p>
           ),
         },

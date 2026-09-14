@@ -232,7 +232,7 @@ function ShopPage() {
           <ScrollReveal>
             <MetaLabel gold>✦ The Collection</MetaLabel>
             <h1 className="mx-auto mt-5 font-display text-[2.75rem] font-semibold leading-[1.05] md:text-7xl">
-              Every drop. <em className="text-[color:var(--accent-gold)]">Every flavour.</em>
+              Flavour first. <em className="text-[color:var(--accent-gold)]">Always.</em>
             </h1>
           </ScrollReveal>
         </div>

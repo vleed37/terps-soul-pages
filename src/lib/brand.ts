@@ -9,12 +9,12 @@ export const INSTAGRAM_URL = "https://instagram.com/terps.official_";
  *
  * LAUNCH BLOCKERS — every value below needs written owner confirmation before
  * production payments are enabled:
- *   - RETAIL_DELIVERY_FEE (proposed R80)
+ *   - DELIVERY_FEE (proposed R80)
  *   - FREE_DELIVERY_THRESHOLD (proposed free over R500)
  *   - WHOLESALE_DELIVERY_FEE (proposed R250)
  *   - VAT_ENABLED (fails safe: OFF until VAT registration is confirmed)
  */
-export const RETAIL_DELIVERY_FEE = 80;
+export const DELIVERY_FEE = 80;
 export const FREE_DELIVERY_THRESHOLD = 500;
 export const WHOLESALE_DELIVERY_FEE = 250;
 
@@ -30,7 +30,7 @@ export const EFFECTIVE_VAT_RATE = VAT_ENABLED ? VAT_RATE : 0;
 
 /** Retail delivery fee for a given subtotal (delivery only — no collection). */
 export function retailDeliveryFee(subtotal: number): number {
-  return subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : RETAIL_DELIVERY_FEE;
+  return subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
 }
 
 /** VAT amount on a taxable base. Returns 0 while VAT collection is disabled. */

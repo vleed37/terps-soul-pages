@@ -64,19 +64,18 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
           const wFailed = ["failed", "declined", "cancelled", "canceled"].includes(wStatus);
 
           if (wPaid) {
-            const { error: wUpErr } = await supabaseAdmin
-              .from("wholesale_orders")
-              .update({
-                payment_status: "paid",
-                fulfillment_status: "preparing",
-                paid_at: new Date().toISOString(),
-                bobpay_transaction_id: payload.transaction_id ?? null,
-              })
-              .eq("id", wOrder.id);
+            // One atomic, replay-safe step: claim the order as paid and decrement
+            // stock per strain (including every strain inside a mixed box).
+            // Returns false when another delivery already claimed it.
+            const { data: claimed, error: wUpErr } = await supabaseAdmin.rpc(
+              "process_paid_wholesale_order",
+              { _order_id: wOrder.id, _transaction_id: payload.transaction_id ?? "" },
+            );
             if (wUpErr) {
               console.error(`[bobpay] failed to mark wholesale order ${wOrder.order_number} paid — ${wUpErr.message}`);
               return new Response(wUpErr.message, { status: 500 });
             }
+            if (!claimed) return json200({ ok: true, duplicate: true });
 
             const emails = await sendWholesaleOrderEmails(wOrder.id, payload.transaction_id ?? null);
             return json200({ ok: true, emails });
@@ -253,15 +252,26 @@ async function sendWholesaleOrderEmails(orderId: string, transactionId: string |
 
   const { data: items } = await supabaseAdmin
     .from("wholesale_order_items")
-    .select("strain_name, boxes_ordered, total_units, line_total_zar")
+    .select("strain_name, boxes_ordered, total_units, line_total_zar, item_type, box_composition")
     .eq("wholesale_order_id", orderId);
 
   const displayName = acct?.trading_as || acct?.business_name || "Stockist";
   const rows = (items ?? [])
-    .map(
-      (it) =>
-        `<tr><td style="padding:6px 12px 6px 0;">${escapeHtml(it.strain_name)}</td><td style="padding:6px 0;">${it.boxes_ordered} box${it.boxes_ordered === 1 ? "" : "es"} (${it.total_units} units)</td><td style="padding:6px 0 6px 12px;text-align:right;">R${Number(it.line_total_zar).toFixed(0)}</td></tr>`,
-    )
+    .map((it) => {
+      const composition = Array.isArray(it.box_composition)
+        ? (it.box_composition as Array<{ strain_name?: string; units?: number }>)
+        : [];
+      const breakdown =
+        it.item_type === "mixed_box" && composition.length
+          ? `<div style="color:#a0a0a0;font-size:12px;margin-top:4px;">${composition
+              .map(
+                (c) =>
+                  `${escapeHtml(String(c.strain_name ?? ""))} — ${Number(c.units ?? 0) * it.boxes_ordered} units`,
+              )
+              .join("<br/>")}</div>`
+          : "";
+      return `<tr><td style="padding:6px 12px 6px 0;">${escapeHtml(it.strain_name)}${breakdown}</td><td style="padding:6px 0;">${it.boxes_ordered} box${it.boxes_ordered === 1 ? "" : "es"} (${it.total_units} units)</td><td style="padding:6px 0 6px 12px;text-align:right;">R${Number(it.line_total_zar).toFixed(0)}</td></tr>`;
+    })
     .join("");
 
   const stockistHtml = `

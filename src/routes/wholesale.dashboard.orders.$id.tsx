@@ -62,6 +62,15 @@ function OrderDetailPage() {
                 <p className="meta-xs text-[color:var(--text-tertiary)]">
                   {it.boxes_ordered} × box of {it.box_quantity_per_unit} units · R{Number(it.box_price_zar).toFixed(0)}/box
                 </p>
+                {it.item_type === "mixed_box" && (it.box_composition?.length ?? 0) > 0 && (
+                  <ul className="mt-1.5 space-y-0.5 text-xs text-[color:var(--text-secondary)]">
+                    {it.box_composition!.map((c) => (
+                      <li key={c.strain_id}>
+                        {c.strain_name} — {c.units * it.boxes_ordered} units
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <p className="font-display text-lg whitespace-nowrap">R{Number(it.line_total_zar).toFixed(0)}</p>
             </li>

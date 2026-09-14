@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import type { WholesaleStrain } from "@/lib/types";
 import { GridSkeleton } from "@/components/layout/PageSkeletons";
 import { formatTierRange, resolveTierPrice } from "@/lib/wholesale-pricing";
+import { MixedBoxBuilder } from "@/components/wholesale/MixedBoxBuilder";
+
 
 export const Route = createFileRoute("/wholesale/dashboard/catalog")({
   head: () => ({ meta: [{ title: "Terps — Wholesale Catalog" }] }),

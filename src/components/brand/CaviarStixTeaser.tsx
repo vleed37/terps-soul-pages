@@ -6,11 +6,11 @@ import caviarIndica from "@/assets/shoot/divine-115.jpg.asset.json";
 import caviarHybrid from "@/assets/shoot/divine-116.jpg.asset.json";
 import caviarSativa from "@/assets/shoot/divine-117.jpg.asset.json";
 
-/** Swap-in point for Caviar Stix product photography. 2–3 images. */
+/** Swap-in point for Caviar Stick product photography. 2–3 images. */
 const CAVIAR_IMAGES: { src: string; alt: string }[] = [
-  { src: caviarIndica.url, alt: "Terps Caviar Stix Indica" },
-  { src: caviarHybrid.url, alt: "Terps Caviar Stix Hybrid" },
-  { src: caviarSativa.url, alt: "Terps Caviar Stix Sativa" },
+  { src: caviarIndica.url, alt: "Terps Caviar Stick Indica" },
+  { src: caviarHybrid.url, alt: "Terps Caviar Stick Hybrid" },
+  { src: caviarSativa.url, alt: "Terps Caviar Stick Sativa" },
 ];
 
 export function CaviarStixTeaser() {
@@ -26,9 +26,9 @@ export function CaviarStixTeaser() {
       />
       <div className="relative mx-auto max-w-[900px] text-center">
         <ScrollReveal>
-          <MetaLabel gold>✦ Caviar Stix</MetaLabel>
+          <MetaLabel gold>✦ Caviar Stick</MetaLabel>
           <h2 className="mx-auto mt-6 max-w-[700px] font-display text-[2.5rem] font-semibold leading-[1.03] tracking-[-0.01em] md:text-[4.5rem]">
-            Caviar Stix
+            Caviar Stick
           </h2>
           <p className="mt-5 font-display text-[1.35rem] italic text-[color:var(--text-secondary)] md:text-[1.6rem]">
             Cream of the crop.

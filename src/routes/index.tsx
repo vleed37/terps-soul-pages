@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
     meta: seoMeta({
       title: "Terps · Flavour-First Infused Pre-Rolls",
       description:
-        "Premium infused pre-rolls bred in South Africa. Four signature strains, lab-tested, available at select stockists nationwide.",
+        "South Africa's premium handcrafted infused pre-rolls and Caviar Sticks, available online and at select stockists nationwide.",
       path: "/",
     }),
   }),

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { PullQuote } from "@/components/brand/PullQuote";
+
 import { GoldButton } from "@/components/brand/GoldButton";
 import story1 from "@/assets/shoot/divine-62.jpg.asset.json";
 import story2 from "@/assets/shoot/divine-48.jpg.asset.json";
@@ -22,12 +22,15 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   const paragraphs = [
-    "Terps was built around one belief: an infused pre-roll should taste like something. Not chemicals. Not cover-ups. Real strain expression — sharpened, never masked. Every drop carries the flavour it was supposed to.",
-    "We start with cultivars chosen for their terpene profile, not their yield. We slow-cure. We hand-infuse with cured hash and crumble. Strain-specific, and the strain goes on the label because we're proud of what's inside.",
-    "We're South African born and bred. The land here grows different, and so do the people. Terps is a product of that — the patience of the soil, the edge of the streets, the standard of a culture that knows quality when it tastes it.",
-    "This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavour on the other end.",
-    "Welcome to Terps. Welcome to flavour first.",
+    "Terps was born from a simple frustration: we knew infused pre-rolls could be better.",
+    "Too often, we found ourselves paying premium prices for products made with average flower, poorly handled concentrates, or packaging that failed to protect the experience. The product might start out great, but somewhere along the way, quality was compromised.",
+    "We decided to do it differently.",
+    "At Terps, quality starts with the flower. From cultivation and curing to the way each product is handled and packaged, every detail matters. We believe the experience should be protected from the moment the flower is selected to the moment you open the package.",
+    "For us, it has always been about flavour, quality and consistency. We don't believe in cutting corners to keep a product cheap. If better ingredients and better processes cost more, we'd rather raise the price than lower the standard.",
+    "Terps is built on one simple principle: never compromise the quality of the experience.",
+    "Because if we're going to put our name on it, it needs to be something we'd be proud to smoke ourselves.",
   ];
+
 
   return (
     <div className="px-6 py-20 md:px-12 md:py-28">
@@ -42,7 +45,7 @@ function AboutPage() {
         </p>
       </ScrollReveal>
 
-      {/* BODY */}
+      {/* BODY — stakeholder-approved copy (14 Sept 2026). Do not reword. */}
       <article className="mx-auto mt-24 max-w-[720px]">
         <ScrollReveal>
           <p className="text-lg leading-[1.8] text-[color:var(--text-primary)]">{paragraphs[0]}</p>
@@ -51,7 +54,7 @@ function AboutPage() {
         <ScrollReveal delay={0.05}>
           <img
             src={story1.url}
-            alt=""
+            alt="Terps infused pre-rolls being prepared by hand"
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
             style={{ aspectRatio: "16/10" }}
@@ -62,20 +65,16 @@ function AboutPage() {
           <p className="text-lg leading-[1.8] text-[color:var(--text-primary)]">{paragraphs[1]}</p>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.05}>
-          <div className="my-20">
-            <PullQuote attribution="Terps">We don't chase hype. We chase flavour.</PullQuote>
-          </div>
-        </ScrollReveal>
-
         <ScrollReveal>
-          <p className="text-lg leading-[1.8] text-[color:var(--text-primary)]">{paragraphs[2]}</p>
+          <p className="mt-8 font-display text-3xl italic leading-snug text-[color:var(--accent-gold)] md:text-4xl">
+            {paragraphs[2]}
+          </p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.05}>
           <img
             src={story2.url}
-            alt=""
+            alt="Cured flower selected for a Terps batch"
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
             style={{ aspectRatio: "16/10" }}
@@ -86,10 +85,16 @@ function AboutPage() {
           <p className="text-lg leading-[1.8] text-[color:var(--text-primary)]">{paragraphs[3]}</p>
         </ScrollReveal>
 
+        <ScrollReveal>
+          <p className="mt-8 text-lg leading-[1.8] text-[color:var(--text-primary)]">
+            {paragraphs[4]}
+          </p>
+        </ScrollReveal>
+
         <ScrollReveal delay={0.05}>
           <img
             src={story3.url}
-            alt=""
+            alt="Finished Terps products in their packaging"
             loading="lazy"
             className="my-16 w-full rounded-xl object-cover"
             style={{ aspectRatio: "16/10" }}
@@ -97,11 +102,16 @@ function AboutPage() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <p className="text-center font-display text-3xl italic leading-snug text-[color:var(--text-primary)] md:text-4xl">
-            {paragraphs[4]}
+          <p className="text-lg leading-[1.8] text-[color:var(--text-primary)]">{paragraphs[5]}</p>
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <p className="mt-10 text-center font-display text-3xl italic leading-snug text-[color:var(--text-primary)] md:text-4xl">
+            {paragraphs[6]}
           </p>
         </ScrollReveal>
       </article>
+
 
       {/* THE CRAFT */}
       <section className="mx-auto mt-32 max-w-[1200px]">

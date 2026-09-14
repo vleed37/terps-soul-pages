@@ -282,8 +282,27 @@ const CartLineSchema = z.object({
   boxes: z.number().int().min(1).max(500),
 });
 
+/**
+ * A variety box: several strains from ONE product line making up exactly one
+ * full box. Composition is validated server-side; the browser is never trusted.
+ */
+const MixedBoxSchema = z.object({
+  productLine: z.enum(["pre_roll", "caviar_stix"]),
+  boxes: z.number().int().min(1).max(500),
+  composition: z
+    .array(
+      z.object({
+        strainId: z.string().uuid(),
+        units: z.number().int().min(1).max(500),
+      }),
+    )
+    .min(2)
+    .max(20),
+});
+
 const CreateOrderSchema = z.object({
-  items: z.array(CartLineSchema).min(1).max(50),
+  items: z.array(CartLineSchema).max(50).default([]),
+  mixedBoxes: z.array(MixedBoxSchema).max(20).default([]),
   shipping_address: z.object({
     line1: z.string().min(1).max(200),
     line2: z.string().max(200).optional().nullable(),
@@ -294,6 +313,7 @@ const CreateOrderSchema = z.object({
   }),
   customer_notes: z.string().max(1000).optional().nullable(),
 });
+
 
 const SHIPPING_FLAT = WHOLESALE_DELIVERY_FEE;
 

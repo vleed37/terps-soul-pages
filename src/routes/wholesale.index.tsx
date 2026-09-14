@@ -156,7 +156,7 @@ function WholesaleHero() {
           <h1 className="mt-6 font-display text-[3.25rem] leading-[0.95] md:text-7xl lg:text-[6rem]">Stock Terps.</h1>
           <Hairline className="my-8" w="88px" />
           <p className="font-body text-lg leading-relaxed text-[color:var(--text-secondary)] md:text-xl">
-            Wholesale access to Terps Infused Pre-Rolls and Caviar Stix, built for retailers across South Africa.
+            Wholesale access to Terps Infused Pre-Rolls and Caviar Stick, built for retailers across South Africa.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
             <a href="#apply" className="inline-flex">

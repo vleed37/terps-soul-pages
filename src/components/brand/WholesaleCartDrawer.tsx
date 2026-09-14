@@ -17,9 +17,13 @@ export function WholesaleCartDrawer() {
   const open = useWholesaleCart((s) => s.drawerOpen);
   const close = useWholesaleCart((s) => s.closeDrawer);
   const items = useWholesaleCart((s) => s.items);
+  const mixedBoxes = useWholesaleCart((s) => s.mixedBoxes);
   const setBoxes = useWholesaleCart((s) => s.setBoxes);
   const removeItem = useWholesaleCart((s) => s.removeItem);
+  const setMixedBoxes = useWholesaleCart((s) => s.setMixedBoxes);
+  const removeMixedBox = useWholesaleCart((s) => s.removeMixedBox);
   const subtotal = useWholesaleCart(wholesaleCartSelectors.subtotal);
+  const lineCount = items.length + mixedBoxes.length;
 
   useEffect(() => {
     if (!open) return;
@@ -31,6 +35,7 @@ export function WholesaleCartDrawer() {
 
   const vat = vatOn(subtotal + WHOLESALE_SHIPPING);
   const total = subtotal + WHOLESALE_SHIPPING + vat;
+
 
   return (
     <div className="fixed inset-0 z-[80]">

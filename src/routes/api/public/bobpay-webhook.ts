@@ -78,8 +78,13 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
               return new Response(wUpErr.message, { status: 500 });
             }
 
+            // Exactly-once inventory movement: guarded by the paid-status check
+            // above, so a replayed webhook never decrements a second time.
+            await decrementWholesaleStock(wOrder.id);
+
             const emails = await sendWholesaleOrderEmails(wOrder.id, payload.transaction_id ?? null);
             return json200({ ok: true, emails });
+
           }
 
 

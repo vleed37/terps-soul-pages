@@ -355,7 +355,7 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
       line_total_zar: number;
       item_type: "single_strain" | "mixed_box";
       product_line: string | null;
-      box_composition: unknown | null;
+      box_composition: import("@/integrations/supabase/types").Json | null;
     }> = [];
 
     for (const line of data.items) {

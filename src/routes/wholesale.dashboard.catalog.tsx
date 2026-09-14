@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import type { WholesaleStrain } from "@/lib/types";
 import { GridSkeleton } from "@/components/layout/PageSkeletons";
 import { formatTierRange, resolveTierPrice } from "@/lib/wholesale-pricing";
+import { MixedBoxBuilder } from "@/components/wholesale/MixedBoxBuilder";
+
 
 export const Route = createFileRoute("/wholesale/dashboard/catalog")({
   head: () => ({ meta: [{ title: "Terps — Wholesale Catalog" }] }),
@@ -43,10 +45,25 @@ function CatalogPage() {
           No wholesale products available right now.
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {strains.map((s) => <WholesaleStrainCard key={s.id} s={s} />)}
-        </div>
+        <>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {strains.map((s) => <WholesaleStrainCard key={s.id} s={s} />)}
+          </div>
+          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <MixedBoxBuilder
+              productLine="pre_roll"
+              title="Mixed Infused Pre-Roll Box"
+              strains={strains.filter((s) => s.product_line === "pre_roll")}
+            />
+            <MixedBoxBuilder
+              productLine="caviar_stix"
+              title="Mixed Caviar Stick Box"
+              strains={strains.filter((s) => s.product_line === "caviar_stix")}
+            />
+          </div>
+        </>
       )}
+
     </div>
   );
 }

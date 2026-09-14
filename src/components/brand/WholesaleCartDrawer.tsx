@@ -17,9 +17,13 @@ export function WholesaleCartDrawer() {
   const open = useWholesaleCart((s) => s.drawerOpen);
   const close = useWholesaleCart((s) => s.closeDrawer);
   const items = useWholesaleCart((s) => s.items);
+  const mixedBoxes = useWholesaleCart((s) => s.mixedBoxes);
   const setBoxes = useWholesaleCart((s) => s.setBoxes);
   const removeItem = useWholesaleCart((s) => s.removeItem);
+  const setMixedBoxes = useWholesaleCart((s) => s.setMixedBoxes);
+  const removeMixedBox = useWholesaleCart((s) => s.removeMixedBox);
   const subtotal = useWholesaleCart(wholesaleCartSelectors.subtotal);
+  const lineCount = items.length + mixedBoxes.length;
 
   useEffect(() => {
     if (!open) return;
@@ -32,6 +36,7 @@ export function WholesaleCartDrawer() {
   const vat = vatOn(subtotal + WHOLESALE_SHIPPING);
   const total = subtotal + WHOLESALE_SHIPPING + vat;
 
+
   return (
     <div className="fixed inset-0 z-[80]">
       <button aria-label="Close" onClick={close} className="absolute inset-0 bg-black/50" />
@@ -39,7 +44,7 @@ export function WholesaleCartDrawer() {
         <header className="flex items-center justify-between border-b border-[color:var(--border-subtle)] px-6 py-5">
           <div>
             <MetaLabel gold>Wholesale Cart</MetaLabel>
-            <p className="mt-1 font-display text-xl">{items.length} item{items.length !== 1 ? "s" : ""}</p>
+            <p className="mt-1 font-display text-xl">{lineCount} item{lineCount !== 1 ? "s" : ""}</p>
           </div>
           <button onClick={close} aria-label="Close cart" className="text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)]">
             <X className="h-5 w-5" />
@@ -47,7 +52,7 @@ export function WholesaleCartDrawer() {
         </header>
 
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          {items.length === 0 ? (
+          {lineCount === 0 ? (
             <p className="py-12 text-center text-sm text-[color:var(--text-tertiary)]">
               Your cart is empty.
             </p>
@@ -89,11 +94,55 @@ export function WholesaleCartDrawer() {
                   </div>
                 </li>
               ))}
+
+              {mixedBoxes.map((b) => (
+                <li key={b.id} className="py-4">
+                  <p className="font-display text-base leading-tight">
+                    {b.productLine === "caviar_stix"
+                      ? "Mixed Caviar Stick Box"
+                      : "Mixed Infused Pre-Roll Box"}
+                  </p>
+                  <p className="meta-xs text-[color:var(--text-tertiary)]">
+                    R{itemBoxPrice(b).toFixed(0)}/box · {b.boxQuantity} units
+                  </p>
+                  <ul className="mt-2 space-y-0.5 text-xs text-[color:var(--text-secondary)]">
+                    {b.composition.map((c) => (
+                      <li key={c.strainId}>
+                        {c.units} × {c.name}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setMixedBoxes(b.id, Math.max(0, b.boxes - 1))}
+                        className="grid h-7 w-7 place-items-center rounded border border-[color:var(--border-luxe)] hover:border-[color:var(--accent-gold)]"
+                        aria-label="Decrease"
+                      >
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="min-w-[2ch] text-center font-semibold">{b.boxes}</span>
+                      <button
+                        onClick={() => setMixedBoxes(b.id, b.boxes + 1)}
+                        className="grid h-7 w-7 place-items-center rounded border border-[color:var(--border-luxe)] hover:border-[color:var(--accent-gold)]"
+                        aria-label="Increase"
+                      >
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
+                    <p className="font-display text-base">R{itemLineTotal(b).toFixed(0)}</p>
+                  </div>
+                  <button onClick={() => removeMixedBox(b.id)} className="mt-2 text-xs text-[color:var(--text-tertiary)] hover:text-[color:var(--accent-gold)]">
+                    Remove
+                  </button>
+                </li>
+              ))}
             </ul>
           )}
         </div>
 
-        {items.length > 0 && (
+        {lineCount > 0 && (
+
           <footer className="border-t border-[color:var(--border-subtle)] px-6 py-5">
             <div className="space-y-1.5 text-sm">
               <Row label="Subtotal" value={`R${subtotal.toFixed(0)}`} />

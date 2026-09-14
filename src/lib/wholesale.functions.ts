@@ -332,13 +332,20 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
       throw new Response("Forbidden", { status: 403 });
     }
 
-    const ids = data.items.map((i) => i.strainId);
+    if (data.items.length === 0 && data.mixedBoxes.length === 0) {
+      return { ok: false as const, error: "Your cart is empty." };
+    }
+
+    const ids = [
+      ...data.items.map((i) => i.strainId),
+      ...data.mixedBoxes.flatMap((b) => b.composition.map((c) => c.strainId)),
+    ];
     const { products, tiersByStrain, strainsById } = await loadWholesaleCatalog(ids);
     const productById = new Map(products.map((p) => [p.strain_id, p]));
 
     let subtotal = 0;
     const orderItems: Array<{
-      strain_id: string;
+      strain_id: string | null;
       strain_name: string;
       box_quantity_per_unit: number;
       boxes_ordered: number;
@@ -346,6 +353,9 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
       unit_price_zar: number;
       box_price_zar: number;
       line_total_zar: number;
+      item_type: "single_strain" | "mixed_box";
+      product_line: string | null;
+      box_composition: import("@/integrations/supabase/types").Json | null;
     }> = [];
 
     for (const line of data.items) {
@@ -377,9 +387,84 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
         unit_price_zar: Number(unitPrice.toFixed(2)),
         box_price_zar: boxPrice,
         line_total_zar: lineTotal,
+        item_type: "single_strain",
+        product_line: s.product_line ?? null,
+        box_composition: null,
+      });
+    }
+
+    // ---- Variety boxes: one product family per box, exactly one full box ----
+    for (const box of data.mixedBoxes) {
+      const entries = box.composition;
+      const strains = entries.map((e) => strainsById.get(e.strainId));
+      if (strains.some((s) => !s || !s.is_active)) {
+        return { ok: false as const, error: "A strain in your variety box is unavailable." };
+      }
+      if (strains.some((s) => s!.product_line !== box.productLine)) {
+        return {
+          ok: false as const,
+          error: "A variety box may only mix strains from the same product family.",
+        };
+      }
+      const prods = entries.map((e) => productById.get(e.strainId));
+      if (prods.some((p) => !p)) {
+        return { ok: false as const, error: "A strain in your variety box is not sold wholesale." };
+      }
+      const boxQty = prods[0]!.units_per_box ?? 20;
+      if (prods.some((p) => (p!.units_per_box ?? 20) !== boxQty)) {
+        return { ok: false as const, error: "Inconsistent box size for this product family." };
+      }
+      const unitTotal = entries.reduce((a, e) => a + e.units, 0);
+      if (unitTotal !== boxQty) {
+        return {
+          ok: false as const,
+          error: `A variety box must contain exactly ${boxQty} units (yours has ${unitTotal}).`,
+        };
+      }
+      const uniqueIds = new Set(entries.map((e) => e.strainId));
+      if (uniqueIds.size !== entries.length) {
+        return { ok: false as const, error: "Each strain may appear once per variety box." };
+      }
+
+      // Price per box = units-weighted tier price of its contents at this box count.
+      let boxPrice = 0;
+      for (const e of entries) {
+        const tiers = tiersByStrain.get(e.strainId) ?? [];
+        const per = resolveTierPrice(tiers, box.boxes);
+        if (per <= 0) {
+          return { ok: false as const, error: "No wholesale price configured for a mixed strain." };
+        }
+        boxPrice += (per / boxQty) * e.units;
+      }
+      boxPrice = Number(boxPrice.toFixed(2));
+      const lineTotal = Number((boxPrice * box.boxes).toFixed(2));
+      subtotal += lineTotal;
+
+      const familyLabel =
+        box.productLine === "caviar_stix" ? "Mixed Caviar Stick Box" : "Mixed Infused Pre-Roll Box";
+
+      orderItems.push({
+        strain_id: null,
+        strain_name: familyLabel,
+        box_quantity_per_unit: boxQty,
+        boxes_ordered: box.boxes,
+        total_units: boxQty * box.boxes,
+        unit_price_zar: Number((boxPrice / boxQty).toFixed(2)),
+        box_price_zar: boxPrice,
+        line_total_zar: lineTotal,
+        item_type: "mixed_box",
+        product_line: box.productLine,
+        // Snapshot: exact composition as ordered, for fulfilment and stock.
+        box_composition: entries.map((e) => ({
+          strain_id: e.strainId,
+          strain_name: strainsById.get(e.strainId)!.name,
+          slug: strainsById.get(e.strainId)!.slug,
+          units: e.units,
+        })),
       });
     }
     subtotal = Number(subtotal.toFixed(2));
+
 
     const shipping = SHIPPING_FLAT;
     // VAT fails safe: vatOn() returns 0 until VAT registration is confirmed.

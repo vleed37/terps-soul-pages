@@ -28,6 +28,7 @@ const PROVINCES = [
 
 function WholesaleCheckoutPage() {
   const items = useWholesaleCart((s) => s.items);
+  const mixedBoxes = useWholesaleCart((s) => s.mixedBoxes);
   const subtotal = useWholesaleCart(wholesaleCartSelectors.subtotal);
   const hydrated = useWholesaleCart((s) => s.hydrated);
   const clearCart = useWholesaleCart((s) => s.clear);
@@ -55,8 +56,8 @@ function WholesaleCheckoutPage() {
   }, [acctQ.data]);
 
   useEffect(() => {
-    if (hydrated && items.length === 0) navigate({ to: "/wholesale/dashboard/catalog" });
-  }, [hydrated, items.length, navigate]);
+    if (hydrated && items.length === 0 && mixedBoxes.length === 0) navigate({ to: "/wholesale/dashboard/catalog" });
+  }, [hydrated, items.length, mixedBoxes.length, navigate]);
 
   if (!hydrated || acctQ.isLoading) {
     return <div className="py-16 text-center text-[color:var(--text-tertiary)]">Loading…</div>;
@@ -72,6 +73,11 @@ function WholesaleCheckoutPage() {
       const res = await placeOrder({
         data: {
           items: items.map((i) => ({ strainId: i.strainId, boxes: i.boxes })),
+          mixedBoxes: mixedBoxes.map((b) => ({
+            productLine: b.productLine,
+            boxes: b.boxes,
+            composition: b.composition.map((c) => ({ strainId: c.strainId, units: c.units })),
+          })),
           shipping_address: {
             line1, line2: line2 || null,
             city, province,
@@ -167,6 +173,26 @@ function WholesaleCheckoutPage() {
                   </p>
                 </div>
                 <span className="font-semibold whitespace-nowrap">R{itemLineTotal(i).toFixed(0)}</span>
+              </li>
+            ))}
+            {mixedBoxes.map((b) => (
+              <li key={b.id} className="flex justify-between gap-4 text-sm">
+                <div className="min-w-0">
+                  <p className="font-display text-base leading-tight">
+                    {b.productLine === "caviar_stix"
+                      ? "Mixed Caviar Stick Box"
+                      : "Mixed Infused Pre-Roll Box"}
+                  </p>
+                  <p className="meta-xs text-[color:var(--text-tertiary)]">
+                    {b.boxes} × box ({b.boxQuantity} units) · R{itemBoxPrice(b).toFixed(0)}/box
+                  </p>
+                  <ul className="mt-1 text-xs text-[color:var(--text-secondary)]">
+                    {b.composition.map((c) => (
+                      <li key={c.strainId}>{c.units} × {c.name}</li>
+                    ))}
+                  </ul>
+                </div>
+                <span className="font-semibold whitespace-nowrap">R{itemLineTotal(b).toFixed(0)}</span>
               </li>
             ))}
           </ul>

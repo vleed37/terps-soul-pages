@@ -78,8 +78,13 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
               return new Response(wUpErr.message, { status: 500 });
             }
 
+            // Exactly-once inventory movement: guarded by the paid-status check
+            // above, so a replayed webhook never decrements a second time.
+            await decrementWholesaleStock(wOrder.id);
+
             const emails = await sendWholesaleOrderEmails(wOrder.id, payload.transaction_id ?? null);
             return json200({ ok: true, emails });
+
           }
 
 
@@ -227,6 +232,43 @@ async function sendRetailOrderEmails(orderId: string, transactionId: string | nu
 }
 
 // ------------------------------------------------------------- wholesale
+
+/**
+ * Decrement unit stock for a paid wholesale order. Single-strain lines move
+ * units_per_box × boxes; variety boxes move each snapshotted strain's units ×
+ * boxes, so every SKU is decremented exactly once per paid order.
+ */
+async function decrementWholesaleStock(orderId: string) {
+  const { data: items } = await supabaseAdmin
+    .from("wholesale_order_items")
+    .select("strain_id, item_type, box_quantity_per_unit, boxes_ordered, box_composition")
+    .eq("wholesale_order_id", orderId);
+
+  const perStrain = new Map<string, number>();
+  for (const it of items ?? []) {
+    if (it.item_type === "mixed_box") {
+      const comp = (it.box_composition ?? []) as Array<{ strain_id?: string; units?: number }>;
+      for (const c of comp) {
+        if (!c?.strain_id || !c.units) continue;
+        perStrain.set(c.strain_id, (perStrain.get(c.strain_id) ?? 0) + c.units * it.boxes_ordered);
+      }
+    } else if (it.strain_id) {
+      perStrain.set(
+        it.strain_id,
+        (perStrain.get(it.strain_id) ?? 0) + it.box_quantity_per_unit * it.boxes_ordered,
+      );
+    }
+  }
+
+  for (const [strainId, qty] of perStrain) {
+    const { error } = await supabaseAdmin.rpc("decrement_stock", {
+      p_strain_id: strainId,
+      p_qty: qty,
+    });
+    if (error) console.error(`[bobpay] wholesale stock decrement failed for ${strainId}: ${error.message}`);
+  }
+}
+
 
 async function sendWholesaleOrderEmails(orderId: string, transactionId: string | null) {
   const { sendEmail, escapeHtml } = await import("@/lib/email.server");

@@ -18,6 +18,8 @@ export const Route = createFileRoute("/sitemap.xml")({
         const staticEntries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0", lastmod: today },
           { path: "/shop", changefreq: "weekly", priority: "0.9", lastmod: today },
+          { path: "/shop/infused-pre-rolls", changefreq: "weekly", priority: "0.9", lastmod: today },
+          { path: "/shop/caviar-stix", changefreq: "weekly", priority: "0.9", lastmod: today },
           { path: "/strains", changefreq: "weekly", priority: "0.8", lastmod: today },
           { path: "/stockists", changefreq: "weekly", priority: "0.8", lastmod: today },
           { path: "/about", changefreq: "monthly", priority: "0.6", lastmod: today },

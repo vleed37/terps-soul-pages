@@ -22,6 +22,7 @@ import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
 import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
 import { Route as ShopInfusedPreRollsRouteImport } from './routes/shop.infused-pre-rolls'
+import { Route as ShopCaviarStixRouteImport } from './routes/shop.caviar-stix'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
 import { Route as LegalTermsRouteImport } from './routes/legal.terms'
 import { Route as LegalShippingRouteImport } from './routes/legal.shipping'
@@ -108,6 +109,11 @@ const StrainSlugRoute = StrainSlugRouteImport.update({
 const ShopInfusedPreRollsRoute = ShopInfusedPreRollsRouteImport.update({
   id: '/infused-pre-rolls',
   path: '/infused-pre-rolls',
+  getParentRoute: () => ShopRoute,
+} as any)
+const ShopCaviarStixRoute = ShopCaviarStixRouteImport.update({
+  id: '/caviar-stix',
+  path: '/caviar-stix',
   getParentRoute: () => ShopRoute,
 } as any)
 const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
@@ -254,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/legal/shipping': typeof LegalShippingRoute
   '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/shop/caviar-stix': typeof ShopCaviarStixRoute
   '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
@@ -291,6 +298,7 @@ export interface FileRoutesByTo {
   '/legal/shipping': typeof LegalShippingRoute
   '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/shop/caviar-stix': typeof ShopCaviarStixRoute
   '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/login': typeof WholesaleLoginRoute
@@ -329,6 +337,7 @@ export interface FileRoutesById {
   '/legal/shipping': typeof LegalShippingRoute
   '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/shop/caviar-stix': typeof ShopCaviarStixRoute
   '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
@@ -368,6 +377,7 @@ export interface FileRouteTypes {
     | '/legal/shipping'
     | '/legal/terms'
     | '/order/$orderNumber'
+    | '/shop/caviar-stix'
     | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/dashboard'
@@ -405,6 +415,7 @@ export interface FileRouteTypes {
     | '/legal/shipping'
     | '/legal/terms'
     | '/order/$orderNumber'
+    | '/shop/caviar-stix'
     | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/login'
@@ -442,6 +453,7 @@ export interface FileRouteTypes {
     | '/legal/shipping'
     | '/legal/terms'
     | '/order/$orderNumber'
+    | '/shop/caviar-stix'
     | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/dashboard'
@@ -581,6 +593,13 @@ declare module '@tanstack/react-router' {
       path: '/infused-pre-rolls'
       fullPath: '/shop/infused-pre-rolls'
       preLoaderRoute: typeof ShopInfusedPreRollsRouteImport
+      parentRoute: typeof ShopRoute
+    }
+    '/shop/caviar-stix': {
+      id: '/shop/caviar-stix'
+      path: '/caviar-stix'
+      fullPath: '/shop/caviar-stix'
+      preLoaderRoute: typeof ShopCaviarStixRouteImport
       parentRoute: typeof ShopRoute
     }
     '/order/$orderNumber': {
@@ -769,10 +788,12 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface ShopRouteChildren {
+  ShopCaviarStixRoute: typeof ShopCaviarStixRoute
   ShopInfusedPreRollsRoute: typeof ShopInfusedPreRollsRoute
 }
 
 const ShopRouteChildren: ShopRouteChildren = {
+  ShopCaviarStixRoute: ShopCaviarStixRoute,
   ShopInfusedPreRollsRoute: ShopInfusedPreRollsRoute,
 }
 

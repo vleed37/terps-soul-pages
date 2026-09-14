@@ -14,6 +14,7 @@ import { VisitorPrompt } from "@/components/layout/VisitorPrompt";
 import { BrandNotFound } from "@/components/layout/BrandNotFound";
 import { BrandError } from "@/components/layout/BrandError";
 import { StockistContextBanner } from "@/components/brand/StockistContextBanner";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
@@ -76,6 +77,7 @@ function RootComponent() {
 
 
       <Footer />
+      <CartDrawer />
       <AgeGate />
       <CookieConsent />
       <VisitorPrompt />

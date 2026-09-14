@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MapPin, Phone } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Hairline } from "./Hairline";
 import { MetaLabel } from "./MetaLabel";
 import { GoldButton } from "./GoldButton";
@@ -90,6 +90,7 @@ export function FindClosestStockistModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[560px] gap-0 rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-base)] p-6 md:p-8">
+        <DialogTitle className="sr-only">Find a stockist for {strainName}</DialogTitle>
         {phase === "locating" && (
           <div className="py-16 text-center">
             <p className="font-display text-2xl italic text-[color:var(--text-secondary)]">

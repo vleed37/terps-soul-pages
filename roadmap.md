@@ -39,3 +39,10 @@ Fixes made during the pass:
 - Account deletion now detaches orders and preserves buyer details before removing the auth user.
 - Catalog copy no longer says "excluding VAT" while VAT is disabled; wholesale step copy no longer mentions approval waits.
 Still blocked by external input: BobPay credentials (live handoff), Resend API key + sending domain (delivery), real stockist data, VAT confirmation, wholesale delivery fee confirmation (R250 configured, pending owner sign-off), courier info, legal copy approval.
+
+## Wholesale mixed boxes (in progress)
+- Build a mixed box per product line (pre_roll, caviar_stix), exactly 20 units, one line only.
+- Additive box_composition snapshot on wholesale_order_items + DB validation trigger.
+- Server-authoritative line tier pricing shared by single-strain and mixed boxes.
+- Atomic paid-webhook stock decrement per strain incl. mixed composition, replay-safe.
+- Report: product_line values, tier rule, stock caps, prior webhook decrement gap, rejection tests.

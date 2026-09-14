@@ -1046,6 +1046,21 @@ export type Database = {
           },
         ]
       }
+      zz_mixbox_test_log: {
+        Row: {
+          id: number
+          note: string | null
+        }
+        Insert: {
+          id?: number
+          note?: string | null
+        }
+        Update: {
+          id?: number
+          note?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

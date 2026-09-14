@@ -55,7 +55,11 @@ function OrderDetailPage() {
         <MetaLabel gold>Line items</MetaLabel>
         <Hairline className="mt-3 mb-6" />
         <ul className="divide-y divide-[color:var(--border-subtle)]">
-          {(o.items ?? []).map((it) => (
+          {(o.items ?? []).map((it) => {
+            const composition = (Array.isArray(it.box_composition)
+              ? it.box_composition
+              : []) as Array<{ strain_id: string; strain_name: string; units: number }>;
+            return (
             <li key={it.id} className="flex justify-between gap-4 py-4">
               <div>
                 <p className="font-display text-lg">{it.strain_name}</p>

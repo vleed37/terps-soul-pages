@@ -109,35 +109,10 @@ export type WholesaleStrain = {
   tiers: import("./wholesale-pricing").WholesalePriceTier[];
 };
 
-export type MixedBoxCompositionEntry = {
-  strain_id: string;
-  strain_name: string;
-  units: number;
-};
-
-/** A product line that can be ordered as a fully-filled mixed box. */
-export type WholesaleMixedBoxLineOption = {
-  product_line: "pre_roll" | "caviar_stix";
-  label: string;
-  units_per_box: number;
-  minimum_boxes: number;
-  tiers: import("./wholesale-pricing").WholesalePriceTier[];
-  strains: Array<{
-    id: string;
-    name: string;
-    slug: string;
-    strain_type: "sativa" | "hybrid" | "indica" | null;
-    product_image_url: string | null;
-  }>;
-};
-
 export type WholesaleOrderItem = {
   id: string;
-  item_type: "single_strain" | "mixed_box";
-  strain_id: string | null;
+  strain_id: string;
   strain_name: string;
-  product_line: "pre_roll" | "caviar_stix" | null;
-  box_composition: MixedBoxCompositionEntry[] | null;
   box_quantity_per_unit: number;
   boxes_ordered: number;
   total_units: number;

@@ -13,11 +13,8 @@
 - `RESEND_API_KEY` not set — no email actually leaves the app until it is added.
 - `BOBPAY_MERCHANT_ID` not set — checkout returns "Payments not yet configured" instead of a redirect.
 
-## Done — Retail product detail relayout
-- Simplified every retail product page to product photography, concise product copy, purchase controls, stockist access, and Caviar-only infusion components.
-- Renamed Girl Scout Cookie display name without changing its slug, updated the shop heading, centralized retail delivery constants, and enforced HTML revalidation.
-- Verified all seven products at 375px/390px, typecheck, build, cart state, stockist modal, response caching, and zero console errors.
-- Added accessible titles to the stockist and restock dialogs.
+## Known minor issue
+- Stockist finder dialog lacks a `DialogTitle` (Radix a11y console warning).
 
 ## Phase 1 remediation (tiered wholesale pricing) — done
 - Retail prices corrected: pre-rolls R160, Caviar Stix R210.
@@ -39,10 +36,3 @@ Fixes made during the pass:
 - Account deletion now detaches orders and preserves buyer details before removing the auth user.
 - Catalog copy no longer says "excluding VAT" while VAT is disabled; wholesale step copy no longer mentions approval waits.
 Still blocked by external input: BobPay credentials (live handoff), Resend API key + sending domain (delivery), real stockist data, VAT confirmation, wholesale delivery fee confirmation (R250 configured, pending owner sign-off), courier info, legal copy approval.
-
-## Wholesale mixed boxes (done)
-- Build a mixed box per product line (pre_roll, caviar_stix), exactly 20 units, one line only.
-- Additive box_composition snapshot on wholesale_order_items + DB validation trigger.
-- Server-authoritative line tier pricing shared by single-strain and mixed boxes.
-- Atomic paid-webhook stock decrement per strain incl. mixed composition, replay-safe.
-- Report: product_line values, tier rule, stock caps, prior webhook decrement gap, rejection tests.

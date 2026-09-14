@@ -1,24 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { seoMeta } from "@/lib/seo";
-import {
-  COMPANY_PHONE,
-  EFFECTIVE_DATE,
-  LAST_UPDATED,
-  LEGAL_ENTITY,
-  REFUNDS_EMAIL,
-  RETURN_WINDOW_DAYS,
-} from "@/lib/legal";
+import { SALES_EMAIL } from "@/lib/brand";
+
+const LAST_UPDATED = "31 May 2026";
 
 export const Route = createFileRoute("/legal/refunds")({
   head: () => ({
     meta: seoMeta({
-      title: "Refund & Returns Policy · Terps",
+      title: "Refund Policy · Terps",
       description:
-        "Incorrect or damaged products, change of mind, refunds, cancelled orders and consumer rights.",
+        "How returns, refunds, and order issues are handled by Terps.",
       path: "/legal/refunds",
     }),
-    links: [{ rel: "canonical", href: "https://terps2.carbonmediasolutions.com/legal/refunds" }],
   }),
   component: RefundsPage,
 });
@@ -27,123 +21,58 @@ function RefundsPage() {
   return (
     <LegalPage
       eyebrow="Legal"
-      title="Refund & Returns Policy"
+      title="Refund Policy"
       lastUpdated={LAST_UPDATED}
       intro={
-        <>
-          <p className="meta-xs text-[color:var(--text-tertiary)]">
-            Effective date: {EFFECTIVE_DATE}
-          </p>
-          <p className="mt-6">
-            We want every order from {LEGAL_ENTITY} to arrive safely and correctly. Because our
-            products may be consumable cannabis products, returns are subject to applicable health,
-            safety and legal requirements.
-          </p>
-        </>
+        <p>
+          We stand behind every Terps drop. This policy describes when refunds, replacements, and
+          credits apply.
+        </p>
       }
       sections={[
         {
-          heading: "1. Incorrect or Damaged Products",
-          body: (
-            <>
-              <p>
-                If you receive an incorrect, damaged or defective product, please contact us within{" "}
-                {RETURN_WINDOW_DAYS} of delivery.
-              </p>
-              <p>Please provide:</p>
-              <ul className="list-disc space-y-2 pl-5">
-                <li>Your order number</li>
-                <li>A description of the problem</li>
-                <li>Photographs where relevant</li>
-                <li>Any other information reasonably required to investigate the issue</li>
-              </ul>
-              <p>
-                Where appropriate, we may offer a replacement, refund or other remedy in accordance
-                with applicable law.
-              </p>
-            </>
-          ),
-        },
-        {
-          heading: "2. Change of Mind",
+          heading: "Damaged or Defective Items",
           body: (
             <p>
-              Due to the nature of our products, opened, used or consumed cannabis products generally
-              cannot be returned for a change of mind, subject always to any rights that cannot
-              lawfully be excluded.
+              If your order arrives damaged or defective, contact us within 7 days with photos and
+              your order number. We will replace the item or refund you in full.
             </p>
           ),
         },
         {
-          heading: "3. Unopened Products",
-          body: (
-            <>
-              <p>
-                Requests concerning unopened products must be submitted within {RETURN_WINDOW_DAYS}{" "}
-                of delivery.
-              </p>
-              <p>
-                Any return must comply with our instructions and all applicable legal requirements.
-              </p>
-              <p>Do not send products back to us without first contacting customer support.</p>
-            </>
-          ),
-        },
-        {
-          heading: "4. Refunds",
-          body: (
-            <>
-              <p>
-                Where a refund is approved, the refund will normally be processed using the original
-                payment method where reasonably possible.
-              </p>
-              <p>
-                Processing times may vary depending on the payment provider or financial institution.
-              </p>
-            </>
-          ),
-        },
-        {
-          heading: "5. Cancelled or Rejected Orders",
-          body: (
-            <>
-              <p>We may cancel an order where:</p>
-              <ul className="list-disc space-y-2 pl-5">
-                <li>The transaction cannot be successfully processed;</li>
-                <li>Required age or eligibility verification cannot be completed;</li>
-                <li>Delivery to the relevant location is not lawful or possible;</li>
-                <li>The product is unavailable;</li>
-                <li>We reasonably suspect fraud or misuse; or</li>
-                <li>Cancellation is otherwise permitted or required by applicable law.</li>
-              </ul>
-            </>
-          ),
-        },
-        {
-          heading: "6. Consumer Rights",
-          body: (
-            <>
-              <p>
-                Nothing in this Refund &amp; Returns Policy is intended to exclude, restrict or limit
-                any consumer right, warranty, remedy or protection that cannot legally be excluded
-                under applicable law.
-              </p>
-              <p>
-                If applicable law provides you with a mandatory right to a refund, replacement, repair
-                or other remedy, that right will continue to apply.
-              </p>
-            </>
-          ),
-        },
-        {
-          heading: "7. Contact",
+          heading: "Incorrect Items",
           body: (
             <p>
-              For refund or return enquiries, email{" "}
-              <a href={`mailto:${REFUNDS_EMAIL}`} className="ghost-link">
-                {REFUNDS_EMAIL}
-              </a>
-              {COMPANY_PHONE ? ` or call ${COMPANY_PHONE}` : ""}.
+              If you receive an item different from what you ordered, contact us within 7 days. We
+              will arrange a return at no cost and dispatch the correct item.
+            </p>
+          ),
+        },
+        {
+          heading: "Change of Mind",
+          body: (
+            <p>
+              As a consumable product, unopened items can be returned within 7 days of delivery at
+              your cost. Opened items cannot be returned for reasons of product integrity.
+            </p>
+          ),
+        },
+        {
+          heading: "Refund Method & Timing",
+          body: (
+            <p>
+              Approved refunds are issued to the original payment method within 7 business days of
+              approval. Bank clearance times may vary.
+            </p>
+          ),
+        },
+        {
+          heading: "Cancellations",
+          body: (
+            <p>
+              Orders may be cancelled prior to dispatch by contacting{" "}
+              <a href={`mailto:${SALES_EMAIL}`} className="ghost-link">{SALES_EMAIL}</a>
+              . Once dispatched, the order is subject to the returns process above.
             </p>
           ),
         },

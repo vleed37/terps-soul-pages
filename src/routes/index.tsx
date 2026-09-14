@@ -112,7 +112,7 @@ function Home() {
           )}
 
           <div className="mt-16 text-center">
-            <a href="/shop/infused-pre-rolls">
+            <a href="/shop">
               <GoldButton>Shop the collection</GoldButton>
             </a>
           </div>

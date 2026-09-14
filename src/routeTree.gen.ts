@@ -18,12 +18,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
-import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
 import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
-import { Route as ShopInfusedPreRollsRouteImport } from './routes/shop.infused-pre-rolls'
-import { Route as ShopCaviarStixRouteImport } from './routes/shop.caviar-stix'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
 import { Route as LegalTermsRouteImport } from './routes/legal.terms'
 import { Route as LegalShippingRouteImport } from './routes/legal.shipping'
@@ -92,11 +89,6 @@ const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
   path: '/wholesale/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShopIndexRoute = ShopIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ShopRoute,
-} as any)
 const WholesaleLoginRoute = WholesaleLoginRouteImport.update({
   id: '/wholesale/login',
   path: '/wholesale/login',
@@ -111,16 +103,6 @@ const StrainSlugRoute = StrainSlugRouteImport.update({
   id: '/strain/$slug',
   path: '/strain/$slug',
   getParentRoute: () => rootRouteImport,
-} as any)
-const ShopInfusedPreRollsRoute = ShopInfusedPreRollsRouteImport.update({
-  id: '/infused-pre-rolls',
-  path: '/infused-pre-rolls',
-  getParentRoute: () => ShopRoute,
-} as any)
-const ShopCaviarStixRoute = ShopCaviarStixRouteImport.update({
-  id: '/caviar-stix',
-  path: '/caviar-stix',
-  getParentRoute: () => ShopRoute,
 } as any)
 const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
   id: '/order/$orderNumber',
@@ -252,7 +234,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
-  '/shop': typeof ShopRouteWithChildren
+  '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
@@ -266,12 +248,9 @@ export interface FileRoutesByFullPath {
   '/legal/shipping': typeof LegalShippingRoute
   '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
-  '/shop/caviar-stix': typeof ShopCaviarStixRoute
-  '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
-  '/shop/': typeof ShopIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -291,6 +270,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
+  '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
@@ -304,11 +284,8 @@ export interface FileRoutesByTo {
   '/legal/shipping': typeof LegalShippingRoute
   '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
-  '/shop/caviar-stix': typeof ShopCaviarStixRoute
-  '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/login': typeof WholesaleLoginRoute
-  '/shop': typeof ShopIndexRoute
   '/wholesale': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -330,7 +307,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
-  '/shop': typeof ShopRouteWithChildren
+  '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
@@ -344,12 +321,9 @@ export interface FileRoutesById {
   '/legal/shipping': typeof LegalShippingRoute
   '/legal/terms': typeof LegalTermsRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
-  '/shop/caviar-stix': typeof ShopCaviarStixRoute
-  '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
-  '/shop/': typeof ShopIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/_authenticated/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -385,12 +359,9 @@ export interface FileRouteTypes {
     | '/legal/shipping'
     | '/legal/terms'
     | '/order/$orderNumber'
-    | '/shop/caviar-stix'
-    | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
-    | '/shop/'
     | '/wholesale/'
     | '/account/addresses'
     | '/account/settings'
@@ -410,6 +381,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/checkout'
+    | '/shop'
     | '/sitemap.xml'
     | '/stockists'
     | '/strains'
@@ -423,11 +395,8 @@ export interface FileRouteTypes {
     | '/legal/shipping'
     | '/legal/terms'
     | '/order/$orderNumber'
-    | '/shop/caviar-stix'
-    | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/login'
-    | '/shop'
     | '/wholesale'
     | '/account/addresses'
     | '/account/settings'
@@ -462,12 +431,9 @@ export interface FileRouteTypes {
     | '/legal/shipping'
     | '/legal/terms'
     | '/order/$orderNumber'
-    | '/shop/caviar-stix'
-    | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
-    | '/shop/'
     | '/wholesale/'
     | '/_authenticated/account/addresses'
     | '/_authenticated/account/settings'
@@ -489,7 +455,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
   CheckoutRoute: typeof CheckoutRoute
-  ShopRoute: typeof ShopRouteWithChildren
+  ShopRoute: typeof ShopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StockistsRoute: typeof StockistsRoute
   StrainsRoute: typeof StrainsRoute
@@ -577,13 +543,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WholesaleIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/shop/': {
-      id: '/shop/'
-      path: '/'
-      fullPath: '/shop/'
-      preLoaderRoute: typeof ShopIndexRouteImport
-      parentRoute: typeof ShopRoute
-    }
     '/wholesale/login': {
       id: '/wholesale/login'
       path: '/wholesale/login'
@@ -604,20 +563,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/strain/$slug'
       preLoaderRoute: typeof StrainSlugRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/shop/infused-pre-rolls': {
-      id: '/shop/infused-pre-rolls'
-      path: '/infused-pre-rolls'
-      fullPath: '/shop/infused-pre-rolls'
-      preLoaderRoute: typeof ShopInfusedPreRollsRouteImport
-      parentRoute: typeof ShopRoute
-    }
-    '/shop/caviar-stix': {
-      id: '/shop/caviar-stix'
-      path: '/caviar-stix'
-      fullPath: '/shop/caviar-stix'
-      preLoaderRoute: typeof ShopCaviarStixRouteImport
-      parentRoute: typeof ShopRoute
     }
     '/order/$orderNumber': {
       id: '/order/$orderNumber'
@@ -804,20 +749,6 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-interface ShopRouteChildren {
-  ShopCaviarStixRoute: typeof ShopCaviarStixRoute
-  ShopInfusedPreRollsRoute: typeof ShopInfusedPreRollsRoute
-  ShopIndexRoute: typeof ShopIndexRoute
-}
-
-const ShopRouteChildren: ShopRouteChildren = {
-  ShopCaviarStixRoute: ShopCaviarStixRoute,
-  ShopInfusedPreRollsRoute: ShopInfusedPreRollsRoute,
-  ShopIndexRoute: ShopIndexRoute,
-}
-
-const ShopRouteWithChildren = ShopRoute._addFileChildren(ShopRouteChildren)
-
 interface WholesaleDashboardRouteChildren {
   WholesaleDashboardCatalogRoute: typeof WholesaleDashboardCatalogRoute
   WholesaleDashboardCheckoutRoute: typeof WholesaleDashboardCheckoutRoute
@@ -842,7 +773,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   CheckoutRoute: CheckoutRoute,
-  ShopRoute: ShopRouteWithChildren,
+  ShopRoute: ShopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StockistsRoute: StockistsRoute,
   StrainsRoute: StrainsRoute,

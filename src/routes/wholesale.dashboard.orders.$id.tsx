@@ -55,31 +55,17 @@ function OrderDetailPage() {
         <MetaLabel gold>Line items</MetaLabel>
         <Hairline className="mt-3 mb-6" />
         <ul className="divide-y divide-[color:var(--border-subtle)]">
-          {(o.items ?? []).map((it) => {
-            const composition = (Array.isArray(it.box_composition)
-              ? it.box_composition
-              : []) as Array<{ strain_id: string; strain_name: string; units: number }>;
-            return (
+          {(o.items ?? []).map((it) => (
             <li key={it.id} className="flex justify-between gap-4 py-4">
               <div>
                 <p className="font-display text-lg">{it.strain_name}</p>
                 <p className="meta-xs text-[color:var(--text-tertiary)]">
                   {it.boxes_ordered} × box of {it.box_quantity_per_unit} units · R{Number(it.box_price_zar).toFixed(0)}/box
                 </p>
-                {composition.length > 0 && (
-                  <ul className="mt-1.5 space-y-0.5 text-xs text-[color:var(--text-secondary)]">
-                    {composition.map((c) => (
-                      <li key={c.strain_id}>
-                        {c.strain_name} — {c.units * it.boxes_ordered} units
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </div>
               <p className="font-display text-lg whitespace-nowrap">R{Number(it.line_total_zar).toFixed(0)}</p>
             </li>
-            );
-          })}
+          ))}
         </ul>
         <Hairline className="my-6" />
         <div className="ml-auto max-w-xs space-y-1.5 text-sm">

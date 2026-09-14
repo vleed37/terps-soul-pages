@@ -21,23 +21,7 @@ async function getServerEntry(): Promise<ServerEntry> {
 function brandedErrorResponse(): Response {
   return new Response(renderErrorPage(), {
     status: 500,
-    headers: {
-      "content-type": "text/html; charset=utf-8",
-      "cache-control": "no-cache, must-revalidate, max-age=0",
-    },
-  });
-}
-
-function withDocumentCachePolicy(response: Response): Response {
-  const contentType = response.headers.get("content-type") ?? "";
-  if (!contentType.includes("text/html")) return response;
-
-  const headers = new Headers(response.headers);
-  headers.set("cache-control", "no-cache, must-revalidate, max-age=0");
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
+    headers: { "content-type": "text/html; charset=utf-8" },
   });
 }
 
@@ -87,7 +71,7 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return withDocumentCachePolicy(await normalizeCatastrophicSsrResponse(response));
+      return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
       console.error(error);
       return brandedErrorResponse();

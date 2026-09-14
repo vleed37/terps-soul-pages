@@ -1,115 +1,92 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { seoMeta } from "@/lib/seo";
-import { LAST_UPDATED, LEGAL_ENTITY } from "@/lib/legal";
+
+const LAST_UPDATED = "31 May 2026";
 
 export const Route = createFileRoute("/legal/cannabis-disclaimer")({
   head: () => ({
     meta: seoMeta({
-      title: "Cannabis Product Disclaimer · Terps",
+      title: "Cannabis Disclaimer · Terps",
       description:
-        "Important information about cannabis products, effects, age and eligibility requirements, and legal responsibility.",
+        "Responsible consumption, legal age, and health information for Terps cannabis products.",
       path: "/legal/cannabis-disclaimer",
     }),
-    links: [
-      {
-        rel: "canonical",
-        href: "https://terps2.carbonmediasolutions.com/legal/cannabis-disclaimer",
-      },
-    ],
   }),
-  component: DisclaimerPage,
+  component: CannabisDisclaimerPage,
 });
 
-function DisclaimerPage() {
+function CannabisDisclaimerPage() {
   return (
     <LegalPage
-      eyebrow="Legal"
-      title="Cannabis Product Disclaimer"
+      eyebrow="Important"
+      title="Cannabis Disclaimer"
       lastUpdated={LAST_UPDATED}
       intro={
-        <>
-          <p>
-            The products offered by {LEGAL_ENTITY} may contain cannabis, cannabinoids and/or other
-            cannabis-derived ingredients.
-          </p>
-          <p className="mt-4">
-            Cannabis products may affect individuals differently. Products containing cannabinoids
-            may cause impairment and may not be suitable for everyone.
-          </p>
-        </>
+        <p>
+          Terps products contain cannabis. Please read this disclaimer carefully before purchasing
+          or consuming any Terps product.
+        </p>
       }
       sections={[
         {
-          heading: "Important",
+          heading: "Adults Only — 18+",
           body: (
-            <>
-              <p>
-                You must not purchase, possess, consume, use, transport, resell or otherwise handle
-                any cannabis product unless doing so is lawful in your jurisdiction and you satisfy
-                all applicable age and eligibility requirements.
-              </p>
-              <p>
-                {LEGAL_ENTITY} does not encourage or promote unlawful possession, use, distribution
-                or transportation of cannabis products.
-              </p>
-              <p>
-                Do not operate a motor vehicle, operate machinery or perform activities requiring
-                full alertness after consuming a product that may cause impairment.
-              </p>
-              <p>
-                Do not combine cannabis products with alcohol or other substances where doing so may
-                create additional risks.
-              </p>
-              <p>
-                Pregnant or breastfeeding individuals, individuals taking medication, and individuals
-                with medical conditions should consult an appropriately qualified healthcare
-                professional before using cannabis or cannabinoid products.
-              </p>
-              <p>
-                Cannabis products are not intended to diagnose, treat, cure or prevent any disease
-                unless expressly authorised and lawfully marketed for such purposes.
-              </p>
-              <p>
-                Effects may vary depending on the individual, product, dosage, tolerance, method of
-                consumption and other factors.
-              </p>
-            </>
+            <p>
+              Terps products are intended for adults aged 18 years or older. We do not sell to or
+              market to minors. ID may be required on delivery or collection.
+            </p>
           ),
         },
         {
-          heading: "Age and Eligibility",
+          heading: "No Medical Claims",
           body: (
-            <>
-              <p>
-                By purchasing from our website, you confirm that you meet the minimum legal age and
-                all other applicable requirements for purchasing and possessing the relevant product
-                in the jurisdiction in which you are located.
-              </p>
-              <p>
-                We reserve the right to request proof of age or eligibility and to refuse or cancel
-                an order where we reasonably believe that applicable requirements have not been
-                satisfied.
-              </p>
-            </>
+            <p>
+              Terps products are not intended to diagnose, treat, cure, or prevent any disease.
+              Statements on this site have not been evaluated by SAHPRA or any equivalent
+              regulator. Consult a qualified healthcare practitioner before use, especially if you
+              are pregnant, breastfeeding, or on prescription medication.
+            </p>
           ),
         },
         {
-          heading: "Legal Responsibility",
+          heading: "Responsible Consumption",
           body: (
-            <>
-              <p>Cannabis laws vary between jurisdictions and may change over time.</p>
-              <p>
-                It is your responsibility to understand and comply with the laws applicable to you,
-                including laws relating to possession, consumption, transportation, importation,
-                exportation and resale.
-              </p>
-              <p>
-                {LEGAL_ENTITY} is not responsible for a customer’s decision to purchase, possess,
-                transport or use a product in a manner that is unlawful in the customer’s
-                jurisdiction.
-              </p>
-            </>
+            <p>
+              Cannabis affects everyone differently. Start with a low dose, go slow, and never
+              combine with alcohol or other substances. Keep all products out of reach of children
+              and pets.
+            </p>
+          ),
+        },
+        {
+          heading: "Do Not Drive or Operate Machinery",
+          body: (
+            <p>
+              Do not drive, operate heavy machinery, or perform any activity requiring full
+              attention or coordination after consuming cannabis. Driving under the influence is
+              illegal and dangerous.
+            </p>
+          ),
+        },
+        {
+          heading: "Legal Status",
+          body: (
+            <p>
+              Cannabis laws in South Africa differ by region and continue to develop. Nothing on
+              this site is legal advice or a statement about the legality of any purchase. Please
+              ensure you understand and comply with the laws applicable to you before purchasing
+              or consuming. This page is subject to final legal review.
+            </p>
+          ),
+        },
+        {
+          heading: "Storage",
+          body: (
+            <p>
+              Store Terps products in a cool, dry place, sealed in their original packaging, and
+              well out of reach of children, pets, and anyone under 18.
+            </p>
           ),
         },
       ]}

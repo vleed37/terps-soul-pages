@@ -22,13 +22,12 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   const paragraphs = [
-    "Terps was born from a simple frustration: we knew infused pre-rolls could be better. Too often, we found ourselves paying premium prices for products made with average flower, poorly handled concentrates, or packaging that failed to protect the experience. The product might start out great, but somewhere along the way, quality was compromised.",
-    "We decided to do it differently. At Terps, quality starts with the flower. From cultivation and curing to the way each product is handled and packaged, every detail matters. We believe the experience should be protected from the moment the flower is selected to the moment you open the package.",
-    "For us, it has always been about flavour, quality and consistency. We don't believe in cutting corners to keep a product cheap. If better ingredients and better processes cost more, we'd rather raise the price than lower the standard.",
-    "Terps is built on one simple principle: never compromise the quality of the experience.",
-    "Because if we're going to put our name on it, it needs to be something we'd be proud to smoke ourselves.",
+    "Terps was built around one belief: an infused pre-roll should taste like something. Not chemicals. Not cover-ups. Real strain expression — sharpened, never masked. Every drop carries the flavour it was supposed to.",
+    "We start with cultivars chosen for their terpene profile, not their yield. We slow-cure. We hand-infuse with cured hash and crumble. Strain-specific, and the strain goes on the label because we're proud of what's inside.",
+    "We're South African born and bred. The land here grows different, and so do the people. Terps is a product of that — the patience of the soil, the edge of the streets, the standard of a culture that knows quality when it tastes it.",
+    "This is craft cannabis the way it should be made: slowly, intentionally, and with absolute respect for the flavour on the other end.",
+    "Welcome to Terps. Welcome to flavour first.",
   ];
-
 
   return (
     <div className="px-6 py-20 md:px-12 md:py-28">

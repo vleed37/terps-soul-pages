@@ -3,14 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { SALES_EMAIL, WHOLESALE_DELIVERY_FEE, vatOn } from "@/lib/brand";
-import {
-  WHOLESALE_PRODUCT_LINES,
-  productLineLabel,
-  tiersEqual,
-  wholesaleBoxPrice,
-  type WholesalePriceTier,
-  type WholesaleProductLine,
-} from "@/lib/wholesale-pricing";
+import { resolveTierPrice } from "@/lib/wholesale-pricing";
 
 const BusinessTypeEnum = z.enum(["dispensary", "lounge", "specialty_retailer", "other"]);
 const VolumeEnum = z.enum(["under_50", "50_to_200", "200_to_500", "500_plus"]);
@@ -284,100 +277,10 @@ export const listWholesaleStrains = createServerFn({ method: "GET" })
     return rows as unknown as import("./types").WholesaleStrain[];
   });
 
-/**
- * Product lines that can be ordered as a fully-filled mixed box.
- *
- * A line only qualifies when every active wholesale strain in it shares the same
- * box size, the same minimum, and an identical tier ladder — so one line-level box
- * price is unambiguous. If settings ever diverge, mixed ordering fails closed for
- * that line while single-strain ordering carries on unaffected.
- */
-export const listWholesaleMixedBoxLines = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    await assertApprovedStockist(context.userId);
-    const lines = await loadMixedBoxLines();
-    return lines as unknown as import("./types").WholesaleMixedBoxLineOption[];
-  });
-
-type MixedLineConfig = {
-  product_line: WholesaleProductLine;
-  label: string;
-  units_per_box: number;
-  minimum_boxes: number;
-  tiers: WholesalePriceTier[];
-  strains: Array<{
-    id: string;
-    name: string;
-    slug: string;
-    strain_type: "sativa" | "hybrid" | "indica" | null;
-    product_image_url: string | null;
-  }>;
-};
-
-async function loadMixedBoxLines(): Promise<MixedLineConfig[]> {
-  const { products, tiersByStrain, strainsById } = await loadWholesaleCatalog();
-  const out: MixedLineConfig[] = [];
-
-  for (const line of WHOLESALE_PRODUCT_LINES) {
-    const members = products
-      .map((p) => ({ p, s: strainsById.get(p.strain_id), tiers: tiersByStrain.get(p.strain_id) ?? [] }))
-      .filter((m) => m.s && m.s.is_active && m.s.product_line === line && m.tiers.length > 0)
-      .sort((a, b) => (a.s!.display_order ?? 0) - (b.s!.display_order ?? 0));
-
-    if (members.length < 2) continue;
-
-    const first = members[0];
-    const unitsPerBox = first.p.units_per_box ?? 20;
-    const minimumBoxes = first.p.minimum_boxes ?? 1;
-    const consistent = members.every(
-      (m) =>
-        (m.p.units_per_box ?? 20) === unitsPerBox &&
-        (m.p.minimum_boxes ?? 1) === minimumBoxes &&
-        tiersEqual(m.tiers, first.tiers),
-    );
-    if (!consistent) continue;
-
-    out.push({
-      product_line: line,
-      label: productLineLabel(line),
-      units_per_box: unitsPerBox,
-      minimum_boxes: minimumBoxes,
-      tiers: [...first.tiers].sort((a, b) => a.min_boxes - b.min_boxes),
-      strains: members.map((m) => ({
-        id: m.s!.id,
-        name: m.s!.name,
-        slug: m.s!.slug,
-        strain_type: m.s!.strain_type,
-        product_image_url: m.s!.product_image_url,
-      })),
-    });
-  }
-  return out;
-}
-
-const SingleStrainLineSchema = z.object({
-  kind: z.literal("single_strain"),
+const CartLineSchema = z.object({
   strainId: z.string().uuid(),
   boxes: z.number().int().min(1).max(500),
 });
-
-const MixedBoxLineSchema = z.object({
-  kind: z.literal("mixed_box"),
-  productLine: z.enum(WHOLESALE_PRODUCT_LINES),
-  boxes: z.number().int().min(1).max(500),
-  composition: z
-    .array(
-      z.object({
-        strainId: z.string().uuid(),
-        units: z.number().int().min(1).max(500),
-      }),
-    )
-    .min(1)
-    .max(50),
-});
-
-const CartLineSchema = z.discriminatedUnion("kind", [SingleStrainLineSchema, MixedBoxLineSchema]);
 
 const CreateOrderSchema = z.object({
   items: z.array(CartLineSchema).min(1).max(50),
@@ -409,22 +312,14 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
       throw new Response("Forbidden", { status: 403 });
     }
 
-    const singleIds = data.items.flatMap((i) => (i.kind === "single_strain" ? [i.strainId] : []));
-    const { products, tiersByStrain, strainsById } = await loadWholesaleCatalog(
-      singleIds.length ? singleIds : undefined,
-    );
+    const ids = data.items.map((i) => i.strainId);
+    const { products, tiersByStrain, strainsById } = await loadWholesaleCatalog(ids);
     const productById = new Map(products.map((p) => [p.strain_id, p]));
-    const mixedLines = data.items.some((i) => i.kind === "mixed_box")
-      ? await loadMixedBoxLines()
-      : [];
 
     let subtotal = 0;
     const orderItems: Array<{
-      item_type: "single_strain" | "mixed_box";
-      strain_id: string | null;
+      strain_id: string;
       strain_name: string;
-      product_line: string | null;
-      box_composition: Array<{ strain_id: string; strain_name: string; units: number }> | null;
       box_quantity_per_unit: number;
       boxes_ordered: number;
       total_units: number;
@@ -434,96 +329,31 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     }> = [];
 
     for (const line of data.items) {
-      if (line.kind === "single_strain") {
-        const s = strainsById.get(line.strainId);
-        const p = productById.get(line.strainId);
-        const tiers = tiersByStrain.get(line.strainId) ?? [];
-        if (!s || !s.is_active || !p || tiers.length === 0) {
-          return { ok: false as const, error: `${s?.name ?? "Item"} is not available for wholesale.` };
-        }
-        const minBoxes = p.minimum_boxes ?? 1;
-        if (line.boxes < minBoxes) {
-          return { ok: false as const, error: `${s.name}: minimum ${minBoxes} box(es).` };
-        }
-        // Server-authoritative tier pricing — client-sent prices are never trusted.
-        const boxPrice = wholesaleBoxPrice(tiers, line.boxes);
-        if (boxPrice <= 0) {
-          return { ok: false as const, error: `${s.name}: no wholesale price configured.` };
-        }
-        const boxQty = p.units_per_box ?? 20;
-        const unitPrice = boxQty > 0 ? boxPrice / boxQty : 0;
-        const lineTotal = Number((boxPrice * line.boxes).toFixed(2));
-        subtotal += lineTotal;
-        orderItems.push({
-          item_type: "single_strain",
-          strain_id: s.id,
-          strain_name: s.name,
-          product_line: null,
-          box_composition: null,
-          box_quantity_per_unit: boxQty,
-          boxes_ordered: line.boxes,
-          total_units: boxQty * line.boxes,
-          unit_price_zar: Number(unitPrice.toFixed(2)),
-          box_price_zar: boxPrice,
-          line_total_zar: lineTotal,
-        });
-        continue;
+      const s = strainsById.get(line.strainId);
+      const p = productById.get(line.strainId);
+      const tiers = tiersByStrain.get(line.strainId) ?? [];
+      if (!s || !s.is_active || !p || tiers.length === 0) {
+        return { ok: false as const, error: `${s?.name ?? "Item"} is not available for wholesale.` };
       }
-
-      // Mixed box — every value below comes from protected server data only.
-      const cfg = mixedLines.find((l) => l.product_line === line.productLine);
-      if (!cfg) {
-        return {
-          ok: false as const,
-          error: "Mixed boxes are not available for this product line right now.",
-        };
+      const minBoxes = p.minimum_boxes ?? 1;
+      if (line.boxes < minBoxes) {
+        return { ok: false as const, error: `${s.name}: minimum ${minBoxes} box(es).` };
       }
-      if (line.boxes < cfg.minimum_boxes) {
-        return { ok: false as const, error: `Mixed box: minimum ${cfg.minimum_boxes} box(es).` };
-      }
-
-      const allowed = new Map(cfg.strains.map((s) => [s.id, s]));
-      const seen = new Set<string>();
-      const composition: Array<{ strain_id: string; strain_name: string; units: number }> = [];
-      let unitSum = 0;
-      for (const c of line.composition) {
-        const s = allowed.get(c.strainId);
-        if (!s) {
-          return {
-            ok: false as const,
-            error: `A mixed ${cfg.label} box can only contain ${cfg.label} products.`,
-          };
-        }
-        if (seen.has(c.strainId)) {
-          return { ok: false as const, error: "A product may appear only once in a mixed box." };
-        }
-        seen.add(c.strainId);
-        unitSum += c.units;
-        composition.push({ strain_id: s.id, strain_name: s.name, units: c.units });
-      }
-      if (unitSum !== cfg.units_per_box) {
-        return {
-          ok: false as const,
-          error: `A mixed box must be completely filled — exactly ${cfg.units_per_box} units (received ${unitSum}).`,
-        };
-      }
-
-      const boxPrice = wholesaleBoxPrice(cfg.tiers, line.boxes);
+      // Server-authoritative tier pricing — client-sent prices are never trusted.
+      const boxPrice = resolveTierPrice(tiers, line.boxes);
       if (boxPrice <= 0) {
-        return { ok: false as const, error: "Mixed box: no wholesale price configured." };
+        return { ok: false as const, error: `${s.name}: no wholesale price configured.` };
       }
-      const unitPrice = boxPrice / cfg.units_per_box;
+      const boxQty = p.units_per_box ?? 20;
+      const unitPrice = boxQty > 0 ? boxPrice / boxQty : 0;
       const lineTotal = Number((boxPrice * line.boxes).toFixed(2));
       subtotal += lineTotal;
       orderItems.push({
-        item_type: "mixed_box",
-        strain_id: null,
-        strain_name: `Mixed box — ${cfg.label}`,
-        product_line: cfg.product_line,
-        box_composition: composition,
-        box_quantity_per_unit: cfg.units_per_box,
+        strain_id: s.id,
+        strain_name: s.name,
+        box_quantity_per_unit: boxQty,
         boxes_ordered: line.boxes,
-        total_units: cfg.units_per_box * line.boxes,
+        total_units: boxQty * line.boxes,
         unit_price_zar: Number(unitPrice.toFixed(2)),
         box_price_zar: boxPrice,
         line_total_zar: lineTotal,

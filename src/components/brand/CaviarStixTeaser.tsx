@@ -60,7 +60,7 @@ export function CaviarStixTeaser() {
             </div>
           )}
           <div className="mt-12 flex justify-center">
-            <a href="/shop/caviar-stix">
+            <a href="/shop">
               <GoldButton variant="cream">Shop the collection</GoldButton>
             </a>
           </div>

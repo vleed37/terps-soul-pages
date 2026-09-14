@@ -12,7 +12,6 @@ import { initiateBobpayPayment } from "@/lib/checkout.functions";
 import { getMyCustomer, listMyAddresses, createAddress } from "@/lib/account.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { FREE_DELIVERY_THRESHOLD } from "@/lib/brand";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Terps — Checkout" }] }),
@@ -287,7 +286,7 @@ function CheckoutPage() {
                   current={method}
                   register={register("deliveryMethod")}
                   label="Courier Delivery"
-                  hint={`2–4 business days · Free over R${FREE_DELIVERY_THRESHOLD}`}
+                  hint="2–4 business days · Free over R500"
                 />
               </div>
 

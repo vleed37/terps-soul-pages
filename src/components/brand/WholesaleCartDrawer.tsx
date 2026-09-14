@@ -44,7 +44,7 @@ export function WholesaleCartDrawer() {
         <header className="flex items-center justify-between border-b border-[color:var(--border-subtle)] px-6 py-5">
           <div>
             <MetaLabel gold>Wholesale Cart</MetaLabel>
-            <p className="mt-1 font-display text-xl">{items.length} item{items.length !== 1 ? "s" : ""}</p>
+            <p className="mt-1 font-display text-xl">{lineCount} item{lineCount !== 1 ? "s" : ""}</p>
           </div>
           <button onClick={close} aria-label="Close cart" className="text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)]">
             <X className="h-5 w-5" />

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { seoMeta } from "@/lib/seo";
+import { DELIVERY_FEE, FREE_DELIVERY_THRESHOLD } from "@/lib/brand";
 
 const LAST_UPDATED = "31 May 2026";
 
@@ -52,8 +53,8 @@ function ShippingPage() {
           heading: "Shipping Costs",
           body: (
             <p>
-              Flat-rate delivery applies at checkout, with free delivery on orders over R500.
-              Costs are shown before payment.
+              Delivery is R{DELIVERY_FEE}, with free delivery on orders of R
+              {FREE_DELIVERY_THRESHOLD} or more. Costs are shown before payment.
             </p>
           ),
         },

@@ -13,8 +13,11 @@
 - `RESEND_API_KEY` not set — no email actually leaves the app until it is added.
 - `BOBPAY_MERCHANT_ID` not set — checkout returns "Payments not yet configured" instead of a redirect.
 
-## Known minor issue
-- Stockist finder dialog lacks a `DialogTitle` (Radix a11y console warning).
+## Done — Retail product detail relayout
+- Simplified every retail product page to product photography, concise product copy, purchase controls, stockist access, and Caviar-only infusion components.
+- Renamed Girl Scout Cookie display name without changing its slug, updated the shop heading, centralized retail delivery constants, and enforced HTML revalidation.
+- Verified all seven products at 375px/390px, typecheck, build, cart state, stockist modal, response caching, and zero console errors.
+- Added accessible titles to the stockist and restock dialogs.
 
 ## Phase 1 remediation (tiered wholesale pricing) — done
 - Retail prices corrected: pre-rolls R160, Caviar Stix R210.

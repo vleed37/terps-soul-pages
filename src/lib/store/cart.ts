@@ -1,5 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { DELIVERY_FEE, FREE_DELIVERY_THRESHOLD } from "@/lib/brand";
+
+export { DELIVERY_FEE, FREE_DELIVERY_THRESHOLD } from "@/lib/brand";
 
 export type CartItem = {
   strainId: string;
@@ -85,9 +88,6 @@ export const cartSelectors = {
   itemCount: (s: CartState) => s.items.reduce((a, i) => a + i.quantity, 0),
   subtotal: (s: CartState) => s.items.reduce((a, i) => a + i.priceZar * i.quantity, 0),
 };
-
-export const DELIVERY_FEE = 80;
-export const FREE_DELIVERY_THRESHOLD = 500;
 
 export function computeTotals(subtotal: number) {
   const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;

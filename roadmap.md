@@ -16,6 +16,11 @@
 ## Known minor issue
 - Stockist finder dialog lacks a `DialogTitle` (Radix a11y console warning).
 
+## In progress — Retail product detail relayout
+- Simplify every retail product page to product photography, concise product copy, purchase controls, stockist access, and Caviar-only infusion components.
+- Rename Girl Scout Cookie display name, update the shop heading, centralize retail delivery constants, enforce HTML revalidation, and audit stale-content/BobPay/notify behavior.
+- Verify all seven products at 375px/390px, typecheck, build, routes, cart, stockist modal, and response caching.
+
 ## Phase 1 remediation (tiered wholesale pricing) — done
 - Retail prices corrected: pre-rolls R160, Caviar Stix R210.
 - Protected tiered box pricing live (20 units/box); tiers verified at boxes 1,2,3,5,6,9,10,11 for both families.

@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
-import { listWholesaleStrains } from "@/lib/wholesale.functions";
+import { listWholesaleStrains, listWholesaleMixedBoxLines } from "@/lib/wholesale.functions";
+import { MixedBoxBuilder } from "@/components/brand/MixedBoxBuilder";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { StrainTypePill } from "@/components/brand/StrainTypePill";
@@ -20,13 +21,19 @@ export const Route = createFileRoute("/wholesale/dashboard/catalog")({
 
 function CatalogPage() {
   const fetchStrains = useServerFn(listWholesaleStrains);
+  const fetchMixedLines = useServerFn(listWholesaleMixedBoxLines);
   const { data, isLoading } = useQuery({
     queryKey: ["wholesale-strains"],
     queryFn: () => fetchStrains(),
   });
+  const mixedQ = useQuery({
+    queryKey: ["wholesale-mixed-lines"],
+    queryFn: () => fetchMixedLines(),
+  });
 
   if (isLoading) return <GridSkeleton count={8} />;
   const strains = data ?? [];
+  const mixedLines = mixedQ.data ?? [];
 
   return (
     <div>
@@ -38,6 +45,15 @@ function CatalogPage() {
           automatically as your box count increases.
         </p>
       </div>
+
+      {mixedLines.length > 0 && (
+        <div className="mb-12 space-y-6">
+          {mixedLines.map((line) => (
+            <MixedBoxBuilder key={line.product_line} line={line} />
+          ))}
+        </div>
+      )}
+
       {strains.length === 0 ? (
         <div className="rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] p-12 text-center text-sm text-[color:var(--text-tertiary)]">
           No wholesale products available right now.
@@ -64,6 +80,7 @@ function WholesaleStrainCard({ s }: { s: WholesaleStrain }) {
       name: s.name,
       imageUrl: s.product_image_url,
       strainType: s.strain_type,
+      productLine: s.product_line,
       tiers: s.tiers,
       boxQuantity: s.units_per_box,
       minimumBoxes: s.minimum_boxes,

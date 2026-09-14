@@ -6,6 +6,7 @@ import {
   wholesaleCartSelectors,
   itemBoxPrice,
   itemLineTotal,
+  itemLabel,
   WHOLESALE_SHIPPING,
 } from "@/lib/store/wholesale-cart";
 import { VAT_ENABLED, VAT_RATE, vatOn } from "@/lib/brand";
@@ -53,42 +54,59 @@ export function WholesaleCartDrawer() {
             </p>
           ) : (
             <ul className="divide-y divide-[color:var(--border-subtle)]">
-              {items.map((it) => (
-                <li key={it.strainId} className="flex gap-4 py-4">
-                  <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-[4px] bg-[color:var(--bg-surface)]">
-                    {it.imageUrl && <img src={it.imageUrl} alt={it.name} className="h-full w-full object-cover" />}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-display text-base leading-tight">{it.name}</p>
-                    <p className="meta-xs text-[color:var(--text-tertiary)]">
-                      R{itemBoxPrice(it).toFixed(0)}/box · {it.boxQuantity} units
-                    </p>
-                    <div className="mt-3 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setBoxes(it.strainId, Math.max(0, it.boxes - 1))}
-                          className="grid h-7 w-7 place-items-center rounded border border-[color:var(--border-luxe)] hover:border-[color:var(--accent-gold)]"
-                          aria-label="Decrease"
-                        >
-                          <Minus className="h-3 w-3" />
-                        </button>
-                        <span className="min-w-[2ch] text-center font-semibold">{it.boxes}</span>
-                        <button
-                          onClick={() => setBoxes(it.strainId, it.boxes + 1)}
-                          className="grid h-7 w-7 place-items-center rounded border border-[color:var(--border-luxe)] hover:border-[color:var(--accent-gold)]"
-                          aria-label="Increase"
-                        >
-                          <Plus className="h-3 w-3" />
-                        </button>
-                      </div>
-                      <p className="font-display text-base">R{itemLineTotal(it).toFixed(0)}</p>
+              {items.map((it) => {
+                const thumb =
+                  it.kind === "single_strain" ? it.imageUrl : it.composition[0]?.imageUrl ?? null;
+                const label = itemLabel(it);
+                return (
+                  <li key={it.key} className="flex gap-4 py-4">
+                    <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-[4px] bg-[color:var(--bg-surface)]">
+                      {thumb && <img src={thumb} alt={label} className="h-full w-full object-cover" />}
                     </div>
-                    <button onClick={() => removeItem(it.strainId)} className="mt-2 text-xs text-[color:var(--text-tertiary)] hover:text-[color:var(--accent-gold)]">
-                      Remove
-                    </button>
-                  </div>
-                </li>
-              ))}
+                    <div className="min-w-0 flex-1">
+                      <p className="font-display text-base leading-tight">{label}</p>
+                      <p className="meta-xs text-[color:var(--text-tertiary)]">
+                        R{itemBoxPrice(it).toFixed(0)}/box · {it.boxQuantity} units
+                      </p>
+                      {it.kind === "mixed_box" && (
+                        <ul className="mt-1.5 space-y-0.5 text-xs text-[color:var(--text-secondary)]">
+                          {it.composition.map((c) => (
+                            <li key={c.strainId} className="flex justify-between gap-3">
+                              <span className="truncate">{c.name}</span>
+                              <span className="flex-shrink-0">
+                                {c.units * it.boxes} units
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      <div className="mt-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setBoxes(it.key, Math.max(0, it.boxes - 1))}
+                            className="grid h-7 w-7 place-items-center rounded border border-[color:var(--border-luxe)] hover:border-[color:var(--accent-gold)]"
+                            aria-label="Decrease"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <span className="min-w-[2ch] text-center font-semibold">{it.boxes}</span>
+                          <button
+                            onClick={() => setBoxes(it.key, it.boxes + 1)}
+                            className="grid h-7 w-7 place-items-center rounded border border-[color:var(--border-luxe)] hover:border-[color:var(--accent-gold)]"
+                            aria-label="Increase"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </button>
+                        </div>
+                        <p className="font-display text-base">R{itemLineTotal(it).toFixed(0)}</p>
+                      </div>
+                      <button onClick={() => removeItem(it.key)} className="mt-2 text-xs text-[color:var(--text-tertiary)] hover:text-[color:var(--accent-gold)]">
+                        Remove
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

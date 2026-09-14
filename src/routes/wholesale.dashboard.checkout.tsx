@@ -8,6 +8,8 @@ import {
   wholesaleCartSelectors,
   itemBoxPrice,
   itemLineTotal,
+  itemLabel,
+  toOrderLines,
   WHOLESALE_SHIPPING,
 } from "@/lib/store/wholesale-cart";
 import { VAT_ENABLED, VAT_RATE, vatOn } from "@/lib/brand";
@@ -71,7 +73,7 @@ function WholesaleCheckoutPage() {
     try {
       const res = await placeOrder({
         data: {
-          items: items.map((i) => ({ strainId: i.strainId, boxes: i.boxes })),
+          items: toOrderLines(items),
           shipping_address: {
             line1, line2: line2 || null,
             city, province,
@@ -159,12 +161,21 @@ function WholesaleCheckoutPage() {
           <MetaLabel gold>Your Order</MetaLabel>
           <ul className="mt-6 space-y-3">
             {items.map((i) => (
-              <li key={i.strainId} className="flex justify-between gap-4 text-sm">
+              <li key={i.key} className="flex justify-between gap-4 text-sm">
                 <div className="min-w-0">
-                  <p className="font-display text-base leading-tight">{i.name}</p>
+                  <p className="font-display text-base leading-tight">{itemLabel(i)}</p>
                   <p className="meta-xs text-[color:var(--text-tertiary)]">
                     {i.boxes} × box ({i.boxQuantity} units) · R{itemBoxPrice(i).toFixed(0)}/box
                   </p>
+                  {i.kind === "mixed_box" && (
+                    <ul className="mt-1 space-y-0.5 text-xs text-[color:var(--text-secondary)]">
+                      {i.composition.map((c) => (
+                        <li key={c.strainId}>
+                          {c.name} — {c.units * i.boxes} units
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <span className="font-semibold whitespace-nowrap">R{itemLineTotal(i).toFixed(0)}</span>
               </li>

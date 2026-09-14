@@ -18,6 +18,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
+import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
 import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
@@ -90,6 +91,11 @@ const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
   id: '/wholesale/',
   path: '/wholesale/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShopRoute,
 } as any)
 const WholesaleLoginRoute = WholesaleLoginRouteImport.update({
   id: '/wholesale/login',
@@ -265,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/shop/': typeof ShopIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -284,7 +291,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRoute
-  '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
   '/strains': typeof StrainsRoute
@@ -302,6 +308,7 @@ export interface FileRoutesByTo {
   '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/shop': typeof ShopIndexRoute
   '/wholesale': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -342,6 +349,7 @@ export interface FileRoutesById {
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/shop/': typeof ShopIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/account/addresses': typeof AuthenticatedAccountAddressesRoute
   '/_authenticated/account/settings': typeof AuthenticatedAccountSettingsRoute
@@ -382,6 +390,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
+    | '/shop/'
     | '/wholesale/'
     | '/account/addresses'
     | '/account/settings'
@@ -401,7 +410,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/checkout'
-    | '/shop'
     | '/sitemap.xml'
     | '/stockists'
     | '/strains'
@@ -419,6 +427,7 @@ export interface FileRouteTypes {
     | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/login'
+    | '/shop'
     | '/wholesale'
     | '/account/addresses'
     | '/account/settings'
@@ -458,6 +467,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
+    | '/shop/'
     | '/wholesale/'
     | '/_authenticated/account/addresses'
     | '/_authenticated/account/settings'
@@ -566,6 +576,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/wholesale/'
       preLoaderRoute: typeof WholesaleIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/shop/': {
+      id: '/shop/'
+      path: '/'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof ShopRoute
     }
     '/wholesale/login': {
       id: '/wholesale/login'
@@ -790,11 +807,13 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 interface ShopRouteChildren {
   ShopCaviarStixRoute: typeof ShopCaviarStixRoute
   ShopInfusedPreRollsRoute: typeof ShopInfusedPreRollsRoute
+  ShopIndexRoute: typeof ShopIndexRoute
 }
 
 const ShopRouteChildren: ShopRouteChildren = {
   ShopCaviarStixRoute: ShopCaviarStixRoute,
   ShopInfusedPreRollsRoute: ShopInfusedPreRollsRoute,
+  ShopIndexRoute: ShopIndexRoute,
 }
 
 const ShopRouteWithChildren = ShopRoute._addFileChildren(ShopRouteChildren)

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { GoldButton } from "./GoldButton";
 import { Hairline } from "./Hairline";
 import { MetaLabel } from "./MetaLabel";
@@ -50,6 +50,7 @@ export function NotifyMeModal({
       <DialogContent
         className="tone-dark max-w-[480px] gap-0 rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-dark)] p-10"
       >
+        <DialogTitle className="sr-only">Restock notification for {strainName}</DialogTitle>
         {done ? (
           <div className="py-10 text-center">
             <p className="font-display text-3xl italic text-[color:var(--accent-gold)]">

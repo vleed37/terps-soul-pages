@@ -16,13 +16,10 @@ import type { Strain } from "@/lib/types";
 import { PUBLIC_SITE_URL, seoMeta, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { FREE_DELIVERY_THRESHOLD } from "@/lib/brand";
 
-const PRE_ROLL_DESCRIPTION =
-  "Crafted from premium indoor flower, infused with select hash and crumble, and expertly rolled for a refined, elevated experience.";
-const CAVIAR_DESCRIPTION =
-  "Crafted from premium indoor flower, infused with select hash and crumble, then finished with a coating of live rosin and a generous layer of hash for an elevated experience.";
+import { productLineDescription } from "@/lib/collections";
 
 function productDescription(strain: Pick<Strain, "product_line">) {
-  return strain.product_line === "caviar_stix" ? CAVIAR_DESCRIPTION : PRE_ROLL_DESCRIPTION;
+  return productLineDescription(strain.product_line);
 }
 
 export const Route = createFileRoute("/strain/$slug")({

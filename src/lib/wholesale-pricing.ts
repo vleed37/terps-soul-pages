@@ -9,7 +9,7 @@ export const WHOLESALE_PRODUCT_LINES = ["pre_roll", "caviar_stix"] as const;
 export type WholesaleProductLine = (typeof WHOLESALE_PRODUCT_LINES)[number];
 
 export function productLineLabel(line: WholesaleProductLine): string {
-  return line === "caviar_stix" ? "Caviar Stix" : "Pre-Rolls";
+  return line === "caviar_stix" ? "Caviar Stix" : "Infused Pre-Rolls";
 }
 
 /** Resolve the per-box price for a box quantity from a tier ladder. */

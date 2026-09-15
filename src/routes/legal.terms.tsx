@@ -71,6 +71,21 @@ function TermsPage() {
           ),
         },
         {
+          heading: "Product Reviews",
+          body: (
+            <p>
+              Reviews may be submitted only by account holders who have bought the product on a
+              completed order, one review per product. Every review is checked before publication and
+              we may decline or remove a review that is unlawful, abusive, misleading, off-topic or
+              makes medical claims. Approved reviews are displayed publicly on the product page with
+              your first name and the initial of your surname; editing a published review returns it
+              for checking. Reviews are the opinions of the customers who wrote them and are not
+              statements by {BUSINESS.tradingName}. By submitting a review you give us permission to
+              publish it on this website.
+            </p>
+          ),
+        },
+        {
           heading: "Prices and Payment",
           body: (
             <p>

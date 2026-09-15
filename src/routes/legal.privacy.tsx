@@ -74,6 +74,14 @@ function PrivacyPage() {
                   newsletter or to a "notify me when back in stock" request.
                 </li>
                 <li>
+                  <strong>Product reviews</strong> — the star rating and review text you choose to
+                  submit for a product you have bought. Reviews are checked before publication and,
+                  once approved, are displayed publicly on that product's page alongside your first
+                  name and the initial of your surname. Your email address, account identifier and
+                  order number are never shown. You can ask us to remove a review at any time by
+                  writing to <MailLink purpose="privacy" />.
+                </li>
+                <li>
                   <strong>Technical data</strong> — server logs of requests, including IP address and
                   browser type, used to operate and secure the site.
                 </li>

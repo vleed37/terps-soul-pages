@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
-import { Product3DViewer } from "./Product3DViewer";
+import { getStrainProductImage } from "@/lib/strain-assets";
 import { StrainTypePill } from "./StrainTypePill";
 import type { Strain } from "@/lib/types";
 
@@ -23,7 +22,6 @@ function CornerOrnament({ className = "" }: { className?: string }) {
 
 export function CaviarStixCard({ strain }: { strain: Strain }) {
   const img = getStrainProductImage(strain.slug);
-  const modelUrl = getStrain3DModel(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
   const isLimited = !!strain.is_limited && !soldOut;
 
@@ -55,11 +53,7 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
               </span>
             )}
           </div>
-          {modelUrl ? (
-            <div className={`absolute inset-0 ${soldOut ? "opacity-50" : "opacity-100"}`}>
-              <Product3DViewer url={modelUrl} className="h-full w-full" />
-            </div>
-          ) : img && (
+          {img && (
             <motion.img
               src={img}
               alt={strain.name}

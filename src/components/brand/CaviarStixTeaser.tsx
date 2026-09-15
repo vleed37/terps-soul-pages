@@ -15,7 +15,12 @@ const CAVIAR_IMAGES: { src: string; alt: string }[] = [
   { src: caviarSativa.url, alt: "Terps Caviar Stick Sativa" },
 ];
 
-export function CaviarStixTeaser() {
+/**
+ * Caviar Stick section. When live Caviar strains are passed in, each one renders
+ * as a real product card with its slowly rotating 3D view; otherwise the section
+ * falls back to approved photography.
+ */
+export function CaviarStixTeaser({ strains = [] }: { strains?: Strain[] }) {
   return (
     <section className="tone-dark relative overflow-hidden px-6 py-32 md:py-40">
       {/* sage glow */}

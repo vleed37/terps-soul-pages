@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, getStrainProductImage } from "@/lib/strain-assets";
+import { getStrainImage, getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";

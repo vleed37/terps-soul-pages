@@ -55,17 +55,24 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
               </span>
             )}
           </div>
-          {img && (
-            <motion.img
-              src={img}
-              alt={strain.name}
-              loading="lazy"
-              className="absolute left-1/2 top-1/2 max-h-[82%] w-auto -translate-x-1/2 -translate-y-1/2 select-none transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: soldOut ? 0.5 : 1 }}
-              transition={{ duration: 0.7 }}
-              draggable={false}
+          {model ? (
+            <Product3DViewer
+              url={model}
+              className={`absolute inset-0 h-full w-full ${soldOut ? "opacity-50" : ""}`}
             />
+          ) : (
+            img && (
+              <motion.img
+                src={img}
+                alt={strain.name}
+                loading="lazy"
+                className="absolute left-1/2 top-1/2 max-h-[82%] w-auto -translate-x-1/2 -translate-y-1/2 select-none transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: soldOut ? 0.5 : 1 }}
+                transition={{ duration: 0.7 }}
+                draggable={false}
+              />
+            )
           )}
         </div>
 

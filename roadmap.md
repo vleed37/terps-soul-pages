@@ -36,3 +36,14 @@ Fixes made during the pass:
 - Account deletion now detaches orders and preserves buyer details before removing the auth user.
 - Catalog copy no longer says "excluding VAT" while VAT is disabled; wholesale step copy no longer mentions approval waits.
 Still blocked by external input: BobPay credentials (live handoff), Resend API key + sending domain (delivery), real stockist data, VAT confirmation, wholesale delivery fee confirmation (R250 configured, pending owner sign-off), courier info, legal copy approval.
+
+## Terpene page + product page redesign, reviews, joints-sold counter (2026-09-15)
+- Terpene library: "Understanding terpenes." with neutral Aroma/Flavour/Composition cards, original generated ingredient art (8 terpenes), real filtered strain links. No health/potency claims.
+- Product page order: breadcrumbs → gallery → name → summary → rating → buy → details → reviews → stockist.
+- Verified-buyer reviews: moderated (pending by default), purchase verification, one per buyer per product, HTML stripped, rate limited, reports private, approved-only aggregates. Legal clauses added to privacy/terms.
+- "Terps joints sold" counter: paid retail + wholesale units only, baseline 0, replay-safe, hidden at zero.
+- 3D model viewers removed from product cards (static imagery) — GLTF texture warnings gone; console clean at 390/768/1440.
+- Verified: typecheck clean, build OK, all key routes 200 with no overflow, add-to-cart works, notify-me on out-of-stock captures email (fixture deleted, stock restored), wholesale pricing tables still return 401 to anonymous callers.
+
+### Open (needs user)
+- Security-linter warnings on the intentionally public aggregate SECURITY DEFINER functions still need a final security review before launch.

@@ -36,14 +36,11 @@ export function StrainCard({ strain }: { strain: Strain }) {
               </span>
             </div>
           )}
-          {modelUrl ? (
-            <div className={`absolute inset-0 ${soldOut ? "opacity-50" : "opacity-100"}`}>
-              <Product3DViewer url={modelUrl} className="h-full w-full" />
-            </div>
-          ) : img && (
+          {img && (
             <motion.img
               src={img}
               alt={strain.name}
+              loading="lazy"
               className="absolute left-1/2 top-1/2 max-h-[82%] w-auto -translate-x-1/2 -translate-y-1/2 select-none transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               initial={{ opacity: 0 }}
               animate={{ opacity: soldOut ? 0.5 : 1 }}

@@ -45,11 +45,8 @@ function Home() {
   const { data: strains } = useSuspenseQuery({ queryKey: ["strains"], queryFn: () => listStrains() });
   const list = (strains ?? []) as unknown as Strain[];
   // listStrains() already filters is_active and orders by display_order.
-  const teaserTiles = list
-    .filter((s) => s.product_line === "pre_roll")
-    .map((s) => ({ strain: s, image: getStrainProductImage(s.slug) }))
-    .filter((t): t is { strain: Strain; image: string } => Boolean(t.image))
-    .slice(0, 3);
+  const preRolls = list.filter((s) => s.product_line === "pre_roll");
+  const caviar = list.filter((s) => s.product_line === "caviar_stix");
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });

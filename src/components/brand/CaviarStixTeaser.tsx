@@ -2,6 +2,8 @@ import { ScrollReveal } from "./ScrollReveal";
 import { MetaLabel } from "./MetaLabel";
 import { Hairline } from "./Hairline";
 import { GoldButton } from "./GoldButton";
+import { CaviarStixCard } from "./CaviarStixCard";
+import type { Strain } from "@/lib/types";
 import caviarIndica from "@/assets/shoot/divine-115.jpg.asset.json";
 import caviarHybrid from "@/assets/shoot/divine-116.jpg.asset.json";
 import caviarSativa from "@/assets/shoot/divine-117.jpg.asset.json";

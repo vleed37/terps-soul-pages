@@ -2,6 +2,8 @@ import { ScrollReveal } from "./ScrollReveal";
 import { MetaLabel } from "./MetaLabel";
 import { Hairline } from "./Hairline";
 import { GoldButton } from "./GoldButton";
+import { CaviarStixCard } from "./CaviarStixCard";
+import type { Strain } from "@/lib/types";
 import caviarIndica from "@/assets/shoot/divine-115.jpg.asset.json";
 import caviarHybrid from "@/assets/shoot/divine-116.jpg.asset.json";
 import caviarSativa from "@/assets/shoot/divine-117.jpg.asset.json";
@@ -13,7 +15,12 @@ const CAVIAR_IMAGES: { src: string; alt: string }[] = [
   { src: caviarSativa.url, alt: "Terps Caviar Stick Sativa" },
 ];
 
-export function CaviarStixTeaser() {
+/**
+ * Caviar Stick section. When live Caviar strains are passed in, each one renders
+ * as a real product card with its slowly rotating 3D view; otherwise the section
+ * falls back to approved photography.
+ */
+export function CaviarStixTeaser({ strains = [] }: { strains?: Strain[] }) {
   return (
     <section className="tone-dark relative overflow-hidden px-6 py-32 md:py-40">
       {/* sage glow */}
@@ -38,26 +45,38 @@ export function CaviarStixTeaser() {
             Taking our infused pre-rolls to the next level. Coated with live rosin and sprinkled with
             a generous amount of hash.
           </p>
-          {CAVIAR_IMAGES.length > 0 && (
+          {strains.length > 0 ? (
             <div
-              className={`mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 ${
-                CAVIAR_IMAGES.length > 2 ? "md:grid-cols-3" : ""
+              className={`mt-14 grid grid-cols-1 gap-6 text-left sm:grid-cols-2 ${
+                strains.length > 2 ? "lg:grid-cols-3" : ""
               }`}
             >
-              {CAVIAR_IMAGES.slice(0, 3).map((img) => (
-                <div
-                  key={img.src}
-                  className="aspect-[4/5] overflow-hidden rounded-lg border border-[color:var(--border-on-dark)] bg-white/[0.03]"
-                >
-                  <img
-                    src={img.src}
-                    alt={img.alt}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
+              {strains.map((s) => (
+                <CaviarStixCard key={s.id} strain={s} />
               ))}
             </div>
+          ) : (
+            CAVIAR_IMAGES.length > 0 && (
+              <div
+                className={`mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 ${
+                  CAVIAR_IMAGES.length > 2 ? "md:grid-cols-3" : ""
+                }`}
+              >
+                {CAVIAR_IMAGES.slice(0, 3).map((img) => (
+                  <div
+                    key={img.src}
+                    className="aspect-[4/5] overflow-hidden rounded-lg border border-[color:var(--border-on-dark)] bg-white/[0.03]"
+                  >
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )
           )}
           <div className="mt-12 flex justify-center">
             <a href="/shop">

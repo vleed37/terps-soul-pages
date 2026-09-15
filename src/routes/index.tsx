@@ -16,7 +16,7 @@ import { INSTAGRAM_HANDLE, INSTAGRAM_URL, SALES_EMAIL } from "@/lib/brand";
 import heroImage from "@/assets/hero-mindspark.jpg";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
 import stockistImage from "@/assets/stockist-display.jpg";
-import { getStrainProductImage } from "@/lib/strain-assets";
+import { StrainCard } from "@/components/brand/StrainCard";
 import type { Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
 
@@ -45,11 +45,8 @@ function Home() {
   const { data: strains } = useSuspenseQuery({ queryKey: ["strains"], queryFn: () => listStrains() });
   const list = (strains ?? []) as unknown as Strain[];
   // listStrains() already filters is_active and orders by display_order.
-  const teaserTiles = list
-    .filter((s) => s.product_line === "pre_roll")
-    .map((s) => ({ strain: s, image: getStrainProductImage(s.slug) }))
-    .filter((t): t is { strain: Strain; image: string } => Boolean(t.image))
-    .slice(0, 3);
+  const preRolls = list.filter((s) => s.product_line === "pre_roll");
+  const caviar = list.filter((s) => s.product_line === "caviar_stix");
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -100,18 +97,11 @@ function Home() {
               before it's sealed in its tube.
             </p>
           </ScrollReveal>
-          {teaserTiles.length > 0 && (
-            <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-              {teaserTiles.map(({ strain, image }, i) => (
+          {preRolls.length > 0 && (
+            <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {preRolls.map((strain, i) => (
                 <ScrollReveal key={strain.id} delay={i * 0.08}>
-                  <div className="aspect-[4/5] overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]">
-                    <img
-                      src={image}
-                      alt={strain.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
+                  <StrainCard strain={strain} />
                 </ScrollReveal>
               ))}
             </div>
@@ -126,7 +116,7 @@ function Home() {
       </section>
 
       {/* 3. CAVIAR STICKS */}
-      <CaviarStixTeaser />
+      <CaviarStixTeaser strains={caviar} />
 
       {/* 4. SOCIALS */}
       <section className="px-6 py-32 md:py-40">

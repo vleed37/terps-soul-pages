@@ -16,7 +16,7 @@ import { INSTAGRAM_HANDLE, INSTAGRAM_URL, SALES_EMAIL } from "@/lib/brand";
 import heroImage from "@/assets/hero-mindspark.jpg";
 import lifestyle3 from "@/assets/lifestyle-3.webp";
 import stockistImage from "@/assets/stockist-display.jpg";
-import { getStrainProductImage } from "@/lib/strain-assets";
+import { StrainCard } from "@/components/brand/StrainCard";
 import type { Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
 

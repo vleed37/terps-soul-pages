@@ -55,11 +55,7 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
               </span>
             )}
           </div>
-          {modelUrl ? (
-            <div className={`absolute inset-0 ${soldOut ? "opacity-50" : "opacity-100"}`}>
-              <Product3DViewer url={modelUrl} className="h-full w-full" />
-            </div>
-          ) : img && (
+          {img && (
             <motion.img
               src={img}
               alt={strain.name}

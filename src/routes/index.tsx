@@ -116,7 +116,7 @@ function Home() {
       </section>
 
       {/* 3. CAVIAR STICKS */}
-      <CaviarStixTeaser />
+      <CaviarStixTeaser strains={caviar} />
 
       {/* 4. SOCIALS */}
       <section className="px-6 py-32 md:py-40">

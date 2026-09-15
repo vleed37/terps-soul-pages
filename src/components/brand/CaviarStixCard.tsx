@@ -23,6 +23,7 @@ function CornerOrnament({ className = "" }: { className?: string }) {
 
 export function CaviarStixCard({ strain }: { strain: Strain }) {
   const img = getStrainProductImage(strain.slug);
+  const model = getStrain3DModel(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
   const isLimited = !!strain.is_limited && !soldOut;
 

@@ -100,18 +100,11 @@ function Home() {
               before it's sealed in its tube.
             </p>
           </ScrollReveal>
-          {teaserTiles.length > 0 && (
-            <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-              {teaserTiles.map(({ strain, image }, i) => (
+          {preRolls.length > 0 && (
+            <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {preRolls.map((strain, i) => (
                 <ScrollReveal key={strain.id} delay={i * 0.08}>
-                  <div className="aspect-[4/5] overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]">
-                    <img
-                      src={image}
-                      alt={strain.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
+                  <StrainCard strain={strain} />
                 </ScrollReveal>
               ))}
             </div>

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, getStrainProductImage } from "@/lib/strain-assets";
+import { getStrainImage, getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -168,7 +168,12 @@ function StrainDetail() {
 
         <div className="mt-8 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
           {/* 2 — Gallery */}
-          <ProductGallery images={gallery} name={s.name} lineName={meta.name} />
+          <ProductGallery
+            images={gallery}
+            name={s.name}
+            lineName={meta.name}
+            modelUrl={getStrain3DModel(s.slug)}
+          />
 
           <div>
             {/* 3 — Name and category */}

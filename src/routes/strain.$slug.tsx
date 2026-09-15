@@ -168,7 +168,12 @@ function StrainDetail() {
 
         <div className="mt-8 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
           {/* 2 — Gallery */}
-          <ProductGallery images={gallery} name={s.name} lineName={meta.name} />
+          <ProductGallery
+            images={gallery}
+            name={s.name}
+            lineName={meta.name}
+            modelUrl={getStrain3DModel(s.slug)}
+          />
 
           <div>
             {/* 3 — Name and category */}

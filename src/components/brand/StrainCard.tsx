@@ -11,6 +11,7 @@ export function StrainCard({ strain }: { strain: Strain }) {
     return <CaviarStixCard strain={strain} />;
   }
   const img = getStrainProductImage(strain.slug);
+  const model = getStrain3DModel(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
   const isLimited = !!strain.is_limited && !soldOut;
 

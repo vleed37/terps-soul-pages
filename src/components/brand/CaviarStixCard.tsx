@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
-import { Product3DViewer } from "./Product3DViewer";
+import { getStrainProductImage } from "@/lib/strain-assets";
 import { StrainTypePill } from "./StrainTypePill";
 import type { Strain } from "@/lib/types";
 

@@ -10,6 +10,8 @@ import { QuantityStepper } from "@/components/brand/QuantityStepper";
 import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
 import { FindClosestStockistModal } from "@/components/brand/FindClosestStockistModal";
 import { ProductGallery } from "@/components/brand/ProductGallery";
+import { ReviewsSection } from "@/components/brand/ReviewsSection";
+import { InlineRating } from "@/components/brand/InlineRating";
 import { MapPin } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
@@ -138,79 +140,70 @@ function StrainDetail() {
     );
   };
 
+  const terpeneNames = (s.terpene_breakdown ?? []).map((t) => t.name).filter(Boolean);
+
   return (
     <div className="px-6 py-12 md:px-12 md:py-16">
       <div className="mx-auto max-w-[1200px]">
-        <Link to={meta.path} className="ghost-link">
-          ← {meta.plural}
-        </Link>
+        {/* 1 — Breadcrumbs */}
+        <nav aria-label="Breadcrumb" className="text-xs text-[color:var(--text-tertiary)]">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link to="/" className="hover:text-[color:var(--text-primary)]">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link to={meta.path} className="hover:text-[color:var(--text-primary)]">
+                {meta.plural}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="text-[color:var(--text-primary)]">
+              {s.name}
+            </li>
+          </ol>
+        </nav>
 
         <div className="mt-8 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
-          {/* 1 — Photography */}
+          {/* 2 — Gallery */}
           <ProductGallery images={gallery} name={s.name} lineName={meta.name} />
 
           <div>
-            {/* 2 — Name */}
+            {/* 3 — Name and category */}
             <MetaLabel gold>{meta.name}</MetaLabel>
             <h1 className="mt-3 font-display text-4xl leading-[1.05] md:text-6xl">{s.name}</h1>
 
-            {/* 3 — Concise summary */}
-            {s.description && (
-              <p className="mt-5 font-body text-base leading-[1.8] text-[color:var(--text-secondary)]">
-                {s.description}
+            {/* 4 — Short summary */}
+            {s.tagline && (
+              <p className="mt-4 font-display italic text-lg text-[color:var(--text-secondary)]">
+                {s.tagline}
               </p>
             )}
 
-            {/* 4 — Effects and flavours, compact */}
-            {(s.effect_category || (s.flavor_tags?.length ?? 0) > 0) && (
-              <div className="mt-6 flex flex-wrap items-center gap-2">
-                {s.effect_category && <EffectChip>{s.effect_category}</EffectChip>}
-                {s.flavor_tags?.map((f, i) => (
-                  <FlavorChip key={f} dominant={i === 0}>
-                    {f}
-                  </FlavorChip>
-                ))}
-              </div>
-            )}
-
-            {/* 7 — Caviar infusion components */}
-            {isCaviar && (s.infusion_components?.length ?? 0) > 0 && (
-              <div className="mt-6">
-                <p className="meta-xs text-[color:var(--text-tertiary)]">Infusion components</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {s.infusion_components!.map((c) => (
-                    <span
-                      key={c}
-                      className="inline-block rounded-full border border-[color:var(--accent-gold)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-[color:var(--accent-gold)]"
-                    >
-                      {c}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* 5 — Rating, only once approved reviews exist */}
+            <InlineRating strainId={s.id} />
 
             <Hairline className="my-8" />
 
-            {/* 5 — Price, quantity, buy */}
+            {/* 6 — Price, stock state, quantity, buy */}
             <div className="flex flex-wrap items-baseline gap-4">
               <p className="font-body text-3xl font-bold">R{Number(s.price_zar).toFixed(0)}</p>
               <span className="meta-xs text-[color:var(--text-tertiary)]">
                 {s.weight_grams ?? 0.75}g
+              </span>
+              <span className="meta-xs text-[color:var(--text-secondary)]">
+                {soldOut ? "Out of stock" : "In stock"}
               </span>
               {s.is_limited && !soldOut && <span className="meta-xs text-gold">Limited release</span>}
             </div>
             <p className="mt-2 text-sm text-[color:var(--text-secondary)]">{DELIVERY_COPY}</p>
 
             {soldOut ? (
-              <>
-                <p className="meta-xs mt-6 text-[color:var(--text-secondary)]">
-                  Currently out of stock
-                </p>
-                <GoldButton onClick={() => setNotifyOpen(true)} className="mt-4 w-full">
-                  Notify me when back
-                </GoldButton>
-              </>
+              <GoldButton onClick={() => setNotifyOpen(true)} className="mt-6 w-full">
+                Notify me when back
+              </GoldButton>
             ) : (
               <>
                 <div className="mt-6">
@@ -221,16 +214,6 @@ function StrainDetail() {
                 </GoldButton>
               </>
             )}
-
-            {/* 6 — Find this product near you */}
-            <button
-              type="button"
-              onClick={() => setStockistOpen(true)}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-[4px] border border-[color:var(--border-strong)] bg-transparent px-8 py-4 font-body text-[0.8125rem] font-semibold uppercase tracking-[0.15em] text-[color:var(--text-primary)] transition-all duration-300 hover:border-[color:var(--accent-sage,#7d9b76)] hover:text-[color:var(--accent-sage,#7d9b76)]"
-            >
-              <MapPin className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-              Find this product near you
-            </button>
 
             <NotifyMeModal
               open={notifyOpen}
@@ -244,21 +227,106 @@ function StrainDetail() {
               strainId={s.id}
               strainName={s.name}
             />
-
-            {/* 8 — Return to collection / library */}
-            <Hairline className="my-8" />
-            <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm">
-              <Link to={meta.path} className="ghost-link">
-                All {meta.plural}
-              </Link>
-              <Link to="/strains" className="ghost-link">
-                Strain Library
-              </Link>
-              <Link to="/shop" className="ghost-link">
-                Our Collection
-              </Link>
-            </div>
           </div>
+        </div>
+
+        {/* 7 — About this product */}
+        {s.description && (
+          <section className="mt-20 max-w-3xl">
+            <MetaLabel gold>✦ About this product</MetaLabel>
+            <p className="mt-4 font-body text-base leading-[1.9] text-[color:var(--text-secondary)]">
+              {s.description}
+            </p>
+          </section>
+        )}
+
+        {/* 8 — Flavour words, effect classification, terpene names */}
+        {(s.effect_category || (s.flavor_tags?.length ?? 0) > 0 || terpeneNames.length > 0) && (
+          <section className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+            {(s.flavor_tags?.length ?? 0) > 0 && (
+              <div>
+                <MetaLabel>Flavour</MetaLabel>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {s.flavor_tags!.map((f, i) => (
+                    <FlavorChip key={f} dominant={i === 0}>
+                      {f}
+                    </FlavorChip>
+                  ))}
+                </div>
+              </div>
+            )}
+            {s.effect_category && (
+              <div>
+                <MetaLabel>Classification</MetaLabel>
+                <div className="mt-3">
+                  <EffectChip>{s.effect_category}</EffectChip>
+                </div>
+                <p className="mt-3 text-xs leading-[1.7] text-[color:var(--text-tertiary)]">
+                  A flavour grouping, not a promise of any physical effect.
+                </p>
+              </div>
+            )}
+            {terpeneNames.length > 0 && (
+              <div>
+                <MetaLabel>Terpenes</MetaLabel>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {terpeneNames.map((t) => (
+                    <span
+                      key={t}
+                      className="inline-block rounded-full border border-[color:var(--border-strong)] px-3 py-1 text-xs"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <Link to="/strains" className="ghost-link mt-3 inline-block text-xs">
+                  Understanding terpenes
+                </Link>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* 9 — Caviar infusion components */}
+        {isCaviar && (s.infusion_components?.length ?? 0) > 0 && (
+          <section className="mt-12">
+            <MetaLabel>Infusion components</MetaLabel>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {s.infusion_components!.map((c) => (
+                <span
+                  key={c}
+                  className="inline-block rounded-full border border-[color:var(--accent-gold)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-[color:var(--accent-gold)]"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 10 — Customer reviews */}
+        <ReviewsSection strainId={s.id} strainName={s.name} />
+
+        {/* 11 — Stockist finder and collection links */}
+        <Hairline className="my-12" />
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4 text-sm">
+          <button
+            type="button"
+            onClick={() => setStockistOpen(true)}
+            className="inline-flex items-center gap-2 rounded-[4px] border border-[color:var(--border-strong)] px-6 py-3 font-body text-[0.75rem] font-semibold uppercase tracking-[0.15em] transition-colors hover:border-[color:var(--accent-sage,#7d9b76)] hover:text-[color:var(--accent-sage,#7d9b76)]"
+          >
+            <MapPin className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+            Find this product near you
+          </button>
+          <Link to={meta.path} className="ghost-link">
+            All {meta.plural}
+          </Link>
+          <Link to="/strains" className="ghost-link">
+            Strain Library
+          </Link>
+          <Link to="/shop" className="ghost-link">
+            Our Collection
+          </Link>
         </div>
       </div>
     </div>

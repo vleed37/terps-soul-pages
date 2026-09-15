@@ -9,6 +9,9 @@ import {
   Leaf,
   Sparkles,
   Wheat,
+  Wind,
+  Layers,
+  ArrowRight,
 } from "lucide-react";
 import { listTerpenes } from "@/lib/terpenes.functions";
 import { listStrains } from "@/lib/strains.functions";
@@ -16,6 +19,8 @@ import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
 import { getStrainProductImage } from "@/lib/strain-assets";
+import { getTerpeneArt, FLAVOUR_TILES } from "@/lib/terpene-assets";
+import { matchesFlavor } from "@/lib/shop-filters";
 import {
   Accordion,
   AccordionContent,
@@ -112,69 +117,174 @@ function StrainsPage() {
   const bySlug = new Map(strains.map((s) => [s.slug, s] as const));
   const byEffect = (e: string) => strains.filter((s) => s.effect_category === e);
 
+  const flavourTiles = FLAVOUR_TILES.map((tile) => ({
+    ...tile,
+    matches: strains.filter((s) => matchesFlavor(s.flavor_tags, tile.key)),
+  })).filter((tile) => tile.matches.length > 0);
+
   return (
     <div className="px-6 py-20 md:px-12 md:py-28">
       {/* HERO */}
       <ScrollReveal className="mx-auto max-w-3xl text-center">
         <MetaLabel gold>✦ The Strain Library</MetaLabel>
         <h1 className="mt-5 font-display text-5xl leading-[1.05] md:text-[5.5rem]">
-          The <em className="text-[color:var(--accent-gold)]">language</em> of flavour.
+          Understanding <em className="text-[color:var(--accent-gold)]">terpenes</em>.
         </h1>
         <p className="mx-auto mt-6 max-w-[700px] text-base text-[color:var(--text-secondary)] md:text-lg">
-          Every cannabis flavour — every nuance of every high — comes down to terpenes. This is your guide.
+          Terpenes are the aromatic compounds found in cannabis and in everyday plants — citrus
+          peel, pine needles, lavender, peppercorns. They shape how a strain smells and tastes.
         </p>
       </ScrollReveal>
+
+      {/* WHAT THEY DO — three neutral cards */}
+      <section className="mx-auto mt-16 max-w-[1000px]">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {[
+            {
+              icon: Wind,
+              title: "Aroma",
+              body: "Terpenes contribute to a strain's scent — what you notice the moment the tube opens.",
+            },
+            {
+              icon: Citrus,
+              title: "Flavour",
+              body: "They contribute to the flavour profile, from bright citrus through to warm spice.",
+            },
+            {
+              icon: Layers,
+              title: "Composition",
+              body: "Different strains contain different terpene combinations, which is why no two taste alike.",
+            },
+          ].map((card, i) => (
+            <ScrollReveal key={card.title} delay={i * 0.06}>
+              <div className="h-full rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-8">
+                <card.icon
+                  size={26}
+                  strokeWidth={1.5}
+                  className="text-[color:var(--accent-gold)]"
+                  aria-hidden="true"
+                />
+                <h2 className="mt-5 font-display text-2xl">{card.title}</h2>
+                <p className="mt-3 text-sm leading-[1.8] text-[color:var(--text-secondary)]">
+                  {card.body}
+                </p>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
 
       {/* SECTION 1 — TERPENE INDEX */}
       <section className="mx-auto mt-28 max-w-[1400px]">
         <ScrollReveal>
           <MetaLabel gold>✦ Terpene Index</MetaLabel>
-          <h2 className="mt-4 font-display text-4xl md:text-5xl">Eight terpenes. Endless combinations.</h2>
+          <h2 className="mt-4 font-display text-4xl md:text-5xl">
+            Eight terpenes. Endless combinations.
+          </h2>
         </ScrollReveal>
-        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {terpenes.map((t, i) => {
             const Icon = TERPENE_ICON[t.slug] ?? Sparkles;
+            const art = getTerpeneArt(t.slug);
             const found = (t.found_in_strain_slugs ?? [])
               .map((slug) => bySlug.get(slug))
               .filter(Boolean) as Strain[];
             return (
               <ScrollReveal key={t.id} delay={Math.min(i, 5) * 0.06}>
-                <article className="h-full rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-10">
-                  <Icon size={32} strokeWidth={1.5} className="text-[color:var(--accent-gold)]" />
-                  <Hairline className="mt-6 w-12" />
-                  <h3 className="mt-6 font-display text-3xl">{t.name}</h3>
-                  {t.tastes_like && (
-                    <div className="mt-3">
-                      <MetaLabel gold>Tastes like</MetaLabel>
-                      <p className="mt-1 font-display italic text-[color:var(--text-primary)]">{t.tastes_like}</p>
-                    </div>
-                  )}
-                  <p className="mt-5 text-sm leading-[1.8] text-[color:var(--text-secondary)]">
-                    {t.long_description ?? t.short_descriptor}
-                  </p>
-                  {found.length > 0 && (
-                    <div className="mt-6">
-                      <MetaLabel>Found in</MetaLabel>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {found.map((s) => (
-                          <Link
-                            key={s.id}
-                            to="/strain/$slug"
-                            params={{ slug: s.slug }}
-                            className="inline-block rounded-full border border-[color:var(--border-strong)] px-3 py-1 text-xs hover:border-[color:var(--accent-gold)] hover:text-[color:var(--accent-gold)] transition-colors"
-                          >
-                            {s.name}
-                          </Link>
-                        ))}
+                <article className="flex h-full flex-col overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-[color:var(--bg-elevated)]">
+                    {art ? (
+                      <img
+                        src={art.src}
+                        alt={art.alt}
+                        loading="lazy"
+                        width={816}
+                        height={816}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="grid h-full w-full place-items-center">
+                        <Icon
+                          size={32}
+                          strokeWidth={1.5}
+                          className="text-[color:var(--accent-gold)]"
+                          aria-hidden="true"
+                        />
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col p-7">
+                    <h3 className="font-display text-2xl">{t.name}</h3>
+                    {t.tastes_like && (
+                      <p className="mt-2 text-xs uppercase tracking-[0.14em] text-[color:var(--text-tertiary)]">
+                        {t.tastes_like}
+                      </p>
+                    )}
+                    <Hairline className="mt-4 w-10" />
+                    <p className="mt-4 text-sm leading-[1.75] text-[color:var(--text-secondary)]">
+                      {t.short_descriptor ?? t.long_description}
+                    </p>
+                    {found.length > 0 && (
+                      <div className="mt-5">
+                        <MetaLabel>In these strains</MetaLabel>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {found.map((s) => (
+                            <Link
+                              key={s.id}
+                              to="/strain/$slug"
+                              params={{ slug: s.slug }}
+                              className="inline-block rounded-full border border-[color:var(--border-strong)] px-3 py-1 text-xs transition-colors hover:border-[color:var(--accent-gold)] hover:text-[color:var(--accent-gold)]"
+                            >
+                              {s.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </article>
               </ScrollReveal>
             );
           })}
         </div>
       </section>
+
+      {/* SECTION 1a — TERPENES BY FLAVOUR */}
+      {flavourTiles.length > 0 && (
+        <section className="mx-auto mt-32 max-w-[1200px]">
+          <ScrollReveal>
+            <MetaLabel gold>✦ Terpenes by flavour</MetaLabel>
+            <h2 className="mt-4 font-display text-4xl md:text-5xl">Start with a flavour.</h2>
+            <p className="mt-4 max-w-[640px] text-sm leading-[1.8] text-[color:var(--text-secondary)]">
+              Each flavour family links to the Terps strains carrying those notes.
+            </p>
+          </ScrollReveal>
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {flavourTiles.map((tile, i) => (
+              <ScrollReveal key={tile.key} delay={Math.min(i, 5) * 0.05}>
+                <Link
+                  to="/shop/infused-pre-rolls"
+                  search={{ flavor: [tile.key] }}
+                  className="group flex h-full items-center justify-between gap-3 rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-5 transition-all duration-400 hover:-translate-y-0.5 hover:border-[color:var(--accent-gold)]"
+                >
+                  <span>
+                    <span className="block meta-xs">{tile.label}</span>
+                    <span className="mt-1 block text-xs text-[color:var(--text-tertiary)]">
+                      {tile.matches.length} strain{tile.matches.length === 1 ? "" : "s"}
+                    </span>
+                  </span>
+                  <ArrowRight
+                    size={16}
+                    strokeWidth={1.5}
+                    className="shrink-0 text-[color:var(--accent-gold)]"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </ScrollReveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* SECTION 1b — BY STRAIN TYPE */}
       <section className="mx-auto mt-32 max-w-[1200px]">

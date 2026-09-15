@@ -4,6 +4,7 @@ import { Menu, User, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { useCart, cartSelectors } from "@/lib/store/cart";
 import { useWholesaleAccount } from "@/hooks/useWholesaleAccount";
+import { JointsSoldCounter } from "@/components/brand/JointsSoldCounter";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -72,7 +73,7 @@ export function Header() {
             </Link>
             </nav>
             <div className="flex items-center gap-5 border-l border-[color:var(--border-subtle)] pl-8">
-
+            <JointsSoldCounter />
             <Link to="/account" aria-label="Account" className="text-[color:var(--text-primary)] hover:text-[color:var(--accent-gold)]">
               <User strokeWidth={1.5} className="h-5 w-5" />
             </Link>
@@ -98,7 +99,8 @@ export function Header() {
             <Logo height={scrolled ? 26 : 32} />
 
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <JointsSoldCounter className="max-w-[42vw] truncate" />
             <button
               aria-label="Cart"
               onClick={openCart}

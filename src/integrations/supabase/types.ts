@@ -73,6 +73,24 @@ export type Database = {
           },
         ]
       }
+      app_config: {
+        Row: {
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
       app_secrets: {
         Row: {
           key: string
@@ -333,6 +351,66 @@ export type Database = {
           },
         ]
       }
+      product_reviews: {
+        Row: {
+          body: string
+          created_at: string
+          customer_id: string
+          id: string
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_note: string | null
+          rating: number
+          status: Database["public"]["Enums"]["review_status"]
+          strain_id: string
+          submitted_at: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          customer_id: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
+          rating: number
+          status?: Database["public"]["Enums"]["review_status"]
+          strain_id: string
+          submitted_at?: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          customer_id?: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
+          rating?: number
+          status?: Database["public"]["Enums"]["review_status"]
+          strain_id?: string
+          submitted_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_reviews_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: false
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restock_notifications: {
         Row: {
           created_at: string | null
@@ -361,6 +439,45 @@ export type Database = {
             columns: ["strain_id"]
             isOneToOne: false
             referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      review_reports: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          reporter_id: string | null
+          review_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason: string
+          reporter_id?: string | null
+          review_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          reporter_id?: string | null
+          review_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_reports_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "review_reports_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "product_reviews"
             referencedColumns: ["id"]
           },
         ]
@@ -1057,6 +1174,10 @@ export type Database = {
       }
       generate_order_number: { Args: never; Returns: string }
       generate_wholesale_order_number: { Args: never; Returns: string }
+      has_purchased_strain: {
+        Args: { _customer_id: string; _strain_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1065,6 +1186,7 @@ export type Database = {
         Returns: boolean
       }
       is_approved_stockist: { Args: { _user_id: string }; Returns: boolean }
+      joints_sold_total: { Args: never; Returns: number }
       process_paid_wholesale_order: {
         Args: { _order_id: string; _transaction_id: string }
         Returns: boolean
@@ -1073,6 +1195,7 @@ export type Database = {
         Args: { _boxes: number; _strain_id: string }
         Returns: number
       }
+      strain_rating_summary: { Args: { _strain_id: string }; Returns: Json }
       wholesale_map_listing_eligible: {
         Args: { _account_id: string }
         Returns: boolean
@@ -1080,6 +1203,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "staff"
+      review_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1208,6 +1332,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "staff"],
+      review_status: ["pending", "approved", "rejected"],
     },
   },
 } as const

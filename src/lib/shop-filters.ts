@@ -10,10 +10,29 @@ export const FLAVORS = [
   "tropical",
   "pine",
   "floral",
+  "spicy",
 ] as const;
 export const SORT = ["featured", "price-asc", "price-desc", "name"] as const;
 export const STRAIN_TYPES = ["sativa", "hybrid", "indica"] as const;
 export const AVAILABILITY = ["in", "limited", "soldout"] as const;
+
+/** Flavour families and the strain flavour tags that belong to each. */
+export const FLAVOR_SYNONYMS: Record<(typeof FLAVORS)[number], string[]> = {
+  citrus: ["citrus", "lemon", "orange", "lime", "grapefruit"],
+  berry: ["berry", "blueberry", "grape", "cherry"],
+  tropical: ["tropical", "mango", "pineapple", "guava"],
+  pine: ["pine", "wood", "forest", "cedar"],
+  floral: ["floral", "lavender", "blossom", "rose"],
+  earthy: ["earth", "musk", "hops", "herbal"],
+  spicy: ["spice", "spicy", "pepper", "clove"],
+  sweet: ["sweet", "vanilla", "cream", "candy", "honey"],
+};
+
+/** True when a strain's flavour tags belong to the given flavour family. */
+export function matchesFlavor(tags: string[] | null | undefined, family: (typeof FLAVORS)[number]) {
+  const lower = (tags ?? []).map((t) => t.toLowerCase());
+  return FLAVOR_SYNONYMS[family].some((needle) => lower.some((t) => t.includes(needle)));
+}
 
 /** Shared filter/sort search params for both category collection pages. */
 export const shopSearchSchema = z.object({
@@ -45,10 +64,7 @@ export function applyShopFilters(strains: Strain[], search: ShopSearch): Strain[
   const list = strains.filter((s) => {
     if (strainType.length && (!s.strain_type || !strainType.includes(s.strain_type))) return false;
     if (effect.length && (!s.effect_category || !effect.includes(s.effect_category))) return false;
-    if (flavor.length) {
-      const tags = (s.flavor_tags ?? []).map((t) => t.toLowerCase());
-      if (!flavor.some((f) => tags.some((t) => t.includes(f)))) return false;
-    }
+    if (flavor.length && !flavor.some((f) => matchesFlavor(s.flavor_tags, f))) return false;
     if (avail.length) {
       const isSold = s.stock_quantity <= 0;
       const isLim = !!s.is_limited && !isSold;

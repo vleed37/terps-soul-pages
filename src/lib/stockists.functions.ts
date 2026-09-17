@@ -24,14 +24,20 @@ export const listStockists = createServerFn({ method: "GET" }).handler(async () 
   if (curated.error) throw new Error(curated.error.message);
 
   // Opted-in stockist accounts with complete public details.
+  // The account must also still be active: a suspended account loses its public
+  // listing immediately, and reactivation restores it.
   const optedIn = await supabaseAdmin
     .from("wholesale_accounts")
     .select(
       "id,map_listing_opt_in,public_store_name,public_address,public_city,public_province,public_phone,public_latitude,public_longitude",
     )
     .eq("map_listing_opt_in", true)
+    .eq("approval_status", "approved")
+    .is("suspended_at", null)
     .not("public_store_name", "is", null)
     .not("public_address", "is", null)
+    .not("public_city", "is", null)
+    .not("public_province", "is", null)
     .not("public_phone", "is", null);
   if (optedIn.error) throw new Error(optedIn.error.message);
 

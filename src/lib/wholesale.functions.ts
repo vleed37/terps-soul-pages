@@ -534,8 +534,17 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     subtotal = Number(subtotal.toFixed(2));
 
 
-    // Owner-configured wholesale delivery fee; falls back to the proposed rate.
-    const shipping = deliveryConfig(await loadSettings()).wholesaleFee;
+    // Owner-configured wholesale delivery fee. An unconfirmed rate is never
+    // charged: no trade order is created until delivery pricing is signed off.
+    const deliverySettings = deliveryConfig(await loadSettings());
+    if (!deliverySettings.confirmed) {
+      return {
+        ok: false as const,
+        error:
+          "Trade delivery pricing is being finalised, so we can't take payment yet. Please contact your Terps account manager to place this order.",
+      };
+    }
+    const shipping = deliverySettings.wholesaleFee;
     // VAT fails safe: vatOn() returns 0 until VAT registration is confirmed.
     const vat = vatOn(subtotal + shipping);
     const total = Number((subtotal + shipping + vat).toFixed(2));

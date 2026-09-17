@@ -96,7 +96,19 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
     }
 
     // Authoritative delivery fee: owner-configured settings, never the client.
-    const deliveryFee = retailFeeFor(subtotal, deliveryConfig(await loadSettings()));
+    const delivery = deliveryConfig(await loadSettings());
+
+    // A rate that has not been signed off must never be charged. Until the owner
+    // confirms the delivery model in Admin → Settings → Shipping, no order is
+    // created and no payment is started.
+    if (!delivery.confirmed) {
+      return {
+        ok: false as const,
+        error: `Online delivery pricing is being finalised, so we can't take payment for this order yet. Please contact ${SALES_EMAIL} and we'll complete it for you.`,
+      };
+    }
+
+    const deliveryFee = retailFeeFor(subtotal, delivery);
     const total = subtotal + deliveryFee;
 
     // 2) Generate order number

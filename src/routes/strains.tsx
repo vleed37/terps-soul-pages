@@ -28,7 +28,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { Strain, Terpene } from "@/lib/types";
-import { seoMeta } from "@/lib/seo";
+import { seoHead } from "@/lib/seo";
 import { GridSkeleton } from "@/components/layout/PageSkeletons";
 
 const terpenesQuery = queryOptions({
@@ -41,14 +41,13 @@ const strainsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/strains")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Strain Library · Terps",
       description:
         "The Terps strain library — terpenes, flavour families, strain types and effect classifications for every release.",
       path: "/strains",
     }),
-  }),
 
   loader: async ({ context }) => {
     await Promise.all([

@@ -6,17 +6,16 @@ import { GoldButton } from "@/components/brand/GoldButton";
 import story1 from "@/assets/shoot/divine-62.jpg.asset.json";
 import story2 from "@/assets/shoot/divine-48.jpg.asset.json";
 import story3 from "@/assets/shoot/divine-56.jpg.asset.json";
-import { seoMeta } from "@/lib/seo";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Our Story · Terps",
       description:
         "The people, the process, and the philosophy behind Terps. Flavour-first, bred in South Africa.",
       path: "/about",
     }),
-  }),
   component: AboutPage,
 });
 

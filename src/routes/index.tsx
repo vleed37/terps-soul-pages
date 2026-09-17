@@ -18,7 +18,7 @@ import lifestyle3 from "@/assets/lifestyle-3.webp";
 import stockistImage from "@/assets/stockist-display.jpg";
 import { StrainCard } from "@/components/brand/StrainCard";
 import type { Strain } from "@/lib/types";
-import { seoMeta } from "@/lib/seo";
+import { seoHead } from "@/lib/seo";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { imageUrl } from "@/lib/settings";
 
@@ -30,14 +30,13 @@ const HERO_FALLBACK = heroImage;
 
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Terps · Flavour-First Infused Pre-Rolls",
       description:
         "South African premium infused pre-rolls and Caviar Sticks, available online and at select stockists nationwide.",
       path: "/",
     }),
-  }),
   loader: ({ context }) =>
     context.queryClient.ensureQueryData({
       queryKey: ["strains"],

@@ -3,7 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { listStrains } from "@/lib/strains.functions";
 import { CategoryCollection } from "@/components/shop/CategoryCollection";
 import { GridSkeleton } from "@/components/layout/PageSkeletons";
-import { seoMeta } from "@/lib/seo";
+import { seoHead } from "@/lib/seo";
 import { shopSearchSchema, type ShopSearch } from "@/lib/shop-filters";
 import { PRODUCT_LINE_META } from "@/lib/product-lines";
 import type { Strain } from "@/lib/types";
@@ -14,13 +14,12 @@ const strainsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/shop/infused-pre-rolls")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "The Infused Pre-Roll · Terps",
       description: PRODUCT_LINE_META.pre_roll.description,
       path: "/shop/infused-pre-rolls",
     }),
-  }),
   validateSearch: shopSearchSchema,
   loader: ({ context }) => context.queryClient.ensureQueryData(strainsQuery),
   pendingComponent: () => <GridSkeleton count={6} />,

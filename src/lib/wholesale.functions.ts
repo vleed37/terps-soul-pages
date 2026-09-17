@@ -383,7 +383,7 @@ const CreateOrderSchema = z.object({
 });
 
 
-const SHIPPING_FLAT = WHOLESALE_DELIVERY_FEE;
+
 
 export const createWholesaleOrder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -534,7 +534,8 @@ export const createWholesaleOrder = createServerFn({ method: "POST" })
     subtotal = Number(subtotal.toFixed(2));
 
 
-    const shipping = SHIPPING_FLAT;
+    // Owner-configured wholesale delivery fee; falls back to the proposed rate.
+    const shipping = deliveryConfig(await loadSettings()).wholesaleFee;
     // VAT fails safe: vatOn() returns 0 until VAT registration is confirmed.
     const vat = vatOn(subtotal + shipping);
     const total = Number((subtotal + shipping + vat).toFixed(2));

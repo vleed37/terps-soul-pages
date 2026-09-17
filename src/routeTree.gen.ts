@@ -32,6 +32,7 @@ import { Route as LegalRefundsRouteImport } from './routes/legal.refunds'
 import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
 import { Route as LegalCannabisDisclaimerRouteImport } from './routes/legal.cannabis-disclaimer'
 import { Route as AdminTerpenesRouteImport } from './routes/admin.terpenes'
+import { Route as AdminStockistsRouteImport } from './routes/admin.stockists'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
 import { Route as AccountResetPasswordRouteImport } from './routes/account.reset-password'
@@ -168,6 +169,11 @@ const LegalCannabisDisclaimerRoute = LegalCannabisDisclaimerRouteImport.update({
 const AdminTerpenesRoute = AdminTerpenesRouteImport.update({
   id: '/terpenes',
   path: '/terpenes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStockistsRoute = AdminStockistsRouteImport.update({
+  id: '/stockists',
+  path: '/stockists',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
@@ -311,6 +317,7 @@ export interface FileRoutesByFullPath {
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/stockists': typeof AdminStockistsRoute
   '/admin/terpenes': typeof AdminTerpenesRoute
   '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
   '/legal/privacy': typeof LegalPrivacyRoute
@@ -357,6 +364,7 @@ export interface FileRoutesByTo {
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/stockists': typeof AdminStockistsRoute
   '/admin/terpenes': typeof AdminTerpenesRoute
   '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
   '/legal/privacy': typeof LegalPrivacyRoute
@@ -405,6 +413,7 @@ export interface FileRoutesById {
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/stockists': typeof AdminStockistsRoute
   '/admin/terpenes': typeof AdminTerpenesRoute
   '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
   '/legal/privacy': typeof LegalPrivacyRoute
@@ -454,6 +463,7 @@ export interface FileRouteTypes {
     | '/account/reset-password'
     | '/admin/reviews'
     | '/admin/settings'
+    | '/admin/stockists'
     | '/admin/terpenes'
     | '/legal/cannabis-disclaimer'
     | '/legal/privacy'
@@ -500,6 +510,7 @@ export interface FileRouteTypes {
     | '/account/reset-password'
     | '/admin/reviews'
     | '/admin/settings'
+    | '/admin/stockists'
     | '/admin/terpenes'
     | '/legal/cannabis-disclaimer'
     | '/legal/privacy'
@@ -547,6 +558,7 @@ export interface FileRouteTypes {
     | '/account/reset-password'
     | '/admin/reviews'
     | '/admin/settings'
+    | '/admin/stockists'
     | '/admin/terpenes'
     | '/legal/cannabis-disclaimer'
     | '/legal/privacy'
@@ -775,6 +787,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTerpenesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/stockists': {
+      id: '/admin/stockists'
+      path: '/stockists'
+      fullPath: '/admin/stockists'
+      preLoaderRoute: typeof AdminStockistsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
@@ -963,6 +982,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 interface AdminRouteChildren {
   AdminReviewsRoute: typeof AdminReviewsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminStockistsRoute: typeof AdminStockistsRoute
   AdminTerpenesRoute: typeof AdminTerpenesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
@@ -974,6 +994,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminReviewsRoute: AdminReviewsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminStockistsRoute: AdminStockistsRoute,
   AdminTerpenesRoute: AdminTerpenesRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,

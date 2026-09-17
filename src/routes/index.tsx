@@ -20,8 +20,11 @@ import { StrainCard } from "@/components/brand/StrainCard";
 import type { Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
 
-/** Swap-in point for the hero visual — replace with a new still or a <video> source. */
-const HERO_MEDIA = heroImage;
+/**
+ * Fallback hero visual. Final photography is uploaded in Settings → Imagery and
+ * takes over automatically; these bundled stills keep the page complete until then.
+ */
+const HERO_FALLBACK = heroImage;
 
 
 export const Route = createFileRoute("/")({

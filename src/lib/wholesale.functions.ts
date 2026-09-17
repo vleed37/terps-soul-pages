@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { SALES_EMAIL, WHOLESALE_DELIVERY_FEE, vatOn } from "@/lib/brand";
+import { SALES_EMAIL, vatOn } from "@/lib/brand";
 import { resolveTierPrice } from "@/lib/wholesale-pricing";
 import { loadSettings } from "@/lib/settings.server";
 import { deliveryConfig } from "@/lib/settings";

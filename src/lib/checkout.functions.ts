@@ -2,7 +2,9 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getRequest } from "@tanstack/react-start/server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { SALES_EMAIL, retailDeliveryFee } from "@/lib/brand";
+import { SALES_EMAIL } from "@/lib/brand";
+import { loadSettings } from "@/lib/settings.server";
+import { deliveryConfig, retailFeeFor } from "@/lib/settings";
 
 const CartItemSchema = z.object({
   strainId: z.string().uuid(),
@@ -93,7 +95,8 @@ export const initiateBobpayPayment = createServerFn({ method: "POST" })
       });
     }
 
-    const deliveryFee = retailDeliveryFee(subtotal);
+    // Authoritative delivery fee: owner-configured settings, never the client.
+    const deliveryFee = retailFeeFor(subtotal, deliveryConfig(await loadSettings()));
     const total = subtotal + deliveryFee;
 
     // 2) Generate order number

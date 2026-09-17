@@ -4,6 +4,8 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { SALES_EMAIL, WHOLESALE_DELIVERY_FEE, vatOn } from "@/lib/brand";
 import { resolveTierPrice } from "@/lib/wholesale-pricing";
+import { loadSettings } from "@/lib/settings.server";
+import { deliveryConfig } from "@/lib/settings";
 
 const BusinessTypeEnum = z.enum(["dispensary", "lounge", "specialty_retailer", "other"]);
 const VolumeEnum = z.enum(["under_50", "50_to_200", "200_to_500", "500_plus"]);

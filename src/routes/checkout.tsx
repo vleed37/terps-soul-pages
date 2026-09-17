@@ -12,7 +12,9 @@ import { initiateBobpayPayment } from "@/lib/checkout.functions";
 import { getMyCustomer, listMyAddresses, createAddress } from "@/lib/account.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { DELIVERY_COPY, formatDeliveryFee } from "@/lib/brand";
+import { DELIVERY_COPY } from "@/lib/brand";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { deliveryConfig, formatFee } from "@/lib/settings";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Terps — Checkout" }] }),
@@ -96,7 +98,9 @@ function CheckoutPage() {
 
   const method = watch("deliveryMethod");
   const savedAddressId = watch("savedAddressId");
-  const totals = computeTotals(subtotal);
+  const settings = useSiteSettings();
+  const delivery = deliveryConfig(settings);
+  const totals = computeTotals(subtotal, delivery);
 
   // Prefill from customer + email when signed in
   useEffect(() => {
@@ -413,7 +417,7 @@ function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-[color:var(--text-secondary)]">
                   <span>Delivery</span>
-                  <span>{formatDeliveryFee(totals.deliveryFee)}</span>
+                  <span>{formatFee(totals.deliveryFee, delivery)}</span>
                 </div>
               </div>
               <Hairline className="my-6" />

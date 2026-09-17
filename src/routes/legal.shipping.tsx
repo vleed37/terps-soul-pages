@@ -1,12 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
-import { MailValue, Value } from "@/components/layout/LegalDraftNotice";
-import { Pending } from "@/components/layout/LegalDraftNotice";
+import { MailValue, Pending, Value } from "@/components/layout/LegalDraftNotice";
 import { seoHead } from "@/lib/seo";
 import { BUSINESS } from "@/lib/business";
 import { useBusiness } from "@/hooks/useBusiness";
-import { useSiteSettings } from "@/hooks/useSiteSettings";
-import { deliveryCopy } from "@/lib/settings";
+import { DELIVERY_COPY } from "@/lib/brand";
 
 export const Route = createFileRoute("/legal/shipping")({
   head: () =>
@@ -20,7 +18,6 @@ export const Route = createFileRoute("/legal/shipping")({
 });
 
 function ShippingPage() {
-  const settings = useSiteSettings();
   const b = useBusiness();
   const email = b.shippingEmail ?? b.salesEmail;
 
@@ -80,7 +77,7 @@ function ShippingPage() {
         {
           heading: "Delivery Charges",
           body: (
-            <p>{deliveryCopy(settings)} Delivery charges are not advertised in advance of checkout.</p>
+            <p>{DELIVERY_COPY} Delivery charges are not advertised in advance of checkout.</p>
           ),
         },
         {

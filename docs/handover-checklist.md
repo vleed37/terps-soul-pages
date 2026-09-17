@@ -80,3 +80,30 @@ Provided to us privately — never entered on a page.
 - Legal pages approved and the draft notice gone
 - Real stockists live, placeholders still off
 - A test payment completed end to end with live credentials
+
+## Update — final audit (post-verification)
+
+Changed during the final audit:
+
+1. **Online payment is now gated on confirmed delivery pricing.** Until "delivery
+   pricing confirmed" is ticked in Admin → Settings → Shipping, retail checkout
+   shows "Delivery: to be confirmed", the Place Order button is disabled, and the
+   server refuses to create an order or start a payment. Wholesale trade orders are
+   gated the same way. Nothing can be charged on an unconfirmed rate.
+   → Terps must confirm retail fee, trade fee, free-delivery decision + threshold,
+     and courier before checkout can accept payment.
+2. **Suspended stockists now disappear from the public map/finder** automatically,
+   and reappear on reactivation. Wholesale access and public listing remain separate.
+3. **Public site settings are now readable by the public site** (business/legal,
+   shipping, imagery). Secrets remain in the locked secrets table.
+
+Still required from Terps (unchanged): business/legal details + explicit legal
+review approval, VAT decision, confirmed delivery pricing, final product/box/
+homepage/social photography, real stockist list, BobPay merchant ID + API key +
+the real webhook secret from BobPay (the current webhook secret is a development
+placeholder), Resend key for email, a mapping/geocoding key, and one live
+end-to-end payment test.
+
+Outstanding developer item (small): once BobPay supplies its webhook payload spec,
+add an amount check against the stored order total as defence-in-depth. Signature
+verification, replay protection and single stock decrement are already in place.

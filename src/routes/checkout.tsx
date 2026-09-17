@@ -412,7 +412,7 @@ function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-[color:var(--text-secondary)]">
                   <span>Delivery</span>
-                  <span>{totals.deliveryFee === 0 ? "Free" : `R${totals.deliveryFee}`}</span>
+                  <span>{formatDeliveryFee(totals.deliveryFee)}</span>
                 </div>
               </div>
               <Hairline className="my-6" />

@@ -49,3 +49,15 @@ export const DELIVERY_PRICING_CONFIRMED = false;
 export const DELIVERY_COPY =
   "Available delivery options and costs are shown at checkout.";
 
+
+/**
+ * Formats a delivery fee for customer-facing display.
+ *
+ * While DELIVERY_PRICING_CONFIRMED is false we never render a promotional
+ * "Free" label or any free-delivery threshold — the shipping model is not
+ * approved yet. The amount actually applied to the order is still shown.
+ */
+export function formatDeliveryFee(fee: number): string {
+  if (fee === 0 && DELIVERY_PRICING_CONFIRMED) return "Free";
+  return `R${fee.toFixed(0)}`;
+}

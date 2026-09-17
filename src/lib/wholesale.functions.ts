@@ -170,7 +170,16 @@ export const updateMyPublicListing = createServerFn({ method: "POST" })
     const hasCoords =
       existing?.public_latitude != null && existing?.public_longitude != null;
 
-    const patch: Record<string, unknown> = {
+    const patch: {
+      map_listing_opt_in: boolean;
+      public_store_name: string | null;
+      public_address: string | null;
+      public_city: string | null;
+      public_province: string | null;
+      public_phone: string | null;
+      public_latitude?: number | null;
+      public_longitude?: number | null;
+    } = {
       map_listing_opt_in: data.map_listing_opt_in,
       public_store_name: data.public_store_name || null,
       public_address: data.public_address || null,

@@ -56,14 +56,17 @@ function OrderDetailPage() {
         <Hairline className="mt-3 mb-6" />
         <ul className="divide-y divide-[color:var(--border-subtle)]">
           {(o.items ?? []).map((it) => (
-            <li key={it.id} className="flex justify-between gap-4 py-4">
-              <div>
-                <p className="font-display text-lg">{it.strain_name}</p>
-                <p className="meta-xs text-[color:var(--text-tertiary)]">
-                  {it.boxes_ordered} × box of {it.box_quantity_per_unit} units · R{Number(it.box_price_zar).toFixed(0)}/box
-                </p>
+            <li key={it.id} className="py-4">
+              <div className="flex justify-between gap-4">
+                <div>
+                  <p className="font-display text-lg">{it.strain_name}</p>
+                  <p className="meta-xs text-[color:var(--text-tertiary)]">
+                    {it.boxes_ordered} × box of {it.box_quantity_per_unit} units · R{Number(it.box_price_zar).toFixed(0)}/box
+                  </p>
+                </div>
+                <p className="font-display text-lg whitespace-nowrap">R{Number(it.line_total_zar).toFixed(0)}</p>
               </div>
-              <p className="font-display text-lg whitespace-nowrap">R{Number(it.line_total_zar).toFixed(0)}</p>
+              {it.item_type === "mixed_box" && <BoxComposition item={it} />}
             </li>
           ))}
         </ul>

@@ -55,3 +55,21 @@ export function Pending({ label }: { label: string }) {
     </em>
   );
 }
+
+/**
+ * Renders an admin-supplied business value, or the honest pending marker while
+ * it is still outstanding. Never invents a value.
+ */
+export function Value({ v, label }: { v: string | null | undefined; label: string }) {
+  return v ? <>{v}</> : <Pending label={label} />;
+}
+
+/** Mail link for an admin-supplied address, or the pending marker. */
+export function MailValue({ v, label }: { v: string | null | undefined; label: string }) {
+  if (!v) return <Pending label={label} />;
+  return (
+    <a href={`mailto:${v}`} className="ghost-link">
+      {v}
+    </a>
+  );
+}

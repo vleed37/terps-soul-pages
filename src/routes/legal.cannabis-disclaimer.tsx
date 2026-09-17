@@ -1,30 +1,29 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
-import { Pending } from "@/components/layout/LegalDraftNotice";
-import { seoMeta } from "@/lib/seo";
-import { BUSINESS, contactEmail } from "@/lib/business";
+import { MailValue, Value } from "@/components/layout/LegalDraftNotice";
+import { seoHead } from "@/lib/seo";
+import { useBusiness } from "@/hooks/useBusiness";
 
 export const Route = createFileRoute("/legal/cannabis-disclaimer")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Cannabis Product Disclaimer · Terps",
       description:
         "Important information about Terps cannabis products, age restrictions and responsible use.",
       path: "/legal/cannabis-disclaimer",
     }),
-  }),
   component: DisclaimerPage,
 });
 
 function DisclaimerPage() {
-  const email = contactEmail("sales");
+  const b = useBusiness();
   return (
     <LegalPage
       eyebrow="Legal"
       title="Cannabis Product Disclaimer"
       intro={
         <p>
-          Please read this before buying or using any {BUSINESS.tradingName} product. It is a draft
+          Please read this before buying or using any {b.tradingName} product. It is a draft
           pending legal review.
         </p>
       }
@@ -109,11 +108,8 @@ function DisclaimerPage() {
           heading: "Questions",
           body: (
             <p>
-              Product queries:{" "}
-              <a href={`mailto:${email}`} className="ghost-link">
-                {email}
-              </a>
-              . Telephone: <Pending label="phone number" />.
+              Product queries: <MailValue v={b.salesEmail} label="sales email address" />. Telephone:{" "}
+              <Value v={b.phone} label="phone number" />.
             </p>
           ),
         },

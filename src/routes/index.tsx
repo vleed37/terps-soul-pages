@@ -29,7 +29,7 @@ export const Route = createFileRoute("/")({
     meta: seoMeta({
       title: "Terps · Flavour-First Infused Pre-Rolls",
       description:
-        "South Africa's premium handcrafted infused pre-rolls and Caviar Sticks, available online and at select stockists nationwide.",
+        "South African premium infused pre-rolls and Caviar Sticks, available online and at select stockists nationwide.",
       path: "/",
     }),
   }),
@@ -70,7 +70,7 @@ function Home() {
             Flavour first.
           </h1>
           <p className="mt-6 max-w-xl font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
-            South Africa's premium handcrafted infused pre-rolls.
+            South African premium infused pre-rolls. Flavour first.
           </p>
           <div className="mt-10 flex flex-col items-start gap-5">
             <a href="/shop">
@@ -156,7 +156,7 @@ function Home() {
           </ScrollReveal>
           <div className="mt-20 grid grid-cols-1 gap-px bg-[color:var(--border-subtle)] md:grid-cols-3">
             {[
-              { t: "Selected Strains", d: "Hand-picked for terpene profile. Only the cultivars that earn their flavour." },
+              { t: "Selected Strains", d: "Selected for terpene profile. Only the cultivars that earn their flavour." },
               { t: "Extended Curing", d: "Slow-cured to lock in the depth and the body. Patience over volume, every batch." },
               { t: "Infusion", d: "Premium flower, cured hash and crumble, brought together for flavour first." },
             ].map((c, i) => (

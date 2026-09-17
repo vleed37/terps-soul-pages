@@ -91,17 +91,30 @@ async function maybeNotifyAdmin(data: z.infer<typeof ApplicationSchema>) {
 }
 
 
-export const getMyWholesaleAccount = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data, error } = await supabaseAdmin
-      .from("wholesale_accounts")
-      .select("*")
-      .eq("user_id", context.userId)
-      .maybeSingle();
-    if (error) throw new Error(error.message);
-    return data;
-  });
+/**
+ * Returns the caller's wholesale account, or null when the request carries no
+ * valid session. Signed-out visitors (and stale refetches right after sign-out)
+ * must not crash the shared header/banner components, so this verifies the
+ * bearer token itself instead of throwing via `requireSupabaseAuth`.
+ */
+export const getMyWholesaleAccount = createServerFn({ method: "GET" }).handler(async () => {
+  const { getRequest } = await import("@tanstack/react-start/server");
+  const authHeader = getRequest()?.headers?.get("authorization") ?? "";
+  if (!authHeader.startsWith("Bearer ")) return null;
+  const token = authHeader.slice("Bearer ".length).trim();
+  if (!token) return null;
+
+  const { data: userData, error: userError } = await supabaseAdmin.auth.getUser(token);
+  if (userError || !userData?.user) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("wholesale_accounts")
+    .select("*")
+    .eq("user_id", userData.user.id)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data;
+});
 
 const UpdateAccountSchema = z.object({
   primary_contact_name: z.string().trim().min(1).max(120),

@@ -219,6 +219,11 @@ export const updateMyPublicListing = createServerFn({ method: "POST" })
       }
     }
 
+    if (geocode !== "skipped") {
+      patch.public_geocode_status = geocode;
+      patch.public_geocoded_at = new Date().toISOString();
+    }
+
     const { error } = await supabaseAdmin
       .from("wholesale_accounts")
       .update(patch)

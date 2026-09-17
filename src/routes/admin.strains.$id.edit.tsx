@@ -1,8 +1,9 @@
-import { createFileRoute, redirect, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { StrainImagePanel } from "@/components/admin/StrainImagePanel";
+import { StrainTerpenePanel } from "@/components/admin/StrainTerpenePanel";
 import {
   adminGetStrain,
   adminUpdateStrain,
@@ -16,21 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/admin/strains/$id/edit")({
-  beforeLoad: async ({ location }) => {
-    // Session lives in browser storage; during SSR there is nothing to read, so
-    // gate on the client only (the route's own data fetch still enforces access).
-    if (typeof window === "undefined") return;
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
-      throw redirect({ to: "/account/login", search: { redirect: location.pathname } });
-    }
-    const role =
-      (data.user.user_metadata as { role?: string } | null)?.role ??
-      (data.user.app_metadata as { role?: string } | null)?.role;
-    if (role !== "admin") {
-      throw redirect({ to: "/" });
-    }
-  },
+  // Access is enforced by the parent /admin route (server-verified admin role)
+  // and again by every admin server function this page calls.
   head: () => ({ meta: [{ title: "Admin · Edit strain" }, { name: "robots", content: "noindex" }] }),
   component: EditStrain,
 });
@@ -77,6 +65,7 @@ function EditStrain() {
   const [savingWholesale, setSavingWholesale] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiName, setAiName] = useState("");
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [form, setForm] = useState<Form>({
     name: "",
     story: "",
@@ -116,6 +105,7 @@ function EditStrain() {
           is_active: s.is_active !== false,
         });
         setAiName(s.name ?? "");
+        setImageUrl(s.product_image_url ?? null);
       })
       .catch((e) => toast.error(e.message ?? "Failed to load"))
       .finally(() => setLoading(false));
@@ -213,8 +203,13 @@ function EditStrain() {
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
-      <Link to="/" className="ghost-link">← Home</Link>
+      <Link to="/admin/strains" className="ghost-link">← All products</Link>
       <h1 className="mt-6 font-display text-4xl md:text-5xl">Edit strain</h1>
+
+      <div className="mt-10 space-y-6">
+        <StrainImagePanel id={id} initialUrl={imageUrl} />
+        <StrainTerpenePanel strainId={id} />
+      </div>
 
       {/* AI Assist */}
       <div

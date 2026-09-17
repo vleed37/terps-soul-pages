@@ -65,6 +65,7 @@ function EditStrain() {
   const [savingWholesale, setSavingWholesale] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiName, setAiName] = useState("");
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [form, setForm] = useState<Form>({
     name: "",
     story: "",
@@ -201,8 +202,13 @@ function EditStrain() {
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-16 md:py-24">
-      <Link to="/" className="ghost-link">← Home</Link>
+      <Link to="/admin/strains" className="ghost-link">← All products</Link>
       <h1 className="mt-6 font-display text-4xl md:text-5xl">Edit strain</h1>
+
+      <div className="mt-10 space-y-6">
+        <StrainImagePanel id={id} initialUrl={imageUrl} />
+        <StrainTerpenePanel strainId={id} />
+      </div>
 
       {/* AI Assist */}
       <div

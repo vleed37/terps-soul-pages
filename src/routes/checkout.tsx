@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { DELIVERY_COPY } from "@/lib/brand";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { deliveryConfig, formatFee } from "@/lib/settings";
+import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Terps — Checkout" }] }),

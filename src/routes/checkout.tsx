@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useEffect, useState, useMemo } from "react";
 import { useForm, type UseFormRegisterReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +19,7 @@ import { deliveryConfig, formatFee } from "@/lib/settings";
 import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/checkout")({
-  head: () => ({ meta: [{ title: "Terps — Checkout" }] }),
+  head: () => privateHead("Terps — Checkout"),
   component: CheckoutPage,
 });
 

@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useEffect, useState } from "react";
 import { AuthCard, AuthField, authInputCls } from "@/components/account/AuthCard";
 import { GoldButton } from "@/components/brand/GoldButton";
@@ -6,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/account/reset-password")({
-  head: () => ({ meta: [{ title: "Terps — Set New Password" }] }),
+  head: () => privateHead("Terps — Set New Password"),
   component: ResetPage,
 });
 

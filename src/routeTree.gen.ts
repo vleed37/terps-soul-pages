@@ -31,11 +31,17 @@ import { Route as LegalShippingRouteImport } from './routes/legal.shipping'
 import { Route as LegalRefundsRouteImport } from './routes/legal.refunds'
 import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
 import { Route as LegalCannabisDisclaimerRouteImport } from './routes/legal.cannabis-disclaimer'
+import { Route as AdminTerpenesRouteImport } from './routes/admin.terpenes'
+import { Route as AdminStockistsRouteImport } from './routes/admin.stockists'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
 import { Route as AccountResetPasswordRouteImport } from './routes/account.reset-password'
 import { Route as AccountRegisterRouteImport } from './routes/account.register'
 import { Route as AccountLoginRouteImport } from './routes/account.login'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account.forgot-password'
 import { Route as WholesaleDashboardIndexRouteImport } from './routes/wholesale.dashboard.index'
+import { Route as AdminStrainsIndexRouteImport } from './routes/admin.strains.index'
+import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account.index'
 import { Route as WholesaleDashboardCheckoutRouteImport } from './routes/wholesale.dashboard.checkout'
 import { Route as WholesaleDashboardCatalogRouteImport } from './routes/wholesale.dashboard.catalog'
@@ -48,6 +54,7 @@ import { Route as AuthenticatedAccountOrdersIndexRouteImport } from './routes/_a
 import { Route as WholesaleDashboardOrdersIdRouteImport } from './routes/wholesale.dashboard.orders.$id'
 import { Route as ApiPublicProductImageSplatRouteImport } from './routes/api/public/product-image/$'
 import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
+import { Route as AdminOrdersTypeIdRouteImport } from './routes/admin.orders.$type.$id'
 import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
 
 const StrainsRoute = StrainsRouteImport.update({
@@ -159,6 +166,26 @@ const LegalCannabisDisclaimerRoute = LegalCannabisDisclaimerRouteImport.update({
   path: '/legal/cannabis-disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTerpenesRoute = AdminTerpenesRouteImport.update({
+  id: '/terpenes',
+  path: '/terpenes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStockistsRoute = AdminStockistsRouteImport.update({
+  id: '/stockists',
+  path: '/stockists',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReviewsRoute = AdminReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
   id: '/account/reset-password',
   path: '/account/reset-password',
@@ -183,6 +210,16 @@ const WholesaleDashboardIndexRoute = WholesaleDashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => WholesaleDashboardRoute,
+} as any)
+const AdminStrainsIndexRoute = AdminStrainsIndexRouteImport.update({
+  id: '/strains/',
+  path: '/strains/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AuthenticatedAccountIndexRoute =
   AuthenticatedAccountIndexRouteImport.update({
@@ -254,6 +291,11 @@ const AdminStrainsIdEditRoute = AdminStrainsIdEditRouteImport.update({
   path: '/strains/$id/edit',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminOrdersTypeIdRoute = AdminOrdersTypeIdRouteImport.update({
+  id: '/orders/$type/$id',
+  path: '/orders/$type/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AuthenticatedAccountOrdersOrderNumberRoute =
   AuthenticatedAccountOrdersOrderNumberRouteImport.update({
     id: '/account/orders/$orderNumber',
@@ -273,6 +315,10 @@ export interface FileRoutesByFullPath {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/admin/reviews': typeof AdminReviewsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/stockists': typeof AdminStockistsRoute
+  '/admin/terpenes': typeof AdminTerpenesRoute
   '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/refunds': typeof LegalRefundsRoute
@@ -294,8 +340,11 @@ export interface FileRoutesByFullPath {
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/account/': typeof AuthenticatedAccountIndexRoute
+  '/admin/orders/': typeof AdminOrdersIndexRoute
+  '/admin/strains/': typeof AdminStrainsIndexRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
+  '/admin/orders/$type/$id': typeof AdminOrdersTypeIdRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
   '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
@@ -313,6 +362,10 @@ export interface FileRoutesByTo {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/admin/reviews': typeof AdminReviewsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/stockists': typeof AdminStockistsRoute
+  '/admin/terpenes': typeof AdminTerpenesRoute
   '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/refunds': typeof LegalRefundsRoute
@@ -333,8 +386,11 @@ export interface FileRoutesByTo {
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/account': typeof AuthenticatedAccountIndexRoute
+  '/admin/orders': typeof AdminOrdersIndexRoute
+  '/admin/strains': typeof AdminStrainsIndexRoute
   '/wholesale/dashboard': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
+  '/admin/orders/$type/$id': typeof AdminOrdersTypeIdRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
   '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
@@ -355,6 +411,10 @@ export interface FileRoutesById {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/admin/reviews': typeof AdminReviewsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/stockists': typeof AdminStockistsRoute
+  '/admin/terpenes': typeof AdminTerpenesRoute
   '/legal/cannabis-disclaimer': typeof LegalCannabisDisclaimerRoute
   '/legal/privacy': typeof LegalPrivacyRoute
   '/legal/refunds': typeof LegalRefundsRoute
@@ -376,8 +436,11 @@ export interface FileRoutesById {
   '/wholesale/dashboard/catalog': typeof WholesaleDashboardCatalogRoute
   '/wholesale/dashboard/checkout': typeof WholesaleDashboardCheckoutRoute
   '/_authenticated/account/': typeof AuthenticatedAccountIndexRoute
+  '/admin/orders/': typeof AdminOrdersIndexRoute
+  '/admin/strains/': typeof AdminStrainsIndexRoute
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/_authenticated/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
+  '/admin/orders/$type/$id': typeof AdminOrdersTypeIdRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
   '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
@@ -398,6 +461,10 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/admin/reviews'
+    | '/admin/settings'
+    | '/admin/stockists'
+    | '/admin/terpenes'
     | '/legal/cannabis-disclaimer'
     | '/legal/privacy'
     | '/legal/refunds'
@@ -419,8 +486,11 @@ export interface FileRouteTypes {
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
     | '/account/'
+    | '/admin/orders/'
+    | '/admin/strains/'
     | '/wholesale/dashboard/'
     | '/account/orders/$orderNumber'
+    | '/admin/orders/$type/$id'
     | '/admin/strains/$id/edit'
     | '/api/public/product-image/$'
     | '/wholesale/dashboard/orders/$id'
@@ -438,6 +508,10 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/admin/reviews'
+    | '/admin/settings'
+    | '/admin/stockists'
+    | '/admin/terpenes'
     | '/legal/cannabis-disclaimer'
     | '/legal/privacy'
     | '/legal/refunds'
@@ -458,8 +532,11 @@ export interface FileRouteTypes {
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
     | '/account'
+    | '/admin/orders'
+    | '/admin/strains'
     | '/wholesale/dashboard'
     | '/account/orders/$orderNumber'
+    | '/admin/orders/$type/$id'
     | '/admin/strains/$id/edit'
     | '/api/public/product-image/$'
     | '/wholesale/dashboard/orders/$id'
@@ -479,6 +556,10 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/admin/reviews'
+    | '/admin/settings'
+    | '/admin/stockists'
+    | '/admin/terpenes'
     | '/legal/cannabis-disclaimer'
     | '/legal/privacy'
     | '/legal/refunds'
@@ -500,8 +581,11 @@ export interface FileRouteTypes {
     | '/wholesale/dashboard/catalog'
     | '/wholesale/dashboard/checkout'
     | '/_authenticated/account/'
+    | '/admin/orders/'
+    | '/admin/strains/'
     | '/wholesale/dashboard/'
     | '/_authenticated/account/orders/$orderNumber'
+    | '/admin/orders/$type/$id'
     | '/admin/strains/$id/edit'
     | '/api/public/product-image/$'
     | '/wholesale/dashboard/orders/$id'
@@ -696,6 +780,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalCannabisDisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/terpenes': {
+      id: '/admin/terpenes'
+      path: '/terpenes'
+      fullPath: '/admin/terpenes'
+      preLoaderRoute: typeof AdminTerpenesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/stockists': {
+      id: '/admin/stockists'
+      path: '/stockists'
+      fullPath: '/admin/stockists'
+      preLoaderRoute: typeof AdminStockistsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reviews': {
+      id: '/admin/reviews'
+      path: '/reviews'
+      fullPath: '/admin/reviews'
+      preLoaderRoute: typeof AdminReviewsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/account/reset-password': {
       id: '/account/reset-password'
       path: '/account/reset-password'
@@ -730,6 +842,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/wholesale/dashboard/'
       preLoaderRoute: typeof WholesaleDashboardIndexRouteImport
       parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/admin/strains/': {
+      id: '/admin/strains/'
+      path: '/strains'
+      fullPath: '/admin/strains/'
+      preLoaderRoute: typeof AdminStrainsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/orders/': {
+      id: '/admin/orders/'
+      path: '/orders'
+      fullPath: '/admin/orders/'
+      preLoaderRoute: typeof AdminOrdersIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_authenticated/account/': {
       id: '/_authenticated/account/'
@@ -815,6 +941,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStrainsIdEditRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/orders/$type/$id': {
+      id: '/admin/orders/$type/$id'
+      path: '/orders/$type/$id'
+      fullPath: '/admin/orders/$type/$id'
+      preLoaderRoute: typeof AdminOrdersTypeIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_authenticated/account/orders/$orderNumber': {
       id: '/_authenticated/account/orders/$orderNumber'
       path: '/account/orders/$orderNumber'
@@ -847,12 +980,26 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface AdminRouteChildren {
+  AdminReviewsRoute: typeof AdminReviewsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminStockistsRoute: typeof AdminStockistsRoute
+  AdminTerpenesRoute: typeof AdminTerpenesRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
+  AdminStrainsIndexRoute: typeof AdminStrainsIndexRoute
+  AdminOrdersTypeIdRoute: typeof AdminOrdersTypeIdRoute
   AdminStrainsIdEditRoute: typeof AdminStrainsIdEditRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminReviewsRoute: AdminReviewsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminStockistsRoute: AdminStockistsRoute,
+  AdminTerpenesRoute: AdminTerpenesRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminOrdersIndexRoute: AdminOrdersIndexRoute,
+  AdminStrainsIndexRoute: AdminStrainsIndexRoute,
+  AdminOrdersTypeIdRoute: AdminOrdersTypeIdRoute,
   AdminStrainsIdEditRoute: AdminStrainsIdEditRoute,
 }
 

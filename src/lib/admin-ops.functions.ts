@@ -530,7 +530,7 @@ export const adminUpdateFulfilment = createServerFn({ method: "POST" })
     if (data.type === "wholesale") {
       const status =
         data.status === "fulfilling" ? "preparing" : data.status === "pending" ? "pending" : data.status;
-      const patch: Record<string, unknown> = { fulfillment_status: status };
+      const patch: Record<string, any> = { fulfillment_status: status };
       if (data.tracking_number !== undefined) patch.tracking_number = data.tracking_number || null;
       if (status === "shipped") patch.shipped_at = now;
       if (status === "delivered") patch.fulfilled_at = now;
@@ -551,7 +551,7 @@ export const adminUpdateFulfilment = createServerFn({ method: "POST" })
       // Never rewrite a paid retail order back to the unpaid lifecycle stage.
       return { ok: false as const, error: "A paid order cannot return to pending." };
     }
-    const patch: Record<string, unknown> = { status };
+    const patch: Record<string, any> = { status };
     if (data.tracking_number !== undefined) patch.tracking_number = data.tracking_number || null;
     if (data.tracking_url !== undefined) patch.tracking_url = data.tracking_url || null;
     if (status === "shipped") patch.shipped_at = now;

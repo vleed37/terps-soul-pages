@@ -145,25 +145,75 @@ const PublicListingSchema = z.object({
 /**
  * Stockist-controlled public map listing. Opting in is not enough: the finder
  * only shows the shop once the public details are complete AND the account has
- * a paid wholesale order.
+ * a paid wholesale order. Coordinates only affect map/distance capability.
+ *
+ * Coordinates are NEVER accepted from the client — they are derived server-side
+ * from the submitted address, and only when the address actually changed.
  */
 export const updateMyPublicListing = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => PublicListingSchema.parse(d))
   .handler(async ({ data, context }) => {
+    const { data: existing } = await supabaseAdmin
+      .from("wholesale_accounts")
+      .select("public_address,public_city,public_province,public_latitude,public_longitude")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+
+    const { addressKey, geocodeAddress } = await import("@/lib/geocode.server");
+    const nextKey = addressKey([data.public_address, data.public_city, data.public_province]);
+    const prevKey = addressKey([
+      existing?.public_address,
+      existing?.public_city,
+      existing?.public_province,
+    ]);
+    const hasCoords =
+      existing?.public_latitude != null && existing?.public_longitude != null;
+
+    const patch: Record<string, unknown> = {
+      map_listing_opt_in: data.map_listing_opt_in,
+      public_store_name: data.public_store_name || null,
+      public_address: data.public_address || null,
+      public_city: data.public_city || null,
+      public_province: data.public_province || null,
+      public_phone: data.public_phone || null,
+    };
+
+    let geocode: "skipped" | "ok" | "failed" | "unconfigured" = "skipped";
+    if (!nextKey) {
+      // Address cleared — drop stale coordinates.
+      patch.public_latitude = null;
+      patch.public_longitude = null;
+    } else if (nextKey !== prevKey || !hasCoords) {
+      const result = await geocodeAddress({
+        address: data.public_address,
+        city: data.public_city,
+        province: data.public_province,
+      });
+      if (result.status === "ok") {
+        patch.public_latitude = result.latitude;
+        patch.public_longitude = result.longitude;
+        geocode = "ok";
+      } else if (result.status === "unconfigured") {
+        // No provider configured — keep any existing coordinates untouched.
+        geocode = "unconfigured";
+      } else if (nextKey !== prevKey) {
+        // Address genuinely changed but could not be resolved: stale pin removed,
+        // the listing itself still saves normally.
+        patch.public_latitude = null;
+        patch.public_longitude = null;
+        geocode = "failed";
+      } else {
+        geocode = "failed";
+      }
+    }
+
     const { error } = await supabaseAdmin
       .from("wholesale_accounts")
-      .update({
-        map_listing_opt_in: data.map_listing_opt_in,
-        public_store_name: data.public_store_name || null,
-        public_address: data.public_address || null,
-        public_city: data.public_city || null,
-        public_province: data.public_province || null,
-        public_phone: data.public_phone || null,
-      })
+      .update(patch)
       .eq("user_id", context.userId);
     if (error) throw new Error(error.message);
-    return { ok: true as const };
+    return { ok: true as const, geocode };
   });
 
 /** Whether this stockist currently qualifies to appear on the public map. */

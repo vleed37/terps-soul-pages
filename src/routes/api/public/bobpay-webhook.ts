@@ -47,6 +47,13 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
           }
         }
 
+        // Verified payload fields only. BobPay has not documented a paid-amount
+        // or currency field, so no amount check is attempted here rather than
+        // guessing a field name and rejecting genuine payments. Required from
+        // BobPay before adding it: the amount-paid field, its unit (Rand or
+        // cents), the currency field, and confirmation both are covered by the
+        // signature. Tracked on the readiness dashboard as "Paid-amount
+        // verification".
         let payload: {
           reference?: string;
           transaction_id?: string;

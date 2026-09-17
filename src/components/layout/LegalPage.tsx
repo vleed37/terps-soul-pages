@@ -2,9 +2,8 @@ import { ReactNode } from "react";
 
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
-import { LegalDraftNotice } from "@/components/layout/LegalDraftNotice";
-import { SALES_EMAIL } from "@/lib/brand";
-import { BUSINESS } from "@/lib/business";
+import { LegalDraftNotice, MailValue } from "@/components/layout/LegalDraftNotice";
+import { useBusiness } from "@/hooks/useBusiness";
 
 export interface LegalSection {
   heading: string;

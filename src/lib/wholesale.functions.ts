@@ -179,6 +179,8 @@ export const updateMyPublicListing = createServerFn({ method: "POST" })
       public_phone: string | null;
       public_latitude?: number | null;
       public_longitude?: number | null;
+      public_geocode_status?: string | null;
+      public_geocoded_at?: string | null;
     } = {
       map_listing_opt_in: data.map_listing_opt_in,
       public_store_name: data.public_store_name || null,

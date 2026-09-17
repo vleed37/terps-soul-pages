@@ -1,0 +1,82 @@
+# Terps — client handover checklist
+
+Everything below is either **information only Terps can supply** or **a credential only
+Terps can obtain**. The site is built and working around each item; nothing is invented,
+and every outstanding item is visible live in the admin under **Settings → Readiness**.
+
+Where to enter each item is named per row. Nothing here needs a developer.
+
+## 1. Business & legal information
+Enter in **Admin → Settings → Business & legal**.
+
+| Needed | Notes |
+| --- | --- |
+| Registered legal entity name | As registered with CIPC |
+| Company registration number | |
+| Registered business address | Shown on the legal pages |
+| Contact telephone number | |
+| Sales / orders email | |
+| Privacy contact email | Required by the privacy policy |
+| Shipping contact email | |
+| Refunds contact email | |
+| Policy effective date | The date the policies take effect |
+| VAT registered: yes / no | If yes, also the VAT number |
+| Legal review approved | Set only once a legal practitioner has approved the wording |
+
+Until the fields are complete **and** legal approval is recorded, every policy page
+shows a visible draft notice. VAT stays switched off until registration is confirmed.
+
+## 2. Delivery decisions
+Enter in **Admin → Settings → Shipping**.
+
+| Needed | Notes |
+| --- | --- |
+| Retail delivery fee | |
+| Wholesale delivery fee | |
+| Free delivery: offered or not | And the order value that qualifies |
+| Courier / delivery provider | No courier account is connected yet |
+| Order processing time | On the Business & legal tab |
+| Standard delivery estimate | On the Business & legal tab |
+| Delivery pricing confirmed | Rates and estimates stay hidden from customers until this is set |
+
+The site never advertises a rate, a free-delivery offer or a delivery estimate while
+pricing is unconfirmed. Charges are always calculated on the server, never in the browser.
+
+## 3. Photography
+Upload in **Admin → Settings → Imagery** (site imagery) and **Admin → Products** (per product).
+
+- Product photograph for each of the 7 live products (also used on cards and social previews)
+- Full box and variety/mixed box photograph for each product family
+- Wholesale catalogue and large-order imagery
+- Homepage hero image and stockist display image
+- Default social sharing image
+
+Current images are the existing studio and library shots; uploads replace them
+automatically with no code change. The 3D product models stay as they are.
+
+## 4. Stockists
+Enter in **Admin → Stockists**.
+
+- Real stockist names, addresses, contact details and trading hours
+- Which products each stockist carries
+
+The 6 placeholder locations remain switched off and must not be reactivated.
+Wholesale accounts are approved automatically as before; appearing on the public map is
+a separate opt-in and additionally requires complete public details, an active account
+and at least one paid wholesale order.
+
+## 5. Credentials (Terps must obtain these)
+Provided to us privately — never entered on a page.
+
+| Credential | Purpose | Effect while missing |
+| --- | --- | --- |
+| BobPay merchant ID, API key, API URL | Taking live payments | Checkout reports payment not configured |
+| BobPay webhook secret | Confirming paid orders | Unsigned confirmations are rejected |
+| Email sending key and verified sender domain | Order and account emails | Emails are skipped, orders still save |
+| Mapping (geocoding) credential | Turning stockist addresses into map pins | Pins must be positioned by hand |
+
+## 6. Final sign-off before going live
+- Every item in **Settings → Readiness** resolved or knowingly accepted
+- Legal pages approved and the draft notice gone
+- Real stockists live, placeholders still off
+- A test payment completed end to end with live credentials

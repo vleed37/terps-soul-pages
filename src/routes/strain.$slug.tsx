@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
+import { getStrainImage, resolveProductImage, getStrain3DModel } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -51,8 +51,10 @@ export const Route = createFileRoute("/strain/$slug")({
     const description = `${s.name} — ${meta.name} by Terps.${
       s.tagline ? ` ${s.tagline}.` : ""
     }`;
-    const localImg = getStrainProductImage(s.slug) || getStrainImage(s.slug);
-    const image = localImg || DEFAULT_OG_IMAGE;
+    // Social previews need an absolute URL, so only uploaded photography can be
+    // used here — bundled assets resolve relative and would break the preview.
+    const uploaded = s.product_image_url;
+    const image = uploaded && uploaded.startsWith("http") ? uploaded : DEFAULT_OG_IMAGE;
     return {
       meta: seoMeta({
         title: `${s.name} · Terps`,
@@ -114,7 +116,7 @@ function StrainDetail() {
   if (!s) return null;
 
   const meta = lineMeta(s.product_line);
-  const img = getStrainProductImage(s.slug);
+  const img = resolveProductImage(s);
   const extra = ((s as unknown as { gallery_image_urls?: string[] | null })
     .gallery_image_urls ?? []) as string[];
   const gallery = [img, ...extra].filter(Boolean) as string[];

@@ -45,6 +45,24 @@ export function getStrainProductImage(slug: string): string | undefined {
 }
 
 /**
+ * Canonical product image for a strain. Final client photography uploaded in the
+ * admin (stored on the strain row) always wins; the bundled studio image is the
+ * fallback so no page is ever left without an image.
+ */
+export function resolveProductImage(strain: {
+  slug: string;
+  product_image_url?: string | null;
+  hero_image_url?: string | null;
+}): string | undefined {
+  return (
+    strain.product_image_url ||
+    strain.hero_image_url ||
+    getStrainProductImage(strain.slug) ||
+    undefined
+  );
+}
+
+/**
  * Muted, editorial strain palettes — replaces the saturated DB values.
  * Used as low-opacity background washes on cards and hero blocks.
  */

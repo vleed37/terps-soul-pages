@@ -18,7 +18,7 @@ import { listStrains } from "@/lib/strains.functions";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { getStrainProductImage } from "@/lib/strain-assets";
+import { resolveProductImage } from "@/lib/strain-assets";
 import { getTerpeneArt, FLAVOUR_TILES } from "@/lib/terpene-assets";
 import { matchesFlavor } from "@/lib/shop-filters";
 import {
@@ -398,7 +398,7 @@ function StrainsPage() {
         </ScrollReveal>
         <div className="mt-14 grid grid-cols-2 gap-6 md:grid-cols-4">
           {strains.map((s, i) => {
-            const img = getStrainProductImage(s.slug);
+            const img = resolveProductImage(s);
             const soldOut = s.stock_quantity <= 0;
             return (
               <ScrollReveal key={s.id} delay={Math.min(i, 5) * 0.06}>

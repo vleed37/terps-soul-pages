@@ -30,6 +30,10 @@ export type Strain = {
   helps_with?: string[] | null;
   negatives?: string[] | null;
   lineage?: string | null;
+  /** Final client photography uploaded in the admin; overrides bundled stills. */
+  product_image_url?: string | null;
+  hero_image_url?: string | null;
+  gallery_image_urls?: string[] | null;
 };
 
 export type Terpene = {

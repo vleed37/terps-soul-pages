@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { getStrainProductImage, getStrain3DModel } from "@/lib/strain-assets";
+import { resolveProductImage, getStrain3DModel } from "@/lib/strain-assets";
 import { Product3DViewer } from "./Product3DViewer";
 import { CaviarStixCard } from "./CaviarStixCard";
 import { StrainTypePill } from "./StrainTypePill";
@@ -10,7 +10,7 @@ export function StrainCard({ strain }: { strain: Strain }) {
   if (strain.product_tier === "premium" || strain.product_line === "caviar_stix") {
     return <CaviarStixCard strain={strain} />;
   }
-  const img = getStrainProductImage(strain.slug);
+  const img = resolveProductImage(strain);
   const model = getStrain3DModel(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
   const isLimited = !!strain.is_limited && !soldOut;

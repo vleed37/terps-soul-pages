@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { deliveryConfig, retailFeeFor, type DeliveryConfig } from "@/lib/settings";
 
 export type CartItem = {
   strainId: string;
@@ -86,10 +87,14 @@ export const cartSelectors = {
   subtotal: (s: CartState) => s.items.reduce((a, i) => a + i.priceZar * i.quantity, 0),
 };
 
-export const DELIVERY_FEE = 80;
-export const FREE_DELIVERY_THRESHOLD = 500;
-
-export function computeTotals(subtotal: number) {
-  const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+/**
+ * Display totals. The authoritative fee is always recalculated server-side in
+ * `initiateBobpayPayment` from the owner-configured delivery settings — this is
+ * presentation only. Pass the resolved config so an unconfirmed free-delivery
+ * threshold is never applied.
+ */
+export function computeTotals(subtotal: number, config?: DeliveryConfig) {
+  const cfg = config ?? deliveryConfig({});
+  const deliveryFee = retailFeeFor(subtotal, cfg);
   return { subtotal, deliveryFee, total: subtotal + deliveryFee };
 }

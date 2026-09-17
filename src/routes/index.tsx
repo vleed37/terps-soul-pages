@@ -19,9 +19,14 @@ import stockistImage from "@/assets/stockist-display.jpg";
 import { StrainCard } from "@/components/brand/StrainCard";
 import type { Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { imageUrl } from "@/lib/settings";
 
-/** Swap-in point for the hero visual — replace with a new still or a <video> source. */
-const HERO_MEDIA = heroImage;
+/**
+ * Fallback hero visual. Final photography is uploaded in Settings → Imagery and
+ * takes over automatically; these bundled stills keep the page complete until then.
+ */
+const HERO_FALLBACK = heroImage;
 
 
 export const Route = createFileRoute("/")({
@@ -48,6 +53,10 @@ function Home() {
   const preRolls = list.filter((s) => s.product_line === "pre_roll");
   const caviar = list.filter((s) => s.product_line === "caviar_stix");
 
+  const settings = useSiteSettings();
+  const heroMedia = imageUrl(settings, "image.home_hero") ?? HERO_FALLBACK;
+  const stockistMedia = imageUrl(settings, "image.home_stockist") ?? stockistImage;
+
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
@@ -58,7 +67,7 @@ function Home() {
       <section ref={heroRef} className="tone-dark relative h-screen w-full overflow-hidden">
         <motion.div style={{ y: bgY }} className="absolute inset-0">
           <img
-            src={HERO_MEDIA}
+            src={heroMedia}
             alt="Terps premium infused pre-roll"
             className="h-[120%] w-full object-cover"
           />

@@ -35,6 +35,7 @@ import { Route as AdminTerpenesRouteImport } from './routes/admin.terpenes'
 import { Route as AdminStockistsRouteImport } from './routes/admin.stockists'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
+import { Route as AdminReadinessRouteImport } from './routes/admin.readiness'
 import { Route as AccountResetPasswordRouteImport } from './routes/account.reset-password'
 import { Route as AccountRegisterRouteImport } from './routes/account.register'
 import { Route as AccountLoginRouteImport } from './routes/account.login'
@@ -186,6 +187,11 @@ const AdminReviewsRoute = AdminReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminReadinessRoute = AdminReadinessRouteImport.update({
+  id: '/readiness',
+  path: '/readiness',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
   id: '/account/reset-password',
   path: '/account/reset-password',
@@ -315,6 +321,7 @@ export interface FileRoutesByFullPath {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/admin/readiness': typeof AdminReadinessRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stockists': typeof AdminStockistsRoute
@@ -362,6 +369,7 @@ export interface FileRoutesByTo {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/admin/readiness': typeof AdminReadinessRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stockists': typeof AdminStockistsRoute
@@ -411,6 +419,7 @@ export interface FileRoutesById {
   '/account/login': typeof AccountLoginRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
+  '/admin/readiness': typeof AdminReadinessRoute
   '/admin/reviews': typeof AdminReviewsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stockists': typeof AdminStockistsRoute
@@ -461,6 +470,7 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/admin/readiness'
     | '/admin/reviews'
     | '/admin/settings'
     | '/admin/stockists'
@@ -508,6 +518,7 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/admin/readiness'
     | '/admin/reviews'
     | '/admin/settings'
     | '/admin/stockists'
@@ -556,6 +567,7 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/account/register'
     | '/account/reset-password'
+    | '/admin/readiness'
     | '/admin/reviews'
     | '/admin/settings'
     | '/admin/stockists'
@@ -808,6 +820,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReviewsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/readiness': {
+      id: '/admin/readiness'
+      path: '/readiness'
+      fullPath: '/admin/readiness'
+      preLoaderRoute: typeof AdminReadinessRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/account/reset-password': {
       id: '/account/reset-password'
       path: '/account/reset-password'
@@ -980,6 +999,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface AdminRouteChildren {
+  AdminReadinessRoute: typeof AdminReadinessRoute
   AdminReviewsRoute: typeof AdminReviewsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminStockistsRoute: typeof AdminStockistsRoute
@@ -992,6 +1012,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminReadinessRoute: AdminReadinessRoute,
   AdminReviewsRoute: AdminReviewsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminStockistsRoute: AdminStockistsRoute,

@@ -34,6 +34,7 @@ const NAV = [
   { to: "/admin/stockists", label: "Stockists", exact: false },
   { to: "/admin/terpenes", label: "Terpenes", exact: false },
   { to: "/admin/settings", label: "Settings", exact: false },
+  { to: "/admin/readiness", label: "Readiness", exact: false },
 ] as const;
 
 function AdminLayout() {

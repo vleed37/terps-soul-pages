@@ -4,4 +4,7 @@ Disallow: /account/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /wholesale/dashboard/
+Disallow: /checkout
+Disallow: /cart
+Disallow: /order/
 Sitemap: https://terps2.carbonmediasolutions.com/sitemap.xml

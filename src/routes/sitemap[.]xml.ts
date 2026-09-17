@@ -37,7 +37,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           const { data } = await supabaseAdmin
             .from("strains")
             .select("slug, updated_at")
-            .eq("is_active", true);
+            .eq("is_active", true)
+            .eq("is_archived", false);
           strainEntries = (data ?? []).map((s) => ({
             path: `/strain/${s.slug}`,
             changefreq: "weekly",

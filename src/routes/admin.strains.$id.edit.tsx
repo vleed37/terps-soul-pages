@@ -16,21 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/admin/strains/$id/edit")({
-  beforeLoad: async ({ location }) => {
-    // Session lives in browser storage; during SSR there is nothing to read, so
-    // gate on the client only (the route's own data fetch still enforces access).
-    if (typeof window === "undefined") return;
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
-      throw redirect({ to: "/account/login", search: { redirect: location.pathname } });
-    }
-    const role =
-      (data.user.user_metadata as { role?: string } | null)?.role ??
-      (data.user.app_metadata as { role?: string } | null)?.role;
-    if (role !== "admin") {
-      throw redirect({ to: "/" });
-    }
-  },
+  // Access is enforced by the parent /admin route (server-verified admin role)
+  // and again by every admin server function this page calls.
   head: () => ({ meta: [{ title: "Admin · Edit strain" }, { name: "robots", content: "noindex" }] }),
   component: EditStrain,
 });

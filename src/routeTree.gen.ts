@@ -13,11 +13,13 @@ import { Route as StrainsRouteImport } from './routes/strains'
 import { Route as StockistsRouteImport } from './routes/stockists'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
 import { Route as ShopIndexRouteImport } from './routes/shop.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
 import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
 import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
@@ -44,6 +46,7 @@ import { Route as AuthenticatedAccountAddressesRouteImport } from './routes/_aut
 import { Route as WholesaleDashboardOrdersIndexRouteImport } from './routes/wholesale.dashboard.orders.index'
 import { Route as AuthenticatedAccountOrdersIndexRouteImport } from './routes/_authenticated/account.orders.index'
 import { Route as WholesaleDashboardOrdersIdRouteImport } from './routes/wholesale.dashboard.orders.$id'
+import { Route as ApiPublicProductImageSplatRouteImport } from './routes/api/public/product-image/$'
 import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
 import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
 
@@ -65,6 +68,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -90,6 +98,11 @@ const ShopIndexRoute = ShopIndexRouteImport.update({
   id: '/shop/',
   path: '/shop/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const WholesaleLoginRoute = WholesaleLoginRouteImport.update({
   id: '/wholesale/login',
@@ -230,10 +243,16 @@ const WholesaleDashboardOrdersIdRoute =
     path: '/orders/$id',
     getParentRoute: () => WholesaleDashboardRoute,
   } as any)
+const ApiPublicProductImageSplatRoute =
+  ApiPublicProductImageSplatRouteImport.update({
+    id: '/api/public/product-image/$',
+    path: '/api/public/product-image/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminStrainsIdEditRoute = AdminStrainsIdEditRouteImport.update({
-  id: '/admin/strains/$id/edit',
-  path: '/admin/strains/$id/edit',
-  getParentRoute: () => rootRouteImport,
+  id: '/strains/$id/edit',
+  path: '/strains/$id/edit',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AuthenticatedAccountOrdersOrderNumberRoute =
   AuthenticatedAccountOrdersOrderNumberRouteImport.update({
@@ -245,6 +264,7 @@ const AuthenticatedAccountOrdersOrderNumberRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
@@ -264,6 +284,7 @@ export interface FileRoutesByFullPath {
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/admin/': typeof AdminIndexRoute
   '/shop/': typeof ShopIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
@@ -276,6 +297,7 @@ export interface FileRoutesByFullPath {
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
+  '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
   '/account/orders/': typeof AuthenticatedAccountOrdersIndexRoute
   '/wholesale/dashboard/orders/': typeof WholesaleDashboardOrdersIndexRoute
@@ -301,6 +323,7 @@ export interface FileRoutesByTo {
   '/shop/infused-pre-rolls': typeof ShopInfusedPreRollsRoute
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/admin': typeof AdminIndexRoute
   '/shop': typeof ShopIndexRoute
   '/wholesale': typeof WholesaleIndexRoute
   '/account/addresses': typeof AuthenticatedAccountAddressesRoute
@@ -313,6 +336,7 @@ export interface FileRoutesByTo {
   '/wholesale/dashboard': typeof WholesaleDashboardIndexRoute
   '/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
+  '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
   '/account/orders': typeof AuthenticatedAccountOrdersIndexRoute
   '/wholesale/dashboard/orders': typeof WholesaleDashboardOrdersIndexRoute
@@ -322,6 +346,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stockists': typeof StockistsRoute
@@ -341,6 +366,7 @@ export interface FileRoutesById {
   '/strain/$slug': typeof StrainSlugRoute
   '/wholesale/dashboard': typeof WholesaleDashboardRouteWithChildren
   '/wholesale/login': typeof WholesaleLoginRoute
+  '/admin/': typeof AdminIndexRoute
   '/shop/': typeof ShopIndexRoute
   '/wholesale/': typeof WholesaleIndexRoute
   '/_authenticated/account/addresses': typeof AuthenticatedAccountAddressesRoute
@@ -353,6 +379,7 @@ export interface FileRoutesById {
   '/wholesale/dashboard/': typeof WholesaleDashboardIndexRoute
   '/_authenticated/account/orders/$orderNumber': typeof AuthenticatedAccountOrdersOrderNumberRoute
   '/admin/strains/$id/edit': typeof AdminStrainsIdEditRoute
+  '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
   '/wholesale/dashboard/orders/$id': typeof WholesaleDashboardOrdersIdRoute
   '/_authenticated/account/orders/': typeof AuthenticatedAccountOrdersIndexRoute
   '/wholesale/dashboard/orders/': typeof WholesaleDashboardOrdersIndexRoute
@@ -362,6 +389,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/checkout'
     | '/sitemap.xml'
     | '/stockists'
@@ -381,6 +409,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
+    | '/admin/'
     | '/shop/'
     | '/wholesale/'
     | '/account/addresses'
@@ -393,6 +422,7 @@ export interface FileRouteTypes {
     | '/wholesale/dashboard/'
     | '/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
+    | '/api/public/product-image/$'
     | '/wholesale/dashboard/orders/$id'
     | '/account/orders/'
     | '/wholesale/dashboard/orders/'
@@ -418,6 +448,7 @@ export interface FileRouteTypes {
     | '/shop/infused-pre-rolls'
     | '/strain/$slug'
     | '/wholesale/login'
+    | '/admin'
     | '/shop'
     | '/wholesale'
     | '/account/addresses'
@@ -430,6 +461,7 @@ export interface FileRouteTypes {
     | '/wholesale/dashboard'
     | '/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
+    | '/api/public/product-image/$'
     | '/wholesale/dashboard/orders/$id'
     | '/account/orders'
     | '/wholesale/dashboard/orders'
@@ -438,6 +470,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
+    | '/admin'
     | '/checkout'
     | '/sitemap.xml'
     | '/stockists'
@@ -457,6 +490,7 @@ export interface FileRouteTypes {
     | '/strain/$slug'
     | '/wholesale/dashboard'
     | '/wholesale/login'
+    | '/admin/'
     | '/shop/'
     | '/wholesale/'
     | '/_authenticated/account/addresses'
@@ -469,6 +503,7 @@ export interface FileRouteTypes {
     | '/wholesale/dashboard/'
     | '/_authenticated/account/orders/$orderNumber'
     | '/admin/strains/$id/edit'
+    | '/api/public/product-image/$'
     | '/wholesale/dashboard/orders/$id'
     | '/_authenticated/account/orders/'
     | '/wholesale/dashboard/orders/'
@@ -478,6 +513,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StockistsRoute: typeof StockistsRoute
@@ -501,7 +537,7 @@ export interface RootRouteChildren {
   WholesaleIndexRoute: typeof WholesaleIndexRoute
   ApiPublicBobpayWebhookRoute: typeof ApiPublicBobpayWebhookRoute
   ApiPublicWholesaleApprovalEmailRoute: typeof ApiPublicWholesaleApprovalEmailRoute
-  AdminStrainsIdEditRoute: typeof AdminStrainsIdEditRoute
+  ApiPublicProductImageSplatRoute: typeof ApiPublicProductImageSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -532,6 +568,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -568,6 +611,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/shop/'
       preLoaderRoute: typeof ShopIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/wholesale/login': {
       id: '/wholesale/login'
@@ -751,12 +801,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WholesaleDashboardOrdersIdRouteImport
       parentRoute: typeof WholesaleDashboardRoute
     }
+    '/api/public/product-image/$': {
+      id: '/api/public/product-image/$'
+      path: '/api/public/product-image/$'
+      fullPath: '/api/public/product-image/$'
+      preLoaderRoute: typeof ApiPublicProductImageSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/strains/$id/edit': {
       id: '/admin/strains/$id/edit'
-      path: '/admin/strains/$id/edit'
+      path: '/strains/$id/edit'
       fullPath: '/admin/strains/$id/edit'
       preLoaderRoute: typeof AdminStrainsIdEditRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_authenticated/account/orders/$orderNumber': {
       id: '/_authenticated/account/orders/$orderNumber'
@@ -789,6 +846,18 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminStrainsIdEditRoute: typeof AdminStrainsIdEditRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+  AdminStrainsIdEditRoute: AdminStrainsIdEditRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface WholesaleDashboardRouteChildren {
   WholesaleDashboardCatalogRoute: typeof WholesaleDashboardCatalogRoute
   WholesaleDashboardCheckoutRoute: typeof WholesaleDashboardCheckoutRoute
@@ -812,6 +881,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StockistsRoute: StockistsRoute,
@@ -835,7 +905,7 @@ const rootRouteChildren: RootRouteChildren = {
   WholesaleIndexRoute: WholesaleIndexRoute,
   ApiPublicBobpayWebhookRoute: ApiPublicBobpayWebhookRoute,
   ApiPublicWholesaleApprovalEmailRoute: ApiPublicWholesaleApprovalEmailRoute,
-  AdminStrainsIdEditRoute: AdminStrainsIdEditRoute,
+  ApiPublicProductImageSplatRoute: ApiPublicProductImageSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -417,15 +417,33 @@ function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-[color:var(--text-secondary)]">
                   <span>Delivery</span>
-                  <span>{formatFee(totals.deliveryFee, delivery)}</span>
+                  <span>
+                    {delivery.confirmed ? formatFee(totals.deliveryFee, delivery) : "To be confirmed"}
+                  </span>
                 </div>
               </div>
               <Hairline className="my-6" />
               <div className="flex items-baseline justify-between">
                 <span className="font-display text-xl">Total</span>
-                <span className="font-body text-2xl font-semibold">R{totals.total.toFixed(0)}</span>
+                <span className="font-body text-2xl font-semibold">
+                  {delivery.confirmed ? `R${totals.total.toFixed(0)}` : `R${totals.subtotal.toFixed(0)} + delivery`}
+                </span>
               </div>
-              <GoldButton type="submit" disabled={submitting} className="mt-8 w-full">
+              {!delivery.confirmed && (
+                <p className="mt-6 rounded-sm border border-[color:var(--hairline)] p-4 text-sm text-[color:var(--text-secondary)]">
+                  Our delivery pricing is being finalised, so online payment is temporarily
+                  unavailable. Email{" "}
+                  <a className="underline" href={`mailto:${SALES_EMAIL}`}>
+                    {SALES_EMAIL}
+                  </a>{" "}
+                  and we&apos;ll complete your order with a confirmed delivery cost.
+                </p>
+              )}
+              <GoldButton
+                type="submit"
+                disabled={submitting || !delivery.confirmed}
+                className="mt-8 w-full"
+              >
                 {submitting ? "Processing…" : "Place Order"}
               </GoldButton>
               <p className="mt-4 text-center meta-xs text-[color:var(--text-tertiary)]">

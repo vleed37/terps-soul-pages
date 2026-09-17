@@ -53,7 +53,7 @@ export const Route = createFileRoute("/strain/$slug")({
     }`;
     // Social previews need an absolute URL, so only uploaded photography can be
     // used here — bundled assets resolve relative and would break the preview.
-    const uploaded = s.product_image_url || s.hero_image_url;
+    const uploaded = s.product_image_url;
     const image = uploaded && uploaded.startsWith("http") ? uploaded : DEFAULT_OG_IMAGE;
     return {
       meta: seoMeta({

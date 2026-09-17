@@ -20,7 +20,8 @@ interface Props {
 }
 
 export function LegalPage({ eyebrow, title, lastUpdated, intro, sections }: Props) {
-  const effective = lastUpdated ?? BUSINESS.effectiveDate;
+  const b = useBusiness();
+  const effective = lastUpdated ?? b.effectiveDate;
 
   return (
     <div className="px-6 py-20 md:px-12 md:py-28">
@@ -58,9 +59,7 @@ export function LegalPage({ eyebrow, title, lastUpdated, intro, sections }: Prop
         <Hairline className="my-16" />
 
         <p className="text-center font-display text-lg italic text-[color:var(--text-secondary)]">
-          Questions? Reach us at{" "}
-          <a href={`mailto:${SALES_EMAIL}`} className="ghost-link">{SALES_EMAIL}</a>
-          .
+          Questions? Reach us at <MailValue v={b.salesEmail} label="sales email address" />.
         </p>
       </article>
     </div>

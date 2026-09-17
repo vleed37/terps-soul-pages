@@ -398,7 +398,7 @@ function StrainsPage() {
         </ScrollReveal>
         <div className="mt-14 grid grid-cols-2 gap-6 md:grid-cols-4">
           {strains.map((s, i) => {
-            const img = getStrainProductImage(s.slug);
+            const img = resolveProductImage(s);
             const soldOut = s.stock_quantity <= 0;
             return (
               <ScrollReveal key={s.id} delay={Math.min(i, 5) * 0.06}>

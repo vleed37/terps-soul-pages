@@ -116,7 +116,7 @@ function StrainDetail() {
   if (!s) return null;
 
   const meta = lineMeta(s.product_line);
-  const img = getStrainProductImage(s.slug);
+  const img = resolveProductImage(s);
   const extra = ((s as unknown as { gallery_image_urls?: string[] | null })
     .gallery_image_urls ?? []) as string[];
   const gallery = [img, ...extra].filter(Boolean) as string[];

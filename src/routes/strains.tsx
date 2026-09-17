@@ -18,7 +18,7 @@ import { listStrains } from "@/lib/strains.functions";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { getStrainProductImage } from "@/lib/strain-assets";
+import { resolveProductImage } from "@/lib/strain-assets";
 import { getTerpeneArt, FLAVOUR_TILES } from "@/lib/terpene-assets";
 import { matchesFlavor } from "@/lib/shop-filters";
 import {

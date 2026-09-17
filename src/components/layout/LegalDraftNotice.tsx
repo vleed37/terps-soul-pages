@@ -1,17 +1,22 @@
 import { AlertTriangle } from "lucide-react";
 
-import {
-  PENDING_BUSINESS_DETAILS,
-  SHOW_LEGAL_DRAFT_NOTICE,
-} from "@/lib/business";
+import { PENDING_BUSINESS_DETAILS, SHOW_LEGAL_DRAFT_NOTICE } from "@/lib/business";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { legalReadiness } from "@/lib/settings";
 
 /**
- * Preview/development-only banner. It lists the business details the owner still
- * owes and states plainly that the policy has not been legally approved. It must
- * never render on an approved production build (SHOW_LEGAL_DRAFT_NOTICE).
+ * Draft banner. It disappears only when every required business/legal field has
+ * been supplied AND legal approval has been recorded in Settings — a single flag
+ * is never enough. Falls back to the compile-time flag while settings load.
  */
 export function LegalDraftNotice() {
-  if (!SHOW_LEGAL_DRAFT_NOTICE) return null;
+  const settings = useSiteSettings();
+  const legal = legalReadiness(settings);
+  const outstanding = legal.missing.length > 0 ? legal.missing : PENDING_BUSINESS_DETAILS;
+
+  if (legal.ready && !SHOW_LEGAL_DRAFT_NOTICE) return null;
+  if (legal.ready) return null;
+
 
   return (
     <aside
@@ -28,9 +33,9 @@ export function LegalDraftNotice() {
         legal practitioner, and the details below are still outstanding from the
         business owner. Publication is blocked until both are resolved.
       </p>
-      {PENDING_BUSINESS_DETAILS.length > 0 && (
+      {outstanding.length > 0 && (
         <ul className="mt-4 grid grid-cols-1 gap-1 text-sm text-[color:var(--text-tertiary)] sm:grid-cols-2">
-          {PENDING_BUSINESS_DETAILS.map((d) => (
+          {outstanding.map((d) => (
             <li key={d}>· {d}</li>
           ))}
         </ul>

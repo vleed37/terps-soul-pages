@@ -7,7 +7,7 @@ import collectionHeader from "@/assets/shoot/divine-56.jpg.asset.json";
 import preRollImage from "@/assets/shoot/divine-110.jpg.asset.json";
 import caviarImage from "@/assets/shoot/divine-117.jpg.asset.json";
 import type { Strain } from "@/lib/types";
-import { seoMeta } from "@/lib/seo";
+import { seoHead } from "@/lib/seo";
 import { GridSkeleton } from "@/components/layout/PageSkeletons";
 import { PRODUCT_LINE_META, type ProductLine } from "@/lib/product-lines";
 
@@ -17,14 +17,13 @@ const strainsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/shop/")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Our Collection · Terps",
       description:
         "Flavour first. Always. Choose between Terps Caviar Sticks and Infused Pre-Rolls.",
       path: "/shop",
     }),
-  }),
   loader: ({ context }) => context.queryClient.ensureQueryData(strainsQuery),
   pendingComponent: () => <GridSkeleton count={2} />,
   pendingMs: 0,

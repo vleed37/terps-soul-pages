@@ -18,7 +18,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import type { Stockist, Strain } from "@/lib/types";
-import { seoMeta } from "@/lib/seo";
+import { seoHead } from "@/lib/seo";
 import { SALES_EMAIL } from "@/lib/brand";
 import { matchesSearch } from "@/lib/place-aliases";
 import { MapSkeleton } from "@/components/layout/PageSkeletons";
@@ -37,14 +37,13 @@ const strainsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/stockists")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Stockists · Terps",
       description:
         "Find Terps at premium dispensaries and lounges across South Africa. Online ordering and store details.",
       path: "/stockists",
     }),
-  }),
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(stockistsQuery),

@@ -38,3 +38,34 @@ export function seoMeta({
     { name: "twitter:image", content: img },
   ];
 }
+
+/** Absolute canonical URL for a public route path. */
+export function canonicalUrl(path: string): string {
+  const clean = path === "/" ? "" : path.replace(/\/+$/, "");
+  return `${PUBLIC_SITE_URL}${clean}`;
+}
+
+/**
+ * Full head object for an indexable public page: social/meta tags plus a single
+ * canonical link pointing at the configured production origin.
+ */
+export function seoHead(input: SeoMetaInput) {
+  return {
+    meta: seoMeta(input),
+    links: [{ rel: "canonical", href: canonicalUrl(input.path) }],
+  };
+}
+
+/**
+ * Head object for private/transactional routes: titled, but never indexed and
+ * never carrying a canonical or social/product preview.
+ */
+export function privateHead(title: string) {
+  return {
+    meta: [
+      { title },
+      { name: "robots", content: "noindex, nofollow" },
+      { name: "googlebot", content: "noindex, nofollow" },
+    ],
+  };
+}

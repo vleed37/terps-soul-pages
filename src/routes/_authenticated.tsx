@@ -1,4 +1,5 @@
 import { createFileRoute, redirect, Outlet, useRouterState } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,6 +8,7 @@ import { AccountSidebar } from "@/components/account/AccountSidebar";
 import { getMyCustomer } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated")({
+  head: () => privateHead("Terps — Your Account"),
   // Session lives in browser storage, so the server can never read it: render
   // this subtree on the client only and gate it there.
   ssr: false,

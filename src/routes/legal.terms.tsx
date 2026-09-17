@@ -1,32 +1,34 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
-import { Pending } from "@/components/layout/LegalDraftNotice";
-import { seoMeta } from "@/lib/seo";
-import { BUSINESS, SELLER_REFERENCE, contactEmail } from "@/lib/business";
+import { MailValue, Value } from "@/components/layout/LegalDraftNotice";
+import { seoHead } from "@/lib/seo";
+import { BUSINESS } from "@/lib/business";
+import { useBusiness } from "@/hooks/useBusiness";
 import { DELIVERY_COPY } from "@/lib/brand";
 
 export const Route = createFileRoute("/legal/terms")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Terms of Sale · Terps",
       description: "The terms that govern your purchase from Terps.",
       path: "/legal/terms",
     }),
-  }),
   component: TermsPage,
 });
 
 function TermsPage() {
-  const email = contactEmail("sales");
+  const b = useBusiness();
+  const seller = b.legalEntityName ?? `the operator of ${b.tradingName}`;
+
   return (
     <LegalPage
       eyebrow="Legal"
       title="Terms of Sale"
       intro={
         <p>
-          These terms govern purchases made through this website from {SELLER_REFERENCE}, trading as{" "}
-          {BUSINESS.tradingName}. They are a draft pending legal review. By placing an order you
-          confirm that you have read and accepted them.
+          These terms govern purchases made through this website from {seller}, trading as{" "}
+          {b.tradingName}. They are a draft pending legal review. By placing an order you confirm
+          that you have read and accepted them.
         </p>
       }
       sections={[
@@ -34,14 +36,11 @@ function TermsPage() {
           heading: "Who You Are Contracting With",
           body: (
             <p>
-              The seller is <Pending label="legal entity name" />, registration number{" "}
-              <Pending label="registration number" />, of{" "}
-              <Pending label="registered business address" />, trading as {BUSINESS.tradingName}.
-              Contact:{" "}
-              <a href={`mailto:${email}`} className="ghost-link">
-                {email}
-              </a>
-              , telephone <Pending label="phone number" />.
+              The seller is <Value v={b.legalEntityName} label="legal entity name" />, registration
+              number <Value v={b.registrationNumber} label="registration number" />, of{" "}
+              <Value v={b.address} label="registered business address" />, trading as {b.tradingName}.
+              Contact: <MailValue v={b.salesEmail} label="sales email address" />, telephone{" "}
+              <Value v={b.phone} label="phone number" />.
             </p>
           ),
         },
@@ -80,8 +79,8 @@ function TermsPage() {
               makes medical claims. Approved reviews are displayed publicly on the product page with
               your first name and the initial of your surname; editing a published review returns it
               for checking. Reviews are the opinions of the customers who wrote them and are not
-              statements by {BUSINESS.tradingName}. By submitting a review you give us permission to
-              publish it on this website.
+              statements by {b.tradingName}. By submitting a review you give us permission to publish
+              it on this website.
             </p>
           ),
         },
@@ -90,9 +89,20 @@ function TermsPage() {
           body: (
             <p>
               All prices are in South African Rand ({BUSINESS.currency}) and may change at any time
-              before you place an order. VAT is not currently charged on orders placed through this
-              website; if that changes, the VAT treatment will be shown at checkout. Payment is
-              processed by our third-party payment provider and we do not store card details.
+              before you place an order.{" "}
+              {b.vatStatus === "registered" ? (
+                <>
+                  VAT treatment is shown at checkout. Our VAT registration number is{" "}
+                  <Value v={b.vatNumber} label="VAT number" />.
+                </>
+              ) : (
+                <>
+                  VAT is not currently charged on orders placed through this website; if that changes,
+                  the VAT treatment will be shown at checkout.
+                </>
+              )}{" "}
+              Payment is processed by our third-party payment provider and we do not store card
+              details.
             </p>
           ),
         },

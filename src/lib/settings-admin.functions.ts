@@ -212,8 +212,15 @@ export const adminReadiness = createServerFn({ method: "POST" })
             ? yes("Payment configured", "BobPay merchant credentials present.")
             : cfg("Payment configured", "BobPay merchant ID, API key and API URL are not all set."),
           env("BOBPAY_WEBHOOK_SECRET")
-            ? yes("Secure webhook configured", "Signature verification active; unsigned calls are rejected.")
+            ? partial(
+                "Secure webhook configured",
+                "A webhook secret is set and signature verification is active; unsigned calls are rejected. Confirm the stored value is BobPay's live secret and not the development placeholder.",
+              )
             : cfg("Secure webhook configured", "Webhook secret missing — payment callbacks are refused (fails closed)."),
+          cfg(
+            "Paid-amount verification",
+            "BobPay's confirmation currently reports only reference, transaction ID and status. Ask BobPay for the documented paid amount and currency fields (and where they appear in the signed payload) so the amount paid can be checked against the order total before an order is marked paid.",
+          ),
           env("RESEND_API_KEY")
             ? yes("Transactional email configured", "Sending key present.")
             : cfg("Transactional email configured", "No email sending key — order and registration emails are skipped."),

@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useState } from "react";
 import { AuthCard, AuthField, authInputCls } from "@/components/account/AuthCard";
 import { GoldButton } from "@/components/brand/GoldButton";
@@ -6,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/account/register")({
-  head: () => ({ meta: [{ title: "Terps — Create Account" }] }),
+  head: () => privateHead("Terps — Create Account"),
   component: RegisterPage,
 });
 

@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -8,7 +9,7 @@ import { GoldButton } from "@/components/brand/GoldButton";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/wholesale/login")({
-  head: () => ({ meta: [{ title: "Terps — Stockist Sign In" }] }),
+  head: () => privateHead("Terps — Stockist Sign In"),
   validateSearch: (s: Record<string, unknown>) => ({
     redirect: typeof s.redirect === "string" ? s.redirect : "/wholesale/dashboard",
   }),

@@ -16,7 +16,7 @@ import { MapPin } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useState } from "react";
 import type { Strain } from "@/lib/types";
-import { PUBLIC_SITE_URL, seoMeta, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { PUBLIC_SITE_URL, canonicalUrl, seoMeta, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { canonicalSlug, lineMeta } from "@/lib/product-lines";
 import { DELIVERY_COPY } from "@/lib/brand";
 
@@ -45,6 +45,7 @@ export const Route = createFileRoute("/strain/$slug")({
             "Explore the Terps strain library — flavour-first infused pre-rolls made in South Africa.",
           path: `/strain/${params.slug}`,
         }),
+        links: [{ rel: "canonical", href: canonicalUrl(`/strain/${params.slug}`) }],
       };
     }
     const meta = lineMeta(s.product_line);
@@ -59,10 +60,12 @@ export const Route = createFileRoute("/strain/$slug")({
       meta: seoMeta({
         title: `${s.name} · Terps`,
         description,
-        path: `/strain/${params.slug}`,
+        path: `/strain/${s.slug}`,
         ogType: "product",
         image,
       }),
+      // Legacy/alias slugs must point at the product's own preferred URL.
+      links: [{ rel: "canonical", href: canonicalUrl(`/strain/${s.slug}`) }],
       scripts: [
         {
           type: "application/ld+json",

@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
@@ -9,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/account/login")({
-  head: () => ({ meta: [{ title: "Terps — Sign In" }] }),
+  head: () => privateHead("Terps — Sign In"),
   validateSearch: (s: Record<string, unknown>) => ({
     redirect: typeof s.redirect === "string" ? s.redirect : "/account",
   }),

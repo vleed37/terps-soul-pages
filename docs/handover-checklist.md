@@ -107,3 +107,34 @@ end-to-end payment test.
 Outstanding developer item (small): once BobPay supplies its webhook payload spec,
 add an amount check against the stored order total as defence-in-depth. Signature
 verification, replay protection and single stock decrement are already in place.
+
+## Update — settings-driven legal pages and search metadata
+
+1. **Legal pages now read the admin business & legal settings.** Trading name,
+   legal entity, registration number, VAT status/number, business address,
+   telephone, sales/privacy/shipping/refunds email addresses, policy effective
+   date, processing time, delivery estimates and the returns notification period
+   all come from Admin → Settings → Business & legal. Anything still blank shows
+   an honest "to be confirmed" marker — no value is invented. The draft notice
+   only disappears once every required field is complete **and** legal review is
+   explicitly approved in admin.
+2. **Preferred-URL (canonical) tags** are emitted on the indexable public pages
+   (home, shop and both categories, product pages, strain library, stockist
+   finder, our story, wholesale landing, legal pages) using the production site
+   origin. Product pages canonicalise to their own product URL, including when
+   reached through an older slug.
+3. **Private and transactional pages are marked not-for-search**
+   (`noindex, nofollow`, no canonical, no product preview data): checkout, order
+   status, sign-in/registration/password pages, the account area, the stockist
+   portal and its order pages, and admin.
+
+### What BobPay must supply for paid-amount verification
+
+The signed confirmation we receive today contains only `reference`,
+`transaction_id`, `status` and `event`. To validate the amount paid we need
+BobPay to document: the field carrying the amount actually paid, its unit
+(Rand or cents), the currency field, and confirmation that both are inside the
+signed payload. Once supplied, the amount is compared against the stored order
+total and mismatches are rejected without marking paid, releasing stock or
+sending confirmation. This is tracked on the readiness dashboard as
+"Paid-amount verification".

@@ -1,26 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
-import { Pending } from "@/components/layout/LegalDraftNotice";
-import { seoMeta } from "@/lib/seo";
-import { BUSINESS, contactEmail } from "@/lib/business";
+import { MailValue, Value } from "@/components/layout/LegalDraftNotice";
+import { seoHead } from "@/lib/seo";
+import { useBusiness } from "@/hooks/useBusiness";
+import { BUSINESS } from "@/lib/business";
 
 export const Route = createFileRoute("/legal/refunds")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Refund and Returns Policy · Terps",
       description: "How returns, refunds and order issues are handled by Terps.",
       path: "/legal/refunds",
     }),
-  }),
   component: RefundsPage,
 });
 
 function RefundsPage() {
-  const email = contactEmail("refund");
-  const Mail = () => (
-    <a href={`mailto:${email}`} className="ghost-link">
-      {email}
-    </a>
+  const b = useBusiness();
+  const email = b.refundEmail ?? b.salesEmail;
+  const Mail = () => <MailValue v={email} label="refunds email address" />;
+  const Period = () => (
+    <Value v={b.returnNotificationPeriod} label="return notification period" />
   );
 
   return (
@@ -29,7 +29,7 @@ function RefundsPage() {
       title="Refund and Returns Policy"
       intro={
         <p>
-          This policy explains when you can return a {BUSINESS.tradingName} order and how refunds are
+          This policy explains when you can return a {b.tradingName} order and how refunds are
           handled. It is a draft pending legal review, and the return notification period has not yet
           been confirmed.
         </p>
@@ -63,9 +63,8 @@ function RefundsPage() {
           body: (
             <p>
               If your order arrives damaged, defective or is not what you ordered, notify us within{" "}
-              <Pending label="return notification period" /> of delivery. Once we have confirmed the
-              problem, we will replace the item or refund it, and we will carry the cost of returning
-              it.
+              <Period /> of delivery. Once we have confirmed the problem, we will replace the item or
+              refund it, and we will carry the cost of returning it.
             </p>
           ),
         },
@@ -75,8 +74,8 @@ function RefundsPage() {
             <p>
               Because these are consumable cannabis products, we cannot accept the return of any item
               whose seal or packaging has been opened, for reasons of product integrity and safety.
-              Where an unopened item may be returned, the notification period is{" "}
-              <Pending label="return notification period" /> and return shipping is for your account.
+              Where an unopened item may be returned, the notification period is <Period /> and return
+              shipping is for your account.
             </p>
           ),
         },
@@ -103,7 +102,7 @@ function RefundsPage() {
           heading: "Contact",
           body: (
             <p>
-              Returns and refunds: <Mail />. Telephone: <Pending label="phone number" />.
+              Returns and refunds: <Mail />. Telephone: <Value v={b.phone} label="phone number" />.
             </p>
           ),
         },

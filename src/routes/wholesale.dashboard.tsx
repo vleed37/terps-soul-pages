@@ -1,4 +1,5 @@
 import { createFileRoute, Link, Outlet, redirect, useRouterState, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { LogOut } from "lucide-react";
@@ -13,6 +14,7 @@ import { DashboardSkeleton } from "@/components/layout/PageSkeletons";
 import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/wholesale/dashboard")({
+  head: () => privateHead("Terps — Stockist Portal"),
   beforeLoad: async ({ location }) => {
     // Session lives in browser storage; during SSR there is nothing to read, so
     // gate on the client only (the route's own data fetch still enforces access).

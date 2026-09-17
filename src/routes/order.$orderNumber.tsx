@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { privateHead } from "@/lib/seo";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Check, Clock, Package, Truck } from "lucide-react";
 import { getOrderByNumber } from "@/lib/checkout.functions";
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/order/$orderNumber")({
       queryKey: ["order", params.orderNumber],
       queryFn: () => getOrderByNumber({ data: { orderNumber: params.orderNumber } }),
     }),
-  head: ({ params }) => ({ meta: [{ title: `Terps — Order ${params.orderNumber}` }] }),
+  head: ({ params }) => privateHead(`Terps — Order ${params.orderNumber}`),
   component: OrderPage,
   notFoundComponent: () => (
     <div className="py-40 text-center">

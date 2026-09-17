@@ -12,18 +12,17 @@ import { useAuth } from "@/hooks/use-auth";
 import { createWholesaleAccount, getMyWholesaleAccount } from "@/lib/wholesale.functions";
 import { motion, useReducedMotion } from "framer-motion";
 import wholesaleHero from "@/assets/shoot/wholesale-hero-display.jpg.asset.json";
-import { seoMeta } from "@/lib/seo";
+import { seoHead } from "@/lib/seo";
 import { SALES_EMAIL } from "@/lib/brand";
 
 export const Route = createFileRoute("/wholesale/")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Become a Terps Stockist · Terps",
       description:
         "Stock Terps at your dispensary or lounge. Sign up in minutes for wholesale box pricing, early access to drops and brand support.",
       path: "/wholesale",
     }),
-  }),
   component: WholesalePage,
 });
 

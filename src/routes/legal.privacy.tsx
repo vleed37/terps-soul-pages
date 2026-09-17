@@ -1,38 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
-import { Pending } from "@/components/layout/LegalDraftNotice";
-import { seoMeta } from "@/lib/seo";
-import { BUSINESS, SELLER_REFERENCE, contactEmail } from "@/lib/business";
+import { MailValue, Pending, Value } from "@/components/layout/LegalDraftNotice";
+import { seoHead } from "@/lib/seo";
+import { useBusiness } from "@/hooks/useBusiness";
 
 export const Route = createFileRoute("/legal/privacy")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Privacy Policy · Terps",
       description:
         "How Terps collects, uses and protects your personal information under POPIA.",
       path: "/legal/privacy",
     }),
-  }),
   component: PrivacyPage,
 });
 
-function MailLink({ purpose }: { purpose: "privacy" | "sales" }) {
-  const email = contactEmail(purpose);
-  return (
-    <a href={`mailto:${email}`} className="ghost-link">
-      {email}
-    </a>
-  );
-}
-
 function PrivacyPage() {
+  const b = useBusiness();
+  const seller = b.legalEntityName ?? `The operator of ${b.tradingName}`;
+  const MailLink = ({ purpose }: { purpose: "privacy" | "sales" }) =>
+    purpose === "privacy" ? (
+      <MailValue v={b.privacyEmail ?? b.salesEmail} label="privacy email address" />
+    ) : (
+      <MailValue v={b.salesEmail} label="sales email address" />
+    );
+
   return (
     <LegalPage
       eyebrow="Legal"
       title="Privacy Policy"
       intro={
         <p>
-          {SELLER_REFERENCE}, trading as {BUSINESS.tradingName}, respects your privacy. This
+          {seller}, trading as {b.tradingName}, respects your privacy. This
           policy describes how we collect, use, share and protect personal information in line
           with the Protection of Personal Information Act, 2013 (POPIA). It is a draft pending
           legal review.
@@ -43,9 +42,9 @@ function PrivacyPage() {
           heading: "Who Is Responsible",
           body: (
             <p>
-              The responsible party for this processing is {BUSINESS.tradingName}. The registered
-              legal entity is <Pending label="legal entity name" /> and the registered address is{" "}
-              <Pending label="business address" />. Privacy queries can be sent to{" "}
+              The responsible party for this processing is {b.tradingName}. The registered legal
+              entity is <Value v={b.legalEntityName} label="legal entity name" /> and the registered
+              address is <Value v={b.address} label="business address" />. Privacy queries can be sent to{" "}
               <MailLink purpose="privacy" />.
             </p>
           ),
@@ -203,7 +202,7 @@ function PrivacyPage() {
           body: (
             <p>
               Privacy queries: <MailLink purpose="privacy" />. General queries:{" "}
-              <MailLink purpose="sales" />. Telephone: <Pending label="phone number" />.
+              <MailLink purpose="sales" />. Telephone: <Value v={b.phone} label="phone number" />.
             </p>
           ),
         },

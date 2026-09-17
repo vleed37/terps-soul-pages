@@ -1,32 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/layout/LegalPage";
+import { MailValue, Value } from "@/components/layout/LegalDraftNotice";
 import { Pending } from "@/components/layout/LegalDraftNotice";
-import { seoMeta } from "@/lib/seo";
-import { BUSINESS, contactEmail } from "@/lib/business";
-import { DELIVERY_COPY } from "@/lib/brand";
+import { seoHead } from "@/lib/seo";
+import { BUSINESS } from "@/lib/business";
+import { useBusiness } from "@/hooks/useBusiness";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { deliveryCopy } from "@/lib/settings";
 
 export const Route = createFileRoute("/legal/shipping")({
-  head: () => ({
-    meta: seoMeta({
+  head: () =>
+    seoHead({
       title: "Shipping and Delivery Policy · Terps",
       description:
         "Delivery areas, processing and delivery arrangements for Terps orders in South Africa.",
       path: "/legal/shipping",
     }),
-  }),
   component: ShippingPage,
 });
 
 function ShippingPage() {
-  const email = contactEmail("shipping");
+  const settings = useSiteSettings();
+  const b = useBusiness();
+  const email = b.shippingEmail ?? b.salesEmail;
+
   return (
     <LegalPage
       eyebrow="Legal"
       title="Shipping and Delivery Policy"
       intro={
         <p>
-          {BUSINESS.tradingName} operates on a delivery-only basis within {BUSINESS.jurisdiction}.
-          This policy describes how orders are prepared and delivered. It is a draft: the delivery
+          {b.tradingName} operates on a delivery-only basis within {BUSINESS.jurisdiction}. This
+          policy describes how orders are prepared and delivered. It is a draft: the delivery
           partner, delivery timeframes and delivery charges are not yet confirmed.
         </p>
       }
@@ -55,8 +60,8 @@ function ShippingPage() {
           body: (
             <p>
               Orders are prepared once payment is confirmed. Our standard processing time is{" "}
-              <Pending label="processing time" />, after which the order is handed to the delivery
-              partner.
+              <Value v={b.processingTime} label="processing time" />, after which the order is handed
+              to the delivery partner.
             </p>
           ),
         },
@@ -64,16 +69,19 @@ function ShippingPage() {
           heading: "Delivery Timeframes",
           body: (
             <p>
-              Standard delivery is estimated at <Pending label="standard delivery estimate" /> and
-              express delivery at <Pending label="express delivery estimate" />. Until these are
-              confirmed we do not quote a delivery timeframe, and no timeframe shown anywhere on this
-              website should be treated as a guarantee.
+              Standard delivery is estimated at{" "}
+              <Value v={b.standardDeliveryEstimate} label="standard delivery estimate" /> and express
+              delivery at <Value v={b.expressDeliveryEstimate} label="express delivery estimate" />.
+              Until these are confirmed we do not quote a delivery timeframe, and no timeframe shown
+              anywhere on this website should be treated as a guarantee.
             </p>
           ),
         },
         {
           heading: "Delivery Charges",
-          body: <p>{DELIVERY_COPY} Delivery charges are not advertised in advance of checkout.</p>,
+          body: (
+            <p>{deliveryCopy(settings)} Delivery charges are not advertised in advance of checkout.</p>
+          ),
         },
         {
           heading: "Delivery Method",
@@ -109,11 +117,7 @@ function ShippingPage() {
           heading: "Contact",
           body: (
             <p>
-              Delivery queries:{" "}
-              <a href={`mailto:${email}`} className="ghost-link">
-                {email}
-              </a>
-              .
+              Delivery queries: <MailValue v={email} label="shipping email address" />.
             </p>
           ),
         },

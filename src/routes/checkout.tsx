@@ -12,6 +12,7 @@ import { initiateBobpayPayment } from "@/lib/checkout.functions";
 import { getMyCustomer, listMyAddresses, createAddress } from "@/lib/account.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
+import { DELIVERY_COPY, formatDeliveryFee } from "@/lib/brand";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Terps — Checkout" }] }),
@@ -286,7 +287,7 @@ function CheckoutPage() {
                   current={method}
                   register={register("deliveryMethod")}
                   label="Courier Delivery"
-                  hint="2–4 business days · Free over R500"
+                  hint={DELIVERY_COPY}
                 />
               </div>
 
@@ -412,7 +413,7 @@ function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-[color:var(--text-secondary)]">
                   <span>Delivery</span>
-                  <span>{totals.deliveryFee === 0 ? "Free" : `R${totals.deliveryFee}`}</span>
+                  <span>{formatDeliveryFee(totals.deliveryFee)}</span>
                 </div>
               </div>
               <Hairline className="my-6" />

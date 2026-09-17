@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useCart, cartSelectors, computeTotals, FREE_DELIVERY_THRESHOLD } from "@/lib/store/cart";
+import { useCart, cartSelectors, computeTotals } from "@/lib/store/cart";
+import { DELIVERY_PRICING_CONFIRMED, FREE_DELIVERY_THRESHOLD, formatDeliveryFee } from "@/lib/brand";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -18,7 +19,10 @@ export function CartDrawer() {
   const itemCount = useCart(cartSelectors.itemCount);
   const subtotal = useCart(cartSelectors.subtotal);
   const totals = computeTotals(subtotal);
-  const remainingForFree = Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal);
+  // Threshold messaging only appears once the delivery model is signed off.
+  const remainingForFree = DELIVERY_PRICING_CONFIRMED
+    ? Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal)
+    : 0;
 
   useEffect(() => {
     if (!open) return;
@@ -164,7 +168,7 @@ export function CartDrawer() {
                   </div>
                   <div className="flex justify-between text-[color:var(--text-secondary)]">
                     <span>Delivery</span>
-                    <span>{totals.deliveryFee === 0 ? "Free" : `R${totals.deliveryFee}`}</span>
+                    <span>{formatDeliveryFee(totals.deliveryFee)}</span>
                   </div>
                   <Hairline className="my-3" />
                   <div className="flex items-baseline justify-between">

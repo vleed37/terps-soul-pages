@@ -56,14 +56,17 @@ function OrderDetailPage() {
         <Hairline className="mt-3 mb-6" />
         <ul className="divide-y divide-[color:var(--border-subtle)]">
           {(o.items ?? []).map((it) => (
-            <li key={it.id} className="flex justify-between gap-4 py-4">
-              <div>
-                <p className="font-display text-lg">{it.strain_name}</p>
-                <p className="meta-xs text-[color:var(--text-tertiary)]">
-                  {it.boxes_ordered} × box of {it.box_quantity_per_unit} units · R{Number(it.box_price_zar).toFixed(0)}/box
-                </p>
+            <li key={it.id} className="py-4">
+              <div className="flex justify-between gap-4">
+                <div>
+                  <p className="font-display text-lg">{it.strain_name}</p>
+                  <p className="meta-xs text-[color:var(--text-tertiary)]">
+                    {it.boxes_ordered} × box of {it.box_quantity_per_unit} units · R{Number(it.box_price_zar).toFixed(0)}/box
+                  </p>
+                </div>
+                <p className="font-display text-lg whitespace-nowrap">R{Number(it.line_total_zar).toFixed(0)}</p>
               </div>
-              <p className="font-display text-lg whitespace-nowrap">R{Number(it.line_total_zar).toFixed(0)}</p>
+              {it.item_type === "mixed_box" && <BoxComposition item={it} />}
             </li>
           ))}
         </ul>
@@ -114,6 +117,47 @@ function OrderDetailPage() {
           <p className="mt-3 text-sm text-[color:var(--text-secondary)]">{o.customer_notes}</p>
         </div>
       )}
+    </div>
+  );
+}
+
+type CompositionEntry = { strain_name?: string; slug?: string; units?: number };
+
+/**
+ * Immutable order snapshot of a mixed/variety box. Nothing is recalculated —
+ * this renders exactly what was stored on the order item.
+ */
+function BoxComposition({
+  item,
+}: {
+  item: {
+    box_composition: unknown;
+    box_quantity_per_unit: number;
+    product_line: string | null;
+  };
+}) {
+  const raw = item.box_composition;
+  const entries: CompositionEntry[] = Array.isArray(raw) ? (raw as CompositionEntry[]) : [];
+  if (entries.length === 0) return null;
+  const family =
+    item.product_line === "caviar_stix" ? "Caviar Sticks" : "Infused Pre-Rolls";
+
+  return (
+    <div className="mt-3 rounded-[6px] border border-[color:var(--border-subtle)] bg-[color:var(--bg-elevated)] px-4 py-3">
+      <p className="meta-xs text-[color:var(--text-tertiary)]">
+        VARIETY BOX — {family} · {item.box_quantity_per_unit} UNITS
+      </p>
+      <ul className="mt-2 space-y-1">
+        {entries.map((e, i) => (
+          <li
+            key={`${e.slug ?? e.strain_name ?? i}`}
+            className="flex justify-between gap-3 text-sm text-[color:var(--text-secondary)]"
+          >
+            <span>{e.strain_name ?? "—"}</span>
+            <span className="whitespace-nowrap tabular-nums">× {e.units ?? 0}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

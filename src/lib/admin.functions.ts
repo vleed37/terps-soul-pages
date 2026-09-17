@@ -243,3 +243,60 @@ export const adminUpdateWholesalePricing = createServerFn({ method: "POST" })
 
     return { ok: true as const };
   });
+/**
+ * Admin retry for stockist geocoding.
+ *
+ * Re-resolves coordinates for opted-in stockist accounts whose public address
+ * exists. Existing coordinates are only replaced on a successful lookup, so a
+ * failed retry never destroys manually stored values.
+ */
+export const adminRetryStockistGeocoding = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ accountId: z.string().uuid().optional() }).parse(d ?? {}),
+  )
+  .handler(async ({ data, context }) => {
+    assertAdmin(context.claims as Record<string, unknown>);
+    const { geocodeAddress, geocodeProviderName } = await import("@/lib/geocode.server");
+    const provider = geocodeProviderName();
+    if (!provider) {
+      return {
+        provider: null,
+        processed: 0,
+        updated: 0,
+        failed: 0,
+        message:
+          "No geocoding provider configured. Link the Google Maps connector (GOOGLE_MAPS_API_KEY) or set GEOCODING_API_KEY.",
+      };
+    }
+
+    let q = supabaseAdmin
+      .from("wholesale_accounts")
+      .select("id,public_address,public_city,public_province,public_latitude,public_longitude")
+      .eq("map_listing_opt_in", true)
+      .not("public_address", "is", null);
+    if (data.accountId) q = q.eq("id", data.accountId);
+    const { data: rows, error } = await q;
+    if (error) throw new Error(error.message);
+
+    let updated = 0;
+    let failed = 0;
+    for (const row of rows ?? []) {
+      const result = await geocodeAddress({
+        address: row.public_address,
+        city: row.public_city,
+        province: row.public_province,
+      });
+      if (result.status === "ok") {
+        const { error: uErr } = await supabaseAdmin
+          .from("wholesale_accounts")
+          .update({ public_latitude: result.latitude, public_longitude: result.longitude })
+          .eq("id", row.id);
+        if (uErr) failed += 1;
+        else updated += 1;
+      } else {
+        failed += 1;
+      }
+    }
+    return { provider, processed: (rows ?? []).length, updated, failed, message: null };
+  });

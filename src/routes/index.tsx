@@ -51,6 +51,10 @@ function Home() {
   const preRolls = list.filter((s) => s.product_line === "pre_roll");
   const caviar = list.filter((s) => s.product_line === "caviar_stix");
 
+  const settings = useSiteSettings();
+  const heroMedia = imageUrl(settings, "image.home_hero") ?? HERO_FALLBACK;
+  const stockistMedia = imageUrl(settings, "image.home_stockist") ?? stockistImage;
+
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);

@@ -105,6 +105,7 @@ function EditStrain() {
           is_active: s.is_active !== false,
         });
         setAiName(s.name ?? "");
+        setImageUrl(s.product_image_url ?? null);
       })
       .catch((e) => toast.error(e.message ?? "Failed to load"))
       .finally(() => setLoading(false));

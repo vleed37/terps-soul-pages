@@ -9,7 +9,35 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
         const secret = process.env.BOBPAY_WEBHOOK_SECRET;
         const body = await request.text();
 
-        if (secret) {
+        /**
+         * Signature verification FAILS CLOSED.
+         *
+         * Without BOBPAY_WEBHOOK_SECRET no payment status is ever processed:
+         * no order is marked paid, no stock is decremented, no email is sent.
+         *
+         * Local-development bypass (never usable in production): set BOTH
+         *   NODE_ENV=development  (production builds set NODE_ENV=production)
+         *   BOBPAY_WEBHOOK_DEV_BYPASS=i-understand-this-skips-signature-checks
+         * Both conditions must hold, so it cannot be triggered accidentally.
+         */
+        const devBypass =
+          process.env.NODE_ENV !== "production" &&
+          process.env.BOBPAY_WEBHOOK_DEV_BYPASS ===
+            "i-understand-this-skips-signature-checks";
+
+        if (!secret) {
+          if (!devBypass) {
+            console.error(
+              "CONFIGURATION ERROR: BOBPAY_WEBHOOK_SECRET is not set. Payment webhooks are rejected until it is configured.",
+            );
+            return new Response("Webhook signature verification not configured", {
+              status: 503,
+            });
+          }
+          console.warn(
+            "DEV ONLY: BobPay webhook signature verification bypassed (BOBPAY_WEBHOOK_DEV_BYPASS).",
+          );
+        } else {
           const sig = request.headers.get("x-bobpay-signature") || "";
           const expected = createHmac("sha256", secret).update(body).digest("hex");
           const a = Buffer.from(sig);
@@ -17,8 +45,6 @@ export const Route = createFileRoute("/api/public/bobpay-webhook")({
           if (a.length !== b.length || !timingSafeEqual(a, b)) {
             return new Response("Invalid signature", { status: 401 });
           }
-        } else {
-          console.warn("BOBPAY_WEBHOOK_SECRET not configured — accepting webhook unverified");
         }
 
         let payload: {

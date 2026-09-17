@@ -93,8 +93,7 @@ function Home() {
               The only premium infused pre-roll you need.
             </p>
             <p className="mx-auto mt-6 max-w-xl font-body text-base leading-relaxed text-[color:var(--text-secondary)] md:text-lg">
-              Premium flower, hand-infused with cured hash and crumble. Every pre-roll is checked by hand
-              before it's sealed in its tube.
+              Flavour first: selected cultivars, cured hash and crumble, sealed in its own tube.
             </p>
           </ScrollReveal>
           {preRolls.length > 0 && (
@@ -159,7 +158,7 @@ function Home() {
             {[
               { t: "Selected Strains", d: "Hand-picked for terpene profile. Only the cultivars that earn their flavour." },
               { t: "Extended Curing", d: "Slow-cured to lock in the depth and the body. Patience over volume, every batch." },
-              { t: "Hand Infusion", d: "Premium flower, cured hash and crumble, brought together by hand." },
+              { t: "Infusion", d: "Premium flower, cured hash and crumble, brought together for flavour first." },
             ].map((c, i) => (
               <ScrollReveal key={c.t} delay={i * 0.1} className="bg-[color:var(--bg-base)] p-10 md:p-12">
                 <div className="h-px w-12 bg-[color:var(--accent-gold)]" />
@@ -176,7 +175,7 @@ function Home() {
         <img src={lifestyle3} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-[#0B0A08]/65" />
         <div className="relative mx-auto flex h-full max-w-3xl items-center justify-center px-6">
-          <PullQuote attribution="Terps">Every pre-roll is checked by hand before it's sealed.</PullQuote>
+          <PullQuote attribution="Terps">Flavour first. Every tube, every batch.</PullQuote>
         </div>
       </section>
 

@@ -19,6 +19,8 @@ import stockistImage from "@/assets/stockist-display.jpg";
 import { StrainCard } from "@/components/brand/StrainCard";
 import type { Strain } from "@/lib/types";
 import { seoMeta } from "@/lib/seo";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { imageUrl } from "@/lib/settings";
 
 /**
  * Fallback hero visual. Final photography is uploaded in Settings → Imagery and
@@ -65,7 +67,7 @@ function Home() {
       <section ref={heroRef} className="tone-dark relative h-screen w-full overflow-hidden">
         <motion.div style={{ y: bgY }} className="absolute inset-0">
           <img
-            src={HERO_MEDIA}
+            src={heroMedia}
             alt="Terps premium infused pre-roll"
             className="h-[120%] w-full object-cover"
           />

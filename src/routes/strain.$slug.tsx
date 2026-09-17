@@ -51,8 +51,10 @@ export const Route = createFileRoute("/strain/$slug")({
     const description = `${s.name} — ${meta.name} by Terps.${
       s.tagline ? ` ${s.tagline}.` : ""
     }`;
-    const localImg = getStrainProductImage(s.slug) || getStrainImage(s.slug);
-    const image = localImg || DEFAULT_OG_IMAGE;
+    // Social previews need an absolute URL, so only uploaded photography can be
+    // used here — bundled assets resolve relative and would break the preview.
+    const uploaded = s.product_image_url || s.hero_image_url;
+    const image = uploaded && uploaded.startsWith("http") ? uploaded : DEFAULT_OG_IMAGE;
     return {
       meta: seoMeta({
         title: `${s.name} · Terps`,

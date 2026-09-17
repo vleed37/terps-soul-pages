@@ -163,7 +163,9 @@ export function missingBusinessFields(s: SettingsMap): string[] {
     "business.delivery_estimate_express": b.expressDeliveryEstimate,
     "business.returns_period": b.returnNotificationPeriod,
   };
-  const missing = BUSINESS_FIELDS.filter((f) => f.required && !value[f.key]).map((f) => f.label);
+  const missing: string[] = BUSINESS_FIELDS.filter((f) => f.required && !value[f.key]).map(
+    (f) => f.label as string,
+  );
   // VAT number is only required once the owner confirms VAT registration.
   if (vatStatus(s) === "registered" && !b.vatNumber) missing.push("VAT registration number");
   if (vatStatus(s) === "tbc") missing.push("VAT registration status (yes / no)");

@@ -265,6 +265,7 @@ export type Database = {
           delivery_method: string | null
           discount: number
           estimated_delivery_date: string | null
+          fulfilled_at: string | null
           guest_email: string | null
           guest_name: string | null
           guest_phone: string | null
@@ -275,6 +276,7 @@ export type Database = {
           payment_completed_at: string | null
           payment_method: string | null
           payment_status: string
+          shipped_at: string | null
           status: string
           subtotal: number
           total: number
@@ -294,6 +296,7 @@ export type Database = {
           delivery_method?: string | null
           discount?: number
           estimated_delivery_date?: string | null
+          fulfilled_at?: string | null
           guest_email?: string | null
           guest_name?: string | null
           guest_phone?: string | null
@@ -304,6 +307,7 @@ export type Database = {
           payment_completed_at?: string | null
           payment_method?: string | null
           payment_status?: string
+          shipped_at?: string | null
           status?: string
           subtotal: number
           total: number
@@ -323,6 +327,7 @@ export type Database = {
           delivery_method?: string | null
           discount?: number
           estimated_delivery_date?: string | null
+          fulfilled_at?: string | null
           guest_email?: string | null
           guest_name?: string | null
           guest_phone?: string | null
@@ -333,6 +338,7 @@ export type Database = {
           payment_completed_at?: string | null
           payment_method?: string | null
           payment_status?: string
+          shipped_at?: string | null
           status?: string
           subtotal?: number
           total?: number
@@ -581,10 +587,59 @@ export type Database = {
         }
         Relationships: []
       }
+      strain_terpenes: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          percentage: number | null
+          prominence: number
+          strain_id: string
+          terpene_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          percentage?: number | null
+          prominence?: number
+          strain_id: string
+          terpene_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          percentage?: number | null
+          prominence?: number
+          strain_id?: string
+          terpene_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "strain_terpenes_strain_id_fkey"
+            columns: ["strain_id"]
+            isOneToOne: false
+            referencedRelation: "strains"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "strain_terpenes_terpene_id_fkey"
+            columns: ["terpene_id"]
+            isOneToOne: false
+            referencedRelation: "terpenes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       strains: {
         Row: {
           accent_color_accent: string | null
           accent_color_primary: string | null
+          archived_at: string | null
           batch_number: string | null
           cbd_percentage: number | null
           created_at: string | null
@@ -599,6 +654,7 @@ export type Database = {
           id: string
           infusion_components: string[] | null
           is_active: boolean | null
+          is_archived: boolean
           is_featured: boolean | null
           is_limited: boolean | null
           lab_name: string | null
@@ -625,6 +681,7 @@ export type Database = {
         Insert: {
           accent_color_accent?: string | null
           accent_color_primary?: string | null
+          archived_at?: string | null
           batch_number?: string | null
           cbd_percentage?: number | null
           created_at?: string | null
@@ -639,6 +696,7 @@ export type Database = {
           id?: string
           infusion_components?: string[] | null
           is_active?: boolean | null
+          is_archived?: boolean
           is_featured?: boolean | null
           is_limited?: boolean | null
           lab_name?: string | null
@@ -665,6 +723,7 @@ export type Database = {
         Update: {
           accent_color_accent?: string | null
           accent_color_primary?: string | null
+          archived_at?: string | null
           batch_number?: string | null
           cbd_percentage?: number | null
           created_at?: string | null
@@ -679,6 +738,7 @@ export type Database = {
           id?: string
           infusion_components?: string[] | null
           is_active?: boolean | null
+          is_archived?: boolean
           is_featured?: boolean | null
           is_limited?: boolean | null
           lab_name?: string | null
@@ -836,12 +896,16 @@ export type Database = {
           primary_contact_phone: string
           public_address: string | null
           public_city: string | null
+          public_geocode_status: string | null
+          public_geocoded_at: string | null
           public_latitude: number | null
           public_longitude: number | null
           public_phone: string | null
           public_province: string | null
           public_store_name: string | null
           rejection_reason: string | null
+          suspended_at: string | null
+          suspension_reason: string | null
           trading_as: string | null
           updated_at: string
           user_id: string
@@ -870,12 +934,16 @@ export type Database = {
           primary_contact_phone: string
           public_address?: string | null
           public_city?: string | null
+          public_geocode_status?: string | null
+          public_geocoded_at?: string | null
           public_latitude?: number | null
           public_longitude?: number | null
           public_phone?: string | null
           public_province?: string | null
           public_store_name?: string | null
           rejection_reason?: string | null
+          suspended_at?: string | null
+          suspension_reason?: string | null
           trading_as?: string | null
           updated_at?: string
           user_id: string
@@ -904,12 +972,16 @@ export type Database = {
           primary_contact_phone?: string
           public_address?: string | null
           public_city?: string | null
+          public_geocode_status?: string | null
+          public_geocoded_at?: string | null
           public_latitude?: number | null
           public_longitude?: number | null
           public_phone?: string | null
           public_province?: string | null
           public_store_name?: string | null
           rejection_reason?: string | null
+          suspended_at?: string | null
+          suspension_reason?: string | null
           trading_as?: string | null
           updated_at?: string
           user_id?: string
@@ -1022,11 +1094,13 @@ export type Database = {
           bobpay_transaction_id: string | null
           created_at: string
           customer_notes: string | null
+          fulfilled_at: string | null
           fulfillment_status: string
           id: string
           order_number: string
           paid_at: string | null
           payment_status: string
+          shipped_at: string | null
           shipping_address: Json
           shipping_zar: number
           subtotal_zar: number
@@ -1042,11 +1116,13 @@ export type Database = {
           bobpay_transaction_id?: string | null
           created_at?: string
           customer_notes?: string | null
+          fulfilled_at?: string | null
           fulfillment_status?: string
           id?: string
           order_number: string
           paid_at?: string | null
           payment_status?: string
+          shipped_at?: string | null
           shipping_address: Json
           shipping_zar?: number
           subtotal_zar: number
@@ -1062,11 +1138,13 @@ export type Database = {
           bobpay_transaction_id?: string | null
           created_at?: string
           customer_notes?: string | null
+          fulfilled_at?: string | null
           fulfillment_status?: string
           id?: string
           order_number?: string
           paid_at?: string | null
           payment_status?: string
+          shipped_at?: string | null
           shipping_address?: Json
           shipping_zar?: number
           subtotal_zar?: number

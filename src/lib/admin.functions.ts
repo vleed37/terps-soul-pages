@@ -2,15 +2,9 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { requireAdmin } from "@/lib/admin-auth.server";
 
-function assertAdmin(claims: Record<string, unknown> | undefined) {
-  const meta = (claims?.user_metadata as Record<string, unknown> | undefined) ?? {};
-  const appMeta = (claims?.app_metadata as Record<string, unknown> | undefined) ?? {};
-  const role = (meta.role as string | undefined) ?? (appMeta.role as string | undefined);
-  if (role !== "admin") {
-    throw new Response("Forbidden", { status: 403 });
-  }
-}
+
 
 export const generateStrainInfo = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -18,7 +12,7 @@ export const generateStrainInfo = createServerFn({ method: "POST" })
     z.object({ strainName: z.string().min(1).max(200) }).parse(d),
   )
   .handler(async ({ data, context }) => {
-    assertAdmin(context.claims as Record<string, unknown>);
+    await requireAdmin(context.userId);
 
     const LOVABLE_API_KEY = process.env.LOVABLE_API_KEY;
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -124,7 +118,7 @@ export const adminUpdateStrain = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => StrainUpdateSchema.parse(d))
   .handler(async ({ data, context }) => {
-    assertAdmin(context.claims as Record<string, unknown>);
+    await requireAdmin(context.userId);
     const { id, ...patch } = data;
     const { error } = await supabaseAdmin.from("strains").update(patch).eq("id", id);
     if (error) throw new Error(error.message);
@@ -135,7 +129,7 @@ export const adminGetStrain = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    assertAdmin(context.claims as Record<string, unknown>);
+    await requireAdmin(context.userId);
     const { data: row, error } = await supabaseAdmin
       .from("strains")
       .select("*")
@@ -148,7 +142,7 @@ export const adminGetStrain = createServerFn({ method: "POST" })
 export const adminListStrains = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    assertAdmin(context.claims as Record<string, unknown>);
+    await requireAdmin(context.userId);
     const { data, error } = await supabaseAdmin
       .from("strains")
       .select("id,slug,name,product_line,is_active,display_order,price_zar,stock_quantity")
@@ -162,7 +156,7 @@ export const adminGetWholesalePricing = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ strain_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    assertAdmin(context.claims as Record<string, unknown>);
+    await requireAdmin(context.userId);
     const [{ data: product }, { data: tiers }] = await Promise.all([
       supabaseAdmin
         .from("wholesale_products")
@@ -198,7 +192,7 @@ export const adminUpdateWholesalePricing = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    assertAdmin(context.claims as Record<string, unknown>);
+    await requireAdmin(context.userId);
 
     const sorted = [...data.tiers].sort((a, b) => a.min_boxes - b.min_boxes);
     // Contiguous, gap-free ladder ending in one open-ended tier.
@@ -256,7 +250,7 @@ export const adminRetryStockistGeocoding = createServerFn({ method: "POST" })
     z.object({ accountId: z.string().uuid().optional() }).parse(d ?? {}),
   )
   .handler(async ({ data, context }) => {
-    assertAdmin(context.claims as Record<string, unknown>);
+    await requireAdmin(context.userId);
     const { geocodeAddress, geocodeProviderName } = await import("@/lib/geocode.server");
     const provider = geocodeProviderName();
     if (!provider) {

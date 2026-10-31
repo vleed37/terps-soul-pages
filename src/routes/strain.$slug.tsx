@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, resolveProductImage, getStrain3DModel } from "@/lib/strain-assets";
+import { getStrainImage, resolveProductImage, getStrain3DModel, getUnitsPerBox } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -124,7 +124,7 @@ function StrainDetail() {
     .gallery_image_urls ?? []) as string[];
   // The display-box photo now appears on the product page too, as its own view.
   // Pack size comes from the wholesale product row so the caption stays accurate.
-  const units = s.wholesale_products?.[0]?.units_per_box;
+  const units = getUnitsPerBox(s);
   const gallery: GalleryImage[] = [
     ...(img ? [{ src: img, alt: `${s.name} — ${meta.name} by Terps` }] : []),
     ...extra.map((src) => ({ src, alt: `${s.name} — ${meta.name} by Terps` })),

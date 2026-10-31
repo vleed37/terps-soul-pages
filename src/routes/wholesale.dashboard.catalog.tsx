@@ -91,7 +91,17 @@ function WholesaleStrainCard({ s }: { s: WholesaleStrain }) {
   return (
     <div className="flex flex-col rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] p-5">
       <div className="relative aspect-square overflow-hidden rounded-[4px] bg-[color:var(--bg-elevated)]">
-        {s.product_image_url && <img src={s.product_image_url} alt={s.name} className="h-full w-full object-cover" />}
+        {s.box_image_url ? (
+          <img
+            src={s.box_image_url}
+            alt={`Terps ${s.name} ${s.units_per_box}-pack display box`}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover object-center"
+          />
+        ) : (
+          s.product_image_url && <img src={s.product_image_url} alt={s.name} loading="lazy" className="h-full w-full object-cover" />
+        )}
         {s.strain_type && <div className="absolute left-3 top-3"><StrainTypePill type={s.strain_type} /></div>}
       </div>
       <div className="mt-4 flex-1">

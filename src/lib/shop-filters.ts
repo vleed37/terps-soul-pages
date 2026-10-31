@@ -1,7 +1,6 @@
 import { z } from "zod";
 import type { Strain } from "@/lib/types";
 
-export const EFFECTS = ["daytime", "balanced", "nighttime"] as const;
 export const FLAVORS = [
   "citrus",
   "berry",
@@ -36,7 +35,6 @@ export function matchesFlavor(tags: string[] | null | undefined, family: (typeof
 
 /** Shared filter/sort search params for both category collection pages. */
 export const shopSearchSchema = z.object({
-  effect: z.array(z.enum(EFFECTS)).optional(),
   flavor: z.array(z.enum(FLAVORS)).optional(),
   avail: z.array(z.enum(AVAILABILITY)).optional(),
   strain_type: z.array(z.enum(STRAIN_TYPES)).optional(),
@@ -53,7 +51,6 @@ export function toggleArr<T extends string>(arr: T[], v: T): T[] {
 
 /** Filter + sort a strain list against the shared search params. */
 export function applyShopFilters(strains: Strain[], search: ShopSearch): Strain[] {
-  const effect = search.effect ?? [];
   const flavor = search.flavor ?? [];
   const avail = search.avail ?? [];
   const strainType = search.strain_type ?? [];
@@ -63,7 +60,6 @@ export function applyShopFilters(strains: Strain[], search: ShopSearch): Strain[
 
   const list = strains.filter((s) => {
     if (strainType.length && (!s.strain_type || !strainType.includes(s.strain_type))) return false;
-    if (effect.length && (!s.effect_category || !effect.includes(s.effect_category))) return false;
     if (flavor.length && !flavor.some((f) => matchesFlavor(s.flavor_tags, f))) return false;
     if (avail.length) {
       const isSold = s.stock_quantity <= 0;

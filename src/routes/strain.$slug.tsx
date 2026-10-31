@@ -1,11 +1,11 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, getStrainProductImage, resolveProductImage, getStrain3DModel, getUnitsPerBox } from "@/lib/strain-assets";
+import { getStrainImage, getStrainProductImage, resolveProductImage, getStrain3DModel } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
-import { EffectChip, FlavorChip } from "@/components/brand/Chips";
+import { FlavorChip } from "@/components/brand/Chips";
 import { QuantityStepper } from "@/components/brand/QuantityStepper";
 import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
 import { FindClosestStockistModal } from "@/components/brand/FindClosestStockistModal";
@@ -122,19 +122,13 @@ function StrainDetail() {
   const img = resolveProductImage(s);
   const extra = ((s as unknown as { gallery_image_urls?: string[] | null })
     .gallery_image_urls ?? []) as string[];
-  // The display-box photo now appears on the product page too, as its own view.
-  // Pack size comes from the wholesale product row so the caption stays accurate.
-  const units = getUnitsPerBox(s);
   const studio = getStrainProductImage(s.slug);
   const photoAlt = `Terps ${s.name} next to its tube`;
   const gallery: GalleryImage[] = [
     ...(img ? [{ src: img, alt: s.product_image_url ? photoAlt : `${s.name} — ${meta.name} by Terps` }] : []),
+    ...extra.filter((src) => src !== img).map((src) => ({ src, alt: photoAlt })),
     ...(s.product_image_url && studio && studio !== img && !extra.includes(studio)
       ? [{ src: studio, alt: `${s.name} — ${meta.name} by Terps` }] : []),
-    ...extra.filter((src) => src !== img).map((src) => ({ src, alt: photoAlt })),
-    ...(s.box_image_url
-      ? [{ src: s.box_image_url, alt: `Terps ${s.name}${units ? ` ${units}-pack` : ""} display box` }]
-      : []),
   ];
 
   const soldOut = s.stock_quantity <= 0;
@@ -263,30 +257,19 @@ function StrainDetail() {
           </section>
         )}
 
-        {/* 8 — Flavour words, effect classification, terpene names */}
-        {(s.effect_category || (s.flavor_tags?.length ?? 0) > 0 || terpeneNames.length > 0) && (
+        {/* 8 — Flavour words, terpene names */}
+        {((s.flavor_tags?.length ?? 0) > 0 || terpeneNames.length > 0) && (
           <section className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
             {(s.flavor_tags?.length ?? 0) > 0 && (
               <div>
                 <MetaLabel>Flavour</MetaLabel>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {s.flavor_tags!.map((f, i) => (
+                  {(s.flavor_tags ?? []).map((f, i) => (
                     <FlavorChip key={f} dominant={i === 0}>
                       {f}
                     </FlavorChip>
                   ))}
                 </div>
-              </div>
-            )}
-            {s.effect_category && (
-              <div>
-                <MetaLabel>Classification</MetaLabel>
-                <div className="mt-3">
-                  <EffectChip>{s.effect_category}</EffectChip>
-                </div>
-                <p className="mt-3 text-xs leading-[1.7] text-[color:var(--text-tertiary)]">
-                  A flavour grouping, not a promise of any physical effect.
-                </p>
               </div>
             )}
             {terpeneNames.length > 0 && (
@@ -315,7 +298,7 @@ function StrainDetail() {
           <section className="mt-12">
             <MetaLabel>Infusion components</MetaLabel>
             <div className="mt-3 flex flex-wrap gap-2">
-              {s.infusion_components!.map((c) => (
+              {(s.infusion_components ?? []).map((c) => (
                 <span
                   key={c}
                   className="inline-block rounded-full border border-[color:var(--accent-gold)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-[color:var(--accent-gold)]"

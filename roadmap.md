@@ -1,5 +1,10 @@
 # Roadmap
 
+## Done — three targeted display changes
+- [x] Restored model-first cards with actual model stills, visibility loading and normalized framing.
+- [x] Hid public effect groupings and replaced only specified wording with flavour/aroma placeholders.
+- [x] Removed retail box views, preserved wholesale photos, and browser-verified all seven galleries/cards plus mobile loading and offscreen pause; three tests pass.
+
 ## Done — client retail photography
 - [x] Uploaded eight original retail JPGs; assigned five main photos and Blue Dream gallery.
 - [x] Added inactive Sour Diesel and Northern Lights at R160 / 0.75g with supplied images and empty descriptive fields.

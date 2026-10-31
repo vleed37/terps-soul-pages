@@ -1,5 +1,10 @@
 # Roadmap
 
+## Current — client retail photography
+- [ ] Upload eight original retail JPGs and assign five main photos plus Blue Dream gallery.
+- [ ] Add inactive Sour Diesel and Northern Lights with supplied prices, weights and images.
+- [ ] Preserve 3D-first gallery, studio photos and non-product imagery; check all product photos render.
+
 ## Done — Phase 1 wholesale/email closeout
 - Security lint migration: EXECUTE revoked on 6 internal functions (all trigger/internal-only; none called via rpc(), none a column DEFAULT, none referenced in an RLS policy).
 - Loud email handling via `src/lib/email.server.ts` — every send logs type + recipient; missing key returns `{sent:false,reason:"missing_api_key"}`.

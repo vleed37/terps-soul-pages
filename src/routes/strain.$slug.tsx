@@ -126,9 +126,9 @@ function StrainDetail() {
   const photoAlt = `Terps ${s.name} next to its tube`;
   const gallery: GalleryImage[] = [
     ...(img ? [{ src: img, alt: s.product_image_url ? photoAlt : `${s.name} — ${meta.name} by Terps` }] : []),
+    ...extra.filter((src) => src !== img).map((src) => ({ src, alt: photoAlt })),
     ...(s.product_image_url && studio && studio !== img && !extra.includes(studio)
       ? [{ src: studio, alt: `${s.name} — ${meta.name} by Terps` }] : []),
-    ...extra.filter((src) => src !== img).map((src) => ({ src, alt: photoAlt })),
   ];
 
   const soldOut = s.stock_quantity <= 0;

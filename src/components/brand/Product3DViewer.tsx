@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { getModelStill } from "@/lib/model-stills";
 
 const Product3DViewerInner = lazy(
   () => import("./Product3DViewerInner")
@@ -20,6 +21,7 @@ export function Product3DViewer({
   const [loaded, setLoaded] = useState(false);
   const [ready, setReady] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const still = poster ?? getModelStill(url);
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
@@ -37,7 +39,7 @@ export function Product3DViewer({
   }, []);
   return (
     <div ref={ref} role="img" aria-label={`3D model of ${name}`} data-model-url={url} data-model-visible={visible} data-model-ready={ready} className={`relative ${className}`}>
-      {poster && !ready && <img src={poster} alt={`Still of the ${name} 3D model`} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />}
+      {still && !ready && <img src={still} alt={`Still of the ${name} 3D model`} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />}
       {loaded && <Suspense fallback={null}>
         <Product3DViewerInner url={url} active={visible && !reducedMotion} onReady={() => setReady(true)} className="absolute inset-0 h-full w-full" />
       </Suspense>}

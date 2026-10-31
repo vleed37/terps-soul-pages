@@ -93,3 +93,17 @@ export const STRAIN_3D_MODEL: Record<string, string> = {
 export function getStrain3DModel(slug: string): string | undefined {
   return STRAIN_3D_MODEL[slug];
 }
+
+/**
+ * Units in one display box, read from the product's wholesale row. The link is
+ * one-to-one, so the database hands back a single object; a one-to-many shape is
+ * accepted too so the caption never silently drops the pack size.
+ */
+export function getUnitsPerBox(strain: {
+  wholesale_products?: Array<{ units_per_box: number }> | { units_per_box: number } | null;
+}): number | undefined {
+  const row = strain.wholesale_products;
+  if (!row) return undefined;
+  const single = Array.isArray(row) ? row[0] : row;
+  return single?.units_per_box ?? undefined;
+}

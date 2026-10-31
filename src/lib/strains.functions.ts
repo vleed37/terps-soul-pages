@@ -2,7 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-const SELECT = "id,slug,name,tagline,description,story,effect_category,flavor_tags,thc_percentage,cbd_percentage,total_terpenes_percentage,batch_number,test_date,lab_name,terpene_breakdown,price_zar,stock_quantity,weight_grams,accent_color_primary,accent_color_accent,is_featured,is_limited,display_order,product_line,product_tier,strain_type,infusion_components,effects,helps_with,negatives,lineage,product_image_url,hero_image_url,gallery_image_urls";
+// `wholesale_products(units_per_box)` is read only to label the display-box
+// photo accurately ("20-pack"); no wholesale pricing is exposed to the storefront.
+const SELECT =
+  "id,slug,name,tagline,description,story,effect_category,flavor_tags,thc_percentage,cbd_percentage,total_terpenes_percentage,batch_number,test_date,lab_name,terpene_breakdown,price_zar,stock_quantity,weight_grams,accent_color_primary,accent_color_accent,is_featured,is_limited,display_order,product_line,product_tier,strain_type,infusion_components,effects,helps_with,negatives,lineage,product_image_url,hero_image_url,gallery_image_urls,box_image_url,wholesale_products(units_per_box)";
 
 export const listStrains = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await supabaseAdmin

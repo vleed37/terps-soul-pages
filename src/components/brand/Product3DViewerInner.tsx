@@ -1,15 +1,20 @@
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF, Center, Bounds, Environment, Lightformer } from "@react-three/drei";
+import { useGLTF, Center, Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 
-function Model({ url }: { url: string }) {
+function Model({ url, active, onReady }: { url: string; active: boolean; onReady: () => void }) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(url);
   const gl = useThree((s) => s.gl);
 
   // Clone once, and sharpen textures (anisotropy + correct color space).
   const model = useMemo(() => scene.clone(true), [scene]);
+  const scale = useMemo(() => {
+    const size = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
+    return 1.6 / Math.max(size.y, size.x, size.z, 0.001);
+  }, [model]);
+  const notified = useRef(false);
 
   useEffect(() => {
     const maxAniso = gl.capabilities.getMaxAnisotropy();
@@ -35,14 +40,15 @@ function Model({ url }: { url: string }) {
   }, [model, gl]);
 
   useFrame((_, delta) => {
-    if (groupRef.current) {
+    if (!notified.current) { notified.current = true; onReady(); }
+    if (groupRef.current && active) {
       groupRef.current.rotation.y += delta * 0.5;
     }
   });
 
   return (
     <Center>
-      <group ref={groupRef}>
+      <group ref={groupRef} scale={scale}>
         <primitive object={model} />
       </group>
     </Center>
@@ -52,15 +58,20 @@ function Model({ url }: { url: string }) {
 export function Product3DViewerInner({
   url,
   className = "",
+  active,
+  onReady,
 }: {
   url: string;
   className?: string;
+  active: boolean;
+  onReady: () => void;
 }) {
   return (
     <div className={className} style={{ pointerEvents: "none" }}>
       <Canvas
+        frameloop={active ? "always" : "demand"}
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 2], fov: 35 }}
+        camera={{ position: [0, 0, 3.25], fov: 35 }}
         gl={{
           alpha: true,
           antialias: true,
@@ -90,9 +101,7 @@ export function Product3DViewerInner({
             scale={[10, 4, 1]}
           />
         </Environment>
-        <Bounds fit clip observe margin={1.15}>
-          <Model url={url} />
-        </Bounds>
+        <Model url={url} active={active} onReady={onReady} />
       </Canvas>
     </div>
   );

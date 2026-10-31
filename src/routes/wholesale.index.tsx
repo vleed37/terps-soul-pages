@@ -15,6 +15,16 @@ import wholesaleHero from "@/assets/shoot/wholesale-hero-display.jpg.asset.json"
 import { seoHead } from "@/lib/seo";
 import { SALES_EMAIL } from "@/lib/brand";
 
+import gcBox from "@/assets/boxes/terps-box-20pack-infused-green-crack.jpg.asset.json";
+import bdBox from "@/assets/boxes/terps-box-20pack-infused-blue-dream.jpg.asset.json";
+import hyBox from "@/assets/boxes/terps-box-20pack-caviar-stix-hybrid-blue.jpg.asset.json";
+
+const BOX_PHOTOS = [
+  { url: gcBox.url, alt: "Terps Green Crack 20-pack display box" },
+  { url: bdBox.url, alt: "Terps Blue Dream 20-pack display box" },
+  { url: hyBox.url, alt: "Terps Caviar Stix Hybrid 20-pack display box" },
+];
+
 export const Route = createFileRoute("/wholesale/")({
   head: () =>
     seoHead({
@@ -50,6 +60,13 @@ function WholesalePage() {
                 <h3 className="mt-6 font-display text-[1.6rem] leading-tight">{c.t}</h3>
                 <p className="mt-4 font-body text-[0.95rem] leading-relaxed text-[color:var(--text-secondary)]">{c.d}</p>
               </ScrollReveal>
+            ))}
+          </div>
+          <div className="mt-10 grid grid-cols-3 gap-3 md:gap-6">
+            {BOX_PHOTOS.map((b) => (
+              <div key={b.url} className="mx-auto aspect-[2/3] w-full max-w-[1024px] overflow-hidden rounded-[8px] bg-[color:var(--bg-surface)]">
+                <img src={b.url} alt={b.alt} loading="lazy" decoding="async" width={1024} height={1536} className="h-full w-full object-cover object-center" />
+              </div>
             ))}
           </div>
         </div>

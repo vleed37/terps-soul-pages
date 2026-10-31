@@ -55,7 +55,7 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
               </span>
             )}
           </div>
-          {model ? (
+          {model && !strain.product_image_url ? (
             <Product3DViewer
               url={model}
               className={`absolute inset-0 h-full w-full ${soldOut ? "opacity-50" : ""}`}
@@ -64,9 +64,9 @@ export function CaviarStixCard({ strain }: { strain: Strain }) {
             img && (
               <motion.img
                 src={img}
-                alt={strain.name}
+                alt={`Terps ${strain.name} next to its tube`}
                 loading="lazy"
-                className="absolute left-1/2 top-1/2 max-h-[82%] w-auto -translate-x-1/2 -translate-y-1/2 select-none transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                className="absolute left-1/2 top-1/2 h-full max-h-[1536px] w-full max-w-[1024px] -translate-x-1/2 -translate-y-1/2 select-none object-cover object-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: soldOut ? 0.5 : 1 }}
                 transition={{ duration: 0.7 }}

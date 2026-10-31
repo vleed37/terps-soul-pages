@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scripts, type ErrorComponentProps } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -46,7 +46,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: BrandNotFound,
-  errorComponent: ({ error, reset }) => <BrandError error={error} reset={reset} />,
+  errorComponent: (props: ErrorComponentProps) => <BrandError error={props.error} reset={props.reset ?? (() => {})} />,
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {

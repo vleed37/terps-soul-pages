@@ -103,6 +103,7 @@ export type WholesaleStrain = {
   strain_type: "sativa" | "hybrid" | "indica" | null;
   product_line: "pre_roll" | "caviar_stix";
   product_image_url: string | null;
+  box_image_url?: string | null;
   accent_color_primary: string | null;
   weight_grams: number | null;
   /** Units contained in one wholesale box. */

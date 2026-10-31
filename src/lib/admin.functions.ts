@@ -112,6 +112,7 @@ const StrainUpdateSchema = z.object({
   stock_quantity: z.number().int().min(0).max(1000000).optional(),
   is_active: z.boolean().optional(),
   product_image_url: z.string().max(600).optional().nullable(),
+  box_image_url: z.string().max(600).optional().nullable(),
 });
 
 export const adminUpdateStrain = createServerFn({ method: "POST" })

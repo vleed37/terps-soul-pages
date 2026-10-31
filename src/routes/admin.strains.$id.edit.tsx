@@ -208,6 +208,7 @@ function EditStrain() {
 
       <div className="mt-10 space-y-6">
         <StrainImagePanel id={id} initialUrl={imageUrl} />
+        <BoxImagePanel id={id} />
         <StrainTerpenePanel strainId={id} />
       </div>
 
@@ -492,5 +493,47 @@ function EditStrain() {
         </div>
       </div>
     </section>
+  );
+}
+function BoxImagePanel({ id }: { id: string }) {
+  const getFn = useServerFn(adminGetStrain);
+  const saveFn = useServerFn(adminUpdateStrain);
+  const [url, setUrl] = useState("");
+  const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    getFn({ data: { id } }).then((s) => setUrl((s as { box_image_url?: string | null } | null)?.box_image_url ?? ""));
+  }, [id, getFn]);
+  async function save() {
+    setSaving(true);
+    try {
+      await saveFn({ data: { id, box_image_url: url.trim() || null } });
+      toast.success("Box image saved");
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  }
+  return (
+    <div className="rounded-[8px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-surface)] p-6">
+      <p className="meta-xs text-[color:var(--text-tertiary)]">BOX IMAGE (WHOLESALE ONLY)</p>
+      <div className="mt-4 flex gap-4">
+        <div className="h-36 w-24 shrink-0 overflow-hidden rounded-[4px] bg-[color:var(--bg-elevated)]">
+          {url && <img src={url} alt="Box image preview" loading="lazy" className="h-full w-full object-cover object-center" />}
+        </div>
+        <div className="flex-1 space-y-3">
+          <input
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Image URL"
+            className="w-full rounded-[4px] border border-[color:var(--border-luxe)] bg-[color:var(--bg-base)] px-3 py-2 text-sm"
+          />
+          <div className="flex gap-2">
+            <button type="button" onClick={save} disabled={saving} className="rounded-full bg-[color:var(--accent-gold)] px-4 py-2 text-sm text-[color:var(--bg-base)] disabled:opacity-50">{saving ? "Saving…" : "Save box image"}</button>
+            <button type="button" onClick={() => setUrl("")} className="ghost-link text-sm">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

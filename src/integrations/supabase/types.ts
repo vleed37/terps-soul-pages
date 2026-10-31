@@ -641,6 +641,7 @@ export type Database = {
           accent_color_primary: string | null
           archived_at: string | null
           batch_number: string | null
+          box_image_url: string | null
           cbd_percentage: number | null
           created_at: string | null
           description: string | null
@@ -683,6 +684,7 @@ export type Database = {
           accent_color_primary?: string | null
           archived_at?: string | null
           batch_number?: string | null
+          box_image_url?: string | null
           cbd_percentage?: number | null
           created_at?: string | null
           description?: string | null
@@ -725,6 +727,7 @@ export type Database = {
           accent_color_primary?: string | null
           archived_at?: string | null
           batch_number?: string | null
+          box_image_url?: string | null
           cbd_percentage?: number | null
           created_at?: string | null
           description?: string | null

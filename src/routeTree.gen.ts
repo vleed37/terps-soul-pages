@@ -9,78 +9,62 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StrainsRouteImport } from './routes/strains'
-import { Route as StockistsRouteImport } from './routes/stockists'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as CheckoutRouteImport } from './routes/checkout'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
-import { Route as ShopIndexRouteImport } from './routes/shop.index'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
-import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
-import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
-import { Route as ShopInfusedPreRollsRouteImport } from './routes/shop.infused-pre-rolls'
-import { Route as ShopCaviarSticksRouteImport } from './routes/shop.caviar-sticks'
-import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
-import { Route as LegalTermsRouteImport } from './routes/legal.terms'
-import { Route as LegalShippingRouteImport } from './routes/legal.shipping'
-import { Route as LegalRefundsRouteImport } from './routes/legal.refunds'
-import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
-import { Route as LegalCannabisDisclaimerRouteImport } from './routes/legal.cannabis-disclaimer'
-import { Route as AdminTerpenesRouteImport } from './routes/admin.terpenes'
-import { Route as AdminStockistsRouteImport } from './routes/admin.stockists'
-import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
-import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
-import { Route as AdminReadinessRouteImport } from './routes/admin.readiness'
-import { Route as AccountResetPasswordRouteImport } from './routes/account.reset-password'
-import { Route as AccountRegisterRouteImport } from './routes/account.register'
-import { Route as AccountLoginRouteImport } from './routes/account.login'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as StockistsRouteImport } from './routes/stockists'
+import { Route as StrainsRouteImport } from './routes/strains'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account.forgot-password'
-import { Route as WholesaleDashboardIndexRouteImport } from './routes/wholesale.dashboard.index'
-import { Route as AdminStrainsIndexRouteImport } from './routes/admin.strains.index'
-import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
+import { Route as AccountLoginRouteImport } from './routes/account.login'
+import { Route as AccountRegisterRouteImport } from './routes/account.register'
+import { Route as AccountResetPasswordRouteImport } from './routes/account.reset-password'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminReadinessRouteImport } from './routes/admin.readiness'
+import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminStockistsRouteImport } from './routes/admin.stockists'
+import { Route as AdminTerpenesRouteImport } from './routes/admin.terpenes'
+import { Route as LegalCannabisDisclaimerRouteImport } from './routes/legal.cannabis-disclaimer'
+import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
+import { Route as LegalRefundsRouteImport } from './routes/legal.refunds'
+import { Route as LegalShippingRouteImport } from './routes/legal.shipping'
+import { Route as LegalTermsRouteImport } from './routes/legal.terms'
+import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
+import { Route as ShopIndexRouteImport } from './routes/shop.index'
+import { Route as ShopCaviarSticksRouteImport } from './routes/shop.caviar-sticks'
+import { Route as ShopInfusedPreRollsRouteImport } from './routes/shop.infused-pre-rolls'
+import { Route as StrainSlugRouteImport } from './routes/strain.$slug'
+import { Route as WholesaleIndexRouteImport } from './routes/wholesale.index'
+import { Route as WholesaleDashboardRouteImport } from './routes/wholesale.dashboard'
+import { Route as WholesaleLoginRouteImport } from './routes/wholesale.login'
 import { Route as AuthenticatedAccountIndexRouteImport } from './routes/_authenticated/account.index'
-import { Route as WholesaleDashboardCheckoutRouteImport } from './routes/wholesale.dashboard.checkout'
-import { Route as WholesaleDashboardCatalogRouteImport } from './routes/wholesale.dashboard.catalog'
-import { Route as ApiPublicWholesaleApprovalEmailRouteImport } from './routes/api/public/wholesale-approval-email'
-import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
-import { Route as AuthenticatedAccountSettingsRouteImport } from './routes/_authenticated/account.settings'
 import { Route as AuthenticatedAccountAddressesRouteImport } from './routes/_authenticated/account.addresses'
-import { Route as WholesaleDashboardOrdersIndexRouteImport } from './routes/wholesale.dashboard.orders.index'
+import { Route as AuthenticatedAccountSettingsRouteImport } from './routes/_authenticated/account.settings'
+import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
+import { Route as AdminStrainsIndexRouteImport } from './routes/admin.strains.index'
+import { Route as ApiPublicBobpayWebhookRouteImport } from './routes/api/public/bobpay-webhook'
+import { Route as ApiPublicWholesaleApprovalEmailRouteImport } from './routes/api/public/wholesale-approval-email'
+import { Route as WholesaleDashboardIndexRouteImport } from './routes/wholesale.dashboard.index'
+import { Route as WholesaleDashboardCatalogRouteImport } from './routes/wholesale.dashboard.catalog'
+import { Route as WholesaleDashboardCheckoutRouteImport } from './routes/wholesale.dashboard.checkout'
 import { Route as AuthenticatedAccountOrdersIndexRouteImport } from './routes/_authenticated/account.orders.index'
-import { Route as WholesaleDashboardOrdersIdRouteImport } from './routes/wholesale.dashboard.orders.$id'
-import { Route as ApiPublicProductImageSplatRouteImport } from './routes/api/public/product-image/$'
-import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
-import { Route as AdminOrdersTypeIdRouteImport } from './routes/admin.orders.$type.$id'
 import { Route as AuthenticatedAccountOrdersOrderNumberRouteImport } from './routes/_authenticated/account.orders.$orderNumber'
+import { Route as AdminOrdersTypeIdRouteImport } from './routes/admin.orders.$type.$id'
+import { Route as AdminStrainsIdEditRouteImport } from './routes/admin.strains.$id.edit'
+import { Route as ApiPublicProductImageSplatRouteImport } from './routes/api/public/product-image/$'
+import { Route as WholesaleDashboardOrdersIndexRouteImport } from './routes/wholesale.dashboard.orders.index'
+import { Route as WholesaleDashboardOrdersIdRouteImport } from './routes/wholesale.dashboard.orders.$id'
 
-const StrainsRoute = StrainsRouteImport.update({
-  id: '/strains',
-  path: '/strains',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StockistsRoute = StockistsRouteImport.update({
-  id: '/stockists',
-  path: '/stockists',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -88,123 +72,29 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
-  id: '/wholesale/',
-  path: '/wholesale/',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShopIndexRoute = ShopIndexRouteImport.update({
-  id: '/shop/',
-  path: '/shop/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const WholesaleLoginRoute = WholesaleLoginRouteImport.update({
-  id: '/wholesale/login',
-  path: '/wholesale/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WholesaleDashboardRoute = WholesaleDashboardRouteImport.update({
-  id: '/wholesale/dashboard',
-  path: '/wholesale/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StrainSlugRoute = StrainSlugRouteImport.update({
-  id: '/strain/$slug',
-  path: '/strain/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShopInfusedPreRollsRoute = ShopInfusedPreRollsRouteImport.update({
-  id: '/shop/infused-pre-rolls',
-  path: '/shop/infused-pre-rolls',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShopCaviarSticksRoute = ShopCaviarSticksRouteImport.update({
-  id: '/shop/caviar-sticks',
-  path: '/shop/caviar-sticks',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
-  id: '/order/$orderNumber',
-  path: '/order/$orderNumber',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalTermsRoute = LegalTermsRouteImport.update({
-  id: '/legal/terms',
-  path: '/legal/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalShippingRoute = LegalShippingRouteImport.update({
-  id: '/legal/shipping',
-  path: '/legal/shipping',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalRefundsRoute = LegalRefundsRouteImport.update({
-  id: '/legal/refunds',
-  path: '/legal/refunds',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
-  id: '/legal/privacy',
-  path: '/legal/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalCannabisDisclaimerRoute = LegalCannabisDisclaimerRouteImport.update({
-  id: '/legal/cannabis-disclaimer',
-  path: '/legal/cannabis-disclaimer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminTerpenesRoute = AdminTerpenesRouteImport.update({
-  id: '/terpenes',
-  path: '/terpenes',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminStockistsRoute = AdminStockistsRouteImport.update({
+const StockistsRoute = StockistsRouteImport.update({
   id: '/stockists',
   path: '/stockists',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminReviewsRoute = AdminReviewsRouteImport.update({
-  id: '/reviews',
-  path: '/reviews',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminReadinessRoute = AdminReadinessRouteImport.update({
-  id: '/readiness',
-  path: '/readiness',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
-  id: '/account/reset-password',
-  path: '/account/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountRegisterRoute = AccountRegisterRouteImport.update({
-  id: '/account/register',
-  path: '/account/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountLoginRoute = AccountLoginRouteImport.update({
-  id: '/account/login',
-  path: '/account/login',
+const StrainsRoute = StrainsRouteImport.update({
+  id: '/strains',
+  path: '/strains',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
@@ -212,54 +102,120 @@ const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
   path: '/account/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WholesaleDashboardIndexRoute = WholesaleDashboardIndexRouteImport.update({
+const AccountLoginRoute = AccountLoginRouteImport.update({
+  id: '/account/login',
+  path: '/account/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRegisterRoute = AccountRegisterRouteImport.update({
+  id: '/account/register',
+  path: '/account/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
+  id: '/account/reset-password',
+  path: '/account/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => WholesaleDashboardRoute,
-} as any)
-const AdminStrainsIndexRoute = AdminStrainsIndexRouteImport.update({
-  id: '/strains/',
-  path: '/strains/',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
-  id: '/orders/',
-  path: '/orders/',
+const AdminReadinessRoute = AdminReadinessRouteImport.update({
+  id: '/readiness',
+  path: '/readiness',
   getParentRoute: () => AdminRoute,
+} as any)
+const AdminReviewsRoute = AdminReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStockistsRoute = AdminStockistsRouteImport.update({
+  id: '/stockists',
+  path: '/stockists',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTerpenesRoute = AdminTerpenesRouteImport.update({
+  id: '/terpenes',
+  path: '/terpenes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const LegalCannabisDisclaimerRoute = LegalCannabisDisclaimerRouteImport.update({
+  id: '/legal/cannabis-disclaimer',
+  path: '/legal/cannabis-disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
+  id: '/legal/privacy',
+  path: '/legal/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalRefundsRoute = LegalRefundsRouteImport.update({
+  id: '/legal/refunds',
+  path: '/legal/refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalShippingRoute = LegalShippingRouteImport.update({
+  id: '/legal/shipping',
+  path: '/legal/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTermsRoute = LegalTermsRouteImport.update({
+  id: '/legal/terms',
+  path: '/legal/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
+  id: '/order/$orderNumber',
+  path: '/order/$orderNumber',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/shop/',
+  path: '/shop/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopCaviarSticksRoute = ShopCaviarSticksRouteImport.update({
+  id: '/shop/caviar-sticks',
+  path: '/shop/caviar-sticks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopInfusedPreRollsRoute = ShopInfusedPreRollsRouteImport.update({
+  id: '/shop/infused-pre-rolls',
+  path: '/shop/infused-pre-rolls',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StrainSlugRoute = StrainSlugRouteImport.update({
+  id: '/strain/$slug',
+  path: '/strain/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WholesaleIndexRoute = WholesaleIndexRouteImport.update({
+  id: '/wholesale/',
+  path: '/wholesale/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WholesaleDashboardRoute = WholesaleDashboardRouteImport.update({
+  id: '/wholesale/dashboard',
+  path: '/wholesale/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WholesaleLoginRoute = WholesaleLoginRouteImport.update({
+  id: '/wholesale/login',
+  path: '/wholesale/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAccountIndexRoute =
   AuthenticatedAccountIndexRouteImport.update({
     id: '/account/',
     path: '/account/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const WholesaleDashboardCheckoutRoute =
-  WholesaleDashboardCheckoutRouteImport.update({
-    id: '/checkout',
-    path: '/checkout',
-    getParentRoute: () => WholesaleDashboardRoute,
-  } as any)
-const WholesaleDashboardCatalogRoute =
-  WholesaleDashboardCatalogRouteImport.update({
-    id: '/catalog',
-    path: '/catalog',
-    getParentRoute: () => WholesaleDashboardRoute,
-  } as any)
-const ApiPublicWholesaleApprovalEmailRoute =
-  ApiPublicWholesaleApprovalEmailRouteImport.update({
-    id: '/api/public/wholesale-approval-email',
-    path: '/api/public/wholesale-approval-email',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicBobpayWebhookRoute = ApiPublicBobpayWebhookRouteImport.update({
-  id: '/api/public/bobpay-webhook',
-  path: '/api/public/bobpay-webhook',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedAccountSettingsRoute =
-  AuthenticatedAccountSettingsRouteImport.update({
-    id: '/account/settings',
-    path: '/account/settings',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedAccountAddressesRoute =
@@ -268,10 +224,48 @@ const AuthenticatedAccountAddressesRoute =
     path: '/account/addresses',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const WholesaleDashboardOrdersIndexRoute =
-  WholesaleDashboardOrdersIndexRouteImport.update({
-    id: '/orders/',
-    path: '/orders/',
+const AuthenticatedAccountSettingsRoute =
+  AuthenticatedAccountSettingsRouteImport.update({
+    id: '/account/settings',
+    path: '/account/settings',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStrainsIndexRoute = AdminStrainsIndexRouteImport.update({
+  id: '/strains/',
+  path: '/strains/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ApiPublicBobpayWebhookRoute = ApiPublicBobpayWebhookRouteImport.update({
+  id: '/api/public/bobpay-webhook',
+  path: '/api/public/bobpay-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicWholesaleApprovalEmailRoute =
+  ApiPublicWholesaleApprovalEmailRouteImport.update({
+    id: '/api/public/wholesale-approval-email',
+    path: '/api/public/wholesale-approval-email',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WholesaleDashboardIndexRoute = WholesaleDashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WholesaleDashboardRoute,
+} as any)
+const WholesaleDashboardCatalogRoute =
+  WholesaleDashboardCatalogRouteImport.update({
+    id: '/catalog',
+    path: '/catalog',
+    getParentRoute: () => WholesaleDashboardRoute,
+  } as any)
+const WholesaleDashboardCheckoutRoute =
+  WholesaleDashboardCheckoutRouteImport.update({
+    id: '/checkout',
+    path: '/checkout',
     getParentRoute: () => WholesaleDashboardRoute,
   } as any)
 const AuthenticatedAccountOrdersIndexRoute =
@@ -280,33 +274,39 @@ const AuthenticatedAccountOrdersIndexRoute =
     path: '/account/orders/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const WholesaleDashboardOrdersIdRoute =
-  WholesaleDashboardOrdersIdRouteImport.update({
-    id: '/orders/$id',
-    path: '/orders/$id',
-    getParentRoute: () => WholesaleDashboardRoute,
+const AuthenticatedAccountOrdersOrderNumberRoute =
+  AuthenticatedAccountOrdersOrderNumberRouteImport.update({
+    id: '/account/orders/$orderNumber',
+    path: '/account/orders/$orderNumber',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AdminOrdersTypeIdRoute = AdminOrdersTypeIdRouteImport.update({
+  id: '/orders/$type/$id',
+  path: '/orders/$type/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStrainsIdEditRoute = AdminStrainsIdEditRouteImport.update({
+  id: '/strains/$id/edit',
+  path: '/strains/$id/edit',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicProductImageSplatRoute =
   ApiPublicProductImageSplatRouteImport.update({
     id: '/api/public/product-image/$',
     path: '/api/public/product-image/$',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AdminStrainsIdEditRoute = AdminStrainsIdEditRouteImport.update({
-  id: '/strains/$id/edit',
-  path: '/strains/$id/edit',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminOrdersTypeIdRoute = AdminOrdersTypeIdRouteImport.update({
-  id: '/orders/$type/$id',
-  path: '/orders/$type/$id',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AuthenticatedAccountOrdersOrderNumberRoute =
-  AuthenticatedAccountOrdersOrderNumberRouteImport.update({
-    id: '/account/orders/$orderNumber',
-    path: '/account/orders/$orderNumber',
-    getParentRoute: () => AuthenticatedRoute,
+const WholesaleDashboardOrdersIndexRoute =
+  WholesaleDashboardOrdersIndexRouteImport.update({
+    id: '/orders/',
+    path: '/orders/',
+    getParentRoute: () => WholesaleDashboardRoute,
+  } as any)
+const WholesaleDashboardOrdersIdRoute =
+  WholesaleDashboardOrdersIdRouteImport.update({
+    id: '/orders/$id',
+    path: '/orders/$id',
+    getParentRoute: () => WholesaleDashboardRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -638,46 +638,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/strains': {
-      id: '/strains'
-      path: '/strains'
-      fullPath: '/strains'
-      preLoaderRoute: typeof StrainsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/stockists': {
-      id: '/stockists'
-      path: '/stockists'
-      fullPath: '/stockists'
-      preLoaderRoute: typeof StockistsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -687,165 +652,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/wholesale/': {
-      id: '/wholesale/'
-      path: '/wholesale'
-      fullPath: '/wholesale/'
-      preLoaderRoute: typeof WholesaleIndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/shop/': {
-      id: '/shop/'
-      path: '/shop'
-      fullPath: '/shop/'
-      preLoaderRoute: typeof ShopIndexRouteImport
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/wholesale/login': {
-      id: '/wholesale/login'
-      path: '/wholesale/login'
-      fullPath: '/wholesale/login'
-      preLoaderRoute: typeof WholesaleLoginRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/wholesale/dashboard': {
-      id: '/wholesale/dashboard'
-      path: '/wholesale/dashboard'
-      fullPath: '/wholesale/dashboard'
-      preLoaderRoute: typeof WholesaleDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/strain/$slug': {
-      id: '/strain/$slug'
-      path: '/strain/$slug'
-      fullPath: '/strain/$slug'
-      preLoaderRoute: typeof StrainSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shop/infused-pre-rolls': {
-      id: '/shop/infused-pre-rolls'
-      path: '/shop/infused-pre-rolls'
-      fullPath: '/shop/infused-pre-rolls'
-      preLoaderRoute: typeof ShopInfusedPreRollsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shop/caviar-sticks': {
-      id: '/shop/caviar-sticks'
-      path: '/shop/caviar-sticks'
-      fullPath: '/shop/caviar-sticks'
-      preLoaderRoute: typeof ShopCaviarSticksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/order/$orderNumber': {
-      id: '/order/$orderNumber'
-      path: '/order/$orderNumber'
-      fullPath: '/order/$orderNumber'
-      preLoaderRoute: typeof OrderOrderNumberRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/legal/terms': {
-      id: '/legal/terms'
-      path: '/legal/terms'
-      fullPath: '/legal/terms'
-      preLoaderRoute: typeof LegalTermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/legal/shipping': {
-      id: '/legal/shipping'
-      path: '/legal/shipping'
-      fullPath: '/legal/shipping'
-      preLoaderRoute: typeof LegalShippingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/legal/refunds': {
-      id: '/legal/refunds'
-      path: '/legal/refunds'
-      fullPath: '/legal/refunds'
-      preLoaderRoute: typeof LegalRefundsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/legal/privacy': {
-      id: '/legal/privacy'
-      path: '/legal/privacy'
-      fullPath: '/legal/privacy'
-      preLoaderRoute: typeof LegalPrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/legal/cannabis-disclaimer': {
-      id: '/legal/cannabis-disclaimer'
-      path: '/legal/cannabis-disclaimer'
-      fullPath: '/legal/cannabis-disclaimer'
-      preLoaderRoute: typeof LegalCannabisDisclaimerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/terpenes': {
-      id: '/admin/terpenes'
-      path: '/terpenes'
-      fullPath: '/admin/terpenes'
-      preLoaderRoute: typeof AdminTerpenesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/stockists': {
-      id: '/admin/stockists'
+    '/stockists': {
+      id: '/stockists'
       path: '/stockists'
-      fullPath: '/admin/stockists'
-      preLoaderRoute: typeof AdminStockistsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/settings': {
-      id: '/admin/settings'
-      path: '/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/reviews': {
-      id: '/admin/reviews'
-      path: '/reviews'
-      fullPath: '/admin/reviews'
-      preLoaderRoute: typeof AdminReviewsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/readiness': {
-      id: '/admin/readiness'
-      path: '/readiness'
-      fullPath: '/admin/readiness'
-      preLoaderRoute: typeof AdminReadinessRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/account/reset-password': {
-      id: '/account/reset-password'
-      path: '/account/reset-password'
-      fullPath: '/account/reset-password'
-      preLoaderRoute: typeof AccountResetPasswordRouteImport
+      fullPath: '/stockists'
+      preLoaderRoute: typeof StockistsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account/register': {
-      id: '/account/register'
-      path: '/account/register'
-      fullPath: '/account/register'
-      preLoaderRoute: typeof AccountRegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/account/login': {
-      id: '/account/login'
-      path: '/account/login'
-      fullPath: '/account/login'
-      preLoaderRoute: typeof AccountLoginRouteImport
+    '/strains': {
+      id: '/strains'
+      path: '/strains'
+      fullPath: '/strains'
+      preLoaderRoute: typeof StrainsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/forgot-password': {
@@ -855,67 +701,165 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/wholesale/dashboard/': {
-      id: '/wholesale/dashboard/'
+    '/account/login': {
+      id: '/account/login'
+      path: '/account/login'
+      fullPath: '/account/login'
+      preLoaderRoute: typeof AccountLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/register': {
+      id: '/account/register'
+      path: '/account/register'
+      fullPath: '/account/register'
+      preLoaderRoute: typeof AccountRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/reset-password': {
+      id: '/account/reset-password'
+      path: '/account/reset-password'
+      fullPath: '/account/reset-password'
+      preLoaderRoute: typeof AccountResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
       path: '/'
-      fullPath: '/wholesale/dashboard/'
-      preLoaderRoute: typeof WholesaleDashboardIndexRouteImport
-      parentRoute: typeof WholesaleDashboardRoute
-    }
-    '/admin/strains/': {
-      id: '/admin/strains/'
-      path: '/strains'
-      fullPath: '/admin/strains/'
-      preLoaderRoute: typeof AdminStrainsIndexRouteImport
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/orders/': {
-      id: '/admin/orders/'
-      path: '/orders'
-      fullPath: '/admin/orders/'
-      preLoaderRoute: typeof AdminOrdersIndexRouteImport
+    '/admin/readiness': {
+      id: '/admin/readiness'
+      path: '/readiness'
+      fullPath: '/admin/readiness'
+      preLoaderRoute: typeof AdminReadinessRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/admin/reviews': {
+      id: '/admin/reviews'
+      path: '/reviews'
+      fullPath: '/admin/reviews'
+      preLoaderRoute: typeof AdminReviewsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/stockists': {
+      id: '/admin/stockists'
+      path: '/stockists'
+      fullPath: '/admin/stockists'
+      preLoaderRoute: typeof AdminStockistsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/terpenes': {
+      id: '/admin/terpenes'
+      path: '/terpenes'
+      fullPath: '/admin/terpenes'
+      preLoaderRoute: typeof AdminTerpenesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/legal/cannabis-disclaimer': {
+      id: '/legal/cannabis-disclaimer'
+      path: '/legal/cannabis-disclaimer'
+      fullPath: '/legal/cannabis-disclaimer'
+      preLoaderRoute: typeof LegalCannabisDisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacy': {
+      id: '/legal/privacy'
+      path: '/legal/privacy'
+      fullPath: '/legal/privacy'
+      preLoaderRoute: typeof LegalPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/refunds': {
+      id: '/legal/refunds'
+      path: '/legal/refunds'
+      fullPath: '/legal/refunds'
+      preLoaderRoute: typeof LegalRefundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/shipping': {
+      id: '/legal/shipping'
+      path: '/legal/shipping'
+      fullPath: '/legal/shipping'
+      preLoaderRoute: typeof LegalShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/terms': {
+      id: '/legal/terms'
+      path: '/legal/terms'
+      fullPath: '/legal/terms'
+      preLoaderRoute: typeof LegalTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/order/$orderNumber': {
+      id: '/order/$orderNumber'
+      path: '/order/$orderNumber'
+      fullPath: '/order/$orderNumber'
+      preLoaderRoute: typeof OrderOrderNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/': {
+      id: '/shop/'
+      path: '/shop'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/caviar-sticks': {
+      id: '/shop/caviar-sticks'
+      path: '/shop/caviar-sticks'
+      fullPath: '/shop/caviar-sticks'
+      preLoaderRoute: typeof ShopCaviarSticksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/infused-pre-rolls': {
+      id: '/shop/infused-pre-rolls'
+      path: '/shop/infused-pre-rolls'
+      fullPath: '/shop/infused-pre-rolls'
+      preLoaderRoute: typeof ShopInfusedPreRollsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/strain/$slug': {
+      id: '/strain/$slug'
+      path: '/strain/$slug'
+      fullPath: '/strain/$slug'
+      preLoaderRoute: typeof StrainSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wholesale/': {
+      id: '/wholesale/'
+      path: '/wholesale'
+      fullPath: '/wholesale/'
+      preLoaderRoute: typeof WholesaleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wholesale/dashboard': {
+      id: '/wholesale/dashboard'
+      path: '/wholesale/dashboard'
+      fullPath: '/wholesale/dashboard'
+      preLoaderRoute: typeof WholesaleDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wholesale/login': {
+      id: '/wholesale/login'
+      path: '/wholesale/login'
+      fullPath: '/wholesale/login'
+      preLoaderRoute: typeof WholesaleLoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/account/': {
       id: '/_authenticated/account/'
       path: '/account'
       fullPath: '/account/'
       preLoaderRoute: typeof AuthenticatedAccountIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/wholesale/dashboard/checkout': {
-      id: '/wholesale/dashboard/checkout'
-      path: '/checkout'
-      fullPath: '/wholesale/dashboard/checkout'
-      preLoaderRoute: typeof WholesaleDashboardCheckoutRouteImport
-      parentRoute: typeof WholesaleDashboardRoute
-    }
-    '/wholesale/dashboard/catalog': {
-      id: '/wholesale/dashboard/catalog'
-      path: '/catalog'
-      fullPath: '/wholesale/dashboard/catalog'
-      preLoaderRoute: typeof WholesaleDashboardCatalogRouteImport
-      parentRoute: typeof WholesaleDashboardRoute
-    }
-    '/api/public/wholesale-approval-email': {
-      id: '/api/public/wholesale-approval-email'
-      path: '/api/public/wholesale-approval-email'
-      fullPath: '/api/public/wholesale-approval-email'
-      preLoaderRoute: typeof ApiPublicWholesaleApprovalEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/bobpay-webhook': {
-      id: '/api/public/bobpay-webhook'
-      path: '/api/public/bobpay-webhook'
-      fullPath: '/api/public/bobpay-webhook'
-      preLoaderRoute: typeof ApiPublicBobpayWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/account/settings': {
-      id: '/_authenticated/account/settings'
-      path: '/account/settings'
-      fullPath: '/account/settings'
-      preLoaderRoute: typeof AuthenticatedAccountSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/account/addresses': {
@@ -925,11 +869,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountAddressesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/wholesale/dashboard/orders/': {
-      id: '/wholesale/dashboard/orders/'
+    '/_authenticated/account/settings': {
+      id: '/_authenticated/account/settings'
+      path: '/account/settings'
+      fullPath: '/account/settings'
+      preLoaderRoute: typeof AuthenticatedAccountSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/admin/orders/': {
+      id: '/admin/orders/'
       path: '/orders'
-      fullPath: '/wholesale/dashboard/orders/'
-      preLoaderRoute: typeof WholesaleDashboardOrdersIndexRouteImport
+      fullPath: '/admin/orders/'
+      preLoaderRoute: typeof AdminOrdersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/strains/': {
+      id: '/admin/strains/'
+      path: '/strains'
+      fullPath: '/admin/strains/'
+      preLoaderRoute: typeof AdminStrainsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/api/public/bobpay-webhook': {
+      id: '/api/public/bobpay-webhook'
+      path: '/api/public/bobpay-webhook'
+      fullPath: '/api/public/bobpay-webhook'
+      preLoaderRoute: typeof ApiPublicBobpayWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/wholesale-approval-email': {
+      id: '/api/public/wholesale-approval-email'
+      path: '/api/public/wholesale-approval-email'
+      fullPath: '/api/public/wholesale-approval-email'
+      preLoaderRoute: typeof ApiPublicWholesaleApprovalEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wholesale/dashboard/': {
+      id: '/wholesale/dashboard/'
+      path: '/'
+      fullPath: '/wholesale/dashboard/'
+      preLoaderRoute: typeof WholesaleDashboardIndexRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/wholesale/dashboard/catalog': {
+      id: '/wholesale/dashboard/catalog'
+      path: '/catalog'
+      fullPath: '/wholesale/dashboard/catalog'
+      preLoaderRoute: typeof WholesaleDashboardCatalogRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/wholesale/dashboard/checkout': {
+      id: '/wholesale/dashboard/checkout'
+      path: '/checkout'
+      fullPath: '/wholesale/dashboard/checkout'
+      preLoaderRoute: typeof WholesaleDashboardCheckoutRouteImport
       parentRoute: typeof WholesaleDashboardRoute
     }
     '/_authenticated/account/orders/': {
@@ -939,26 +932,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountOrdersIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/wholesale/dashboard/orders/$id': {
-      id: '/wholesale/dashboard/orders/$id'
-      path: '/orders/$id'
-      fullPath: '/wholesale/dashboard/orders/$id'
-      preLoaderRoute: typeof WholesaleDashboardOrdersIdRouteImport
-      parentRoute: typeof WholesaleDashboardRoute
-    }
-    '/api/public/product-image/$': {
-      id: '/api/public/product-image/$'
-      path: '/api/public/product-image/$'
-      fullPath: '/api/public/product-image/$'
-      preLoaderRoute: typeof ApiPublicProductImageSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/strains/$id/edit': {
-      id: '/admin/strains/$id/edit'
-      path: '/strains/$id/edit'
-      fullPath: '/admin/strains/$id/edit'
-      preLoaderRoute: typeof AdminStrainsIdEditRouteImport
-      parentRoute: typeof AdminRoute
+    '/_authenticated/account/orders/$orderNumber': {
+      id: '/_authenticated/account/orders/$orderNumber'
+      path: '/account/orders/$orderNumber'
+      fullPath: '/account/orders/$orderNumber'
+      preLoaderRoute: typeof AuthenticatedAccountOrdersOrderNumberRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/admin/orders/$type/$id': {
       id: '/admin/orders/$type/$id'
@@ -967,12 +946,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersTypeIdRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_authenticated/account/orders/$orderNumber': {
-      id: '/_authenticated/account/orders/$orderNumber'
-      path: '/account/orders/$orderNumber'
-      fullPath: '/account/orders/$orderNumber'
-      preLoaderRoute: typeof AuthenticatedAccountOrdersOrderNumberRouteImport
-      parentRoute: typeof AuthenticatedRoute
+    '/admin/strains/$id/edit': {
+      id: '/admin/strains/$id/edit'
+      path: '/strains/$id/edit'
+      fullPath: '/admin/strains/$id/edit'
+      preLoaderRoute: typeof AdminStrainsIdEditRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/api/public/product-image/$': {
+      id: '/api/public/product-image/$'
+      path: '/api/public/product-image/$'
+      fullPath: '/api/public/product-image/$'
+      preLoaderRoute: typeof ApiPublicProductImageSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wholesale/dashboard/orders/': {
+      id: '/wholesale/dashboard/orders/'
+      path: '/orders'
+      fullPath: '/wholesale/dashboard/orders/'
+      preLoaderRoute: typeof WholesaleDashboardOrdersIndexRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
+    }
+    '/wholesale/dashboard/orders/$id': {
+      id: '/wholesale/dashboard/orders/$id'
+      path: '/orders/$id'
+      fullPath: '/wholesale/dashboard/orders/$id'
+      preLoaderRoute: typeof WholesaleDashboardOrdersIdRouteImport
+      parentRoute: typeof WholesaleDashboardRoute
     }
   }
 }

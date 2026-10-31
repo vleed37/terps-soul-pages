@@ -304,7 +304,7 @@ async function loadWholesaleCatalog(strainIds?: string[]) {
     supabaseAdmin
       .from("strains")
       .select(
-        "id,slug,name,tagline,strain_type,product_line,product_image_url,accent_color_primary,weight_grams,price_zar,is_active,display_order",
+        "id,slug,name,tagline,strain_type,product_line,product_image_url,box_image_url,accent_color_primary,weight_grams,price_zar,is_active,display_order",
       )
       .in("id", ids),
   ]);
@@ -340,6 +340,7 @@ export const listWholesaleStrains = createServerFn({ method: "GET" })
           strain_type: s.strain_type,
           product_line: s.product_line,
           product_image_url: s.product_image_url,
+          box_image_url: s.box_image_url,
           accent_color_primary: s.accent_color_primary,
           weight_grams: s.weight_grams,
           units_per_box: p.units_per_box,

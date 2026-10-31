@@ -1,9 +1,9 @@
 # Roadmap
 
-## Current — client retail photography
-- [ ] Upload eight original retail JPGs and assign five main photos plus Blue Dream gallery.
-- [ ] Add inactive Sour Diesel and Northern Lights with supplied prices, weights and images.
-- [ ] Preserve 3D-first gallery, studio photos and non-product imagery; check all product photos render.
+## Done — client retail photography
+- [x] Uploaded eight original retail JPGs; assigned five main photos and Blue Dream gallery.
+- [x] Added inactive Sour Diesel and Northern Lights at R160 / 0.75g with supplied images and empty descriptive fields.
+- [x] Preserved 3D-first gallery, studio photos and non-product imagery; browser-checked all seven galleries with no broken images or runtime errors.
 
 ## Done — Phase 1 wholesale/email closeout
 - Security lint migration: EXECUTE revoked on 6 internal functions (all trigger/internal-only; none called via rpc(), none a column DEFAULT, none referenced in an RLS policy).

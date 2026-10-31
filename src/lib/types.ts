@@ -34,6 +34,10 @@ export type Strain = {
   product_image_url?: string | null;
   hero_image_url?: string | null;
   gallery_image_urls?: string[] | null;
+  /** Display-box photo, shown in the product gallery alongside the studio still. */
+  box_image_url?: string | null;
+  /** Only the units-per-box count is read, used to label the box photo. */
+  wholesale_products?: Array<{ units_per_box: number }> | { units_per_box: number } | null;
 };
 
 export type Terpene = {

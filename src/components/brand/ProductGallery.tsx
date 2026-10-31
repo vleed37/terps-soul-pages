@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Product3DViewer } from "./Product3DViewer";
 
+/** A photograph in the gallery, with optional alt text supplied by the page. */
+export type GalleryImage = { src: string; alt?: string };
+
 interface Props {
   /** Approved photographs, best first. May be empty. */
-  images: string[];
+  images: GalleryImage[];
   name: string;
   /** Product line name, used for alt text and the honest placeholder. */
   lineName: string;
@@ -18,9 +21,9 @@ interface Props {
  * approved photograph exists we show a branded placeholder.
  */
 export function ProductGallery({ images, name, lineName, modelUrl }: Props) {
-  const views: Array<{ kind: "model" | "image"; src: string }> = [
+  const views: Array<{ kind: "model" | "image"; src: string; alt?: string }> = [
     ...(modelUrl ? [{ kind: "model" as const, src: modelUrl }] : []),
-    ...images.map((src) => ({ kind: "image" as const, src })),
+    ...images.map((image) => ({ kind: "image" as const, src: image.src, alt: image.alt })),
   ];
   const [active, setActive] = useState(0);
   const current = views[active];
@@ -54,7 +57,7 @@ export function ProductGallery({ images, name, lineName, modelUrl }: Props) {
         ) : (
           <img
             src={current.src}
-            alt={`${name} — ${lineName} by Terps`}
+            alt={current.alt ?? `${name} — ${lineName} by Terps`}
             className="mx-auto aspect-[4/5] w-full object-contain p-6"
           />
         )}
@@ -70,7 +73,7 @@ export function ProductGallery({ images, name, lineName, modelUrl }: Props) {
               aria-label={
                 v.kind === "model"
                   ? `Show the rotating 3D view of ${name}`
-                  : `Show image ${i + 1} of ${views.length} of ${name}`
+                  : `Show ${v.alt ?? `image ${i + 1} of ${views.length} of ${name}`}`
               }
               aria-current={i === active}
               className={`h-20 w-20 overflow-hidden rounded-[4px] border transition-colors ${
@@ -84,7 +87,13 @@ export function ProductGallery({ images, name, lineName, modelUrl }: Props) {
                   3D
                 </span>
               ) : (
-                <img src={v.src} alt="" className="h-full w-full object-cover" />
+                <img
+                  src={v.src}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
               )}
             </button>
           ))}

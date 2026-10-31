@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, resolveProductImage, getStrain3DModel } from "@/lib/strain-assets";
+import { getStrainImage, resolveProductImage, getStrain3DModel, getUnitsPerBox } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -9,7 +9,7 @@ import { EffectChip, FlavorChip } from "@/components/brand/Chips";
 import { QuantityStepper } from "@/components/brand/QuantityStepper";
 import { NotifyMeModal } from "@/components/brand/NotifyMeModal";
 import { FindClosestStockistModal } from "@/components/brand/FindClosestStockistModal";
-import { ProductGallery } from "@/components/brand/ProductGallery";
+import { ProductGallery, type GalleryImage } from "@/components/brand/ProductGallery";
 import { ReviewsSection } from "@/components/brand/ReviewsSection";
 import { InlineRating } from "@/components/brand/InlineRating";
 import { MapPin } from "lucide-react";
@@ -122,7 +122,16 @@ function StrainDetail() {
   const img = resolveProductImage(s);
   const extra = ((s as unknown as { gallery_image_urls?: string[] | null })
     .gallery_image_urls ?? []) as string[];
-  const gallery = [img, ...extra].filter(Boolean) as string[];
+  // The display-box photo now appears on the product page too, as its own view.
+  // Pack size comes from the wholesale product row so the caption stays accurate.
+  const units = getUnitsPerBox(s);
+  const gallery: GalleryImage[] = [
+    ...(img ? [{ src: img, alt: `${s.name} — ${meta.name} by Terps` }] : []),
+    ...extra.map((src) => ({ src, alt: `${s.name} — ${meta.name} by Terps` })),
+    ...(s.box_image_url
+      ? [{ src: s.box_image_url, alt: `Terps ${s.name}${units ? ` ${units}-pack` : ""} display box` }]
+      : []),
+  ];
 
   const soldOut = s.stock_quantity <= 0;
   const isCaviar = s.product_line === "caviar_stix";

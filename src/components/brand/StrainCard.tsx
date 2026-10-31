@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import { resolveProductImage, getStrain3DModel } from "@/lib/strain-assets";
+import { getStrain3DModel } from "@/lib/strain-assets";
 import { Product3DViewer } from "./Product3DViewer";
 import { CaviarStixCard } from "./CaviarStixCard";
 import { StrainTypePill } from "./StrainTypePill";
@@ -10,7 +9,6 @@ export function StrainCard({ strain }: { strain: Strain }) {
   if (strain.product_tier === "premium" || strain.product_line === "caviar_stix") {
     return <CaviarStixCard strain={strain} />;
   }
-  const img = resolveProductImage(strain);
   const model = getStrain3DModel(strain.slug);
   const soldOut = strain.stock_quantity <= 0;
   const isLimited = !!strain.is_limited && !soldOut;
@@ -36,24 +34,12 @@ export function StrainCard({ strain }: { strain: Strain }) {
               </span>
             </div>
           )}
-          {model && !strain.product_image_url ? (
+          {model && (
             <Product3DViewer
               url={model}
+              name={strain.name}
               className={`absolute inset-0 h-full w-full ${soldOut ? "opacity-50" : ""}`}
             />
-          ) : (
-            img && (
-              <motion.img
-                src={img}
-                alt={`Terps ${strain.name} next to its tube`}
-                loading="lazy"
-                className="absolute left-1/2 top-1/2 h-full max-h-[1536px] w-full max-w-[1024px] -translate-x-1/2 -translate-y-1/2 select-none object-cover object-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: soldOut ? 0.5 : 1 }}
-                transition={{ duration: 0.6 }}
-                draggable={false}
-              />
-            )
           )}
         </div>
 

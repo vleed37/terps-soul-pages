@@ -18,7 +18,8 @@ import { listStrains } from "@/lib/strains.functions";
 import { MetaLabel } from "@/components/brand/MetaLabel";
 import { Hairline } from "@/components/brand/Hairline";
 import { ScrollReveal } from "@/components/brand/ScrollReveal";
-import { resolveProductImage } from "@/lib/strain-assets";
+import { getStrain3DModel } from "@/lib/strain-assets";
+import { Product3DViewer } from "@/components/brand/Product3DViewer";
 import { getTerpeneArt, FLAVOUR_TILES } from "@/lib/terpene-assets";
 import { matchesFlavor } from "@/lib/shop-filters";
 import {
@@ -45,7 +46,7 @@ export const Route = createFileRoute("/strains")({
     seoHead({
       title: "Strain Library · Terps",
       description:
-        "The Terps strain library — terpenes, flavour families, strain types and effect classifications for every release.",
+        "The Terps strain library — terpenes, flavour families, strain types for every release.",
       path: "/strains",
     }),
 
@@ -69,21 +70,6 @@ const TERPENE_ICON: Record<string, React.ComponentType<{ size?: number; strokeWi
   humulene: Leaf,
   terpinolene: Sparkles,
   ocimene: Wheat,
-};
-
-const EFFECT_COPY: Record<string, { label: string; body: string }> = {
-  daytime: {
-    label: "Daytime",
-    body: "Bright, citrus-forward flavour profiles we group as daytime.",
-  },
-  balanced: {
-    label: "Balanced",
-    body: "Even flavour profiles that sit between the two — our daily rotation.",
-  },
-  nighttime: {
-    label: "Nighttime",
-    body: "Richer, deeper flavour profiles we group as nighttime.",
-  },
 };
 
 const FAQS = [
@@ -114,7 +100,6 @@ function StrainsPage() {
   const strains = (strainsData ?? []) as unknown as Strain[];
 
   const bySlug = new Map(strains.map((s) => [s.slug, s] as const));
-  const byEffect = (e: string) => strains.filter((s) => s.effect_category === e);
 
   const flavourTiles = FLAVOUR_TILES.map((tile) => ({
     ...tile,
@@ -296,17 +281,17 @@ function StrainsPage() {
             {
               type: "sativa" as const,
               title: "Sativa",
-              body: "Lifted energy. Sharp clarity. For the morning, the studio, the start.",
+              body: "Explore citrus, pine and herbal notes.",
             },
             {
               type: "hybrid" as const,
               title: "Hybrid",
-              body: "Balanced and versatile. For any moment, any session.",
+              body: "Explore fruit, spice and earthy notes.",
             },
             {
               type: "indica" as const,
               title: "Indica",
-              body: "Slow, deep, profound. For the after-dinner sit-down.",
+              body: "Explore rich, sweet and woody notes.",
             },
           ]).map((panel, i) => (
             <ScrollReveal key={panel.type} delay={i * 0.08}>
@@ -344,51 +329,6 @@ function StrainsPage() {
         </div>
       </section>
 
-      {/* SECTION 2 — EFFECT CLASSIFICATION */}
-      <section className="mx-auto mt-32 max-w-[1200px]">
-        <ScrollReveal className="text-center">
-          <MetaLabel gold>✦ Effect Classification</MetaLabel>
-          <h2 className="mt-4 font-display text-4xl md:text-5xl">How we group flavour.</h2>
-          <p className="mx-auto mt-5 max-w-[640px] text-base leading-[1.8] text-[color:var(--text-secondary)]">
-            These groupings describe flavour character and how we tend to reach for a strain. They
-            are not a promise of any physical or psychological effect.
-          </p>
-        </ScrollReveal>
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {(["daytime", "balanced", "nighttime"] as const).map((eff, i) => {
-            const copy = EFFECT_COPY[eff];
-            const items = byEffect(eff);
-            return (
-              <ScrollReveal key={eff} delay={i * 0.08}>
-                <div className="h-full rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)] p-8">
-                  <MetaLabel gold>{copy.label}</MetaLabel>
-                  <p className="mt-4 text-sm leading-[1.7] text-[color:var(--text-secondary)]">
-                    {copy.body}
-                  </p>
-                  {items.length > 0 && (
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {items.map((s) => (
-                        <Link
-                          key={s.id}
-                          to="/strain/$slug"
-                          params={{ slug: s.slug }}
-                          className="inline-block rounded-full border border-[color:var(--accent-gold)]/40 px-3 py-1 text-xs text-[color:var(--accent-gold)] transition-colors hover:bg-[color:var(--accent-gold-muted)]"
-                        >
-                          {s.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </ScrollReveal>
-            );
-          })}
-        </div>
-      </section>
-
-
-
-
       {/* SECTION 3 — EVERY STRAIN */}
       <section className="mx-auto mt-32 max-w-[1200px]">
         <ScrollReveal className="text-center">
@@ -397,7 +337,7 @@ function StrainsPage() {
         </ScrollReveal>
         <div className="mt-14 grid grid-cols-2 gap-6 md:grid-cols-4">
           {strains.map((s, i) => {
-            const img = resolveProductImage(s);
+            const model = getStrain3DModel(s.slug);
             const soldOut = s.stock_quantity <= 0;
             return (
               <ScrollReveal key={s.id} delay={Math.min(i, 5) * 0.06}>
@@ -407,15 +347,8 @@ function StrainsPage() {
                   className="group block overflow-hidden rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-surface)]"
                 >
                   <div className="relative aspect-[4/5] overflow-hidden">
-                    {img && (
-                      <img
-                        src={img}
-                        alt={`Terps ${s.name} next to its tube`}
-                        loading="lazy"
-                        className={`mx-auto h-full max-h-[1536px] w-full max-w-[1024px] object-cover object-center ${
-                          soldOut ? "opacity-60" : ""
-                        }`}
-                      />
+                    {model && (
+                      <Product3DViewer url={model} name={s.name} className={`absolute inset-0 h-full w-full ${soldOut ? "opacity-60" : ""}`} />
                     )}
                     {soldOut && (
                       <span className="absolute left-3 top-3 rounded-[4px] bg-[color:var(--bg-rich)]/80 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--text-on-dark)]">
@@ -426,7 +359,7 @@ function StrainsPage() {
                   <div className="p-5">
                     <h3 className="font-display text-xl leading-tight">{s.name}</h3>
                     <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[color:var(--text-tertiary)]">
-                      {s.strain_type ?? s.effect_category}
+                      {s.strain_type}
                     </p>
                   </div>
                 </Link>

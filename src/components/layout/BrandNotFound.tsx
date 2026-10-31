@@ -11,7 +11,7 @@ const cards = [
   {
     to: "/strains" as const,
     label: "Strain Library",
-    copy: "Terpenes, effects, and lineage.",
+    copy: "Terpenes, flavour, and lineage.",
   },
   {
     to: "/stockists" as const,

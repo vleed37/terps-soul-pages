@@ -24,7 +24,6 @@ import {
 import type { Strain } from "@/lib/types";
 import {
   AVAILABILITY,
-  EFFECTS,
   FLAVORS,
   STRAIN_TYPES,
   applyShopFilters,
@@ -51,7 +50,6 @@ export function CategoryCollection({ line, strains, search, onSearchChange, onRe
   const [open, setOpen] = useState(false);
   const meta = lineMeta(line);
 
-  const effect = search.effect ?? [];
   const flavor = search.flavor ?? [];
   const avail = search.avail ?? [];
   const strainType = search.strain_type ?? [];
@@ -133,23 +131,6 @@ export function CategoryCollection({ line, strains, search, onSearchChange, onRe
                         />
                         <StrainTypeDot type={t} />
                         {t}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <MetaLabel gold>Effect</MetaLabel>
-                  <div className="mt-4 flex flex-col gap-3">
-                    {EFFECTS.map((e) => (
-                      <label
-                        key={e}
-                        className="flex cursor-pointer items-center gap-3 text-sm capitalize"
-                      >
-                        <Checkbox
-                          checked={effect.includes(e)}
-                          onCheckedChange={() => onSearchChange({ effect: toggleArr(effect, e) })}
-                        />
-                        {e}
                       </label>
                     ))}
                   </div>

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getStrainBySlug } from "@/lib/strains.functions";
-import { getStrainImage, resolveProductImage, getStrain3DModel, getUnitsPerBox } from "@/lib/strain-assets";
+import { getStrainImage, getStrainProductImage, resolveProductImage, getStrain3DModel, getUnitsPerBox } from "@/lib/strain-assets";
 import { GoldButton } from "@/components/brand/GoldButton";
 import { Hairline } from "@/components/brand/Hairline";
 import { MetaLabel } from "@/components/brand/MetaLabel";
@@ -125,9 +125,13 @@ function StrainDetail() {
   // The display-box photo now appears on the product page too, as its own view.
   // Pack size comes from the wholesale product row so the caption stays accurate.
   const units = getUnitsPerBox(s);
+  const studio = getStrainProductImage(s.slug);
+  const photoAlt = `Terps ${s.name} next to its tube`;
   const gallery: GalleryImage[] = [
-    ...(img ? [{ src: img, alt: `${s.name} — ${meta.name} by Terps` }] : []),
-    ...extra.map((src) => ({ src, alt: `${s.name} — ${meta.name} by Terps` })),
+    ...(img ? [{ src: img, alt: s.product_image_url ? photoAlt : `${s.name} — ${meta.name} by Terps` }] : []),
+    ...(s.product_image_url && studio && studio !== img && !extra.includes(studio)
+      ? [{ src: studio, alt: `${s.name} — ${meta.name} by Terps` }] : []),
+    ...extra.filter((src) => src !== img).map((src) => ({ src, alt: photoAlt })),
     ...(s.box_image_url
       ? [{ src: s.box_image_url, alt: `Terps ${s.name}${units ? ` ${units}-pack` : ""} display box` }]
       : []),

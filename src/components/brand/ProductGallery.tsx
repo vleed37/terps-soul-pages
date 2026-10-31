@@ -58,7 +58,8 @@ export function ProductGallery({ images, name, lineName, modelUrl }: Props) {
           <img
             src={current.src}
             alt={current.alt ?? `${name} — ${lineName} by Terps`}
-            className="mx-auto aspect-[4/5] w-full object-contain p-6"
+            loading={active === (modelUrl ? 1 : 0) ? "eager" : "lazy"}
+            className="mx-auto aspect-[4/5] max-h-[1536px] w-full max-w-[1024px] object-cover object-center"
           />
         )}
       </div>
@@ -92,7 +93,7 @@ export function ProductGallery({ images, name, lineName, modelUrl }: Props) {
                   alt=""
                   loading="lazy"
                   decoding="async"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover object-center"
                 />
               )}
             </button>

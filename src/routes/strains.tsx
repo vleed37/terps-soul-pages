@@ -410,9 +410,9 @@ function StrainsPage() {
                     {img && (
                       <img
                         src={img}
-                        alt={s.name}
+                        alt={`Terps ${s.name} next to its tube`}
                         loading="lazy"
-                        className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] ${
+                        className={`mx-auto h-full max-h-[1536px] w-full max-w-[1024px] object-cover object-center ${
                           soldOut ? "opacity-60" : ""
                         }`}
                       />
